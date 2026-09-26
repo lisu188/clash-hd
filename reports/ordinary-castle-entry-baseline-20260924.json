@@ -1,0 +1,1168 @@
+{
+  "schema": "clash95_ordinary_castle_admission_review_v1",
+  "date": "2026-09-24",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+  "evidence_class": "controlled_native_Building_GetInto_diagnostic",
+  "runtime_executed": true,
+  "diagnostic_completed": true,
+  "rendering_passed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_and_live_and_isolated_saves_unchanged": true,
+  "retained": {
+    "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\summary.json",
+    "bytes": 44777,
+    "sha256": "73f0c36b7758c83eeefeabbd0b28d979c40e699bfc6d957280568f6c59df07b0"
+  },
+  "plan": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-diagnostic-host-20260924-e\\plan.json",
+    "bytes": 20586,
+    "sha256": "ade662cadfe4fc2875175c01997096fbd40cc09e3c08140d3c8a0a6f2830c232"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\cdb.log",
+    "bytes": 19828,
+    "sha256": "158dd7c8e354dee703d3dfaccc06d26acbe0a168af84366e0252405321aecdeb"
+  },
+  "source_preparation": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\source-preparation.json",
+    "bytes": 14909,
+    "sha256": "b953c61d4f2390cab16b6a079639ada8518fb9346b51d79e62e8f362bea137fe"
+  },
+  "host": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-diagnostic-host-20260924-d\\run.ps1",
+    "bytes": 12400,
+    "sha256": "e427de4a5e6d8095abbeb43894cc6aa8244488bc863114754c9153611165940b"
+  },
+  "loader": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-diagnostic-host-20260924-a\\loader.cdb",
+    "sha256": "7651b5ce319dde28015d6819c5858de54e9f831aa22aa9e508b96cfb00ac6686"
+  },
+  "bootstrap": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\normal-map-diagnostic-bootstrap.cdb",
+    "sha256": "a1c0b3c84a8a802514d8ae3c596bbf2b012fde93297e9306f676e726018e1870"
+  },
+  "invoke": {
+    "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-diagnostic-host-20260924-e\\invoke.cdb",
+    "sha256": "72fb956b2f664d84a16d2be5fe92e8d57d57948721cba02276c74c0ebb0f497f"
+  },
+  "loaded_sections": [
+    {
+      "matched": true,
+      "sha256": "14bbb3361d3b8644831362d413a91cc488be22b2c302ef4672b260038e7119bc",
+      "name": "PE_headers",
+      "va": 4194304,
+      "bytes": 1024
+    },
+    {
+      "matched": true,
+      "sha256": "5eac1de9370dd910b0a40442b8beffff7588c5fd767df5dd30294736b164fc0e",
+      "name": "AUTO",
+      "va": 4198400,
+      "bytes": 952832
+    },
+    {
+      "matched": true,
+      "sha256": "14cf7a37d69855820746bc7a809addadf2ef54f828f907b069148c2227601d9a",
+      "name": ".hdcode",
+      "va": 5644288,
+      "bytes": 78848
+    },
+    {
+      "matched": true,
+      "sha256": "e3d780ee3640eb5b19db58c5c520ac71c89e9ad553d78574f3b3f09186402d80",
+      "name": ".hdmodal",
+      "va": 5726208,
+      "bytes": 70144
+    },
+    {
+      "matched": true,
+      "sha256": "970ff75bc07a8d7ae72d8debe54c52ab6c12c00454e7cdbb61155ae4138b1a09",
+      "name": ".hdarmy",
+      "va": 5861376,
+      "bytes": 71680
+    },
+    {
+      "matched": true,
+      "sha256": "1075bdb29432b4487604c36aefe83e6c54e9c2ed1473986dcd728d226081725c",
+      "name": ".hdslots",
+      "va": 5992448,
+      "bytes": 68608
+    },
+    {
+      "matched": true,
+      "sha256": "148b9a5716b02487764adb498df087f4517d65529c20eaee374699fc73a7e10c",
+      "name": ".hdprim",
+      "va": 6123520,
+      "bytes": 71680
+    },
+    {
+      "matched": true,
+      "sha256": "d6de72dd8a45175e034d2f7b835e633c7fe35fecc12792f29b16a4cd3df8d318",
+      "name": ".hdptxt",
+      "va": 6254592,
+      "bytes": 68608
+    },
+    {
+      "matched": true,
+      "sha256": "a09f5f12b1b4c5c2c953b75d0691ddfbd27ee5eb92449880f7c9328cd1c980f3",
+      "name": ".hdwgt",
+      "va": 6385664,
+      "bytes": 68608
+    },
+    {
+      "matched": true,
+      "sha256": "1d3daa2a48a01c996fb53c643365e23c8f2ff9ebb3b2287617f6391148639049",
+      "name": ".hdpblit",
+      "va": 6516736,
+      "bytes": 68608
+    }
+  ],
+  "events": [
+    "DIAG_EVENT tag=native_before_owner tid=b950 eip=0041ed54 esp=000edc7c eax=00000000 ebx=00000000 ecx=00000000 esi=004617a0 owner=0040ad40 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0",
+    "DIAG_EVENT tag=native_root_call tid=b950 eip=0041ed6a esp=000edc88 eax=00000000 ebx=0040ad40 ecx=00000000 esi=004617a0 owner=004617a0 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0",
+    "DIAG_EVENT tag=owner_guard tid=b950 eip=0057606b esp=000edc38 eax=000edc84 ebx=0040ad40 ecx=00000000 esi=0a94f3d0 owner=004617a0 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0",
+    "DIAG_EVENT tag=owner_reject tid=b950 eip=00576230 esp=000edc38 eax=000edc84 ebx=0040ad40 ecx=00000000 esi=0a94f3d0 owner=004617a0 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0",
+    "DIAG_EVENT tag=admission_return tid=b950 eip=005767a9 esp=000edc60 eax=00000000 ebx=0040ad40 ecx=00000000 esi=004617a0 owner=004617a0 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0",
+    "DIAG_EVENT tag=first_present_return tid=b950 eip=0042239f esp=000edc4c eax=00000000 ebx=0050ef24 ecx=0050edb4 esi=005196a0 owner=00422020 map=0a94f3d0 extent=03000400 phase=0 enter=0 fault=0 allocations=0"
+  ],
+  "precondition": [
+    "DIAG_MAP_STATE owner=0040ad40 lower=00000000 post=00000000 selected=ffffffff player=0",
+    "DIAG_CALL_INPUT index=0 record=03b0c71a xy=(14,20) owner=0 kind=2 construction=0 tid=b950 original_esp=000edca4"
+  ],
+  "snapshots": {
+    "map-ready": {
+      "canvas_enter": 0,
+      "primary_pixels": 173703232,
+      "primary_height": 768,
+      "primary_width": 1024,
+      "render": 177533904,
+      "map_height": 768,
+      "screen_owner": 4238656,
+      "capture": "hidden_software_read_at_declared_debugger_boundary",
+      "primary_pitch": 1024,
+      "primary_palette": 71966928,
+      "canvas_allocations": 0,
+      "game_data": 61407280,
+      "map_pixels": 181600304,
+      "canvas_phase": 0,
+      "map": 177533904,
+      "map_width": 1024,
+      "canvas_fault": 0,
+      "manual_input_proof": false,
+      "paused": true
+    },
+    "castle-present": {
+      "canvas_enter": 0,
+      "primary_pixels": 173703232,
+      "primary_height": 768,
+      "primary_width": 1024,
+      "render": 177533904,
+      "map_height": 768,
+      "screen_owner": 4333600,
+      "capture": "hidden_software_read_at_declared_debugger_boundary",
+      "primary_pitch": 1024,
+      "primary_palette": 71966928,
+      "canvas_allocations": 0,
+      "game_data": 61407280,
+      "map_pixels": 181600304,
+      "canvas_phase": 0,
+      "map": 177533904,
+      "map_width": 1024,
+      "canvas_fault": 0,
+      "manual_input_proof": false,
+      "paused": true
+    }
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-canvas.bin",
+      "bytes": 128,
+      "sha256": "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-castle0.bin",
+      "bytes": 467,
+      "sha256": "0bd4a10d0d0fa8ea1ad32f769d6a0cc5867a2624b6477c07a587b47075dd679a"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-map-header.bin",
+      "bytes": 188,
+      "sha256": "3a59462c1e30b5502cdbff1596978439fc424db73df2303b4f703863c0ab20e9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-map.png",
+      "bytes": 211536,
+      "sha256": "525bc401990ae4ac97f9275e94a2c12edf19db6b0e79ee9c52219a9082de63ae"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-map.png.json",
+      "bytes": 808,
+      "sha256": "53ae22f4f8bbeebd98f49d3d0f46211aa61df66537804415d139018d8bcb74e2"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-map.raw",
+      "bytes": 786432,
+      "sha256": "6ddf73d82fd6e8bad9e3f8761c709f9638f3efb38ad0074716c3e293c40a85d7"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-palette.bin",
+      "bytes": 1024,
+      "sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-primary-backend.bin",
+      "bytes": 176,
+      "sha256": "ac50fa27bed65a1ad0bec5a8cf1272c5a0974f5eae9dc2ac31d24ae7315d116d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-primary-header.bin",
+      "bytes": 220,
+      "sha256": "66efa97a9d072ca617450ffa0213cc723806c53dfe3aa9a2203195b83edbd56a"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-primary.png",
+      "bytes": 350930,
+      "sha256": "0d7b84ddc9d824fa2ee7b79b636dc1f3daa05a5261aa5efef3417fbc4a91dc50"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-primary.png.json",
+      "bytes": 816,
+      "sha256": "25b18c95f06b31dfb0137c0bee1b01901b455f6e8102e169b6bd531945e08165"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-primary.raw",
+      "bytes": 786432,
+      "sha256": "37b5468744abd8120138ed5bd4cb751dc9cfafae495642ec43cf70cf470d1d86"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-proxy-headers.bin",
+      "bytes": 1024,
+      "sha256": "11d12637ae6c49760f053739e3fdda2744ac7eb369e6f9c9055c2d4f5c20a0df"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\castle-present-state.json",
+      "bytes": 586,
+      "sha256": "166f7dd4e09956ad132c4ac36d163f6b4c22a4e6bcc6ac63463c73f2254102d7"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\cdb.log",
+      "bytes": 19828,
+      "sha256": "158dd7c8e354dee703d3dfaccc06d26acbe0a168af84366e0252405321aecdeb"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-artwork-audit.json",
+      "bytes": 11277,
+      "sha256": "c9a010f7cde794c5a7699eaa0647247717685f92a12ddd1005ba46bf6887240d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-canvas.bin",
+      "bytes": 128,
+      "sha256": "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-castle0.bin",
+      "bytes": 467,
+      "sha256": "0bd4a10d0d0fa8ea1ad32f769d6a0cc5867a2624b6477c07a587b47075dd679a"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-map-header.bin",
+      "bytes": 188,
+      "sha256": "3a59462c1e30b5502cdbff1596978439fc424db73df2303b4f703863c0ab20e9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-map.png",
+      "bytes": 241939,
+      "sha256": "092c12ca2851a0050da6547133703c991e3b368f88628c3093a238055e66a27d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-map.png.json",
+      "bytes": 793,
+      "sha256": "9f405a5c537259a06199d4c28b0f3dd34ff2ac28cad633cb8e48c3972d76d573"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-map.raw",
+      "bytes": 786432,
+      "sha256": "500b7d97ad432e9a97af4075c270bc43d3f9952bf8975641b81fff87fc6b1cb0"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-palette.bin",
+      "bytes": 1024,
+      "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-primary-backend.bin",
+      "bytes": 176,
+      "sha256": "ac50fa27bed65a1ad0bec5a8cf1272c5a0974f5eae9dc2ac31d24ae7315d116d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-primary-header.bin",
+      "bytes": 220,
+      "sha256": "66efa97a9d072ca617450ffa0213cc723806c53dfe3aa9a2203195b83edbd56a"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-primary.png",
+      "bytes": 241475,
+      "sha256": "88752f0d28ebfc1cda3f304781c4e8e879850648435c8fd317498e57f6785949"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-primary.png.json",
+      "bytes": 801,
+      "sha256": "ff11b0fde510180aeb98f6de55c4ada0311f4e094e593e1c2bce552024c57536"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-primary.raw",
+      "bytes": 786432,
+      "sha256": "ba7dcce47722eff4a4007846759eef23a627e0415ebedc70b3e21538cb0c0d1d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-proxy-headers.bin",
+      "bytes": 1024,
+      "sha256": "11d12637ae6c49760f053739e3fdda2744ac7eb369e6f9c9055c2d4f5c20a0df"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\map-ready-state.json",
+      "bytes": 586,
+      "sha256": "06a7457f5368aeb3ec9c721ca5a51490fbf32d6e26dade74b825b48adc2db876"
+    },
+    {
+      "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-e\\summary.json",
+      "bytes": 44777,
+      "sha256": "73f0c36b7758c83eeefeabbd0b28d979c40e699bfc6d957280568f6c59df07b0"
+    }
+  ],
+  "map_artwork_audit": {
+    "scope": "single paused ordinary map; no castle map-controls claim",
+    "frame": {
+      "profile": "native_four_border_tiles_v1",
+      "resolution": "1024x768",
+      "passed": false,
+      "structural_border_exact": true,
+      "checked_border_pixels": 75012,
+      "bands": [
+        {
+          "name": "top",
+          "rectangle_inclusive": [
+            0,
+            0,
+            1023,
+            15
+          ],
+          "checked_pixels": 16384,
+          "exact_matches": 16384,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "bottom",
+          "rectangle_inclusive": [
+            0,
+            752,
+            1023,
+            767
+          ],
+          "checked_pixels": 11524,
+          "exact_matches": 11524,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "left",
+          "rectangle_inclusive": [
+            0,
+            16,
+            31,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 23552,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "right",
+          "rectangle_inclusive": [
+            992,
+            16,
+            1023,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 23552,
+          "mismatches": 0,
+          "first_mismatches": []
+        }
+      ],
+      "footer": {
+        "sprite": 5,
+        "origin": [
+          347,
+          753
+        ],
+        "size": [
+          324,
+          15
+        ],
+        "checked_pixels": 4860,
+        "exact_matches": 464,
+        "exact": false,
+        "status": "unverified_background_or_active_tooltip_text"
+      },
+      "opaque_frame_pixels": 79872,
+      "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance."
+    },
+    "action_cells": [
+      {
+        "cell": 0,
+        "anchor": [
+          800,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 0,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 0,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 1,
+        "anchor": [
+          864,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 2,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 2,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 2,
+        "anchor": [
+          928,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 4,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 4,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 3,
+        "anchor": [
+          800,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 6,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 6,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 4,
+        "anchor": [
+          864,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 8,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 8,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 5,
+        "anchor": [
+          928,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 10,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 10,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      }
+    ],
+    "all_six_exact": true,
+    "manual_input_proof": false
+  },
+  "cleanup": {
+    "debugger": {
+      "input_closed": true,
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-24T07:24:56.1362499Z",
+        "handle_retained": true,
+        "creation_filetime": 134347082961362499,
+        "process_id": 40768
+      }
+    },
+    "games": [
+      {
+        "input_closed": null,
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\candidate.exe",
+          "creation_filetime": 134347082964221634,
+          "process_id": 39536,
+          "handle_retained": true,
+          "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+          "creation_utc": "2026-09-24T07:24:56.4221634Z",
+          "parent_process_id": 40768
+        }
+      }
+    ],
+    "desktop_closed": true
+  },
+  "previous_attempts": [
+    {
+      "attempt": "a",
+      "status": "host_startup_failure",
+      "retained_record": {
+        "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-diagnostic-host-20260924-a\\launch-failure.json",
+        "bytes": 499,
+        "sha256": "b95d044c64883e9883711ba9213eebd36d1e55f9a6a801132cfd9145070e0e85"
+      },
+      "cleanup_proven": false
+    },
+    {
+      "attempt": "b",
+      "record": {
+        "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-b\\summary.json",
+        "bytes": 37188,
+        "sha256": "451b8d1ae735bf7e1e9588feb84a117db1cf27e9d566b6c9e97af3f4ac141246"
+      },
+      "failures": [
+        "Loaded proxy identity mismatch",
+        "Game cleanup failed"
+      ],
+      "diagnostic_completed": false,
+      "cleanup": {
+        "debugger": {
+          "input_closed": true,
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-24T07:18:31.7067593Z",
+            "handle_retained": true,
+            "creation_filetime": 134347079117067593,
+            "process_id": 26100
+          }
+        },
+        "games": [
+          {
+            "input_closed": null,
+            "termination_requested": true,
+            "absent": false,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\candidate.exe",
+              "creation_filetime": 134347079120105484,
+              "process_id": 21656,
+              "handle_retained": true,
+              "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+              "creation_utc": "2026-09-24T07:18:32.0105484Z",
+              "parent_process_id": 26100
+            }
+          }
+        ],
+        "desktop_closed": true
+      }
+    },
+    {
+      "attempt": "c",
+      "record": {
+        "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-c\\summary.json",
+        "bytes": 37848,
+        "sha256": "075405a870a8bf6c0788b201d957b177b9d3fd64d6a93f0f857f0a01e9875e05"
+      },
+      "failures": [
+        "Loaded proxy PE headers differ from bound DLL"
+      ],
+      "diagnostic_completed": false,
+      "cleanup": {
+        "debugger": {
+          "input_closed": true,
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-24T07:20:39.4870980Z",
+            "handle_retained": true,
+            "creation_filetime": 134347080394870980,
+            "process_id": 45380
+          }
+        },
+        "games": [
+          {
+            "input_closed": null,
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\candidate.exe",
+              "creation_filetime": 134347080397378207,
+              "process_id": 50312,
+              "handle_retained": true,
+              "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+              "creation_utc": "2026-09-24T07:20:39.7378207Z",
+              "parent_process_id": 45380
+            }
+          }
+        ],
+        "desktop_closed": true
+      }
+    },
+    {
+      "attempt": "d",
+      "record": {
+        "path": "C:\\ClashCaptures\\ordinary-castle-entry-1024x768-20260924-d\\summary.json",
+        "bytes": 40278,
+        "sha256": "1ac9aada8d9416a1a3a4594ffac93e51083028def1f4131b75d4108f42d4bb0e"
+      },
+      "failures": [
+        "Debugger command, crash or route rejection; see raw log"
+      ],
+      "diagnostic_completed": false,
+      "cleanup": {
+        "debugger": {
+          "input_closed": true,
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-24T07:22:16.0261686Z",
+            "handle_retained": true,
+            "creation_filetime": 134347081360261686,
+            "process_id": 34160
+          }
+        },
+        "games": [
+          {
+            "input_closed": null,
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\ordinary-castle-nativepresent-1024x768-20260924-a\\candidate.exe",
+              "creation_filetime": 134347081363288492,
+              "process_id": 46812,
+              "handle_retained": true,
+              "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+              "creation_utc": "2026-09-24T07:22:16.3288492Z",
+              "parent_process_id": 34160
+            }
+          }
+        ],
+        "desktop_closed": true
+      }
+    }
+  ],
+  "findings": [
+    "Native Building_GetInto replaces ordinary owner0x40AD40 with0x4617A0 before root CALL",
+    "Inherited canvas comparison takes existing rejection branch; admission returns0 and allocates no native640 canvas",
+    "First castle presentation returns with owner0x422020 while MAP remains1024x768; software capture is corrupted",
+    "All four ordinary-map structural borders and six cells match source artwork; footer mismatch keeps full frame gate false"
+  ],
+  "limits": [
+    "Controlled slot0 load and native-call redirection; no OS input, manual click or campaign parity claim",
+    "No ownership, canvas, construction or guard-result writes; only synthetic call registers and sentinel stack slot are set",
+    "Single paused software snapshots at declared boundaries; not temporal stable pairs or final visible wrapper colors",
+    "Castle action cells and ordinary map frame audits are not interchangeable",
+    "Prior host failures and cleanup limitations are preserved; only final e has full declared completion and cleanup"
+  ]
+}
