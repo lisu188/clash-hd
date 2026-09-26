@@ -1,0 +1,32 @@
+{
+  "schema": "clash95_pause_engine_fixture_v1",
+  "game_runtime_executed": false,
+  "fixture_runtime_executed": true,
+  "manual_input_proof": false,
+  "host_source_sha256": "2034809463a81b4583223dee894bfa048f0a7a596edd7e1f41b227bd4e2f6075",
+  "client_source_sha256": "7939f471eb7a56364b13557f0052a577f95e742092b50a30d71260633ccbf05f",
+  "fixture_source_sha256": "cd0302e0fc3088b26129ac31e1a78a252db16bf49ff121b645c3fd8da18d9b86",
+  "inherited_host_sha256": "3b1ec5a8642cf7e371ddccd299d7e35d10c77a1041019a42bb5809e2d8144f62",
+  "compiled_source_sha256": "39d6a01861ef05f16efb5d76a94978bc3983c7c58985f764e3f540c9e3aa2909",
+  "expected_cases": 2,
+  "completed": true,
+  "passed": false,
+  "cases": [
+    {
+      "case": "pause-resume-counter",
+      "passed": false,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "host_returncode": 1,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\WINDOWS\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\andrz\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-m7vp8r29\\case-r3ve7pf_\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nDeferred                                       srv*C:\\Symbols*https://msdl.microsoft.com/download/symbols\nSymbol search path is: .;srv*C:\\Symbols*https://msdl.microsoft.com/download/symbols\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77ca0000 77e5f000   ntdll.dll\nModLoad: 75c80000 75d70000   C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL\nModLoad: 76e40000 7711a000   C:\\WINDOWS\\SysWOW64\\KERNELBASE.dll\nModLoad: 5e9d0000 5ea7f000   C:\\WINDOWS\\SysWOW64\\apphelp.dll\n(62f0.c8d8): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=25328 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-m7vp8r29\\case-r3ve7pf_\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\n"
+    },
+    {
+      "case": "expired-lease",
+      "passed": false,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "host_returncode": 1,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\WINDOWS\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\andrz\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-m7vp8r29\\case-dp2rlur0\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nDeferred                                       srv*C:\\Symbols*https://msdl.microsoft.com/download/symbols\nSymbol search path is: .;srv*C:\\Symbols*https://msdl.microsoft.com/download/symbols\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77ca0000 77e5f000   ntdll.dll\nModLoad: 75c80000 75d70000   C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL\nModLoad: 76e40000 7711a000   C:\\WINDOWS\\SysWOW64\\KERNELBASE.dll\nModLoad: 5e9d0000 5ea7f000   C:\\WINDOWS\\SysWOW64\\apphelp.dll\n(9a84.3a24): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=39556 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-m7vp8r29\\case-dp2rlur0\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\n"
+    }
+  ]
+}
