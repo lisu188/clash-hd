@@ -7,6 +7,7 @@ on:
       - 'tools/build_framed_modal_widgets_candidate.py'
       - 'tools/test_build_framed_modal_widgets_candidate.py'
       - 'tools/test_modal_widget_bounds.py'
+      - 'tools/test_modal_widget_owner_integration.py'
       - 'tools/.gitattributes'
       - '.github/workflows/modal-widget-candidate.yml'
   workflow_dispatch:
@@ -96,7 +97,7 @@ jobs:
                          game_runtime_executed=False, promotion_ready=False)
           Path(os.environ['RUNNER_TEMP'], 'widget-input.json').write_text(json.dumps(receipt, indent=2))
           PY
-      - name: Require complete original-backed build and native CPU fixtures
+      - name: Require complete original-backed build, widget guards and real-owner CPU fixtures
         run: |
           python - <<'PY'
           import hashlib, json, os, platform, subprocess, sys, unittest
@@ -107,23 +108,24 @@ jobs:
           preflight = source_preflight(Path.cwd())
           if not preflight['passed']:
               raise SystemExit('Frozen source preflight failed')
-          suite = unittest.defaultTestLoader.loadTestsFromNames(['test_build_framed_modal_widgets_candidate', 'test_modal_widget_bounds'])
+          suite = unittest.defaultTestLoader.loadTestsFromNames(['test_build_framed_modal_widgets_candidate', 'test_modal_widget_bounds', 'test_modal_widget_owner_integration'])
           result = unittest.TextTestRunner(verbosity=2).run(suite)
           metadata = getattr(fixtures.WidgetOriginalBuildTests, 'metadata', {})
           fields = ('stage', 'resolution', 'candidate_sha256', 'base_candidate_sha256', 'code_va', 'code_bytes',
                     'code_raw_bytes', 'code_sha256', 'new_highlow_count', 'old_highlow_count', 'hooks', 'probe_sha256',
                     'source_hashes', 'widget_entry_vas', 'modal_state_va', 'modal_entry_vas', 'probe_contract')
           sources = ('tools/test_build_framed_modal_widgets_candidate.py', 'tools/test_modal_widget_bounds.py',
+                     'tools/test_modal_widget_owner_integration.py',
                      'tools/build_framed_modal_widgets_candidate.py', 'src/patcher/framed_modal_widget_bounds.py')
           report = dict(schema=1, platform=platform.platform(), source_preflight=preflight,
                         source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
                         resolution=os.environ['CLASH_WIDGET_RESOLUTION'], tests_run=result.testsRun,
                         errors=[(str(t), text) for t, text in result.errors],
                         failures=[(str(t), text) for t, text in result.failures], skipped=result.skipped,
-                        passed=result.wasSuccessful() and not result.skipped and result.testsRun == 15,
+                        passed=result.wasSuccessful() and not result.skipped and result.testsRun == 20,
                         candidate={key: metadata[key] for key in fields if key in metadata},
                         test_source_hashes={p: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in sources},
-                        proof_class='original_backed_build_nonexecuting_PE_admission_and_synthetic_guard_CPU',
+                        proof_class='original_backed_build_nonexecuting_PE_admission_and_synthetic_guard_and_real_owner_CPU',
                         game_runtime_executed=False, primary_composition_proven=False, manual_input_proof=False, promotion_ready=False)
           Path(os.environ['RUNNER_TEMP'], 'widget-candidate.json').write_text(json.dumps(report, indent=2))
           raise SystemExit(0 if report['passed'] else 1)

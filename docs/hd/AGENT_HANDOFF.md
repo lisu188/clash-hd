@@ -95,6 +95,9 @@ final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
 on the map but fail controls/input checks. The audit now requires matching paused
 screen-owner records. Fixed click targets, the framed input guard for worlds
 smaller than the viewport, and ordinary castle entry still need separate repairs.
+The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
+bounded component and its new complete-wrapper CPU checks; composition into the
+Complete HD/modalwidgets candidate remains required.
 This review is not a fresh runtime or a replacement for the controlled component
 evidence below; stable and manual-input boundaries remain unchanged.
 
@@ -377,6 +380,17 @@ Keep unavailable facilities unavailable rather than using `construct_all` to
 avoid this case. This new stage still has no accepted complete runtime capture.
 Keep the failed D/F receipts and their diagnostics
 separate from source/PE/x86-fixture verification.
+
+The [installed-guard ownership fixture](MODAL_WIDGET_BOUNDS.md) now executes the
+actual inherited ownership instructions against both 1024x768 and 1920x1080
+candidates in synthetic CPU memory. Five checks pass per profile; labeled
+external allocator/thread/game-body recorders remain. This does not establish
+real game ownership transitions or corrected barracks pixels. The separate
+[widget barracks producer](MODAL_WIDGET_BARRACKS_PROBE.md) authenticates the
+actual candidate and prepares the controlled route with exact native observer
+sites. Its trace consumer, primary/text/owner observations, host queries and
+original-artwork audit remain explicitly incomplete, so its generated packet
+is not ready for runtime capture.
 
 The new [checkpoint query-ledger reader](MODAL_PRIMARY_CHECKPOINT_LEDGER.md)
 checks exact candidate/process/trace bindings and the complete primary and
