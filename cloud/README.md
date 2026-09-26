@@ -1,8 +1,11 @@
-# Codex Cloud Handoff
+<a id="codex-cloud-handoff"></a>
 
-This directory packages the parts of the Clash95 HD workspace that are useful in
-Codex Cloud without requiring the local Windows install, debugger tools, or
-proprietary game binaries.
+# Portable fixtures and cloud checks
+
+This directory packages portable Clash95 HD fixtures that can be inspected
+without the local Windows install, debugger tools or proprietary game binaries.
+Use the [documentation index](../docs/hd/README.md) to find the current owning
+guide and the [development guide](../docs/hd/DEVELOPMENT.md) for check selection.
 
 ## What Cloud Codex Can Do
 
@@ -41,9 +44,9 @@ changes until a local Windows run produces fresh evidence.
 
 - `ghidra-out/` contains lightweight exported metadata, imports, and function
   inventory. It deliberately excludes `selected_decompilation.c`.
-- `evidence/hd-map/` contains the current HD map archived patch report, the
+- `evidence/hd-map/` contains the historical HD map archived patch report, the
   paired normal/forced-visible post-owner evidence, and screenshots.
-- `evidence/castle-barracks-centered/` contains the current castle/barracks
+- `evidence/castle-barracks-centered/` contains the historical castle/barracks
   centered UI proof artifacts.
 - `manifest.json` records each fixture file, source, SHA-256, byte count,
   reason, and exclusion policy.
@@ -63,11 +66,13 @@ python tools\build_cloud_fixtures.py --manifest cloud\fixtures\manifest.json --z
 The committed directory tree is preferred because Codex can search it directly.
 Do not commit `cloud/cloud-fixtures.zip`.
 
-## Current Cloud-Safe Next Step
+<a id="current-cloud-safe-next-step"></a>
 
-Use `.codex-loop/NEXT.md` in the local checkout as the authoritative live task
-queue. At the time this handoff was built, the next local Windows task was to
-continue the full castle overview centering investigation around
-`00422180` / `00422020` / `00422305`. Cloud Codex can inspect patch scripts,
-probe templates, notes, and fixture evidence for that task, but fresh proof
-still needs local CDB.
+## Finding current work
+
+Use the tracked [current handoff](../docs/hd/AGENT_HANDOFF.md) for active work.
+Ignored `.codex-loop/` notes are scratch history, not an authoritative task
+queue. The fixture manifest pins a bounded historical evidence set; passing
+those fixtures does not verify a newer candidate, ordinary input or release
+acceptance. Fixture regeneration writes files and requires the recorded source
+artifacts to exist; do not infer their availability from retained metadata.

@@ -8,17 +8,15 @@ Keep tools separate by purpose. Do not merge unrelated validators just to reduce
 file count; the compact structure comes from moving source families into the
 right directories, not from hiding distinct checks inside larger scripts.
 
-Run all tool tests and optionally write a durable current-evidence summary with:
+Start with [development and verification](../docs/hd/DEVELOPMENT.md) for
+interpreter setup, focused tests and optional sweep commands. The broad sweep
+and aggregate refresh write evidence reports; review those changes separately
+from source changes. A manual loop that runs each test without checking every
+exit code is not an equivalent failure-propagating validation command.
 
-```powershell
-python tools\repo_test_sweep.py --write-json captures\current\repo-test-sweep-current.json --write-markdown captures\current\repo-test-sweep-current.md --require-pass
-```
-
-The equivalent manual loop is:
-
-```powershell
-Get-ChildItem tools\test_*.py | ForEach-Object { python $_.FullName }
-```
+Find the relevant protocol through the [documentation index](../docs/hd/README.md).
+The tools below describe evidence classes, not a current task queue; the
+[handoff](../docs/hd/AGENT_HANDOFF.md) owns current work.
 
 Endurance-road helpers worth knowing:
 

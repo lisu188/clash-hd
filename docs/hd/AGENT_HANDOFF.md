@@ -37,54 +37,17 @@ work, merge into `main` when needed, and push its configured upstream. Keep
 unfinished work outside checkpoints and honor explicit user requests to pause
 Git publication.
 
-Discover a Python interpreter instead of assuming a bare command works:
+Use [Development and verification](DEVELOPMENT.md) for interpreter discovery,
+optional dependencies, focused documentation fixtures, actual-checkout guards
+and safe report destinations. The [documentation index](README.md) maps the
+implementation and evidence guides.
 
-```powershell
-$clashPythonCommand = Get-Command python,python3,py -CommandType Application -ErrorAction SilentlyContinue |
-    Where-Object { $_.Source -notlike (Join-Path $env:LOCALAPPDATA 'Microsoft\WindowsApps\*') } |
-    Select-Object -First 1
-if ($clashPythonCommand) {
-    $clashPython = $clashPythonCommand.Source
-} else {
-    $clashPython = Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
-}
-if (-not (Test-Path -LiteralPath $clashPython)) {
-    throw 'Locate an installed Python interpreter or ask Codex for its bundled workspace runtime path.'
-}
-& $clashPython -B -c "import sys; print(sys.executable); print(sys.version)"
-```
-
-This skips WindowsApps aliases that could open the Store. If discovery fails,
-use an installed interpreter's explicit path. The bundled fallback was verified with
-Python 3.12.14 on 2026-09-05; other hosts may place it elsewhere. Codex's
-workspace-dependency lookup can locate the current bundled runtime. No API key
-or game installation is needed for the documentation fixtures.
-
-Inspect the saved evidence before regenerating it:
-
-```powershell
-& $clashPython -B -c "import json; from pathlib import Path; d=json.loads(Path('captures/current/current-evidence-refresh-current.json').read_text(encoding='utf-8')); print(d['generated_at']); print([k for k,v in d['checks'].items() if not v.get('passed')])"
-```
-
-For onboarding/guard changes, run the focused fixtures:
-
-```powershell
-& $clashPython -B tools/test_handoff_freshness_guard.py
-& $clashPython -B tools/test_docs_consistency_guard.py
-```
-
-The aggregate refresh is an explicit evidence-writing step, not a read-only
-startup command:
-
-```powershell
-& $clashPython -B tools/current_evidence_refresh.py
-```
-
-It regenerates reports under `captures/current`; review their changes and
-report honest failures. Some checks need existing local artifacts or tools,
-so a fresh clone is not a complete runtime evidence environment. Individual
-guard CLIs also write current reports by default; use both `--write-json` and
-`--write-markdown` to redirect diagnostic output to a temporary directory.
+Inspect the saved aggregate's timestamp and failures before regenerating it.
+`tools/current_evidence_refresh.py` writes reports under `captures/current`;
+it is not a read-only startup command. Historical runtime evidence may require
+missing local artifacts or exact older producer sources. Preserve failures and
+redirect diagnostic guard outputs to task scratch when no durable evidence
+refresh is intended.
 
 ## Evidence snapshot and active work
 

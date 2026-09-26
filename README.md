@@ -1,55 +1,41 @@
 # Clash95 HD
 
 Reverse-engineering and binary-patching project for the 32-bit Windows game
-`clash95.exe`. The project extends the original 640x480 renderer to larger
-resolutions, expands the gameplay viewport, relocates UI elements, corrects
-input coordinates, and verifies each stage with reproducible evidence.
+`clash95.exe`. It extends the original 640x480 renderer, expands the adventure
+viewport, anchors the interface, and checks input and rendering through
+source-bound evidence.
 
-The repository contains source code, patch scripts, launcher code,
-documentation, tests, probes, and small evidence manifests. It does **not**
-distribute the original game, patched executables, wrapper DLL binaries, saves,
-copied assets, CD/ISO contents, cracks, memory dumps, or large raw captures.
+The repository contains source, patch scripts, a launcher, tests, probes and
+small evidence manifests. It does not distribute game executables, wrapper
+DLL binaries, saves, copied assets, CD/ISO contents, cracks or memory dumps.
 
-## Known-good input
+<a id="documentation"></a>
+<a id="project-layout"></a>
 
-The patcher expects a user-owned `C:\Clash\clash95.exe` with SHA-256:
+## Start here
 
-```text
-500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae
-```
+| Goal | Entry point |
+| --- | --- |
+| Choose a Clash project | [Clash project overview](https://github.com/lisu188/clash-disassembly/blob/main/docs/CLASH_PROJECTS.md) |
+| Use the launcher | [Launcher guide](docs/hd/LAUNCHER.md) |
+| Set up a checkout and run checks | [Development and verification](docs/hd/DEVELOPMENT.md) |
+| Find engineering documentation | [Documentation index](docs/hd/README.md) |
+| Continue implementation or validation | [Current handoff](docs/hd/AGENT_HANDOFF.md) and [operating rules](AGENTS.md) |
 
-Never overwrite that file. Generated candidates belong under
-`C:\ClashTests\...` or as distinctly named local copies under `C:\Clash`.
+Related repositories are [clash-disassembly](https://github.com/lisu188/clash-disassembly)
+for recovered engine source and [clash-save-editor](https://github.com/lisu188/clash-save-editor)
+for save inspection and editing. The separate
+[clash-assets repository](https://github.com/lisu188/clash-assets) catalogs
+original reference/runtime artifacts; it is not a build prerequisite for the
+source-only documentation checks here.
 
-## Launcher
+## Current scope
 
-Run the Tkinter launcher:
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\run_launcher.ps1
-```
-
-The launcher verifies the base executable, creates an isolated candidate under
-`C:\ClashTests\launcher\<WxH>`, validates the expected patch bytes, renders the
-wrapper configuration, and launches only after an explicit Play action.
-
-Resolution status is defined in `src/launcher/resolutions.json`. The stable
-800x600 path remains the reference implementation; other presets and custom
-sizes remain experimental until their complete evidence lanes pass.
-
-See `docs/hd/LAUNCHER.md` for setup, controls, packaging boundaries, and local
-build instructions.
-
-## Patcher
-
-The patcher creates a new candidate and refuses unknown input bytes:
-
-```powershell
-python .\patch_clash95_hd.py --help
-```
-
-Patch work must preserve old-byte verification and remain in validation stages
-until hidden and visible evidence supports promotion.
+Classic at 800x600 remains the default and the sole stable launcher entry.
+Other Classic resolutions and all Framed, Complete HD and Modal widgets HD
+resolutions remain experimental. The launcher reads the profile-specific
+statuses from [resolutions.json](src/launcher/resolutions.json); a component
+test or a successful build does not promote a profile.
 
 The protected stable stage is:
 
@@ -57,78 +43,68 @@ The protected stable stage is:
 gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch
 ```
 
-## Repo-only validation
+Complete HD expands the adventure map/HUD while keeping native menu, castle and
+battle layouts. Expanded tactical battle is a separate validation lane. The
+[current handoff](docs/hd/AGENT_HANDOFF.md#evidence-snapshot-and-active-work)
+records the latest integration work, failed ordinary-input observations,
+pending release evidence and availability of historical raw artifacts.
 
-Regenerate the current evidence reports without launching the game:
+<a id="launcher"></a>
+<a id="patcher"></a>
+
+## Inspect or launch
+
+Use Python 3.12, matching CI. Run commands from the repository root; the
+[setup guide](docs/hd/DEVELOPMENT.md) covers interpreter discovery and optional
+image-test dependencies. These commands need no game files and open no windows:
 
 ```powershell
-python tools/current_evidence_refresh.py
+python -B src/launcher/run.py --list-resolutions
+python -B src/launcher/run.py --profile completehd --resolution 1920x1080 --describe-plan
+python -B patch_clash95_hd.py --help
 ```
 
-Print the aggregate failure count:
+With Python/Tkinter and your own game installed, open the launcher:
 
 ```powershell
-python -c "import json;d=json.load(open('captures/current/current-evidence-refresh-current.json',encoding='utf-8'));print(sum(1 for v in d['checks'].values() if not v.get('passed')),'/',len(d['checks']),'failing')"
+python -B src/launcher/run.py
 ```
 
-Run focused fixture tests with:
+The game starts only after an explicit Play action, or the CLI combination
+`--launch --yes-launch`. [The launcher guide](docs/hd/LAUNCHER.md) explains
+preparation, profiles, local build paths and wrapper requirements.
 
-```powershell
-python tools/test_<name>.py
-```
+<a id="known-good-input"></a>
 
-Repo-only checks must not launch Clash95, CDB, wrappers, PowerShell runtime
-harnesses, or visible windows.
-
-## Runtime evidence
-
-Hidden CDB and visible runtime prove different things:
-
-- `scripts/cdb/run_cdb_surface_dump.ps1` provides repeatable hidden route,
-  crash, and software-surface evidence. Its proxy can omit separately composed
-  minimap, tooltip, and HUD layers and can alter palette presentation.
-- Visible runtime provides final colors and composition but requires explicit
-  approval and can produce torn GDI captures on animated screens.
-
-Do not treat proxy-only black regions as live rendering defects without visible
-corroboration. Do not treat a successful route as proof of final visuals or
-manual input behavior.
-
-## Project layout
+The expected original `C:\Clash\clash95.exe` has SHA-256:
 
 ```text
-src/          Launcher and DirectDraw proxy source
-scripts/      Launcher, smoke, CDB, packaging, and runtime harnesses
-probes/       CDB and debugger probes
-patches/      Patch definitions and metadata
-tools/        Evidence generators, guards, parsers, and fixture tests
-docs/hd/      Engineering documentation and operating guides
-reports/      Current analyses, plans, matrices, and release checklists
-captures/     Small current and archived evidence artifacts
-cloud/        Portable fixture material used by repository checks
+500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae
 ```
 
-## Documentation
+Never overwrite it. Generated candidates belong outside the repository under
+`C:\ClashTests\...`; every patch must verify the input SHA and old bytes.
 
-Start with:
+<a id="repo-only-validation"></a>
 
-- [Current agent handoff](docs/hd/AGENT_HANDOFF.md) for Astra setup, interpreter
-  discovery, current evidence, and task entrypoints.
-- `docs/hd/WORKING_WITH_THIS_REPO.md`
-- `AGENTS.md`
-- `docs/hd/LAUNCHER.md`
-- `docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`
-- `docs/hd/HD_MOD_PROGRESS.md`
-- `reports/final_hd_validation_matrix.md`
-- `reports/final_hd_release_checklist.md`
+## Verify changes
 
-## Safety and contribution rules
+For documentation changes, run the focused fixtures:
 
-- Never modify `C:\Clash\clash95.exe` in place.
-- Never commit proprietary binaries, saves, copied assets, or dumps.
-- Verify the input SHA and old bytes before every patch.
-- Keep experimental work out of the stable stage.
-- Never weaken evidence gates to hide a real failure.
-- Never fabricate approval, runtime observations, screenshots, or promotion
-  evidence.
-- Visible/manual runtime requires fresh explicit approval.
+```powershell
+python -B tools/test_handoff_freshness_guard.py
+python -B tools/test_docs_consistency_guard.py
+```
+
+[Development and verification](docs/hd/DEVELOPMENT.md) distinguishes these
+checks from image fixtures, native CPU fixtures, runtime checks and the
+evidence-writing aggregate refresh. Saved `captures/current` reports have their
+own dates and source identities; the directory name is not a freshness claim.
+
+<a id="runtime-evidence"></a>
+<a id="safety-and-contribution-rules"></a>
+
+Hidden software surfaces, final wrapper composition, ordinary/manual input,
+endurance and stable promotion are separate claims. Keep failed or incomplete
+evidence intact. Visible/manual runtime requires fresh explicit approval under
+[AGENTS.md](AGENTS.md); repository checks do not launch the game.
