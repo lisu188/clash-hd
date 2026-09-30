@@ -137,6 +137,13 @@ now passes all 15 tests with no skips, as recorded in the
 The separate matrix builder extends source construction to both profiles and six
 resolutions. Launcher composition, ordinary input, exit/free restoration, all
 interiors and battle still need matching integration and runtime evidence.
+The [September 30 inherited CPU checkpoint](../../reports/ordinary-castle-inherited-cpu-verification-20260930.json)
+also passes all 15 existing methods and all 17 methods for the actual
+`modalwidgets` 1920x1080 matrix candidate, without skips. Typed admission,
+constructors, pixel-buffer isolation, prerequisite rejection, rollback and ABI
+checks run in emulated memory and stop before the castle body. The initial
+16/17 fixture-assumption failure remains recorded separately. This checkpoint
+provides no fresh castle screenshot, actual exit/free lifecycle or interior proof.
 
 The user confirmed removal of the earlier `C:/ClashCaptures` and `C:/ClashTests`
 bundles for cleanup. This availability warning applies to those earlier deleted
