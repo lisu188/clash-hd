@@ -945,3 +945,8 @@
 /reports/ordinary-map-phase-compile-ci-20260930.json -text whitespace=cr-at-eol
 /reports/owned-process-ci-20260930.json -text whitespace=cr-at-eol
 /reports/ordinary-map-native-ci-verification-20260930.json -text whitespace=cr-at-eol
+/tools/test_ordinary_castle_entry_matrix_inherited.py -text whitespace=cr-at-eol
+/reports/ordinary-castle-inherited-cpu-20260930-legacy.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-a.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-b.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-inherited-cpu-verification-20260930.json -text whitespace=cr-at-eol

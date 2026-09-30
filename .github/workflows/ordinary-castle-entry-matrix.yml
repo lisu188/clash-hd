@@ -94,5 +94,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check unicorn==2.1.4
       - name: Verify portable byte and output contracts
         run: python -B tools/test_ordinary_castle_entry_matrix.py PortableTests -v
+      - name: Verify inherited HD fixture layout and exact parent replay
+        run: python -B tools/test_ordinary_castle_entry_matrix_inherited.py PortableTests -v
       - name: Execute exact and matrix admission gates at both load bases
         run: python -B tools/test_ordinary_castle_entry_gate_cpu.py --require-machine-tools -v
