@@ -581,11 +581,15 @@ def source_replacements(*, startup_composed: bool = False) -> tuple[tuple[str, s
     controller = CONTROLLER_SOURCE.replace('@PHASE_ANCHORS@', '\n'.join(checks))
     controller = controller.replace('@PHASE_SOURCE_SHA256@', source_sha256())
     retired_flag = '&startup.retired' if startup_composed else 'nullptr'
+    constructor_anchor = _CONSTRUCTOR + (_STARTUP_CONSTRUCTOR if startup_composed else '')
+    constructors = ('        PauseLeaseController leases(s,argc>=6?argv[5]:nullptr,base);\n'
+                    + (_STARTUP_CONSTRUCTOR if startup_composed else '')
+                    + '        NativePhaseController phases(leases,argc==7?argv[6]:nullptr,argv[2],strcmp(argv[4],"proxy")==0,'
+                    + retired_flag + ');\n')
     return (
         (_SNAPSHOT, controller+_SNAPSHOT),
         (_ARGUMENTS, '    if (argc!=5 && argc!=6 && argc!=7) return 2;\n'),
-        (_CONSTRUCTOR, '        PauseLeaseController leases(s,argc>=6?argv[5]:nullptr,base);\n'
-         '        NativePhaseController phases(leases,argc==7?argv[6]:nullptr,argv[2],strcmp(argv[4],"proxy")==0,'+retired_flag+');\n'),
+        (constructor_anchor, constructors),
         (_READY, _READY+'                phases.publish_ready(entered);\n'),
         (_SERVICE, '            if (phases.enabled) phases.service(); else leases.service();\n'),
         (_EVENT, '                if (phases.on_event(type,proc,thread,ip)) continue;\n'+_EVENT),
@@ -602,6 +606,8 @@ def render_source(base_source: str) -> str:
         raise ValueError('Harness already contains native phase control')
     if base_source.count('struct PauseLeaseController {') != 1:
         raise ValueError('Existing generic pause controller required')
+    if base_source.count(_CONSTRUCTOR) != 1:
+        raise ValueError('Native phase lease constructor anchor missing or duplicated')
     startup_count = base_source.count(_STARTUP_CONSTRUCTOR)
     if startup_count > 1 or ('StartupController' in base_source and
                              (startup_count != 1 or base_source.count('struct StartupController {') != 1)):
