@@ -50,10 +50,56 @@ The result records distinct `prepared_matrix` provenance; it does not invent a
 launcher receipt. The actual matrix SHA and stage populate the same strict
 six-field planner context used by held observations and measured selection and
 movement. This option does not execute the generated castle verifier or add a
-castle transition to the ordinary-map driver. The September 30 adapter fixtures
+castle transition to the ordinary-map driver. The preceding September 30 matrix fixtures
 pass all 60 methods without skips, including 17 artificial-bundle methods.
 Actual matrix bundle compatibility and game runtime acceptance remain separate
 verification requirements.
+
+The distinct `--prepared-small-world-candidate EXE` option selects the
+[bounded complete successor](SMALL_WORLD_INPUT.md). It supports the same two
+complete profiles and six existing resolutions in hidden-controlled mode.
+It rejects combinations with the launcher receipt, prepared matrix candidate
+or presentation override. A dry run selects the case without opening,
+authenticating or executing the supplied bundle:
+
+```powershell
+python -B tools/resolution_playability.py --profile modalwidgets --resolution 1920x1080 --mode hidden-controlled --prepared-small-world-candidate C:/ClashTests/new-small-world/small-world.exe
+```
+
+Before execution, the adapter reconstructs the exact original-bound successor
+once and authenticates all three canonical CLI bundle members, complete typed
+metadata, original and source bytes, and file identities before and after that
+reconstruction. This binds the matrix ancestry, six guards, helper targets,
+castle gate, merged relocations and final CRLF verifier. Sources and bundle
+members must be regular nonlinked files; missing, stale, duplicate-field or
+changed documents fail closed. The final audit rechecks bundle, source and
+original identities without another reconstruction.
+
+The result records `prepared_small_world` provenance, separate from launcher
+and matrix receipts. The existing six-field planner context, held native
+phases, selection transition, occupied source/destination cells, AP charge and
+natural handler-return requirements remain in force. This option authenticates
+the `.cdb` file but does not execute it; `probe_executed=false` is retained.
+The [current driver suite](../../reports/prepared-small-world-driver-verification-20260930.json)
+passes 81 methods without skips: the preceding 60
+remain unchanged and 21 new artificial-bundle methods cover both profiles and
+all six selectors, exact reconstruction, typed tampering, file/source identity
+changes, final audits and bounded-world decoder/planner transitions.
+Artificial-bundle fixtures establish adapter behavior, not actual serialized
+bundle compatibility, successful game input, final rendering, lifecycle,
+manual proof, endurance or promotion. Disk and runtime approval requirements
+below still apply.
+
+The separate [actual bundle checkpoint](../../reports/prepared-small-world-bundle-verification-20260930.json)
+passes CLI-to-adapter compatibility for modalwidgets at 1920x1080. The guarded
+producer wrote all three members outside the repository; the adapter used one
+actual original-bound reconstruction and the final audit used none. The
+38,798,089-byte bundle, original and complete source inventory remained
+unchanged. Candidate SHA is
+`657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe`,
+matching the original-backed CPU checkpoint. No game, compiler, debugger or
+screen capture was invoked by this bundle check. Other actual serialized
+profile/resolution bundles and all runtime acceptance remain unmeasured.
 
 `--mode foreground-diagnostic` retains fixed campaign-menu coordinates only.
 Timed dismissal and fixed ordinary-map selection/movement clicks have been

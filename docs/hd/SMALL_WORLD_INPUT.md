@@ -45,7 +45,15 @@ debugger, bundle write or screen capture accompanied the local checkpoint.
 The [initial CI startup failure](../../reports/complete-small-world-ci-startup-failure-20260930.json)
 is retained separately: GitHub rejected the inline pip command's YAML before
 starting a job. The correction uses a literal block; it changes no producer or
-CPU fixture bytes. Actual debugger-verifier results require the subsequent run.
+CPU fixture bytes. The [subsequent source-bound CI receipt](../../reports/complete-small-world-ci-verification-20260930.json)
+records 24/24 no-skip methods on each platform and six actual x86 verifier
+methods covering all eight cases. The [raw engine report](../../reports/complete-small-world-engine-20260930.json)
+binds exact producer/fixture hashes, real ASLR relocation, positive and negative
+markers, and unchanged paused EIP/context/image receipts. These marked
+artificial images are distinct from the original-backed game candidate.
+The [separate predecessor compile timeout](../../reports/complete-small-world-predecessor-ci-timeout-20260930.json)
+occurred before native verifier tests; the unchanged failed-job retry passed
+with the same 60-second compiler limit. Neither failure record is discarded.
 
 The final CRLF verifier checks final headers, executable file-backed ranges
 and inherited legacy wrapper spans. It masks loaded DWORD values and relocation
@@ -77,10 +85,15 @@ source identities and more than ten percent disk reserve on both relevant
 volumes, including the aggregate bundle size. Local bundle creation and game
 runs remain paused while the checkout volume is below that reserve.
 
-This source successor remains outside the launcher and measured runtime driver.
-The driver's `--prepared-matrix-candidate` accepts the older matrix recipe;
-it must reject this distinct successor. A matching execution adapter and fresh
-runtime evidence are still required. Construction, synthetic execution,
+This source successor remains outside the launcher. The measured driver has a
+distinct `--prepared-small-world-candidate` authentication option described in
+[ORDINARY_MAP_RUNTIME.md](ORDINARY_MAP_RUNTIME.md); its older
+`--prepared-matrix-candidate` must reject this successor. The separate
+[actual bundle checkpoint](../../reports/prepared-small-world-bundle-verification-20260930.json)
+passes modalwidgets1920 CLI-to-adapter compatibility with one adapter
+reconstruction and an unchanged final audit. Other actual serialized cases and
+fresh runtime evidence remain required.
+Construction, synthetic execution,
 loaded-byte verification, ordinary/manual input, final visual composition,
 endurance and promotion are separate claims. No stable stage is changed.
 
