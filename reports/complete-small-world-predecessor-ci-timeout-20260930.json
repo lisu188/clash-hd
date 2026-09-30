@@ -1,0 +1,23 @@
+{
+  "schema": "clash95_complete_small_world_predecessor_ci_timeout_v1",
+  "head_commit": "9d0233c276707670b144ab165f74c45232436cc4",
+  "workflow": ".github/workflows/framed-probe-engine.yml",
+  "run_id": 36702432728,
+  "failed_attempt": 1,
+  "failed_job_id": 109844759245,
+  "failed_attempt_url": "https://github.com/lisu188/clash-hd/actions/runs/36702432728/attempts/1",
+  "failure_phase": "DebuggerEngineTests.setUpClass: compile the synthetic x86 harness",
+  "failure": "subprocess.TimeoutExpired: cl.exe timed out after 60 seconds",
+  "native_verifier_tests_started_in_failed_attempt": false,
+  "retained_failure_log": "C:/Users/andrz/AppData/Local/Temp/clash-hd-small-world-predecessor-engine-failure-20260930-36702432728.log",
+  "retained_failure_log_bytes": 14371,
+  "retained_failure_log_sha256": "b95a1f89018529e230db8e3dd90092ed46b48d91282ffa2261e62800ed32030e",
+  "retry_attempt": 2,
+  "retry_conclusion": "success",
+  "retry_changed_head": false,
+  "retry_changed_fixture_or_guard": false,
+  "compiler_timeout_seconds_unchanged": 60,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false
+}

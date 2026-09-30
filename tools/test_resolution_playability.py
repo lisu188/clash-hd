@@ -697,6 +697,469 @@ class PreparedMatrixTests(unittest.TestCase):
         self.assertIn("report['passed']=hidden_success(report)",source)
 
 
+class PreparedSmallWorldTests(unittest.TestCase):
+    """Tiny artificial bundles with mocked reconstruction; no PE or runtime proof."""
+    PROFILES=('completehd','modalwidgets')
+    RESOLUTIONS=('800x600','1024x768','1280x720','1280x960','1920x1080','802x602')
+    SCOPES=dict(validation_stage_only=True,installation_ready=False,runtime_executed=False,
+        manual_input_proof=False,promotion_ready=False,bounded_small_world_integrated=True,
+        small_world_input_enabled=True,camera_clamp=True,predecessor_probe_reusable=False)
+
+    def fixture(self,profile='modalwidgets',resolution='1920x1080'):
+        from types import SimpleNamespace
+        from src.patcher import complete_small_world_candidate as builder
+        from src.patcher import ordinary_castle_entry_matrix as parent_builder
+        temporary=tempfile.TemporaryDirectory(prefix='clash-prepared-small-world-')
+        self.addCleanup(temporary.cleanup)
+        root=Path(temporary.name).resolve();assets=root/'assets';assets.mkdir()
+        original=assets/'clash95.exe';original.write_bytes(b'Artificial original; never executable')
+        exe=root/'small-world-fixture.exe';probe=exe.with_suffix('.cdb');manifest=exe.with_suffix('.candidate.json')
+        image=b'Artificial complete small-world fixture; never executable '+profile.encode()+resolution.encode()
+        text='.echo ARTIFICIAL_SMALL_WORLD_FIXTURE\r\n.echo no_runtime_proof\r\n'
+        case=tool.small_world_candidate_case(profile,resolution)
+        ancestor=dict(schema='clash95_pe_extension_v1',stage='artificial-framed-validation',
+            code_va=0x576000,code_bytes=2048,entry_vas=dict(input_pixel_guard=0x576010),
+            minimap_viewport=True,framed_validation=True)
+        modal=dict(schema='clash95_framed_modal_candidate_v1',resolution=resolution,base_candidate=ancestor,
+                   authenticated_legacy_continuations=[])
+        army=dict(schema='clash95_framed_army_candidate_v1',resolution=resolution,base_candidate=modal,
+            army_revision='framed_own_army_native_size_v1',code_va=0x577000,code_bytes=4096,
+            army_entry_vas=dict(input_clear=0x577010,input_deny=0x577030),
+            composition_contract=dict(profile='framed_own_army_composition_v1',hooks=7))
+        complete=dict(schema=1,resolution=resolution,predecessor=army)
+        node=complete
+        if profile=='modalwidgets':
+            for kind in ('slots','primary','primary_text','widgets'):
+                node=dict(schema=f'clash95_framed_modal_{kind}_candidate_v1',resolution=resolution,base_candidate=node)
+        native=dict(schema='native_map_present_bounds_v1',stage='artificial-nativepresent-validation',
+            profile=profile,resolution=resolution,base_candidate=node,candidate_sha256='a'*64)
+        admission=dict(try_enter=0x576000,root_wrapper=0x57679E,wrapper_return=0x5767A9,
+            comparison=0x57606B,hook=0x576075,accept=0x57607B,reject=0x576230,state=0x596000)
+        parent=dict(tool.matrix_candidate_case(profile,resolution),candidate_sha256='b'*64,
+            original_sha256=tool.matrix.digest(original),base_candidate_sha256='a'*64,
+            base_stage=native['stage'],base_candidate=native,admission=admission,
+            code_va=0x600000,code_bytes=96,code_sha256='c'*64,
+            edits=[dict(offset=12,old_hex='00',new_hex='01')])
+        names=('render.full_redraw','render.initial_paint','input.ordinary.x','input.ordinary.y',
+               'input.army.x','input.army.y')
+        spans={name:dict(offset=20+index,va=0x401014+index,old_hex='90',new_hex='cc',
+                        rationale='Artificial exact-span authentication fixture') for index,name in enumerate(names)}
+        metadata=dict(case,original_sha256=tool.matrix.digest(original),
+            candidate_sha256=hashlib.sha256(image).hexdigest(),probe_sha256=hashlib.sha256(text.encode()).hexdigest(),
+            base_candidate_sha256=parent['candidate_sha256'],base_stage=parent['stage'],base_candidate=parent,
+            spans=spans,helpers=dict(base_va=0x601000,byte_count=481,sha256='d'*64,
+                entry_vas=dict(bounded_render=0x601000),parent_entry_vas=dict(input_pixel_guard=0x576010),
+                relocations=[0x201001,0x201010,0x201020,0x201030,0x201040]),
+            relocation_contract=dict(old_rvas=[0x1010],added_rvas=[0x201001,0x201010,0x201020,0x201030,0x201040],
+                merged_rvas=[0x1010,0x201001,0x201010,0x201020,0x201030,0x201040],
+                old_directory_rva=0x202000,old_directory_size=12,old_directory_sha256='e'*64,
+                new_directory_rva=0x203000,new_directory_size=32,new_directory_sha256='f'*64),
+            inherited_castle_gate=dict(va=0x600000,bytes=96,sha256='c'*64),
+            edits=[dict(offset=20,old_hex='90',new_hex='cc')],legacy_verifier_spans=[],
+            probe_contract=dict(initial_breakpoint_required=True,required_chunks=2,relocation_aware=True,
+                                acceptance_marker='ARTIFICIAL_NOT_RUNTIME_PROOF'),
+            source_hashes={name:tool.matrix.digest(tool.matrix.ROOT/name)
+                           for name in (builder.SOURCE,parent_builder.SOURCE)},**self.SCOPES)
+        expected=deepcopy(metadata)
+        metadata['source_hashes'][tool.SMALL_WORLD_PRODUCER]=tool.matrix.digest(tool.matrix.ROOT/tool.SMALL_WORLD_PRODUCER)
+        value=SimpleNamespace(root=root,original=original,exe=exe,probe=probe,manifest=manifest,image=image,
+            text=text,metadata=metadata,expected=expected,case=case,profile=profile,resolution=resolution,
+            original_sha256=metadata['original_sha256'],builder=builder,build_calls=[])
+        exe.write_bytes(image);probe.write_bytes(text.encode('ascii'));self.write(value)
+        return value
+
+    @staticmethod
+    def write(value):
+        value.manifest.write_bytes((json.dumps(value.metadata,indent=2)+'\n').encode('utf-8'))
+
+    @staticmethod
+    def verify(value,after_build=None):
+        def rebuild(original,profile,resolution):
+            value.build_calls.append((original,profile,resolution))
+            if after_build:after_build()
+            return value.image,deepcopy(value.expected),value.text
+        with patch.object(value.builder.pe,'ORIGINAL_SHA256',value.original_sha256), \
+                patch.object(value.builder,'build_candidate',side_effect=rebuild):
+            return tool.prepared_small_world_candidate(value.exe,original=value.original,
+                profile=value.profile,resolution=value.resolution)
+
+    @staticmethod
+    def replace_same_bytes(path):
+        replacement=path.with_name(path.name+'.replacement')
+        replacement.write_bytes(path.read_bytes());replacement.replace(path)
+
+    @staticmethod
+    def stat_override(info,**changes):
+        from types import SimpleNamespace
+        fields={name:getattr(info,name) for name in dir(info) if name.startswith('st_')}
+        return SimpleNamespace(**dict(fields,**changes))
+
+    def test_all_profiles_and_dimensions_reconstruct_once_without_writes_or_runtime_claims(self):
+        for profile in self.PROFILES:
+            for resolution in self.RESOLUTIONS:
+                with self.subTest(profile=profile,resolution=resolution):
+                    value=self.fixture(profile,resolution)
+                    before={p.relative_to(value.root):p.read_bytes() for p in value.root.rglob('*') if p.is_file()}
+                    exe,built=self.verify(value);provenance=built['prepared_small_world']
+                    self.assertEqual(exe,value.exe)
+                    self.assertEqual(value.build_calls,[(value.original.read_bytes(),profile,resolution)])
+                    self.assertEqual({key:built[key] for key in value.case},value.case)
+                    self.assertEqual(provenance['schema'],'clash95_prepared_complete_small_world_v1')
+                    self.assertEqual(provenance['source_sha256'],value.metadata['source_hashes'])
+                    self.assertEqual(set(provenance['source_identity']),set(value.metadata['source_hashes']))
+                    self.assertEqual(provenance['artifact_sha256'],{p.name:tool.matrix.digest(p)
+                        for p in (value.exe,value.manifest,value.probe)})
+                    self.assertEqual(set(provenance['artifact_identity']),set(provenance['artifact_sha256']))
+                    self.assertEqual(provenance['original']['path'],str(value.original))
+                    self.assertEqual(provenance['original']['sha256'],value.original_sha256)
+                    self.assertEqual(provenance['candidate_manifest']['path'],str(value.manifest))
+                    self.assertEqual(provenance['probe']['path'],str(value.probe))
+                    for field in ('probe_executed','runtime_executed','manual_input_proof','promotion_ready'):
+                        self.assertIs(provenance[field],False)
+                    self.assertNotIn('launcher_build',built);self.assertNotIn('prepared_matrix',built)
+                    tool.audit_prepared_small_world(exe,built)
+                    self.assertEqual(before,{p.relative_to(value.root):p.read_bytes()
+                        for p in value.root.rglob('*') if p.is_file()})
+
+    def test_distinct_identity_and_nine_exact_boolean_scopes_fail_before_reconstruction(self):
+        mutations=dict(schema='clash95_ordinary_castle_entry_matrix_v1',recipe_revision='ordinary_castle_entry_matrix_v1',
+            stage='artificial-predecessor-validation',profile='completehd',resolution='1024x768',original_sha256='0'*64)
+        mutations.update({key:not value for key,value in self.SCOPES.items()})
+        for key,replacement in mutations.items():
+            value=self.fixture();value.metadata[key]=replacement;self.write(value)
+            with self.subTest(field=key),self.assertRaises(ValueError):self.verify(value)
+            self.assertEqual(value.build_calls,[])
+        for key in self.SCOPES:
+            for substitute in (int(self.SCOPES[key]),None):
+                value=self.fixture();value.metadata[key]=substitute;self.write(value)
+                with self.subTest(field=key,substitute=substitute),self.assertRaisesRegex(ValueError,'evidence scope'):
+                    self.verify(value)
+                self.assertEqual(value.build_calls,[])
+
+    def test_full_typed_parent_helper_gate_relocations_and_all_six_spans_are_compared(self):
+        def mutate(metadata,field):
+            complete=metadata['base_candidate']['base_candidate']['base_candidate']
+            if metadata['profile']=='modalwidgets':
+                for _ in range(4):complete=complete['base_candidate']
+            if field=='parent-admission':metadata['base_candidate']['admission']['state']+=4096
+            elif field=='parent-gate':metadata['base_candidate']['code_sha256']='0'*64
+            elif field=='native-ancestor':metadata['base_candidate']['base_candidate']['stage']='substituted'
+            elif field=='complete-ancestor':complete['schema']=True
+            elif field=='army-owner':complete['predecessor']['composition_contract']['hooks']=6
+            elif field=='framed-ancestor':complete['predecessor']['base_candidate']['base_candidate']['minimap_viewport']=False
+            elif field=='helper-entry':metadata['helpers']['entry_vas']['bounded_render']+=1
+            elif field=='helper-reloc':metadata['helpers']['relocations'][0]+=1
+            elif field=='helper-hash':metadata['helpers']['sha256']='0'*64
+            elif field=='castle-gate':metadata['inherited_castle_gate']['bytes']=95
+            elif field=='merged-highlow':metadata['relocation_contract']['merged_rvas'].pop()
+            elif field=='new-directory':metadata['relocation_contract']['new_directory_sha256']='0'*64
+            elif field=='probe-contract':metadata['probe_contract']['required_chunks']=1
+            elif field=='undeclared-edit':metadata['edits'].append(dict(offset=99,old_hex='00',new_hex='01'))
+            elif field=='extra-metadata':metadata['unbound']='unexpected'
+            else:metadata['spans'][field]['old_hex']='00'
+            if field.startswith(('parent-','native-','complete-','army-','framed-')):
+                # Self-reported parent links cannot replace exact reconstruction.
+                claimed=hashlib.sha256(json.dumps(metadata['base_candidate'],sort_keys=True).encode()).hexdigest()
+                metadata['base_candidate_sha256']=claimed
+                metadata['base_candidate']['candidate_sha256']=claimed
+        fields=('parent-admission','parent-gate','native-ancestor','complete-ancestor','army-owner',
+            'framed-ancestor','helper-entry','helper-reloc','helper-hash','castle-gate','merged-highlow',
+            'new-directory','probe-contract','undeclared-edit','extra-metadata',*self.fixture().metadata['spans'])
+        for field in fields:
+            value=self.fixture();mutate(value.metadata,field);self.write(value)
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'source reconstruction'):self.verify(value)
+            self.assertEqual(len(value.build_calls),1)
+
+    def test_changed_bytes_and_probe_with_fresh_claimed_hashes_cannot_authenticate(self):
+        for field in ('exe','probe','lf-probe'):
+            value=self.fixture();path=value.exe if field=='exe' else value.probe
+            raw=path.read_bytes()+b' altered' if field!='lf-probe' else value.text.replace('\r\n','\n').encode()
+            path.write_bytes(raw)
+            value.metadata['candidate_sha256' if field=='exe' else 'probe_sha256']=hashlib.sha256(raw).hexdigest()
+            self.write(value)
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'source reconstruction'):self.verify(value)
+            self.assertEqual(len(value.build_calls),1)
+
+    def test_three_members_original_missing_empty_and_oversized_are_rejected_before_build(self):
+        original_stat=Path.stat
+        for field in ('exe','manifest','probe','original'):
+            for defect in ('missing','empty','oversized'):
+                value=self.fixture();path=getattr(value,field)
+                if defect=='missing':path.unlink()
+                elif defect=='empty':path.write_bytes(b'')
+                def changed_stat(candidate,*args,**kwargs):
+                    info=original_stat(candidate,*args,**kwargs)
+                    return self.stat_override(info,st_size=tool.MATRIX_BUNDLE_MAX_BYTES+1) if candidate==path else info
+                with self.subTest(field=field,defect=defect),ExitStack() as stack:
+                    if defect=='oversized':stack.enter_context(patch.object(Path,'stat',changed_stat))
+                    with self.assertRaises((ValueError,FileNotFoundError)):self.verify(value)
+                self.assertEqual(value.build_calls,[])
+
+    def test_duplicate_nested_top_level_and_noncanonical_json_are_rejected(self):
+        for defect in ('top-duplicate','nested-duplicate','compact','invalid','not-object'):
+            value=self.fixture();raw=value.manifest.read_text(encoding='utf-8')
+            if defect=='top-duplicate':raw=raw.replace('{','{"schema": '+json.dumps(value.case['schema'])+',',1)
+            elif defect=='nested-duplicate':raw=raw.replace('"hooks": 7','"hooks": 7, "hooks": 7')
+            elif defect=='compact':raw=json.dumps(value.metadata,separators=(',',':'))
+            elif defect=='invalid':raw='{"unterminated"'
+            else:raw='[]'
+            value.manifest.write_bytes(raw.encode())
+            with self.subTest(defect=defect),self.assertRaises(ValueError):self.verify(value)
+            self.assertEqual(len(value.build_calls),1 if defect=='compact' else 0)
+
+    def test_source_inventory_missing_stale_and_unexpected_sources_are_rejected(self):
+        for defect in ('missing-builder','missing-producer','stale-builder','stale-producer','extra-source'):
+            value=self.fixture();sources=value.metadata['source_hashes']
+            target=value.builder.SOURCE if defect.endswith('builder') else tool.SMALL_WORLD_PRODUCER
+            if defect.startswith('missing'):sources.pop(target)
+            elif defect.startswith('stale'):sources[target]='0'*64
+            else:sources['tools/test_resolution_playability.py']=tool.matrix.digest(Path(__file__))
+            self.write(value)
+            with self.subTest(defect=defect),self.assertRaises(ValueError):self.verify(value)
+            self.assertEqual(len(value.build_calls),1 if defect=='extra-source' else 0)
+
+    def test_original_hash_and_repository_or_asset_paths_fail_before_build(self):
+        value=self.fixture();value.original.write_bytes(b'Wrong artificial original')
+        with self.assertRaisesRegex(ValueError,'original executable identity'):self.verify(value)
+        self.assertEqual(value.build_calls,[])
+        for forbidden in (value.original,tool.matrix.ROOT/'never-created-fixture.exe',value.exe.with_suffix('.dll')):
+            with self.subTest(path=forbidden),self.assertRaisesRegex(ValueError,'external'):
+                tool.prepared_small_world_candidate(forbidden,original=value.original,
+                    profile=value.profile,resolution=value.resolution)
+
+    def test_artifact_original_and_source_links_junctions_and_reparse_points_fail_closed(self):
+        value=self.fixture();exe,built=self.verify(value)
+        source=tool.matrix.ROOT/value.builder.SOURCE;producer=tool.matrix.ROOT/tool.SMALL_WORLD_PRODUCER
+        original_symlink=Path.is_symlink;original_stat=Path.stat
+        paths=(value.exe,value.manifest,value.probe,value.original,value.root,source,source.parent,producer)
+        for linked in paths:
+            for kind in ('symlink','junction','reparse'):
+                def linked_stat(candidate,*args,**kwargs):
+                    info=original_stat(candidate,*args,**kwargs)
+                    return self.stat_override(info,st_file_attributes=0x400) if candidate==linked else info
+                with self.subTest(path=linked,kind=kind),ExitStack() as stack:
+                    if kind=='symlink':stack.enter_context(patch.object(Path,'is_symlink',
+                        lambda path:True if path==linked else original_symlink(path)))
+                    elif kind=='junction':stack.enter_context(patch.object(Path,'is_junction',lambda path:path==linked,create=True))
+                    else:stack.enter_context(patch.object(Path,'stat',linked_stat))
+                    with self.assertRaisesRegex(ValueError,'link, junction'):self.verify(value)
+                    with self.assertRaisesRegex(ValueError,'link, junction'):tool.audit_prepared_small_world(exe,built)
+
+    def test_changed_bytes_or_same_bytes_replacement_during_reconstruction_fail(self):
+        for field in ('exe','manifest','probe','original'):
+            for same_bytes in (False,True):
+                value=self.fixture();path=getattr(value,field)
+                def change():
+                    if same_bytes:self.replace_same_bytes(path)
+                    else:path.write_bytes(path.read_bytes()+b'late change')
+                with self.subTest(field=field,same_bytes=same_bytes),self.assertRaisesRegex(ValueError,'changed during authentication'):
+                    self.verify(value,change)
+                self.assertEqual(len(value.build_calls),1)
+
+    def test_snapshot_rejects_replacement_between_identity_and_read(self):
+        value=self.fixture();read_bytes=Path.read_bytes;calls=[]
+        def replaced_read(path):
+            data=read_bytes(path)
+            if path==value.exe and not calls:
+                calls.append(path)
+                replacement=path.with_name(path.name+'.replacement')
+                replacement.write_bytes(data);replacement.replace(path)
+            return data
+        with patch.object(Path,'read_bytes',replaced_read),self.assertRaisesRegex(ValueError,'changed while reading'):
+            self.verify(value)
+        self.assertEqual(calls,[value.exe]);self.assertEqual(value.build_calls,[])
+
+    def test_source_bytes_and_identities_are_rechecked_after_reconstruction(self):
+        for defect in ('source-check','source-identity'):
+            value=self.fixture();verify_sources=tool.matrix.runtime.verify_hd_sources
+            snapshot=tool._prepared_file_snapshot;calls=[]
+            source=tool.matrix.ROOT/value.builder.SOURCE
+            def source_check(metadata,root):
+                calls.append(deepcopy(metadata['source_hashes']));verify_sources(metadata,root)
+                if defect=='source-check' and len(calls)==2:raise ValueError('Source changed after reconstruction')
+            def changed_snapshot(path):
+                data,identity=snapshot(path)
+                if defect=='source-identity' and path==source and len(calls)==2:
+                    identity=dict(identity,inode=identity['inode']+1)
+                return data,identity
+            with self.subTest(defect=defect),patch.object(tool.matrix.runtime,'verify_hd_sources',source_check), \
+                    patch.object(tool,'_prepared_file_snapshot',changed_snapshot),self.assertRaises(ValueError):self.verify(value)
+            self.assertEqual(len(calls),2);self.assertEqual(len(value.build_calls),1)
+
+    def test_reconstructed_identity_scopes_types_and_crlf_are_also_authenticated(self):
+        for field in ('schema','recipe_revision','stage','profile','resolution','original_sha256',
+                      'candidate_sha256','probe_sha256',*self.SCOPES):
+            value=self.fixture();value.expected[field]=not self.SCOPES[field] if field in self.SCOPES else 'wrong'
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'builder identity'):self.verify(value)
+        for defect in ('not-bytes','not-metadata','not-sources','not-text','lf-probe','lone-cr-probe'):
+            value=self.fixture()
+            if defect=='not-bytes':value.image=bytearray(value.image)
+            elif defect=='not-metadata':value.expected=[]
+            elif defect=='not-sources':value.expected['source_hashes']=[]
+            elif defect=='not-text':value.text=b'not text'
+            else:
+                value.text=value.text.replace('\r\n','\n') if defect=='lf-probe' else value.text+'.echo lone CR\r.echo final\r\n'
+                value.expected['probe_sha256']=hashlib.sha256(value.text.encode()).hexdigest()
+            with self.subTest(defect=defect),self.assertRaisesRegex(ValueError,'builder (result|identity)'):self.verify(value)
+
+    def test_final_audit_rejects_changed_bytes_or_identity_of_every_member_and_original(self):
+        for field in ('exe','manifest','probe','original'):
+            for same_bytes in (False,True):
+                value=self.fixture();exe,built=self.verify(value);path=getattr(value,field)
+                if same_bytes:self.replace_same_bytes(path)
+                else:path.write_bytes(path.read_bytes()+b'changed after authentication')
+                with self.subTest(field=field,same_bytes=same_bytes),self.assertRaisesRegex(ValueError,'changed after authentication'):
+                    tool.audit_prepared_small_world(exe,built)
+
+    def test_final_audit_binds_sources_and_retained_original_and_artifact_provenance(self):
+        value=self.fixture();exe,built=self.verify(value)
+        for field in ('source-hash','source-identity','original-hash','original-identity','artifact-identity',
+                      'artifact-members','manifest-path','probe-hash'):
+            changed=deepcopy(built);receipt=changed['prepared_small_world']
+            if field=='source-hash':receipt['source_sha256'][value.builder.SOURCE]='0'*64
+            elif field=='source-identity':receipt['source_identity'][value.builder.SOURCE]['inode']+=1
+            elif field=='original-hash':receipt['original']['sha256']='0'*64
+            elif field=='original-identity':receipt['original']['identity']['inode']+=1
+            elif field=='artifact-identity':receipt['artifact_identity'][exe.name]['inode']+=1
+            elif field=='artifact-members':receipt['artifact_sha256']['unbound.exe']='0'*64
+            elif field=='manifest-path':receipt['candidate_manifest']['path']=str(value.root/'unrelated.json')
+            else:receipt['probe']['sha256']='0'*64
+            with self.subTest(field=field),self.assertRaises(ValueError):tool.audit_prepared_small_world(exe,changed)
+
+    def test_final_audit_rejects_rehashed_manifest_case_hash_source_and_scope_substitutions(self):
+        fields=('schema','recipe_revision','stage','profile','resolution','candidate_sha256','probe_sha256',
+                'source_hashes',*self.SCOPES)
+        for field in fields:
+            value=self.fixture();exe,built=self.verify(value)
+            if field=='source_hashes':value.metadata[field].pop(value.builder.SOURCE)
+            elif field in self.SCOPES:value.metadata[field]=not self.SCOPES[field]
+            else:value.metadata[field]='wrong'
+            self.write(value)
+            # Exercise the retained metadata/provenance binding after the artifact check.
+            data,identity=tool._prepared_file_snapshot(value.manifest)
+            digest=hashlib.sha256(data).hexdigest();receipt=built['prepared_small_world']
+            receipt['artifact_sha256'][value.manifest.name]=digest
+            receipt['artifact_identity'][value.manifest.name]=identity
+            receipt['candidate_manifest']['sha256']=digest
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'retained manifest'):
+                tool.audit_prepared_small_world(exe,built)
+
+    def test_context_remains_six_fields_with_distinct_source_provenance_and_rejects_mixed_origins(self):
+        import ordinary_map_input_plan as planner
+        value=self.fixture();_,built=self.verify(value);context=tool.candidate_context(built)
+        self.assertEqual(set(context),{'schema','sha256','stage','profile','resolution','layout'})
+        self.assertEqual(context,dict(schema=planner.CANDIDATE_SCHEMA,sha256=tool.matrix.digest(value.exe),
+            stage=value.case['stage'],profile=value.profile,resolution=value.resolution,layout=planner.LAYOUT))
+        self.assertEqual(tool.candidate_sources(built),value.metadata['source_hashes'])
+        planner.candidate_contract(context)
+        for field in ('schema','stage','recipe_revision','profile','resolution','candidate_sha256'):
+            changed=deepcopy(built);changed[field]='wrong'
+            with self.subTest(field=field),self.assertRaises(ValueError):tool.candidate_context(changed)
+        for field in ('schema','candidate_schema','stage','candidate_sha256','probe_executed','runtime_executed',
+                      'manual_input_proof','promotion_ready'):
+            changed=deepcopy(built);changed['prepared_small_world'][field]=True if field.endswith(('executed','proof','ready')) else 'wrong'
+            with self.subTest(provenance=field),self.assertRaises(ValueError):tool.candidate_context(changed)
+        for other in ('launcher_build','prepared_matrix'):
+            changed=deepcopy(built);changed[other]={}
+            with self.subTest(other=other),self.assertRaisesRegex(ValueError,'Ambiguous'):tool.candidate_context(changed)
+            with self.assertRaisesRegex(ValueError,'Ambiguous'):tool.candidate_sources(changed)
+
+    def test_authenticated_context_decodes_and_plans_exact_selection_and_movement_in_bounded_world(self):
+        import ordinary_map_input_plan as planner
+        from test_ordinary_map_observation import fixture,observe,select,put_stack
+        for profile in self.PROFILES:
+            for resolution in self.RESOLUTIONS:
+                with self.subTest(profile=profile,resolution=resolution):
+                    value=self.fixture(profile,resolution);_,built=self.verify(value);context=tool.candidate_context(built)
+                    memory,_,identity,lease=fixture(world=(7,5),origin=(2,2),scroll=(0,0))
+                    identity['candidate_sha256']=context['sha256'];lease['candidate_sha256']=context['sha256']
+                    width,height=map(int,resolution.split('x'))
+                    memory.pack(0x3000000,'HH',width,height);memory.pack(0x51D4C0,'HH',width,height)
+                    memory.pack(0x523344,'4H',width-246,16,214,214)
+                    case=(memory,context,identity,lease);initial=observe(case)[0]
+                    plan=planner.plan_input(initial['snapshot'],context)
+                    self.assertEqual(initial['receipt']['candidate'],context);self.assertEqual(plan['candidate'],context)
+                    self.assertEqual(plan['selection']['tile'],[2,2]);self.assertEqual(plan['movement']['destination'],[3,2])
+                    self.assertFalse(plan['runtime_executed']);self.assertFalse(plan['reachability_proven'])
+                    self.assertTrue(all(0<=row['x']<7 and 0<=row['y']<5 for row in initial['snapshot']['tiles']))
+                    before_select=observe(case,sequence=2)[0]['snapshot']
+                    self.assertEqual(planner.revalidate_before_click(plan,before_select,'select')['point'],plan['selection']['point'])
+                    select(memory);after_select=observe(case,sequence=3)[0]['snapshot']
+                    self.assertTrue(planner.verify_selection(plan,before_select,after_select)['selection_state_transition'])
+                    before_move=observe(case,sequence=4)[0]['snapshot'];planner.revalidate_before_click(plan,before_move,'move')
+                    put_stack(memory,0x2000000,13,3,2,aps=(19,15))
+                    memory.pack(0x2000000+556374+200*2+2*2,'H',65535)
+                    after_move=observe(case,sequence=5)[0]['snapshot'];movement=planner.verify_movement(plan,before_move,after_move)
+                    self.assertTrue(movement['movement_state_transition']);self.assertEqual(movement['charged_ap'],7)
+                    wrong_charge=deepcopy(after_move);wrong_charge['stacks'][0]['slots'][0]['ap']+=1
+                    with self.assertRaises(planner.PlanError):planner.verify_movement(plan,before_move,wrong_charge)
+                    wrong_owner=deepcopy(initial['snapshot']);wrong_owner['context']['render_hook']=0x4617A0
+                    with self.assertRaises(planner.PlanError):planner.plan_input(wrong_owner,context)
+                    identity['candidate_sha256']='0'*64
+                    with self.assertRaises(planner.PlanError):observe(case,sequence=6)
+
+    def test_all_selectors_match_dry_run_and_hidden_case_without_changing_defaults(self):
+        from types import SimpleNamespace
+        from src.patcher import ordinary_castle_entry_matrix as parent_builder
+        for profile in self.PROFILES:
+            for resolution in self.RESOLUTIONS:
+                expected=dict(schema='clash95_complete_small_world_candidate_v1',recipe_revision='complete_small_world_v1',
+                    profile=profile,resolution=resolution,
+                    stage=parent_builder.stage(profile).removesuffix('-validation')+'-smallworld-validation')
+                args=SimpleNamespace(profile=profile,resolution=resolution,mode='hidden-controlled',
+                    prepared_small_world_candidate=Path('artificial.exe'),prepared_matrix_candidate=None,
+                    prepared_build=None,native_present_bounds=False)
+                self.assertEqual(tool.candidate_case(args),expected)
+                argv=['test','--prepared-small-world-candidate','artificial.exe','--profile',profile,'--resolution',resolution]
+                with self.subTest(profile=profile,resolution=resolution),patch.object(sys,'argv',argv), \
+                        patch.object(tool,'run',side_effect=AssertionError('no runtime')),redirect_stdout(io.StringIO()) as output:
+                    self.assertEqual(tool.main(),0)
+                result=json.loads(output.getvalue());self.assertEqual(result['case'],expected);self.assertIs(result['executed'],False)
+                self.assertEqual(result['actions'],['controlled-slot0-startup','measured-select','measured-one-cell-move'])
+        with patch.object(sys,'argv',['test']),redirect_stdout(io.StringIO()) as output:self.assertEqual(tool.main(),0)
+        self.assertEqual(json.loads(output.getvalue())['case'],tool.matrix.select_case('modalwidgets','1024x768'))
+
+    def test_opt_in_conflicts_fail_in_both_dry_cli_and_hidden_selector(self):
+        from types import SimpleNamespace
+        args=SimpleNamespace(profile='modalwidgets',resolution='1920x1080',mode='hidden-controlled',
+            prepared_small_world_candidate=Path('artificial.exe'),prepared_matrix_candidate=None,
+            prepared_build=None,native_present_bounds=False)
+        pairs=(('prepared_matrix_candidate',Path('matrix.exe'),['--prepared-matrix-candidate','matrix.exe']),
+            ('prepared_build',Path('receipt.json'),['--prepared-build','receipt.json']),
+            ('native_present_bounds',True,['--native-present-bounds']),
+            ('mode','foreground-diagnostic',['--mode','foreground-diagnostic']),
+            ('profile','classic',['--profile','classic']),('resolution','3840x2160',['--resolution','3840x2160']))
+        argv=['test','--prepared-small-world-candidate','artificial.exe','--resolution','1920x1080']
+        for field,replacement,extra in pairs:
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                tool.candidate_case(SimpleNamespace(**dict(vars(args),**{field:replacement})))
+            with patch.object(sys,'argv',argv+extra),patch.object(tool,'run',side_effect=AssertionError('no runtime')), \
+                    redirect_stderr(io.StringIO()),self.assertRaises(SystemExit) as error:tool.main()
+            self.assertEqual(error.exception.code,2)
+        with patch.object(sys,'argv',argv+['--execute']),patch.object(tool,'run',side_effect=AssertionError('no runtime')), \
+                redirect_stderr(io.StringIO()),self.assertRaises(SystemExit) as error:tool.main()
+        self.assertEqual(error.exception.code,2)
+
+    def test_hidden_wiring_and_receipts_keep_existing_native_acceptance_requirements(self):
+        source=inspect.getsource(tool.run_hidden)
+        for fragment in ('case=candidate_case(args)',
+                         'prepared_small_world_candidate(args.prepared_small_world_candidate',
+                         'candidate=candidate_context(built)','audit_prepared_small_world(exe,built)',
+                         "report['passed']=hidden_success(report)"):
+            self.assertIn(fragment,source)
+        value=self.fixture();_,built=self.verify(value)
+        report=HiddenAcceptanceTests.passing_report();report['candidate']=built
+        self.assertTrue(tool.hidden_success(report))
+        self.assertFalse(report['native_input_passed']);self.assertFalse(report['manual_input_proof']);self.assertFalse(report['promotion_ready'])
+        for field in ('ordinary_controlled_input_passed','startup_retired_before_actions','sources_unchanged','candidate_unchanged'):
+            changed=deepcopy(report);changed[field]=False
+            with self.subTest(field=field):self.assertFalse(tool.hidden_success(changed))
+        for index in (0,1):
+            for field in ('passed','native_dispatch','state_transition'):
+                changed=deepcopy(report);changed['actions'][index][field]=False if field=='passed' else {}
+                with self.subTest(action=index,field=field):self.assertFalse(tool.hidden_success(changed))
+
+
 class MeasuredActionsTests(unittest.TestCase):
     def setUp(self):
         self.new_case()

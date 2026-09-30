@@ -1,0 +1,898 @@
+{
+  "schema": "clash95_prepared_small_world_bundle_verification_v1",
+  "created_utc": "2026-09-30T11:02:49.560923+00:00",
+  "base_commit": "0ace03e4ec6d3b77cb055434559e303193c93f74",
+  "passed": true,
+  "scope": "One actual source-produced bundle and direct adapter authentication; no runtime",
+  "producer_command": [
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-B",
+    "C:\\Users\\andrz\\.codex\\worktrees\\hd-completion-current\\clash-hd\\tools\\build_complete_small_world_candidate.py",
+    "--original",
+    "C:\\Clash\\clash95.exe",
+    "--profile",
+    "modalwidgets",
+    "--resolution",
+    "1920x1080",
+    "--output",
+    "C:\\ClashTests\\prepared-small-world-source-only-20260930-110249-560923\\small-world.exe"
+  ],
+  "output_directory": "C:\\ClashTests\\prepared-small-world-source-only-20260930-110249-560923",
+  "original_before": {
+    "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "identity": {
+      "device": 11970627325453007039,
+      "inode": 16044073672581002,
+      "size": 1232384,
+      "mtime_ns": 1776795886049668900
+    }
+  },
+  "source_before": {
+    "src/patcher/classic_menu_candidate.py": {
+      "sha256": "0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 330451622658323238,
+        "size": 11087,
+        "mtime_ns": 1790447841137042300
+      }
+    },
+    "src/patcher/complete_hd_candidate.py": {
+      "sha256": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415601,
+        "size": 11305,
+        "mtime_ns": 1790230020824085000
+      }
+    },
+    "src/patcher/complete_small_world_candidate.py": {
+      "sha256": "c6b055f98717e91a467e259321e90b9b7df07250c3f448d59d0bc34dc742d66e",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 34058472182235370,
+        "size": 28977,
+        "mtime_ns": 1790762841608667100
+      }
+    },
+    "src/patcher/four_sided_frame.py": {
+      "sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415603,
+        "size": 8207,
+        "mtime_ns": 1790230020824085000
+      }
+    },
+    "src/patcher/framed_army_composition.py": {
+      "sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415604,
+        "size": 9274,
+        "mtime_ns": 1790230020825082900
+      }
+    },
+    "src/patcher/framed_army_draw.py": {
+      "sha256": "6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 275845477176456029,
+        "size": 15152,
+        "mtime_ns": 1790447841137042300
+      }
+    },
+    "src/patcher/framed_army_input.py": {
+      "sha256": "01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 23362423066997606,
+        "size": 12118,
+        "mtime_ns": 1790447841138041100
+      }
+    },
+    "src/patcher/framed_army_viewport.py": {
+      "sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415609,
+        "size": 2540,
+        "mtime_ns": 1790230020826082300
+      }
+    },
+    "src/patcher/framed_bounded_input.py": {
+      "sha256": "8117232bb875b1a0f9fb179b7a77ec7325e633ce283574b7f9b8cc3d37589258",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 170855310863381482,
+        "size": 9245,
+        "mtime_ns": 1790447841141040700
+      }
+    },
+    "src/patcher/framed_bounded_paint.py": {
+      "sha256": "981d946007b0438051dba033dce9e8e442cb7863ee49c547fbaad1e35d66cf1f",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 781093060372083825,
+        "size": 11414,
+        "mtime_ns": 1790447841142040600
+      }
+    },
+    "src/patcher/framed_camera.py": {
+      "sha256": "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 59672695062672575,
+        "size": 11601,
+        "mtime_ns": 1790447841143041300
+      }
+    },
+    "src/patcher/framed_full_paint.py": {
+      "sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415648,
+        "size": 7420,
+        "mtime_ns": 1790230020829082500
+      }
+    },
+    "src/patcher/framed_input.py": {
+      "sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415650,
+        "size": 12840,
+        "mtime_ns": 1790230020829082500
+      }
+    },
+    "src/patcher/framed_minimap.py": {
+      "sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415653,
+        "size": 15732,
+        "mtime_ns": 1790230020830082100
+      }
+    },
+    "src/patcher/framed_modal_canvas.py": {
+      "sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415657,
+        "size": 17210,
+        "mtime_ns": 1790230020830082100
+      }
+    },
+    "src/patcher/framed_modal_primary.py": {
+      "sha256": "89020d158d7764a1a10d7ce082cd807b522637b84c0dbb01767e424b4b7f9f59",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415658,
+        "size": 17874,
+        "mtime_ns": 1790230020831085900
+      }
+    },
+    "src/patcher/framed_modal_primary_text.py": {
+      "sha256": "8c280d5019261c286078cefcd714d3c47ad27f36640c08521a9d9f45e95bb73c",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415660,
+        "size": 8165,
+        "mtime_ns": 1790230020831085900
+      }
+    },
+    "src/patcher/framed_modal_slots.py": {
+      "sha256": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415661,
+        "size": 7320,
+        "mtime_ns": 1790230020831085900
+      }
+    },
+    "src/patcher/framed_modal_widget_bounds.py": {
+      "sha256": "1c248c1009f9db443ab056f57ab5bcf245bb8588598943ee751d0d13d94913cc",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415673,
+        "size": 9116,
+        "mtime_ns": 1790230020832083100
+      }
+    },
+    "src/patcher/framed_presentation.py": {
+      "sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415674,
+        "size": 11629,
+        "mtime_ns": 1790230020832083100
+      }
+    },
+    "src/patcher/framed_recipe.py": {
+      "sha256": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 31806672368317936,
+        "size": 17816,
+        "mtime_ns": 1790447841144043900
+      }
+    },
+    "src/patcher/framed_viewport.py": {
+      "sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 2251799814862617,
+        "size": 9796,
+        "mtime_ns": 1790230020834084900
+      }
+    },
+    "src/patcher/initial_map_paint.py": {
+      "sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 2251799814862623,
+        "size": 10568,
+        "mtime_ns": 1790230020834084900
+      }
+    },
+    "src/patcher/native_present_bounds.py": {
+      "sha256": "dd9e2802c5a705512f741c6f3afe9ddcf217fed4f1c2ed228ffbf680a142061d",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 123567514775991859,
+        "size": 12760,
+        "mtime_ns": 1790447841144043900
+      }
+    },
+    "src/patcher/ordinary_castle_entry_matrix.py": {
+      "sha256": "042e971e73d98c52d01eab2eedec894adf1f8fa830e42c6529e33bc0eeb583ba",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 57139420272274634,
+        "size": 19838,
+        "mtime_ns": 1790448692956950400
+      }
+    },
+    "src/patcher/partial_tile_clip.py": {
+      "sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3096224744997322,
+        "size": 48138,
+        "mtime_ns": 1790230020835083500
+      }
+    },
+    "src/patcher/partial_tile_hooks.py": {
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3096224744997323,
+        "size": 9796,
+        "mtime_ns": 1790230020835083500
+      }
+    },
+    "src/patcher/patch_clash95_hd.py": {
+      "sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 61361544922937110,
+        "size": 138801,
+        "mtime_ns": 1790447841145041300
+      }
+    },
+    "src/patcher/pe_army_extension.py": {
+      "sha256": "d82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 39406496739506061,
+        "size": 17044,
+        "mtime_ns": 1790447841146042200
+      }
+    },
+    "src/patcher/pe_extension.py": {
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 6473924465525760,
+        "size": 35177,
+        "mtime_ns": 1790230020837081800
+      }
+    },
+    "src/patcher/pe_modal_extension.py": {
+      "sha256": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 107523441103485149,
+        "size": 27113,
+        "mtime_ns": 1790447841147041700
+      }
+    },
+    "src/patcher/pe_modal_primary_extension.py": {
+      "sha256": "7583b3ad908259213e084b1aa1ac387b600c399cd7c0c4d0f683b24da7e25e46",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 16888498603820053,
+        "size": 8610,
+        "mtime_ns": 1790230020838082600
+      }
+    },
+    "src/patcher/pe_modal_primary_text_extension.py": {
+      "sha256": "178d6849acf65056d6be6fffca927d4c06f19e36eaca2b399dc844fc95356231",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 4222124651841811,
+        "size": 9189,
+        "mtime_ns": 1790230020838082600
+      }
+    },
+    "src/patcher/pe_modal_slots_extension.py": {
+      "sha256": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 4222124651841851,
+        "size": 8136,
+        "mtime_ns": 1790230020839084800
+      }
+    },
+    "tools/build_complete_small_world_candidate.py": {
+      "sha256": "eb6d8d8a545560dbf46d7965fbf0c633db799b39ad105627ee0e37e4326ec17f",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 1313925191285420584,
+        "size": 5989,
+        "mtime_ns": 1790762841610665500
+      }
+    },
+    "tools/build_framed_army_candidate.py": {
+      "sha256": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 365917469723867758,
+        "size": 10515,
+        "mtime_ns": 1790447841150043000
+      }
+    },
+    "tools/build_framed_candidate.py": {
+      "sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 198439858581027468,
+        "size": 10851,
+        "mtime_ns": 1790447841151041500
+      }
+    },
+    "tools/build_framed_modal_candidate.py": {
+      "sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 40532396646349476,
+        "size": 12778,
+        "mtime_ns": 1790447841151041500
+      }
+    },
+    "tools/build_framed_modal_primary_candidate.py": {
+      "sha256": "38649d57feba9fb12694a80015284cdc6be9164b8f67f3f26fc4b99ae55eb272",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3096224745009260,
+        "size": 9261,
+        "mtime_ns": 1790230020857084800
+      }
+    },
+    "tools/build_framed_modal_primary_text_candidate.py": {
+      "sha256": "c71ed8c370a3a577d1709ddf8a22d97275c64f16bb7c43688fcd7376982bca9a",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 4785074605279014,
+        "size": 10640,
+        "mtime_ns": 1790230020858084000
+      }
+    },
+    "tools/build_framed_modal_slots_candidate.py": {
+      "sha256": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 5066549581989695,
+        "size": 6982,
+        "mtime_ns": 1790230020858084000
+      }
+    },
+    "tools/build_framed_modal_widgets_candidate.py": {
+      "sha256": "2ff2b1923f4220de862e9dac46f5238db3954122c5e451e8e2a15408fd041ba6",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 4503599628568403,
+        "size": 15138,
+        "mtime_ns": 1790230020859084000
+      }
+    },
+    "tools/build_partial_tile_candidate.py": {
+      "sha256": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 71494644084521650,
+        "size": 17378,
+        "mtime_ns": 1790447841152042300
+      }
+    },
+    "tools/partial_tile_trace_probe.py": {
+      "sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 15481123720408588,
+        "size": 10442,
+        "mtime_ns": 1790230020934358000
+      }
+    },
+    "tools/resolution_playability.py": {
+      "sha256": "02d9bc9886d121aceddbd7f2a3f33173719af80a69fef7d9b65ef4373e0d161a",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 5348024558677109,
+        "size": 65911,
+        "mtime_ns": 1790764597488245400
+      }
+    },
+    "tools/test_complete_small_world_candidate.py": {
+      "sha256": "38176591ed99a132b656fa1d9f2b80919631e350023b66023e2afb51fe883768",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 5910974511246312,
+        "size": 57200,
+        "mtime_ns": 1790762841621781200
+      }
+    },
+    "tools/test_complete_small_world_probe_engine.py": {
+      "sha256": "feafb5e63dcdf1693a7757e98f39a5c1c2cddf61ccce157922999d14c95f5f7f",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 3659174697610893,
+        "size": 13043,
+        "mtime_ns": 1790762760213841900
+      }
+    },
+    "tools/test_resolution_playability.py": {
+      "sha256": "4eaee4e54bf179b8796289ccc3c25afb0bdd9878c1d0034eac3f7171e9ef6cd3",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 5066549581966495,
+        "size": 98966,
+        "mtime_ns": 1790765657838971600
+      }
+    }
+  },
+  "disk_before": {
+    "total": 999595962368,
+    "used": 897248653312,
+    "free": 102347309056
+  },
+  "verification_script_sha256": "d845139f5f3a591dfa7254b06a121de5ffee924a1f3f0424efe87e97050f097e",
+  "candidate_bundle_written": true,
+  "debugger_executed": false,
+  "compiler_executed": false,
+  "game_runtime_executed": false,
+  "screen_capture_performed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "producer_returncode": 0,
+  "producer_stdout": "{\"stage\": \"gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation\", \"profile\": \"modalwidgets\", \"resolution\": \"1920x1080\", \"candidate_sha256\": \"657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe\", \"runtime_executed\": false, \"manual_input_proof\": false, \"promotion_ready\": false}\n",
+  "producer_stderr": "",
+  "producer_elapsed_seconds": 152.89,
+  "bundle_bytes": {
+    "small-world.exe": 1879040,
+    "small-world.candidate.json": 5738572,
+    "small-world.cdb": 31180477
+  },
+  "aggregate_bundle_bytes": 38798089,
+  "adapter_elapsed_seconds": 201.078,
+  "adapter_original_build_invocations": 1,
+  "adapter_build_observations": [
+    {
+      "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "profile": "modalwidgets",
+      "resolution": "1920x1080"
+    }
+  ],
+  "candidate_context": {
+    "schema": "clash95_ordinary_map_input_candidate_v1",
+    "sha256": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation",
+    "profile": "modalwidgets",
+    "resolution": "1920x1080",
+    "layout": "framed_native_tiles_v1"
+  },
+  "prepared_small_world": {
+    "schema": "clash95_prepared_complete_small_world_v1",
+    "candidate_schema": "clash95_complete_small_world_candidate_v1",
+    "profile": "modalwidgets",
+    "resolution": "1920x1080",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation",
+    "recipe_revision": "complete_small_world_v1",
+    "candidate_sha256": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "identity": {
+        "device": 11970627325453007039,
+        "inode": 16044073672581002,
+        "size": 1232384,
+        "mtime_ns": 1776795886049668900
+      }
+    },
+    "candidate_manifest": {
+      "path": "C:\\ClashTests\\prepared-small-world-source-only-20260930-110249-560923\\small-world.candidate.json",
+      "sha256": "4e5d7efe4b992acfe09153229e4021e32f6fb9c5a30dc9bc27517147ea46d784"
+    },
+    "probe": {
+      "path": "C:\\ClashTests\\prepared-small-world-source-only-20260930-110249-560923\\small-world.cdb",
+      "sha256": "a873ce3f78a90ec0673ce83b2b8bd05ac44dd5ddbcf9cc15257de90b32d868da"
+    },
+    "artifact_sha256": {
+      "small-world.exe": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe",
+      "small-world.candidate.json": "4e5d7efe4b992acfe09153229e4021e32f6fb9c5a30dc9bc27517147ea46d784",
+      "small-world.cdb": "a873ce3f78a90ec0673ce83b2b8bd05ac44dd5ddbcf9cc15257de90b32d868da"
+    },
+    "artifact_identity": {
+      "small-world.exe": {
+        "device": 11970627325453007039,
+        "inode": 2251799814008175,
+        "size": 1879040,
+        "mtime_ns": 1790766322537767800
+      },
+      "small-world.candidate.json": {
+        "device": 11970627325453007039,
+        "inode": 7318349394799986,
+        "size": 5738572,
+        "mtime_ns": 1790766322538767500
+      },
+      "small-world.cdb": {
+        "device": 11970627325453007039,
+        "inode": 2251799814008185,
+        "size": 31180477,
+        "mtime_ns": 1790766322556768900
+      }
+    },
+    "source_sha256": {
+      "src/patcher/patch_clash95_hd.py": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+      "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "src/patcher/classic_menu_candidate.py": "0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473",
+      "tools/build_framed_candidate.py": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+      "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+      "tools/build_framed_modal_widgets_candidate.py": "2ff2b1923f4220de862e9dac46f5238db3954122c5e451e8e2a15408fd041ba6",
+      "tools/build_framed_modal_candidate.py": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+      "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+      "src/patcher/pe_modal_extension.py": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+      "tools/build_partial_tile_candidate.py": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+      "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "src/patcher/framed_recipe.py": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+      "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+      "src/patcher/pe_army_extension.py": "d82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb",
+      "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+      "src/patcher/framed_army_draw.py": "6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9",
+      "src/patcher/framed_army_input.py": "01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb",
+      "src/patcher/framed_army_composition.py": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+      "tools/build_framed_army_candidate.py": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+      "src/patcher/framed_modal_slots.py": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+      "src/patcher/pe_modal_slots_extension.py": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+      "tools/build_framed_modal_slots_candidate.py": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+      "src/patcher/framed_modal_primary.py": "89020d158d7764a1a10d7ce082cd807b522637b84c0dbb01767e424b4b7f9f59",
+      "src/patcher/pe_modal_primary_extension.py": "7583b3ad908259213e084b1aa1ac387b600c399cd7c0c4d0f683b24da7e25e46",
+      "tools/build_framed_modal_primary_candidate.py": "38649d57feba9fb12694a80015284cdc6be9164b8f67f3f26fc4b99ae55eb272",
+      "src/patcher/framed_modal_primary_text.py": "8c280d5019261c286078cefcd714d3c47ad27f36640c08521a9d9f45e95bb73c",
+      "src/patcher/pe_modal_primary_text_extension.py": "178d6849acf65056d6be6fffca927d4c06f19e36eaca2b399dc844fc95356231",
+      "tools/build_framed_modal_primary_text_candidate.py": "c71ed8c370a3a577d1709ddf8a22d97275c64f16bb7c43688fcd7376982bca9a",
+      "src/patcher/framed_modal_widget_bounds.py": "1c248c1009f9db443ab056f57ab5bcf245bb8588598943ee751d0d13d94913cc",
+      "src/patcher/native_present_bounds.py": "dd9e2802c5a705512f741c6f3afe9ddcf217fed4f1c2ed228ffbf680a142061d",
+      "src/patcher/ordinary_castle_entry_matrix.py": "042e971e73d98c52d01eab2eedec894adf1f8fa830e42c6529e33bc0eeb583ba",
+      "src/patcher/framed_camera.py": "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8",
+      "src/patcher/framed_bounded_paint.py": "981d946007b0438051dba033dce9e8e442cb7863ee49c547fbaad1e35d66cf1f",
+      "src/patcher/framed_bounded_input.py": "8117232bb875b1a0f9fb179b7a77ec7325e633ce283574b7f9b8cc3d37589258",
+      "src/patcher/complete_small_world_candidate.py": "c6b055f98717e91a467e259321e90b9b7df07250c3f448d59d0bc34dc742d66e",
+      "tools/build_complete_small_world_candidate.py": "eb6d8d8a545560dbf46d7965fbf0c633db799b39ad105627ee0e37e4326ec17f"
+    },
+    "source_identity": {
+      "src/patcher/patch_clash95_hd.py": {
+        "device": 11970627325453007039,
+        "inode": 61361544922937110,
+        "size": 138801,
+        "mtime_ns": 1790447841145041300
+      },
+      "src/patcher/pe_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 6473924465525760,
+        "size": 35177,
+        "mtime_ns": 1790230020837081800
+      },
+      "src/patcher/partial_tile_clip.py": {
+        "device": 11970627325453007039,
+        "inode": 3096224744997322,
+        "size": 48138,
+        "mtime_ns": 1790230020835083500
+      },
+      "src/patcher/classic_menu_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 330451622658323238,
+        "size": 11087,
+        "mtime_ns": 1790447841137042300
+      },
+      "tools/build_framed_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 198439858581027468,
+        "size": 10851,
+        "mtime_ns": 1790447841151041500
+      },
+      "src/patcher/complete_hd_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415601,
+        "size": 11305,
+        "mtime_ns": 1790230020824085000
+      },
+      "tools/build_framed_modal_widgets_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 4503599628568403,
+        "size": 15138,
+        "mtime_ns": 1790230020859084000
+      },
+      "tools/build_framed_modal_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 40532396646349476,
+        "size": 12778,
+        "mtime_ns": 1790447841151041500
+      },
+      "src/patcher/framed_modal_canvas.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415657,
+        "size": 17210,
+        "mtime_ns": 1790230020830082100
+      },
+      "src/patcher/pe_modal_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 107523441103485149,
+        "size": 27113,
+        "mtime_ns": 1790447841147041700
+      },
+      "tools/build_partial_tile_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 71494644084521650,
+        "size": 17378,
+        "mtime_ns": 1790447841152042300
+      },
+      "src/patcher/partial_tile_hooks.py": {
+        "device": 11970627325453007039,
+        "inode": 3096224744997323,
+        "size": 9796,
+        "mtime_ns": 1790230020835083500
+      },
+      "src/patcher/initial_map_paint.py": {
+        "device": 11970627325453007039,
+        "inode": 2251799814862623,
+        "size": 10568,
+        "mtime_ns": 1790230020834084900
+      },
+      "src/patcher/framed_viewport.py": {
+        "device": 11970627325453007039,
+        "inode": 2251799814862617,
+        "size": 9796,
+        "mtime_ns": 1790230020834084900
+      },
+      "src/patcher/framed_recipe.py": {
+        "device": 11970627325453007039,
+        "inode": 31806672368317936,
+        "size": 17816,
+        "mtime_ns": 1790447841144043900
+      },
+      "src/patcher/four_sided_frame.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415603,
+        "size": 8207,
+        "mtime_ns": 1790230020824085000
+      },
+      "src/patcher/framed_full_paint.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415648,
+        "size": 7420,
+        "mtime_ns": 1790230020829082500
+      },
+      "src/patcher/framed_presentation.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415674,
+        "size": 11629,
+        "mtime_ns": 1790230020832083100
+      },
+      "src/patcher/framed_input.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415650,
+        "size": 12840,
+        "mtime_ns": 1790230020829082500
+      },
+      "tools/partial_tile_trace_probe.py": {
+        "device": 11970627325453007039,
+        "inode": 15481123720408588,
+        "size": 10442,
+        "mtime_ns": 1790230020934358000
+      },
+      "src/patcher/framed_minimap.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415653,
+        "size": 15732,
+        "mtime_ns": 1790230020830082100
+      },
+      "src/patcher/pe_army_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 39406496739506061,
+        "size": 17044,
+        "mtime_ns": 1790447841146042200
+      },
+      "src/patcher/framed_army_viewport.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415609,
+        "size": 2540,
+        "mtime_ns": 1790230020826082300
+      },
+      "src/patcher/framed_army_draw.py": {
+        "device": 11970627325453007039,
+        "inode": 275845477176456029,
+        "size": 15152,
+        "mtime_ns": 1790447841137042300
+      },
+      "src/patcher/framed_army_input.py": {
+        "device": 11970627325453007039,
+        "inode": 23362423066997606,
+        "size": 12118,
+        "mtime_ns": 1790447841138041100
+      },
+      "src/patcher/framed_army_composition.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415604,
+        "size": 9274,
+        "mtime_ns": 1790230020825082900
+      },
+      "tools/build_framed_army_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 365917469723867758,
+        "size": 10515,
+        "mtime_ns": 1790447841150043000
+      },
+      "src/patcher/framed_modal_slots.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415661,
+        "size": 7320,
+        "mtime_ns": 1790230020831085900
+      },
+      "src/patcher/pe_modal_slots_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 4222124651841851,
+        "size": 8136,
+        "mtime_ns": 1790230020839084800
+      },
+      "tools/build_framed_modal_slots_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 5066549581989695,
+        "size": 6982,
+        "mtime_ns": 1790230020858084000
+      },
+      "src/patcher/framed_modal_primary.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415658,
+        "size": 17874,
+        "mtime_ns": 1790230020831085900
+      },
+      "src/patcher/pe_modal_primary_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 16888498603820053,
+        "size": 8610,
+        "mtime_ns": 1790230020838082600
+      },
+      "tools/build_framed_modal_primary_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 3096224745009260,
+        "size": 9261,
+        "mtime_ns": 1790230020857084800
+      },
+      "src/patcher/framed_modal_primary_text.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415660,
+        "size": 8165,
+        "mtime_ns": 1790230020831085900
+      },
+      "src/patcher/pe_modal_primary_text_extension.py": {
+        "device": 11970627325453007039,
+        "inode": 4222124651841811,
+        "size": 9189,
+        "mtime_ns": 1790230020838082600
+      },
+      "tools/build_framed_modal_primary_text_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 4785074605279014,
+        "size": 10640,
+        "mtime_ns": 1790230020858084000
+      },
+      "src/patcher/framed_modal_widget_bounds.py": {
+        "device": 11970627325453007039,
+        "inode": 3659174698415673,
+        "size": 9116,
+        "mtime_ns": 1790230020832083100
+      },
+      "src/patcher/native_present_bounds.py": {
+        "device": 11970627325453007039,
+        "inode": 123567514775991859,
+        "size": 12760,
+        "mtime_ns": 1790447841144043900
+      },
+      "src/patcher/ordinary_castle_entry_matrix.py": {
+        "device": 11970627325453007039,
+        "inode": 57139420272274634,
+        "size": 19838,
+        "mtime_ns": 1790448692956950400
+      },
+      "src/patcher/framed_camera.py": {
+        "device": 11970627325453007039,
+        "inode": 59672695062672575,
+        "size": 11601,
+        "mtime_ns": 1790447841143041300
+      },
+      "src/patcher/framed_bounded_paint.py": {
+        "device": 11970627325453007039,
+        "inode": 781093060372083825,
+        "size": 11414,
+        "mtime_ns": 1790447841142040600
+      },
+      "src/patcher/framed_bounded_input.py": {
+        "device": 11970627325453007039,
+        "inode": 170855310863381482,
+        "size": 9245,
+        "mtime_ns": 1790447841141040700
+      },
+      "src/patcher/complete_small_world_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 34058472182235370,
+        "size": 28977,
+        "mtime_ns": 1790762841608667100
+      },
+      "tools/build_complete_small_world_candidate.py": {
+        "device": 11970627325453007039,
+        "inode": 1313925191285420584,
+        "size": 5989,
+        "mtime_ns": 1790762841610665500
+      }
+    },
+    "authentication_scope": "Exact source reconstruction and bundle bytes only",
+    "probe_executed": false,
+    "runtime_executed": false,
+    "manual_input_proof": false,
+    "promotion_ready": false
+  },
+  "final_audit_passed": true,
+  "original_after": {
+    "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "identity": {
+      "device": 11970627325453007039,
+      "inode": 16044073672581002,
+      "size": 1232384,
+      "mtime_ns": 1776795886049668900
+    }
+  },
+  "original_unchanged": true,
+  "sources_unchanged": true,
+  "bundle_unchanged": true,
+  "limitations": [
+    "Only modalwidgets 1920x1080 actual serialized bundle compatibility was exercised.",
+    "The adapter reconstructed exact original-bound source bytes once and final-audited them without a rebuild.",
+    "No candidate or generated .cdb probe was executed; no game, rendering, input, lifecycle, endurance or promotion claim."
+  ],
+  "elapsed_seconds": 354.375,
+  "disk_after": {
+    "total": 999595962368,
+    "used": 897882021888,
+    "free": 101713940480
+  }
+}
