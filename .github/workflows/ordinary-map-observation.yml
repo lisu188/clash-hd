@@ -56,6 +56,9 @@ jobs:
           python -B tools/test_ordinary_map_phase_host.py -v
           python -B tools/test_ordinary_map_phase_client.py -v
           python -B tools/test_ordinary_map_input_poll_trace.py -v
+          python -B tools/test_ordinary_map_activation_host.py -v
+          python -B tools/test_ordinary_map_activation_trace.py -v
+          python -B tools/test_resolution_activation_diagnostics.py -v
           python -B tools/test_ordinary_map_native_poll_cpu.py --require-machine-tools -v
           python -B tools/test_owned_hidden_process.py -v
           python -B tools/test_owned_hidden_process_engine.py
@@ -177,7 +180,8 @@ jobs:
                         manual_input_proof=False,
                         source_sha256={name: hashlib.sha256(Path('tools', name).read_bytes()).hexdigest()
                                        for name in ('resolution_playability.py', 'ordinary_map_startup.py',
-                                                    'ordinary_map_pause_host.py', 'ordinary_map_phase_host.py')},
+                                                    'ordinary_map_pause_host.py', 'ordinary_map_phase_host.py',
+                                                    'ordinary_map_activation_host.py', 'ordinary_map_activation_trace.py')},
                         generated_cpp_sha256=hashlib.sha256((out/'real-exe-engine.cpp').read_bytes()).hexdigest(),
                         engine_sha256=hashlib.sha256(engine.read_bytes()).hexdigest())
           (out/'compile-report.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')

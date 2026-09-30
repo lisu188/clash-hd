@@ -204,6 +204,19 @@ input guard and do not turn diagnostic completeness into gameplay acceptance.
 See [the runtime guide](ORDINARY_MAP_RUNTIME.md#actual-small-world-diagnostic--2026-09-30)
 for source references and the acquisition evidence boundary.
 
+The [activation diagnostic preparation](../../reports/ordinary-map-activation-source-20260930.json)
+now passes 154 portable methods without skips: 18 host-source, 38 synthetic-log,
+six driver integration and all 92 prior driver methods. One rotating hardware
+breakpoint is armed before initial GO and records natural activation and native
+mouse/keyboard CALL/return pairs, including the actual pre-retirement flag.
+The owned readiness identity is retained before the startup wait, so early
+failure diagnostics do not depend on successful input actions. The existing
+input guard and acceptance logic are unchanged. See the
+[activation guide](ORDINARY_MAP_RUNTIME.md#native-activation-diagnostic-preparation--2026-09-30)
+for the 16-transaction/20-second bounds, four-breakpoint maximum, unsupported
+joystick rejection and pre-RET/all-event coverage limits. No local compilation,
+fresh game run or new acquisition result is established by this source checkpoint.
+
 Disk usage fell during long authentication/compilation, after the old early
 copy-budget check. The [completed-run cleanup](../../reports/ordinary-small-world-static-cleanup-20260930.json)
 removed only 38 verified static duplicates (845,021,453 bytes) from G's inactive

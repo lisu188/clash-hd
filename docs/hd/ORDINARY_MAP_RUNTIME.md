@@ -285,6 +285,53 @@ activation/acquisition, selection/movement and final composition still require
 matching runtime evidence. CI requires the pinned emulator and forbids skipped
 CPU methods on both platforms; existing native acceptance remains unchanged.
 
+## Native activation diagnostic preparation — 2026-09-30
+
+The [read-only activation observer](../../tools/ordinary_map_activation_host.py)
+is composed into the existing owned hidden driver. It authenticates seven
+original instruction spans against candidate disk and loaded bytes, arms one
+primary-thread hardware execute breakpoint before the first GO, and follows
+native `WM_ACTIVATEAPP` transactions. Together with the existing phase observer,
+the maximum is four hardware breakpoints. It adds no activation requests,
+input writes, startup overrides or native acceptance changes.
+
+Each transaction records the actual startup-retirement flag, retained WndProc
+arguments and caller, backend CALL/return, and each enabled device's COM
+CALL/return. Native execution order is mouse then keyboard. Ready flags govern
+skips; enabled joystick state fails closed because that path is outside this
+observer's scope. Each device HRESULT is sampled before the next call can
+replace EAX. The outer EAX is the final enabled device's value, or the backend
+pointer if both devices are skipped; it is not an aggregate acquisition result.
+
+[The strict offline consumer](../../tools/ordinary_map_activation_trace.py)
+binds PID, primary TID, creation time, image base, session and the activation
+host's separate source digest. The driver derives this identity after loaded
+code/entry matching, retained-target authentication and validated initial phase
+readiness, before waiting for startup retirement. Its final diagnostic collector
+therefore retains early startup failures even without measured action receipts.
+Raw, paired and completed device returns stay separate; genuine partial returns
+remain visible while impossible return addresses cannot supply HRESULT counts.
+
+The existing host deadline bounds the observer. Each pending transaction has
+at most 20 seconds and the finite cap is 16 transactions. Zero-event, missing,
+rejected or unfinished traces remain incomplete. Reaching the WndProc RET
+instruction is pre-return evidence only. A rotating breakpoint cannot establish
+coverage of all activation events or nested callbacks. Diagnostic completeness
+never proves input, selection, movement, final composition, manual proof,
+endurance or promotion, and does not change `hidden_success`.
+
+The [source checkpoint](../../reports/ordinary-map-activation-source-20260930.json)
+passes 154 methods without skips: 18 host-source, 38 synthetic-log, six driver
+integration and all 92 existing driver methods. The integration fixture retains
+bound diagnostics through an artificial startup failure while input acceptance
+stays false. Existing phase-host and driver-fixture bytes are unchanged. The
+original was read only to verify its SHA and all seven spans. No local compiler,
+debugger or game ran; no new device result or screenshot was captured. CI runs
+all three new suites on Windows and Ubuntu and separately compiles the composed
+x86 observer without executing it. These are preparation checks; actual natural
+activation/acquisition still requires a fresh owned run with sufficient disk
+reserve and matching runtime evidence.
+
 ## Actual attempts on 2026-09-26
 
 All six used modalwidgets at 1920x1080, recipe
