@@ -403,6 +403,156 @@ def prepared_candidate(path: Path, case: dict) -> tuple[Path, dict]:
     return exe,built
 
 
+PREPARED_MATRIX_SCHEMA='clash95_prepared_ordinary_castle_entry_matrix_v1'
+MATRIX_BUNDLE_MAX_BYTES=64*1024**2
+
+
+def matrix_candidate_case(profile: str, resolution: str) -> dict:
+    from src.patcher import ordinary_castle_entry_matrix as builder
+    if profile not in builder.PROFILES or resolution not in builder.RESOLUTIONS:
+        raise ValueError('Prepared matrix requires a supported complete profile and six-resolution case')
+    return dict(schema=builder.SCHEMA,profile=profile,resolution=resolution,
+                stage=builder.stage(profile),recipe_revision=builder.REVISION)
+
+
+def candidate_case(args) -> dict:
+    if getattr(args,'prepared_matrix_candidate',None) is not None:
+        if (args.mode!='hidden-controlled' or getattr(args,'prepared_build',None) is not None
+                or getattr(args,'native_present_bounds',False)):
+            raise ValueError('Prepared matrix requires hidden-controlled mode without launcher receipt or presentation override')
+        return matrix_candidate_case(args.profile,args.resolution)
+    return matrix.select_case(args.profile,args.resolution)
+
+
+def _matrix_plain_path(path: Path) -> Path:
+    raw=Path(path).absolute()
+    for item in (raw,*raw.parents):
+        if (item.is_symlink() or getattr(item,'is_junction',lambda:False)()
+                or (item.exists() and getattr(item.stat(),'st_file_attributes',0)&0x400)):
+            raise ValueError('Prepared matrix path follows a link, junction or reparse point')
+    return raw.resolve()
+
+
+def _matrix_bytes(path: Path) -> bytes:
+    path=_matrix_plain_path(path)
+    if not path.is_file() or not 0<path.stat().st_size<=MATRIX_BUNDLE_MAX_BYTES:
+        raise ValueError('Prepared matrix requires a nonempty bounded regular file: '+str(path))
+    data=path.read_bytes()
+    if not 0<len(data)<=MATRIX_BUNDLE_MAX_BYTES:
+        raise ValueError('Prepared matrix file size changed: '+str(path))
+    return data
+
+
+def _matrix_unique_object(pairs):
+    value={}
+    for key,item in pairs:
+        if key in value:raise ValueError('Duplicate prepared matrix JSON field: '+key)
+        value[key]=item
+    return value
+
+
+def _matrix_sources(metadata: dict) -> None:
+    matrix.runtime.verify_hd_sources(metadata,matrix.ROOT)
+    for name in metadata['source_hashes']:
+        _matrix_plain_path(matrix.ROOT/name)
+
+
+def prepared_matrix_candidate(exe: Path, *, original: Path, profile: str,
+                              resolution: str) -> tuple[Path, dict]:
+    """Authenticate one distinct source-built matrix bundle; never write or launch."""
+    from src.patcher import ordinary_castle_entry_matrix as builder
+    case=matrix_candidate_case(profile,resolution)
+    exe=_matrix_plain_path(exe);original=_matrix_plain_path(original)
+    if (exe.suffix.lower()!='.exe' or exe.is_relative_to(matrix.ROOT.resolve())
+            or exe.is_relative_to(original.parent)):
+        raise ValueError('Prepared matrix executable must be external to repository and original assets')
+    paths=(exe,exe.with_suffix('.candidate.json'),exe.with_suffix('.cdb'))
+    before={path:_matrix_bytes(path) for path in paths}
+    original_bytes=_matrix_bytes(original)
+    if hashlib.sha256(original_bytes).hexdigest()!=builder.pe.ORIGINAL_SHA256:
+        raise ValueError('Prepared matrix original executable identity differs')
+    metadata=json.loads(before[paths[1]].decode('utf-8'),object_pairs_hook=_matrix_unique_object)
+    if (type(metadata) is not dict or any(type(metadata.get(k)) is not type(v) or metadata.get(k)!=v
+            for k,v in case.items()) or metadata.get('original_sha256')!=builder.pe.ORIGINAL_SHA256):
+        raise ValueError('Prepared matrix schema, recipe, case or original identity differs')
+    scopes=dict(validation_stage_only=True,runtime_executed=False,manual_input_proof=False,
+                promotion_ready=False,bounded_small_world_integrated=False,predecessor_probe_reusable=False)
+    if any(metadata.get(k) is not v for k,v in scopes.items()):
+        raise ValueError('Prepared matrix source-only evidence scope differs')
+    producer='tools/build_ordinary_castle_entry_matrix_candidate.py'
+    sources=metadata.get('source_hashes')
+    if type(sources) is not dict or not {builder.SOURCE,producer}<=sources.keys():
+        raise ValueError('Prepared matrix source and CLI producer identities required')
+    _matrix_sources(metadata)
+    producer_before=matrix.digest(matrix.ROOT/producer)
+    image,expected,probe=builder.build_candidate(original_bytes,profile,resolution)
+    expected=dict(expected,source_hashes=dict(expected['source_hashes']))
+    expected['source_hashes'][producer]=producer_before
+    if (any(type(expected.get(k)) is not type(v) or expected.get(k)!=v for k,v in case.items())
+            or expected.get('original_sha256')!=builder.pe.ORIGINAL_SHA256
+            or any(expected.get(k) is not v for k,v in scopes.items())
+            or hashlib.sha256(image).hexdigest()!=expected.get('candidate_sha256')
+            or hashlib.sha256(probe.encode()).hexdigest()!=expected.get('probe_sha256')):
+        raise ValueError('Reconstructed matrix builder identity differs')
+    if (before[exe]!=image or before[paths[1]]!=(json.dumps(expected,indent=2)+'\n').encode()
+            or before[paths[2]]!=probe.encode()):
+        raise ValueError('Prepared matrix executable, complete metadata or CRLF probe differs from source reconstruction')
+    _matrix_sources(expected)
+    if (_matrix_bytes(original)!=original_bytes or matrix.digest(matrix.ROOT/producer)!=producer_before
+            or any(_matrix_plain_path(path)!=path or _matrix_bytes(path)!=data for path,data in before.items())):
+        raise ValueError('Prepared matrix original, producer or bundle changed during authentication')
+    provenance=dict(schema=PREPARED_MATRIX_SCHEMA,candidate_schema=case['schema'],
+        **{key:case[key] for key in ('profile','resolution','stage','recipe_revision')},
+        candidate_sha256=expected['candidate_sha256'],original_sha256=builder.pe.ORIGINAL_SHA256,
+        candidate_manifest=dict(path=str(paths[1]),sha256=hashlib.sha256(before[paths[1]]).hexdigest()),
+        probe=dict(path=str(paths[2]),sha256=expected['probe_sha256']),
+        artifact_sha256={path.name:hashlib.sha256(data).hexdigest() for path,data in before.items()},
+        source_sha256=dict(expected['source_hashes']),authentication_scope='Exact source reconstruction and bundle bytes only',
+        probe_executed=False,runtime_executed=False,manual_input_proof=False,promotion_ready=False)
+    return exe,dict(case,candidate_sha256=expected['candidate_sha256'],prepared_matrix=provenance)
+
+
+def candidate_sources(built: dict) -> dict:
+    if 'prepared_matrix' in built:
+        provenance=built['prepared_matrix']
+        if ('launcher_build' in built or type(provenance) is not dict
+                or provenance.get('schema')!=PREPARED_MATRIX_SCHEMA):
+            raise ValueError('Ambiguous prepared matrix provenance')
+        if (provenance.get('candidate_schema')!=built.get('schema')
+                or any(type(provenance.get(k)) is not type(built.get(k)) or provenance.get(k)!=built.get(k)
+                       for k in ('profile','resolution','stage','recipe_revision','candidate_sha256'))):
+            raise ValueError('Prepared matrix provenance and candidate context differ')
+        return provenance['source_sha256']
+    return built['launcher_build']['source_sha256']
+
+
+def candidate_context(built: dict) -> dict:
+    import ordinary_map_input_plan as planner
+    if 'prepared_matrix' in built:
+        case=matrix_candidate_case(built['profile'],built['resolution'])
+        if any(type(built.get(k)) is not type(v) or built.get(k)!=v for k,v in case.items()):
+            raise ValueError('Prepared matrix context identity differs')
+        candidate_sources(built)
+    context=dict(schema=planner.CANDIDATE_SCHEMA,sha256=built['candidate_sha256'],stage=built['stage'],
+                 profile=built['profile'],resolution=built['resolution'],layout=planner.LAYOUT)
+    planner.candidate_contract(context)
+    return context
+
+
+def audit_prepared_matrix(exe: Path, built: dict) -> None:
+    provenance=built['prepared_matrix'];candidate_sources(built)
+    paths=(exe,exe.with_suffix('.candidate.json'),exe.with_suffix('.cdb'))
+    if (provenance['candidate_manifest']['path']!=str(paths[1]) or provenance['probe']['path']!=str(paths[2])
+            or set(provenance['artifact_sha256'])!={path.name for path in paths}
+            or provenance['artifact_sha256'].get(exe.name)!=built['candidate_sha256']
+            or provenance['candidate_manifest']['sha256']!=provenance['artifact_sha256'].get(paths[1].name)
+            or provenance['probe']['sha256']!=provenance['artifact_sha256'].get(paths[2].name)
+            or any(hashlib.sha256(_matrix_bytes(path)).hexdigest()!=provenance['artifact_sha256'][path.name]
+                   for path in paths)):
+        raise ValueError('Prepared matrix bundle changed after authentication')
+    _matrix_sources({'source_hashes':candidate_sources(built)})
+
+
 def native_phase_source(width: int, height: int) -> str:
     import ordinary_map_startup as startup
     import ordinary_map_pause_host as pause
@@ -496,7 +646,7 @@ def run_hidden(args) -> dict:
     from ordinary_map_phase_client import PhaseClient
     from ordinary_map_pause_client import RetainedTarget, prepare_control, checked_directory, unique_object
     from owned_hidden_process import OwnedHiddenProcess
-    case=matrix.select_case(args.profile,args.resolution)
+    case=candidate_case(args)
     root=matrix.ROOT;reference=args.runtime.resolve();out=checked_directory(args.out)
     if os.name!='nt' or args.profile not in ('completehd','modalwidgets'):
         raise ValueError('Hidden native input requires Windows and a complete framed army profile')
@@ -541,7 +691,10 @@ def run_hidden(args) -> dict:
         if (build.get('generated_by')!='clash-hd-surface-dump-proxy' or matrix.digest(proxy)!=build['output_sha256'].lower()
                 or matrix.digest(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp')!=build['source_sha256'].lower()):
             raise ValueError('Proxy build identity differs')
-        if args.prepared_build:
+        if getattr(args,'prepared_matrix_candidate',None) is not None:
+            exe,built=prepared_matrix_candidate(args.prepared_matrix_candidate,original=reference/'clash95.exe',
+                                                profile=args.profile,resolution=args.resolution)
+        elif args.prepared_build:
             exe,built=prepared_candidate(args.prepared_build,case)
             report['prepared_build_receipt_sha256']=matrix.digest(args.prepared_build)
         else:exe,built=matrix.stage_candidate(args.profile,args.resolution,reference,out)
@@ -591,8 +744,7 @@ def run_hidden(args) -> dict:
                 time.sleep(.02)
             report['startup_retired_before_actions']=True
             report['owner']=identity
-            candidate=dict(schema=planner.CANDIDATE_SCHEMA,sha256=built['candidate_sha256'],
-                stage=built['stage'],profile=args.profile,resolution=args.resolution,layout=planner.LAYOUT)
+            candidate=candidate_context(built)
             measured_actions(peer,retained.read_exact,candidate,out,report)
             proc.wait(timeout=130)
     except Exception as error:
@@ -627,7 +779,8 @@ def run_hidden(args) -> dict:
             report['reference_unchanged']=baseline is not None and owned.verify_assets(reference,manifest)==baseline
             if built is not None and target is not None:
                 report['candidate_unchanged']=matrix.digest(target)==built['candidate_sha256']==matrix.digest(exe)
-                matrix.runtime.verify_hd_sources({'source_hashes':built['launcher_build']['source_sha256']},root)
+                matrix.runtime.verify_hd_sources({'source_hashes':candidate_sources(built)},root)
+                if 'prepared_matrix' in built:audit_prepared_matrix(exe,built)
                 report['working_original_unchanged']=matrix.digest(work/'clash95.exe')==matrix.runtime.ORIGINAL_SHA256
             report['sources_unchanged']=report['source_hashes']=={n:matrix.digest(root/n) for n in source_names}
             if not report['sources_unchanged']:raise ValueError('Driver/controller source changed during run')
@@ -648,10 +801,13 @@ def main() -> int:
     parser.add_argument('--resolution',default='1024x768')
     parser.add_argument('--mode',choices=('hidden-controlled','foreground-diagnostic'),default='hidden-controlled')
     parser.add_argument('--prepared-build',type=Path)
+    parser.add_argument('--prepared-matrix-candidate',type=Path)
     for name in ('runtime','manifest','proxy','out'):parser.add_argument('--'+name,type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--approval-text')
     parser.add_argument('--native-present-bounds',action='store_true')
-    args=parser.parse_args();case=matrix.select_case(args.profile,args.resolution)
+    args=parser.parse_args()
+    try:case=candidate_case(args)
+    except ValueError as error:parser.error(str(error))
     if not args.execute:
         print(json.dumps(dict(executed=False,case=case,mode=args.mode,actions=['controlled-slot0-startup','measured-select','measured-one-cell-move'] if args.mode=='hidden-controlled' else ['campaign-diagnostic'])));return 0
     if not args.approval_text or not args.approval_text.strip() or not all((args.runtime,args.manifest,args.proxy,args.out)):

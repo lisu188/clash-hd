@@ -67,6 +67,15 @@ outside the launcher and protected stable stage. The additive
 [matrix successor](ORDINARY_CASTLE_ENTRY_MATRIX.md) provides source construction
 for both profiles at the six existing resolutions, with independent gate and
 actual debugger-verifier fixtures. Runtime and launcher acceptance remain separate.
+The [ordinary-map driver](ORDINARY_MAP_RUNTIME.md) has an explicit
+`--prepared-matrix-candidate EXE` opt-in for hidden-controlled verification of
+that distinct recipe. It authenticates exact candidate, complete producer
+metadata, verifier and source bytes before use, keeps matrix provenance
+separate from launcher receipts, and retains the same measured selection and
+movement contracts. The September 30 focused driver suite passes 60 methods
+without skips, including 17 artificial-bundle methods. A dry run does not
+authenticate a bundle; actual bundle compatibility and game runtime remain
+unmeasured at this source checkpoint. The option adds no castle-transition proof.
 The [measured ordinary-input planner](ORDINARY_MAP_INPUT_PLAN.md) prepares
 selection and a bounded one-cell move from authenticated paused observations.
 Its portable fixtures cover measured transitions. The [paused observation components](ORDINARY_MAP_OBSERVATION.md)
