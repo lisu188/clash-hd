@@ -106,7 +106,72 @@ struct PauseLeaseController {
         absent_or_regular(path("ack.json"),true); absent_or_regular(path("ack.json.tmp"),true);
         creation_filetime=process_creation(s); verify_owner();
     }
-    void ack(const char *status,const std::string &lease,ULONGLONG deadline,bool paused) const {
+    static void replace_deadline(const char *name,ULONGLONG started,ULONGLONG bound,ULONG attempts) {
+        ULONGLONG now=GetTickCount64();
+        if (now>=bound) {
+            printf("REAL_ACK_REPLACE_EXPIRED file=%s started_tick_ms=%llu deadline_tick_ms=%llu now_tick_ms=%llu attempts=%lu\n",
+                name,started,bound,now,attempts); fflush(stdout);
+            throw std::runtime_error("lease acknowledgment atomic replace deadline expired");
+        }
+    }
+    static BY_HANDLE_FILE_INFORMATION verify_ack_bytes(HANDLE file,const char *expected,DWORD size) {
+        BY_HANDLE_FILE_INFORMATION info={}; DWORD got=0;
+        std::vector<unsigned char> bytes(size);
+        if (file==INVALID_HANDLE_VALUE || GetFileType(file)!=FILE_TYPE_DISK ||
+            !GetFileInformationByHandle(file,&info) ||
+            (info.dwFileAttributes&(FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_REPARSE_POINT)) ||
+            info.nFileSizeHigh || info.nFileSizeLow!=size ||
+            !ReadFile(file,bytes.data(),size,&got,nullptr) || got!=size || memcmp(bytes.data(),expected,size))
+            throw std::runtime_error("lease acknowledgment bytes changed or unreadable");
+        return info;
+    }
+    void replace_ack(const char *name,const char *expected,DWORD size,ULONGLONG sequence,ULONGLONG until,ULONGLONG publication_bound=0) const {
+        if ((strcmp(name,"ack.json") && strcmp(name,"phase-ack.json")) || !expected || !size || size>4096)
+            throw std::runtime_error("lease acknowledgment replacement scope rejected");
+        std::string destination=path(name),temporary=destination+".tmp";
+        ULONGLONG started=GetTickCount64(),now=started;
+        if (now>~static_cast<ULONGLONG>(0)-1000)
+            throw std::runtime_error("lease acknowledgment replacement clock overflow");
+        ULONGLONG bound=now+1000;
+        if (until && until<bound) bound=until;
+        if (publication_bound && publication_bound<bound) bound=publication_bound;
+        ULONG attempt=0;
+        for (;;) {
+            verify_owner(); verify_token();
+            absent_or_regular(destination,false); absent_or_regular(temporary,false);
+            replace_deadline(name,started,bound,attempt);
+            // Keep a read handle across rename, allowing deletion but forbidding
+            // writes. Every attempt compares the same already-flushed bytes.
+            LeaseHandle checked(CreateFileA(temporary.c_str(),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_DELETE,nullptr,
+                OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OPEN_REPARSE_POINT,nullptr));
+            auto info=verify_ack_bytes(checked.value,expected,size);
+            replace_deadline(name,started,bound,attempt);
+            if (MoveFileExA(temporary.c_str(),destination.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH)) {
+                verify_owner(); verify_token();
+                absent_or_regular(destination,false);
+                LeaseHandle published(CreateFileA(destination.c_str(),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_DELETE,nullptr,
+                    OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OPEN_REPARSE_POINT,nullptr));
+                auto final_info=verify_ack_bytes(published.value,expected,size);
+                if (info.dwVolumeSerialNumber!=final_info.dwVolumeSerialNumber ||
+                    info.nFileIndexHigh!=final_info.nFileIndexHigh || info.nFileIndexLow!=final_info.nFileIndexLow)
+                    throw std::runtime_error("lease acknowledgment published file identity changed");
+                replace_deadline(name,started,bound,attempt);
+                return;
+            }
+            DWORD error=GetLastError();
+            if (error!=ERROR_ACCESS_DENIED && error!=ERROR_SHARING_VIOLATION)
+                throw std::runtime_error("lease acknowledgment atomic replace failed: "+std::to_string(error));
+            ++attempt;
+            printf("REAL_ACK_REPLACE_RETRY file=%s seq=%llu attempt=%lu winerror=%lu deadline_tick_ms=%llu\n",
+                name,sequence,attempt,error,bound); fflush(stdout);
+            checked.close(); now=GetTickCount64();
+            replace_deadline(name,started,bound,attempt);
+            now=GetTickCount64();
+            if (now>=bound) { replace_deadline(name,started,bound,attempt); }
+            Sleep(static_cast<DWORD>(bound-now<10?bound-now:10));
+        }
+    }
+    void ack(const char *status,const std::string &lease,ULONGLONG deadline,bool paused,ULONGLONG publication_bound=0) const {
         verify_token(); verify_owner(); absent_or_regular(path("ack.json"),false);
         char json[1024];
         int count=sprintf_s(json,
@@ -124,9 +189,7 @@ struct PauseLeaseController {
             written!=static_cast<DWORD>(count) || !FlushFileBuffers(temporary.value))
             throw std::runtime_error("lease acknowledgment write failed");
         temporary.close();
-        if (!MoveFileExA(path("ack.json.tmp").c_str(),path("ack.json").c_str(),
-            MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH))
-            throw std::runtime_error("lease acknowledgment atomic replace failed");
+        replace_ack("ack.json",json,static_cast<DWORD>(count),last_sequence,deadline,publication_bound);
     }
     void publish_ready(bool entered) {
         if (!enabled || ready_published || !entered) return;
@@ -205,7 +268,7 @@ struct PauseLeaseController {
                     throw std::runtime_error("lease requires its matching next resume request");
                 select_owned_primary(s); verify_owner(); check_deadline(deadline);
                 check(s.control->SetExecutionStatus(DEBUG_STATUS_GO),"lease explicit resume");
-                accept(next); ack("resumed",initial.lease,0,false); return;
+                accept(next); ack("resumed",initial.lease,0,false,deadline); return;
             }
             Sleep(10);
         }

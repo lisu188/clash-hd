@@ -617,5 +617,58 @@ class MeasuredActionsTests(unittest.TestCase):
         self.assertFalse(tool.hidden_success(self.report))
         self.assertTrue(self.report['phase_receipts'])
 
+    def test_poll_diagnostics_bind_the_actual_phase_client_receipt(self):
+        from test_ordinary_map_input_poll_trace import epoch_records,log
+        self.run_actions()
+        receipt=self.report['phase_receipts'][0]
+        identity={name:receipt[name] for name in ('pid','creation_filetime','image_base',
+                                                'controller_sha256','session_id')}
+        identity['tid']=receipt['primary_tid']
+        report=tool.mouse_poll_diagnostics(log(epoch_records(identity=identity,hresult=0x8007001E)),
+                                           self.report['phase_receipts'])
+        self.assertTrue(report['complete'],report['errors'])
+        self.assertEqual(report['expected_identity'],identity)
+        self.assertEqual(report['completed_failed_hresult_count'],1)
+        self.assertFalse(report['gameplay_proof'])
+        self.assertFalse(report['manual_input_proof'])
+        self.assertFalse(report['promotion_ready'])
+
+    def test_poll_records_cannot_rebind_phase_process_thread_controller_or_session(self):
+        from test_ordinary_map_input_poll_trace import epoch_records,log
+        self.run_actions()
+        receipt=self.report['phase_receipts'][0]
+        identity={name:receipt[name] for name in ('pid','creation_filetime','image_base',
+                                                'controller_sha256','session_id')}
+        identity['tid']=receipt['primary_tid']
+        for name,value in (('pid',identity['pid']+1),('tid',identity['tid']+1),
+                           ('creation_filetime',identity['creation_filetime']+1),
+                           ('image_base',identity['image_base']+0x10000),
+                           ('controller_sha256','d'*64),('session_id','e'*32)):
+            changed=dict(identity,**{name:value})
+            report=tool.mouse_poll_diagnostics(log(epoch_records(identity=changed)),
+                                               self.report['phase_receipts'])
+            with self.subTest(field=name):
+                self.assertFalse(report['complete'])
+                self.assertTrue(any('identity differs' in error for error in report['errors']))
+        with self.assertRaisesRegex(ValueError,'no authenticated phase identity'):
+            tool.mouse_poll_diagnostics(log(epoch_records(identity=identity)),[])
+
+    def test_missing_poll_records_or_complete_diagnostics_do_not_replace_gameplay_gates(self):
+        from test_ordinary_map_input_poll_trace import epoch_records,log
+        self.run_actions()
+        receipts=self.report['phase_receipts']
+        empty=tool.mouse_poll_diagnostics('REAL_PHASE_HUMAN diagnostic only\n',receipts)
+        self.assertFalse(empty['complete'])
+        self.assertEqual(empty['completed_polls'],0)
+        receipt=receipts[0]
+        identity={name:receipt[name] for name in ('pid','creation_filetime','image_base',
+                                                'controller_sha256','session_id')}
+        identity['tid']=receipt['primary_tid']
+        measured=tool.mouse_poll_diagnostics(log(epoch_records(identity=identity)),receipts)
+        self.assertTrue(measured['complete'])
+        candidate=HiddenAcceptanceTests.passing_report()
+        candidate.update(mouse_poll_trace=measured,ordinary_controlled_input_passed=False)
+        self.assertFalse(tool.hidden_success(candidate))
+
 
 if __name__=='__main__':unittest.main(verbosity=2)
