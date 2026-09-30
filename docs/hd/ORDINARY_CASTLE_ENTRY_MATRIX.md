@@ -81,15 +81,52 @@ under C:/ClashTests. Existing bundle members, repository destinations and
 symlink/junction paths are rejected. Check disk reserve first. No command here
 launches Clash95 or supplies runtime approval.
 
+### Inherited 1920x1080 CPU checkpoint — 2026-09-30
+
+The [source-bound CPU receipt](../../reports/ordinary-castle-inherited-cpu-verification-20260930.json)
+records all 15 existing exact-1024 fixture methods and all 17 new matrix methods
+passing with no skips. The new suite includes ten original-backed methods for
+the actual `modalwidgets` 1920x1080 candidate. It reconstructs the exact parent
+from every declared edit, follows typed ancestry, and executes the inherited
+hook, admission and constructors in Unicorn 2.1.4. Each passing lane builds
+its candidate once in memory. Allocator/free and thread-import calls are explicit ABI models;
+execution stops before the real castle body.
+
+The shared fixture keeps its legacy defaults and all existing assertions. The
+HD model places native pixels after the physical 1920x1080 pixel span, checks
+that native clearing preserves a physical-buffer sentinel, and retains the
+188-byte header and 307,200-byte native pixel allocations. Caller/prerequisite
+rejection, rollback, primary ownership, rebasing, registers and flags pass.
+
+The [initial matrix attempt](../../reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-a.json)
+remains failed at 16/17 because an unsupported fixture assertion assumed a
+different state address. Both real candidates use `0x596000`. The narrow
+correction binds the fixture's state, entry and return addresses to the
+authenticated `Admission`; candidate bytes and all other assertions are
+unchanged. The [corrected attempt](../../reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-b.json)
+passes 17/17. The prior source is retained externally as a reconstruction that
+matches its recorded hash, explicitly distinct from an original source capture.
+
+```powershell
+python -B tools/test_ordinary_castle_entry_matrix_inherited.py PortableTests -v
+python -B tools/test_ordinary_castle_entry_matrix_inherited.py --source-exe C:/Clash/clash95.exe --toolchain C:/Users/andrz/git/clash-hd/.codex-loop/toolchain/unicorn-2.1.4 --require-machine-tools -v
+```
+
+The toolchain argument selects an existing local installation; it does not
+install dependencies. CI runs the seven portable layout/replay checks without
+game assets. CPU admission and rollback do not establish game rendering,
+ordinary castle input, real root exit/destruction, interior coverage or promotion.
+
 ## Remaining acceptance
 
 Construction, gate execution in synthetic memory and debugger command parsing
 are separate evidence classes. They do not prove ordinary input, coherent
 castle/building rendering, normal root return, surface restoration, balanced
 allocation/free, native owner restoration, visible composition or promotion.
-The exact-1024 inherited-entry suite now passes all 15 methods, but a fresh
-runtime must still verify exit/free restoration and every interior. The deleted
-C:/ClashTests and C:/ClashCaptures runs cannot supply current screenshots.
+The exact-1024 and 1920x1080 inherited-entry suites pass their respective
+15 and 17 methods, but a fresh runtime must still verify exit/free restoration
+and every interior. The deleted C:/ClashTests and C:/ClashCaptures runs cannot
+supply current screenshots.
 
 Keep regenerated bundles bounded. Regularly inspect owned inactive intermediates
 for cleanup under the root guide's disk policy, retaining required manifests,

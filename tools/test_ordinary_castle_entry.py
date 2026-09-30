@@ -242,7 +242,25 @@ class Machine:
     ROOT_STACK=STACK+0x8000
     FLAGS_MASK=0xCD5
 
-    def __init__(self,image,**options):
+    @classmethod
+    def pixel_layout(cls,width,height):
+        if not all(type(value) is int and 0<value<=0xFFFF for value in (width,height)):
+            raise ValueError('bounded 16-bit physical dimensions required')
+        physical_end=cls.PHYSICAL_PIXELS+width*height
+        pixels=cls.PIXELS if physical_end<=cls.PIXELS else (physical_end+0xFFF)&~0xFFF
+        heap_size=max(0x200000,((pixels+307200-cls.HEAP)+0xFFF)&~0xFFF)
+        if cls.HEAP+heap_size>cls.API:
+            raise ValueError('physical and native pixel mappings exceed fixture heap')
+        return pixels,heap_size
+
+    def __init__(self,image,*,admission=None,width=1024,height=768,**options):
+        if admission is not None:
+            from src.patcher.ordinary_castle_entry_matrix import Admission
+            if not isinstance(admission,Admission):raise TypeError('typed matrix Admission required')
+        self.state_va=tool.STATE if admission is None else admission.state
+        self.try_enter=tool.TRY_ENTER if admission is None else admission.try_enter
+        self.wrapper_return=tool.WRAPPER_RETURN if admission is None else admission.wrapper_return
+        self.PIXELS,heap_size=self.pixel_layout(width,height)
         from unicorn import Uc,UC_ARCH_X86,UC_MODE_32
         from unicorn import x86_const as r
         self.options=options;self.r=r;self.delta=options.get('delta',0)
@@ -257,7 +275,7 @@ class Machine:
         for field in fields:
             addr=view.image_base+self.delta+field
             put32(self.u,addr,self.word(addr)+self.delta)
-        self.u.mem_map(self.HEAP,0x200000)
+        self.u.mem_map(self.HEAP,heap_size)
         self.u.mem_map(self.API,0x1000)
         self.u.mem_map(self.STACK,0x10000)
         self.allocations=[];self.frees=[];self.result=None;self.unexpected_writes=[]
@@ -268,19 +286,19 @@ class Machine:
                          (0x526994,options.get('lower',0)),(0x526990,options.get('post',0)),
                          (canvas.THREAD_IAT,self.API)):
             put32(self.u,self.address(va),value)
-        put32(self.u,self.PHYSICAL,options.get('map_width',1024)|(768<<16))
+        put32(self.u,self.PHYSICAL,options.get('map_width',width)|(options.get('map_height',height)<<16))
         put32(self.u,self.PHYSICAL+4,self.PHYSICAL_PIXELS)
         put32(self.u,self.PHYSICAL+0xB8,options.get('map_vtable',canvas.MEMORY_VTABLE+self.delta))
         primary=self.address(canvas.PRIMARY)
-        for offset,value in ((0,options.get('primary_width',1024)|(768<<16)),
+        for offset,value in ((0,options.get('primary_width',width)|(options.get('primary_height',height)<<16)),
                              (0xB8,options.get('primary_vtable',canvas.PRIMARY_VTABLE+self.delta)),
                              (0xD4,options.get('depth',8)),(0xBC,0 if options.get('backend_null') else self.BACKEND)):
             put32(self.u,primary+offset,value)
         put32(self.u,self.BACKEND+0xA4,0 if options.get('backend_surface_null') else self.BACKEND+0x200)
         if options.get('render_primary'): put32(self.u,self.address(canvas.RENDER),primary)
         if options.get('render_invalid'): put32(self.u,self.address(canvas.RENDER),self.PHYSICAL+4)
-        put32(self.u,self.address(tool.STATE),options.get('phase',0))
-        put32(self.u,self.address(tool.STATE)+36,options.get('fault',0))
+        put32(self.u,self.address(self.state_va),options.get('phase',0))
+        put32(self.u,self.address(self.state_va)+36,options.get('fault',0))
         put32(self.u,self.ROOT_STACK,self.address(options.get('root_return',tool.NATIVE_RETURN)))
         self.seeds={'EAX':7,'ECX':7,'EDX':2,'EBX':options.get('saved_ebx',0x40AD40)+self.delta,
                     'ESI':options.get('saved_esi',0x4617A0)+self.delta,'EDI':0x12345678,'EBP':17}
@@ -290,7 +308,7 @@ class Machine:
 
     def address(self,va):return va+self.delta
     def word(self,address):return struct.unpack('<I',self.u.mem_read(address,4))[0]
-    def state(self,name):return self.word(self.address(tool.STATE)+canvas.STATE[name])
+    def state(self,name):return self.word(self.address(self.state_va)+canvas.STATE[name])
     def ret(self,value=None):
         if value is not None:self.u.reg_write(self.r.UC_X86_REG_EAX,value)
         sp=self.u.reg_read(self.r.UC_X86_REG_ESP)
@@ -301,7 +319,7 @@ class Machine:
         from unicorn import UC_HOOK_CODE,UC_HOOK_MEM_WRITE
         r=self.r
         def hook(emu,address,size,user):
-            if address==self.address(tool.TRY_ENTER):
+            if address==self.address(self.try_enter):
                 if self.options.get('bad_argument'):emu.reg_write(r.UC_X86_REG_EAX,self.ROOT_STACK+4)
                 if self.options.get('bad_public_return'):
                     put32(emu,emu.reg_read(r.UC_X86_REG_ESP),self.API+0x100)
@@ -315,7 +333,7 @@ class Machine:
                 self.ret(0 if len(self.allocations)==self.options.get('fail_allocation') else value)
             elif address==self.address(canvas.FREE):
                 self.frees.append(emu.reg_read(r.UC_X86_REG_EAX));self.ret()
-            elif address==self.address(tool.WRAPPER_RETURN):
+            elif address==self.address(self.wrapper_return):
                 self.result=emu.reg_read(r.UC_X86_REG_EAX)
             elif address==self.API+0x100:
                 self.result=emu.reg_read(r.UC_X86_REG_EAX);emu.emu_stop()
@@ -323,7 +341,7 @@ class Machine:
                 emu.emu_stop()
         def memory_write(emu,access,address,size,value,user):
             allowed=((self.STACK,self.STACK+0x10000),(self.NATIVE,self.NATIVE+188),
-                     (self.PIXELS,self.PIXELS+307200),(self.address(tool.STATE),self.address(tool.STATE)+128),
+                     (self.PIXELS,self.PIXELS+307200),(self.address(self.state_va),self.address(self.state_va)+128),
                      (self.address(canvas.MAP),self.address(canvas.MAP)+4),
                      (self.address(canvas.RENDER),self.address(canvas.RENDER)+4))
             if not any(start<=address and address+size<=end for start,end in allowed):
