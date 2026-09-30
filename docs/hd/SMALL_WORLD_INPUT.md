@@ -42,6 +42,10 @@ Both profiles and all six geometries have synthetic byte coverage; this
 checkpoint does not construct twelve original-backed candidates or qualify
 their runtime. Drawing dependency returns are modeled. No game, compiler,
 debugger, bundle write or screen capture accompanied the local checkpoint.
+The [initial CI startup failure](../../reports/complete-small-world-ci-startup-failure-20260930.json)
+is retained separately: GitHub rejected the inline pip command's YAML before
+starting a job. The correction uses a literal block; it changes no producer or
+CPU fixture bytes. Actual debugger-verifier results require the subsequent run.
 
 The final CRLF verifier checks final headers, executable file-backed ranges
 and inherited legacy wrapper spans. It masks loaded DWORD values and relocation
