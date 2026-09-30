@@ -85,8 +85,8 @@ release eligibility; see [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md).
    metadata. It creates an isolated candidate outside the repository and never
    overwrites the original.
 3. Copies the user's `ddraw.dll` when available and renders `dxcfg.ini` from
-   [the tracked wrapper template](../../dxcfg_windowed.ini). It never downloads
-   or supplies executable game or wrapper binaries.
+   [the tracked wrapper template](../../dxcfg_windowed.ini). The launcher
+   never ships or downloads DLLs or executable game binaries.
 4. Starts the prepared candidate with the game installation as its working
    directory only on Play or the explicit CLI launch flags.
 
@@ -122,8 +122,9 @@ runtime, ordinary input, continuity or release evidence.
 
 ## Runtime Policy Carve-Out
 
-The launcher is a user-facing tool. Its explicit Play action or
+The launcher permits only user-initiated launches. Its explicit Play action or
 `--launch --yes-launch` combination is the documented launch boundary.
+The launcher is never part of the evidence refresh.
 `tools/launcher_policy_guard.py` checks that policy from source. Creating a
 launcher plan is not runtime authorization, and a normal launch is not an
 evidence capture. Automated runtime and manual/visible validation follow

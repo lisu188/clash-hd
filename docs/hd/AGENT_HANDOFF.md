@@ -56,8 +56,11 @@ preserves three failed September 21 ordinary-input runs. The 1024x768 widget
 candidate entered a corrupted castle overview before the selection click; its
 final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
 on the map but fail controls/input checks. The audit now requires matching paused
-screen-owner records. Fixed click targets and the framed input guard for worlds
-smaller than the viewport still need integration repairs. The separate
+screen-owner records. The explicit foreground diagnostic retains fixed
+campaign-menu coordinates only; timed dismissal and fixed ordinary-map clicks
+were removed, and no ordinary-map acceptance is inferred. The hidden measured
+driver described below uses held native phases. The framed input guard for
+worlds smaller than the viewport still needs integration repairs. The separate
 [ordinary castle-entry successor](ORDINARY_CASTLE_ENTRY.md) authenticates the
 real native caller before admitting its owned canvas at 1024x768; it remains
 outside the launcher and protected stable stage. The additive
@@ -66,19 +69,42 @@ for both profiles at the six existing resolutions, with independent gate and
 actual debugger-verifier fixtures. Runtime and launcher acceptance remain separate.
 The [measured ordinary-input planner](ORDINARY_MAP_INPUT_PLAN.md) prepares
 selection and a bounded one-cell move from authenticated paused observations.
-Its 25 pure fixtures pass. The [paused observation components](ORDINARY_MAP_OBSERVATION.md)
-add a strict decoder (32 portable fixtures), an opt-in owned host/client lease
+Its portable fixtures cover measured transitions. The [paused observation components](ORDINARY_MAP_OBSERVATION.md)
+add a strict decoder with portable fixtures, an opt-in owned host/client lease
 and a session adapter. The [current synthetic x86 report](../../reports/ordinary-map-pause-engine-20260926-c.json)
 passes both pause/resume and expiry cases with matching source hashes. The first
 failed and initial passing attempts remain preserved. These counter-loop tests
-establish no game-input success and produced no screenshots. Click-boundary
-binding and runtime driver integration remain pending. Timed clicks or cursor
-convergence alone do not establish the requested army selection or movement.
+establish no game-input success and produced no screenshots. The subsequent
+[native runtime driver](ORDINARY_MAP_RUNTIME.md) now binds decoder reads and
+plan revalidation to the actual held `0x40B233` caller, with separate native
+predicate/return and state-transition requirements. Its [six actual attempts](../../reports/ordinary-map-driver-20260926.json)
+preserve startup failures, the empty eligible-pair scene at camera `(36,17)`,
+and a pre-write rejection of existing native button input. Holding the first
+human entry for acquisition retains the saved camera `(10,17)`. Run E records
+real `0x4084A0` dispatch, predicate 1, natural `0x40B238` return and selected
+index -1 to 0, but panel word `0x514194` stays -1 with `lower_owner=0`. The
+recorded decoder's universal panel-ownership contract rejects that state; no
+full selection pass or movement request follows. Original `0x40A500` creates
+the panel only for more than one squad, whereas E's stack has one occupied
+slot: the corrected contract now accepts that native branch, but still needs
+a fresh post-action read. E remains failed, not a confirmed HD panel defect.
+Run F rejects existing native button input before writes or dispatch despite a
+valid measured target, so it does not exercise that corrected after-read.
+Its owned cleanup passes; its single 1920x1080 capture passes all six cells and
+four structural bands, with the footer still unverified.
+Run E's 110-second interval and owned cleanup complete. All six action cells pass
+in each E capture; pre-action frame bands pass, while the
+post-action left band retains 275 cursor-overlap mismatches and the footer
+remains unverified. Overall acceptance still fails. Unexpected hidden backend
+input data has a source-supported failed-read hypothesis, but no actual device
+HRESULT was measured. Native dispatch, full selection/movement, manual input
+and promotion remain separate claims.
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
-This review is not a fresh runtime or a replacement for the controlled component
-evidence below; stable and manual-input boundaries remain unchanged.
+The September 24 review remains historical; the new driver attempts do not
+replace the controlled component evidence below. Stable and manual-input
+boundaries remain unchanged.
 
 ### Castle admission and local evidence availability — 2026-09-26
 

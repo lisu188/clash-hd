@@ -1,10 +1,16 @@
 # Ordinary-map paused observations
 
 The observation components provide bounded read transactions for the
-[measured input planner](ORDINARY_MAP_INPUT_PLAN.md). They remain outside the
-game driver. No real-game runtime, army selection, movement, click-to-callback
-success, manual-input proof or stable promotion is established in this
-checkpoint, and no screenshots were generated.
+[measured input planner](ORDINARY_MAP_INPUT_PLAN.md). Their original component
+checkpoint below establishes synthetic pause/decoder behavior, with no game
+runtime or screenshots. The subsequent [integrated native driver](ORDINARY_MAP_RUNTIME.md)
+now uses the decoder under held native-phase leases. Six retained game runs
+include one authenticated native selection dispatch and selected-index change,
+followed by rejection under the recorded decoder's panel-ownership contract.
+The corrected contract follows native single-squad behavior without a lower
+panel; that source change does not reclassify the recorded failed observation
+or establish an HD panel defect. Full selection acceptance, movement,
+manual-input proof and stable promotion remain unproven by that driver.
 
 ## Components and ownership
 
@@ -141,9 +147,28 @@ python -B tools/test_ordinary_map_observation_session.py
 The engine fixture is a separate opt-in Windows lane, not a default repository
 check. Its retained results are not instructions to launch a debugger or game.
 
-The playability driver still needs to adopt these transactions, replace timed
-dismiss/fixed map clicks, validate the actual click boundary, and bind each
-planned selection/movement transition to native input evidence. A completed
-read/resume transaction describes a past paused interval; it neither authorizes
-nor proves later input. Preserve the separate screenshot, frame/action-bar,
-manual DirectInput and promotion requirements in the root agent guide.
+The [playability driver's hidden-controlled mode](ORDINARY_MAP_RUNTIME.md) now
+composes the decoder and measured planner with a separate held native-phase
+protocol. It revalidates each measured point under the same lease before
+resuming the actual caller at `0x40B233`; native query/return receipts and
+observed state transitions are both required. The explicit foreground
+diagnostic retains fixed campaign-menu coordinates only; timed dismissal and
+fixed ordinary-map clicks were removed, and no map acceptance is inferred.
+The [six actual game attempts](../../reports/ordinary-map-driver-20260926.json)
+preserve the earlier startup/planning failures. Run E records real dispatcher
+entry, predicate 1 and natural return, with selected index -1 to 0, then rejects
+the state under its existing universal panel-ownership contract before a full
+selection pass or any movement request. Original-code review confirms that
+this single-squad case normally has no lower panel; the narrow contract
+correction is awaiting a fresh post-action read. The frozen rejection is not
+an HD panel-defect finding. Its 110-second interval and owned cleanup complete.
+Run F contains the correction but fails the strict existing-button guard before
+input writes or dispatch; its cleanup passes, but the corrected post-selection
+read remains unexercised. No device HRESULT was measured in that attempt.
+This supersedes the pending-driver and absent-native-dispatch claims, while full
+selection/movement acceptance remains incomplete.
+
+A completed generic read/resume transaction still describes a past paused
+interval; it neither authorizes nor proves later input. Preserve the separate
+screenshot, frame/action-bar, manual DirectInput and promotion requirements in
+the root agent guide.
