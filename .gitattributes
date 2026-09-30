@@ -950,3 +950,10 @@
 /reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-a.json -text whitespace=cr-at-eol
 /reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-b.json -text whitespace=cr-at-eol
 /reports/ordinary-castle-inherited-cpu-verification-20260930.json -text whitespace=cr-at-eol
+
+/src/patcher/complete_small_world_candidate.py text eol=lf
+/tools/build_complete_small_world_candidate.py text eol=lf
+/tools/test_complete_small_world_candidate.py text eol=lf
+/tools/test_complete_small_world_probe_engine.py text eol=lf
+/.github/workflows/complete-small-world.yml text eol=lf
+/reports/complete-small-world-source-verification-20260930.json text eol=lf

@@ -1,0 +1,342 @@
+{
+  "schema": "clash95_complete_small_world_source_cpu_verification_v1",
+  "created_utc": "2026-09-30T10:14:10.515771+00:00",
+  "base_commit": "b65d813a1edf652530902e60640021861203d046",
+  "passed": true,
+  "tests_run": 32,
+  "expected_tests": 32,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 258.23499999998603,
+  "records": [
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_both_profiles_all_six_geometries_replay_exact_six_spans_and_preserve_old_bytes",
+      "passed": true,
+      "elapsed_seconds": 2.594000000040978
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_final_probe_has_crlf_ordered_chunks_and_distinct_final_identity",
+      "passed": true,
+      "elapsed_seconds": 1.077999999979511
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_inherited_hooks_prefixes_tail_and_highlow_conflicts_fail_closed",
+      "passed": true,
+      "elapsed_seconds": 0.3440000000409782
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_merged_highlow_inventory_and_two_load_bases_wrap_high_bit_dwords",
+      "passed": true,
+      "elapsed_seconds": 0.3279999999795109
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_required_machine_cli_missing_source_and_synthetic_selection_are_explicit",
+      "passed": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_source_drift_and_all_six_old_byte_mismatches_fail_with_updated_outer_hash",
+      "passed": true,
+      "elapsed_seconds": 0.890999999945052
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_source_inventory_paths_and_linked_ancestors_are_rejected",
+      "passed": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_typed_parent_identity_and_all_ancestor_schema_substitution_fail",
+      "passed": true,
+      "elapsed_seconds": 0.20300000009592623
+    },
+    {
+      "test": "test_complete_small_world_candidate.PortableTests.test_unknown_original_unsupported_case_and_mutable_bytes_fail_before_parent",
+      "passed": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_bundle_headroom_after_build_prevents_any_output",
+      "passed": true,
+      "elapsed_seconds": 0.015999999945051968
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_existing_bundle_member_and_original_destination_prevent_builder",
+      "passed": true,
+      "elapsed_seconds": 0.030999999959021807
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_initial_low_disk_prevents_builder_and_mkdir",
+      "passed": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_invalid_path_links_and_unknown_original_prevent_builder_and_write",
+      "passed": true,
+      "elapsed_seconds": 0.015000000013969839
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_original_changed_during_build_is_rejected_before_mkdir_or_write",
+      "passed": true,
+      "elapsed_seconds": 0.01600000006146729
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_preflight_has_no_output_and_source_replacement_is_rejected",
+      "passed": true,
+      "elapsed_seconds": 0.015999999945051968
+    },
+    {
+      "test": "test_complete_small_world_candidate.CLITests.test_reserve_threshold_headroom_and_invalid_payload_fail_closed",
+      "passed": true,
+      "elapsed_seconds": 0.0
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_802_partial_last_pixels_have_real_world_cells_and_reject_outside_world",
+      "passed": true,
+      "elapsed_seconds": 0.39099999994505197
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_actual_dispatches_route_fitting_world_and_clamp_small_world",
+      "passed": true,
+      "elapsed_seconds": 0.0779999999795109
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_bounded_camera_clamp_validates_both_dimensions_before_writing",
+      "passed": true,
+      "elapsed_seconds": 0.015000000013969839
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_bounded_renderer_owned_admission_and_all_failure_restoration",
+      "passed": true,
+      "elapsed_seconds": 0.40700000000651926
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad",
+      "passed": true,
+      "elapsed_seconds": 0.5459999999729916
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_native_click_precedes_null_context_and_unapproved_army_owners_reject",
+      "passed": true,
+      "elapsed_seconds": 0.15700000000651926
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_resolution_derived_bottom_partial_row_stays_inside_real_world",
+      "passed": true,
+      "elapsed_seconds": 0.062000000034458935
+    },
+    {
+      "test": "test_complete_small_world_candidate.SyntheticCPUTests.test_world_cells_frame_backing_minimap_action_bar_and_stale_scroll",
+      "passed": true,
+      "elapsed_seconds": 0.640999999945052
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_actual_dispatches_route_fitting_world_and_clamp_small_world",
+      "passed": true,
+      "elapsed_seconds": 0.2809999999590218
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_actual_source_original_parent_helper_and_scope_identities",
+      "passed": true,
+      "elapsed_seconds": 0.0470000000204891
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_bounded_camera_clamp_validates_both_dimensions_before_writing",
+      "passed": true,
+      "elapsed_seconds": 0.1720000000204891
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_bounded_renderer_owned_admission_and_all_failure_restoration",
+      "passed": true,
+      "elapsed_seconds": 0.8589999999385327
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad",
+      "passed": true,
+      "elapsed_seconds": 2.60999999998603
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_native_click_precedes_null_context_and_unapproved_army_owners_reject",
+      "passed": true,
+      "elapsed_seconds": 0.8280000000959262
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_resolution_derived_bottom_partial_row_stays_inside_real_world",
+      "passed": true,
+      "elapsed_seconds": 0.26599999994505197
+    },
+    {
+      "test": "test_complete_small_world_candidate.OriginalCPUTests.test_world_cells_frame_backing_minimap_action_bar_and_stale_scroll",
+      "passed": true,
+      "elapsed_seconds": 2.64000000001397
+    }
+  ],
+  "raw_output": "test_both_profiles_all_six_geometries_replay_exact_six_spans_and_preserve_old_bytes (test_complete_small_world_candidate.PortableTests.test_both_profiles_all_six_geometries_replay_exact_six_spans_and_preserve_old_bytes) ... ok\ntest_final_probe_has_crlf_ordered_chunks_and_distinct_final_identity (test_complete_small_world_candidate.PortableTests.test_final_probe_has_crlf_ordered_chunks_and_distinct_final_identity) ... ok\ntest_inherited_hooks_prefixes_tail_and_highlow_conflicts_fail_closed (test_complete_small_world_candidate.PortableTests.test_inherited_hooks_prefixes_tail_and_highlow_conflicts_fail_closed) ... ok\ntest_merged_highlow_inventory_and_two_load_bases_wrap_high_bit_dwords (test_complete_small_world_candidate.PortableTests.test_merged_highlow_inventory_and_two_load_bases_wrap_high_bit_dwords) ... ok\ntest_required_machine_cli_missing_source_and_synthetic_selection_are_explicit (test_complete_small_world_candidate.PortableTests.test_required_machine_cli_missing_source_and_synthetic_selection_are_explicit) ... ok\ntest_source_drift_and_all_six_old_byte_mismatches_fail_with_updated_outer_hash (test_complete_small_world_candidate.PortableTests.test_source_drift_and_all_six_old_byte_mismatches_fail_with_updated_outer_hash) ... ok\ntest_source_inventory_paths_and_linked_ancestors_are_rejected (test_complete_small_world_candidate.PortableTests.test_source_inventory_paths_and_linked_ancestors_are_rejected) ... ok\ntest_typed_parent_identity_and_all_ancestor_schema_substitution_fail (test_complete_small_world_candidate.PortableTests.test_typed_parent_identity_and_all_ancestor_schema_substitution_fail) ... ok\ntest_unknown_original_unsupported_case_and_mutable_bytes_fail_before_parent (test_complete_small_world_candidate.PortableTests.test_unknown_original_unsupported_case_and_mutable_bytes_fail_before_parent) ... ok\ntest_bundle_headroom_after_build_prevents_any_output (test_complete_small_world_candidate.CLITests.test_bundle_headroom_after_build_prevents_any_output) ... ok\ntest_existing_bundle_member_and_original_destination_prevent_builder (test_complete_small_world_candidate.CLITests.test_existing_bundle_member_and_original_destination_prevent_builder) ... ok\ntest_initial_low_disk_prevents_builder_and_mkdir (test_complete_small_world_candidate.CLITests.test_initial_low_disk_prevents_builder_and_mkdir) ... ok\ntest_invalid_path_links_and_unknown_original_prevent_builder_and_write (test_complete_small_world_candidate.CLITests.test_invalid_path_links_and_unknown_original_prevent_builder_and_write) ... ok\ntest_original_changed_during_build_is_rejected_before_mkdir_or_write (test_complete_small_world_candidate.CLITests.test_original_changed_during_build_is_rejected_before_mkdir_or_write) ... ok\ntest_preflight_has_no_output_and_source_replacement_is_rejected (test_complete_small_world_candidate.CLITests.test_preflight_has_no_output_and_source_replacement_is_rejected) ... ok\ntest_reserve_threshold_headroom_and_invalid_payload_fail_closed (test_complete_small_world_candidate.CLITests.test_reserve_threshold_headroom_and_invalid_payload_fail_closed) ... ok\ntest_802_partial_last_pixels_have_real_world_cells_and_reject_outside_world (test_complete_small_world_candidate.SyntheticCPUTests.test_802_partial_last_pixels_have_real_world_cells_and_reject_outside_world) ... ok\ntest_actual_dispatches_route_fitting_world_and_clamp_small_world (test_complete_small_world_candidate.SyntheticCPUTests.test_actual_dispatches_route_fitting_world_and_clamp_small_world) ... ok\ntest_bounded_camera_clamp_validates_both_dimensions_before_writing (test_complete_small_world_candidate.SyntheticCPUTests.test_bounded_camera_clamp_validates_both_dimensions_before_writing) ... ok\ntest_bounded_renderer_owned_admission_and_all_failure_restoration (test_complete_small_world_candidate.SyntheticCPUTests.test_bounded_renderer_owned_admission_and_all_failure_restoration) ... ok\ntest_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad (test_complete_small_world_candidate.SyntheticCPUTests.test_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad) ... ok\ntest_native_click_precedes_null_context_and_unapproved_army_owners_reject (test_complete_small_world_candidate.SyntheticCPUTests.test_native_click_precedes_null_context_and_unapproved_army_owners_reject) ... ok\ntest_resolution_derived_bottom_partial_row_stays_inside_real_world (test_complete_small_world_candidate.SyntheticCPUTests.test_resolution_derived_bottom_partial_row_stays_inside_real_world) ... ok\ntest_world_cells_frame_backing_minimap_action_bar_and_stale_scroll (test_complete_small_world_candidate.SyntheticCPUTests.test_world_cells_frame_backing_minimap_action_bar_and_stale_scroll) ... ok\ntest_actual_dispatches_route_fitting_world_and_clamp_small_world (test_complete_small_world_candidate.OriginalCPUTests.test_actual_dispatches_route_fitting_world_and_clamp_small_world) ... ok\ntest_actual_source_original_parent_helper_and_scope_identities (test_complete_small_world_candidate.OriginalCPUTests.test_actual_source_original_parent_helper_and_scope_identities) ... ok\ntest_bounded_camera_clamp_validates_both_dimensions_before_writing (test_complete_small_world_candidate.OriginalCPUTests.test_bounded_camera_clamp_validates_both_dimensions_before_writing) ... ok\ntest_bounded_renderer_owned_admission_and_all_failure_restoration (test_complete_small_world_candidate.OriginalCPUTests.test_bounded_renderer_owned_admission_and_all_failure_restoration) ... ok\ntest_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad (test_complete_small_world_candidate.OriginalCPUTests.test_integrated_ordinary_dormant_single_squad_and_private_owned_multi_squad) ... ok\ntest_native_click_precedes_null_context_and_unapproved_army_owners_reject (test_complete_small_world_candidate.OriginalCPUTests.test_native_click_precedes_null_context_and_unapproved_army_owners_reject) ... ok\ntest_resolution_derived_bottom_partial_row_stays_inside_real_world (test_complete_small_world_candidate.OriginalCPUTests.test_resolution_derived_bottom_partial_row_stays_inside_real_world) ... ok\ntest_world_cells_frame_backing_minimap_action_bar_and_stale_scroll (test_complete_small_world_candidate.OriginalCPUTests.test_world_cells_frame_backing_minimap_action_bar_and_stale_scroll) ... ok\n\n----------------------------------------------------------------------\nRan 32 tests in 258.216s\n\nOK\n",
+  "original_build_invocations": [
+    {
+      "profile": "modalwidgets",
+      "resolution": "1920x1080"
+    }
+  ],
+  "candidate": {
+    "schema": "clash95_complete_small_world_candidate_v1",
+    "recipe_revision": "complete_small_world_v1",
+    "profile": "modalwidgets",
+    "resolution": "1920x1080",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "candidate_sha256": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe",
+    "base_candidate_sha256": "2a3dac1e51ffe2ec12a91e8d1d687171135a31ed3c88b8bcbdb7974e85149e3d",
+    "base_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-validation",
+    "probe_sha256": "a873ce3f78a90ec0673ce83b2b8bd05ac44dd5ddbcf9cc15257de90b32d868da",
+    "bounded_small_world_integrated": true,
+    "validation_stage_only": true,
+    "runtime_executed": false,
+    "manual_input_proof": false,
+    "promotion_ready": false,
+    "helper_va": 6590464,
+    "helper_bytes": 481,
+    "added_highlow_rvas": [
+      2396376,
+      2396397,
+      2396414,
+      2396509,
+      2396620
+    ],
+    "inherited_castle_gate": {
+      "va": 6586368,
+      "bytes": 96,
+      "sha256": "46b93ccac5072ff9148befb7d8449fe3a82d08346f0aa66710b6465afa85c1be"
+    },
+    "semantic_span_sizes": {
+      "render.full_redraw": 124,
+      "render.initial_paint": 124,
+      "input.ordinary.x": 16,
+      "input.ordinary.y": 16,
+      "input.army.x": 16,
+      "input.army.y": 16
+    },
+    "source_hashes": {
+      "src/patcher/patch_clash95_hd.py": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+      "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "src/patcher/classic_menu_candidate.py": "0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473",
+      "tools/build_framed_candidate.py": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+      "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+      "tools/build_framed_modal_widgets_candidate.py": "2ff2b1923f4220de862e9dac46f5238db3954122c5e451e8e2a15408fd041ba6",
+      "tools/build_framed_modal_candidate.py": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+      "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+      "src/patcher/pe_modal_extension.py": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+      "tools/build_partial_tile_candidate.py": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+      "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "src/patcher/framed_recipe.py": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+      "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+      "src/patcher/pe_army_extension.py": "d82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb",
+      "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+      "src/patcher/framed_army_draw.py": "6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9",
+      "src/patcher/framed_army_input.py": "01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb",
+      "src/patcher/framed_army_composition.py": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+      "tools/build_framed_army_candidate.py": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+      "src/patcher/framed_modal_slots.py": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+      "src/patcher/pe_modal_slots_extension.py": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+      "tools/build_framed_modal_slots_candidate.py": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+      "src/patcher/framed_modal_primary.py": "89020d158d7764a1a10d7ce082cd807b522637b84c0dbb01767e424b4b7f9f59",
+      "src/patcher/pe_modal_primary_extension.py": "7583b3ad908259213e084b1aa1ac387b600c399cd7c0c4d0f683b24da7e25e46",
+      "tools/build_framed_modal_primary_candidate.py": "38649d57feba9fb12694a80015284cdc6be9164b8f67f3f26fc4b99ae55eb272",
+      "src/patcher/framed_modal_primary_text.py": "8c280d5019261c286078cefcd714d3c47ad27f36640c08521a9d9f45e95bb73c",
+      "src/patcher/pe_modal_primary_text_extension.py": "178d6849acf65056d6be6fffca927d4c06f19e36eaca2b399dc844fc95356231",
+      "tools/build_framed_modal_primary_text_candidate.py": "c71ed8c370a3a577d1709ddf8a22d97275c64f16bb7c43688fcd7376982bca9a",
+      "src/patcher/framed_modal_widget_bounds.py": "1c248c1009f9db443ab056f57ab5bcf245bb8588598943ee751d0d13d94913cc",
+      "src/patcher/native_present_bounds.py": "dd9e2802c5a705512f741c6f3afe9ddcf217fed4f1c2ed228ffbf680a142061d",
+      "src/patcher/ordinary_castle_entry_matrix.py": "042e971e73d98c52d01eab2eedec894adf1f8fa830e42c6529e33bc0eeb583ba",
+      "src/patcher/framed_camera.py": "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8",
+      "src/patcher/framed_bounded_paint.py": "981d946007b0438051dba033dce9e8e442cb7863ee49c547fbaad1e35d66cf1f",
+      "src/patcher/framed_bounded_input.py": "8117232bb875b1a0f9fb179b7a77ec7325e633ce283574b7f9b8cc3d37589258",
+      "src/patcher/complete_small_world_candidate.py": "c6b055f98717e91a467e259321e90b9b7df07250c3f448d59d0bc34dc742d66e"
+    }
+  },
+  "checkpoint_source_sha256": {
+    "src/patcher/complete_small_world_candidate.py": "c6b055f98717e91a467e259321e90b9b7df07250c3f448d59d0bc34dc742d66e",
+    "tools/build_complete_small_world_candidate.py": "eb6d8d8a545560dbf46d7965fbf0c633db799b39ad105627ee0e37e4326ec17f",
+    "tools/test_complete_small_world_candidate.py": "38176591ed99a132b656fa1d9f2b80919631e350023b66023e2afb51fe883768",
+    "tools/test_complete_small_world_probe_engine.py": "feafb5e63dcdf1693a7757e98f39a5c1c2cddf61ccce157922999d14c95f5f7f",
+    ".github/workflows/complete-small-world.yml": "19b386e7bd8e64097611a293365c9bfd873f88296600f5d47e3ec815eee048a0"
+  },
+  "checkpoint_sources_unchanged": {
+    "src/patcher/complete_small_world_candidate.py": true,
+    "tools/build_complete_small_world_candidate.py": true,
+    "tools/test_complete_small_world_candidate.py": true,
+    "tools/test_complete_small_world_probe_engine.py": true,
+    ".github/workflows/complete-small-world.yml": true
+  },
+  "inherited_sources_unchanged": {
+    "src/patcher/patch_clash95_hd.py": true,
+    "src/patcher/pe_extension.py": true,
+    "src/patcher/partial_tile_clip.py": true,
+    "src/patcher/classic_menu_candidate.py": true,
+    "tools/build_framed_candidate.py": true,
+    "src/patcher/complete_hd_candidate.py": true,
+    "tools/build_framed_modal_widgets_candidate.py": true,
+    "tools/build_framed_modal_candidate.py": true,
+    "src/patcher/framed_modal_canvas.py": true,
+    "src/patcher/pe_modal_extension.py": true,
+    "tools/build_partial_tile_candidate.py": true,
+    "src/patcher/partial_tile_hooks.py": true,
+    "src/patcher/initial_map_paint.py": true,
+    "src/patcher/framed_viewport.py": true,
+    "src/patcher/framed_recipe.py": true,
+    "src/patcher/four_sided_frame.py": true,
+    "src/patcher/framed_full_paint.py": true,
+    "src/patcher/framed_presentation.py": true,
+    "src/patcher/framed_input.py": true,
+    "tools/partial_tile_trace_probe.py": true,
+    "src/patcher/framed_minimap.py": true,
+    "src/patcher/pe_army_extension.py": true,
+    "src/patcher/framed_army_viewport.py": true,
+    "src/patcher/framed_army_draw.py": true,
+    "src/patcher/framed_army_input.py": true,
+    "src/patcher/framed_army_composition.py": true,
+    "tools/build_framed_army_candidate.py": true,
+    "src/patcher/framed_modal_slots.py": true,
+    "src/patcher/pe_modal_slots_extension.py": true,
+    "tools/build_framed_modal_slots_candidate.py": true,
+    "src/patcher/framed_modal_primary.py": true,
+    "src/patcher/pe_modal_primary_extension.py": true,
+    "tools/build_framed_modal_primary_candidate.py": true,
+    "src/patcher/framed_modal_primary_text.py": true,
+    "src/patcher/pe_modal_primary_text_extension.py": true,
+    "tools/build_framed_modal_primary_text_candidate.py": true,
+    "src/patcher/framed_modal_widget_bounds.py": true,
+    "src/patcher/native_present_bounds.py": true,
+    "src/patcher/ordinary_castle_entry_matrix.py": true,
+    "src/patcher/framed_camera.py": true,
+    "src/patcher/framed_bounded_paint.py": true,
+    "src/patcher/framed_bounded_input.py": true,
+    "src/patcher/complete_small_world_candidate.py": true
+  },
+  "original_unchanged": true,
+  "interpreter": "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "unicorn_version": "2.1.4",
+  "verification_script_sha256": "b5b1836f96728ab42c3b77ecff10512278962a5ba0c97109f9cf003d6db31e3a",
+  "disk_before": {
+    "total": 999595962368,
+    "free": 73194258432
+  },
+  "cpu_execution_fixture_memory_only": true,
+  "portable_cli_temporary_files_used": true,
+  "drawing_dependency_returns_modeled": true,
+  "game_runtime_executed": false,
+  "compiler_executed": false,
+  "debugger_executed": false,
+  "candidate_bundle_written": false,
+  "screen_capture_performed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false
+}
