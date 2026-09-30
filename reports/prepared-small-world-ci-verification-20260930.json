@@ -1,0 +1,58 @@
+{
+  "schema": "clash95_prepared_small_world_ci_verification_v1",
+  "source_head_commit": "ca87aeff1f08e2b7c7ecd3a2ad715e37be030e24",
+  "pull_request": 137,
+  "run_id": 36707401122,
+  "failed_attempt": 1,
+  "failed_job_id": 109860805542,
+  "retry_attempt": 2,
+  "retry_job_id": 109864931738,
+  "failed_raw_report": "reports/prepared-small-world-ci-engine-failure-20260930.json",
+  "failed_raw_report_sha256": "d8c30f485a610c33707dc4ce4d0da1ca9f4a7556c0b7ce9d2d46bc7b776442b3",
+  "failed_report_completed": false,
+  "failed_report_passed": false,
+  "failed_retained_cases": 7,
+  "missing_failed_case": "fixed-block",
+  "failure": "The fixed-block subprocess exceeded the unchanged 35-second bound after HARNESS_BEGIN; no verifier completion or cleanup receipt exists for that subcase.",
+  "underlying_failure_cause_established": false,
+  "retained_failure_log": "C:/Users/andrz/AppData/Local/Temp/clash-hd-small-world-verifier-failure-20260930-36707401122.log",
+  "retained_failure_log_sha256": "2fabb2992c3651cfda4dfa0e79eff1508cec06f382435131b285ad38ddb693cf",
+  "retry_raw_report": "reports/prepared-small-world-ci-engine-retry-20260930.json",
+  "retry_raw_report_sha256": "0fe8bbdc006ea0813c87cc6c64bc0dbdb58cbd940b583a0e30d5689e9a6dd550",
+  "retry_passed": true,
+  "native_methods": 6,
+  "native_cases": 8,
+  "native_elapsed_seconds": 75.205,
+  "retry_changed_head": false,
+  "retry_changed_sources_or_guards": false,
+  "native_timeout_seconds_unchanged": 35,
+  "terminal_successful_checks": 16,
+  "intentional_runtime_skips": 1,
+  "driver_jobs": [
+    {
+      "os": "ubuntu-24.04",
+      "methods": 81,
+      "elapsed_seconds": 7.654,
+      "skipped": 0,
+      "job_id": 109860805848
+    },
+    {
+      "os": "windows-2022",
+      "methods": 81,
+      "elapsed_seconds": 16.184,
+      "skipped": 0,
+      "job_id": 109860805755
+    }
+  ],
+  "launcher_source_job": {
+    "job_id": 109860806311,
+    "driver_methods": 81,
+    "driver_elapsed_seconds": 5.625,
+    "driver_skipped": 0
+  },
+  "fixture_only": true,
+  "original_game_read": false,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false
+}

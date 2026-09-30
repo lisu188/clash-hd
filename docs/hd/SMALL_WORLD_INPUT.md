@@ -92,7 +92,12 @@ distinct `--prepared-small-world-candidate` authentication option described in
 [actual bundle checkpoint](../../reports/prepared-small-world-bundle-verification-20260930.json)
 passes modalwidgets1920 CLI-to-adapter compatibility with one adapter
 reconstruction and an unchanged final audit. Other actual serialized cases and
-fresh runtime evidence remain required.
+fresh runtime acceptance remain required. The [actual Run G diagnostic](../../reports/ordinary-small-world-input-20260930-g.json)
+subsequently reached the held human boundary but failed before controlled input
+writes on an unacquired-device packet. Its source-bound poll diagnostic,
+structural bands and six action cells do not establish selection/movement,
+full footer or wrapper composition. See [the runtime guide](ORDINARY_MAP_RUNTIME.md#actual-small-world-diagnostic--2026-09-30)
+for the original acquisition/copy semantics and retained cleanup boundaries.
 Construction, synthetic execution,
 loaded-byte verification, ordinary/manual input, final visual composition,
 endurance and promotion are separate claims. No stable stage is changed.

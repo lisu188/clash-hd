@@ -963,3 +963,9 @@
 /reports/complete-small-world-predecessor-ci-timeout-20260930.json text eol=lf
 /reports/prepared-small-world-driver-verification-20260930.json text eol=lf
 /reports/prepared-small-world-bundle-verification-20260930.json text eol=lf
+/reports/ordinary-small-world-input-20260930-g.json text eol=lf
+/reports/ordinary-small-world-static-cleanup-20260930.json text eol=lf
+/reports/prepared-small-world-ci-engine-failure-20260930.json -text whitespace=cr-at-eol
+/reports/prepared-small-world-ci-engine-retry-20260930.json -text whitespace=cr-at-eol
+/reports/prepared-small-world-ci-verification-20260930.json text eol=lf
+/reports/ordinary-map-runtime-space-guard-20260930.json text eol=lf
