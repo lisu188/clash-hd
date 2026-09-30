@@ -137,7 +137,7 @@ jobs:
       - name: Verify private desktop and descendant job cleanup with a synthetic process
         shell: pwsh
         run: |
-          python -B tools/test_owned_hidden_process_engine.py --execute --scratch "C:/ClashTests/owned-process-${{ github.run_id }}-${{ github.run_attempt }}" --report reports/owned-process-ci.json
+          python -B tools/test_owned_hidden_process_engine.py --execute --scratch "C:/ClashTests/owned-process-${{ github.run_id }}-${{ github.run_attempt }}" --report "$env:GITHUB_WORKSPACE/reports/owned-process-ci.json"
           if ($LASTEXITCODE -ne 0) { throw 'Synthetic private-desktop process fixture failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
