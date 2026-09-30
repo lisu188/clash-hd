@@ -1,0 +1,87 @@
+{
+  "schema": "clash95_native_poll_cpu_fixture_v1",
+  "date": "2026-09-30",
+  "scope": "authenticated_native_poll_bytes_on_artificial_memory",
+  "parent_commit": "5b863ce4e60cae57b175a05f85754cd320f373c0",
+  "command": [
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-B",
+    "tools/test_ordinary_map_native_poll_cpu.py",
+    "--toolchain",
+    "C:\\Users\\andrz\\git\\clash-hd\\.codex-loop\\toolchain\\unicorn-2.1.4",
+    "--require-machine-tools",
+    "-v"
+  ],
+  "started_at": "2026-09-30T12:30:34.751163+00:00",
+  "finished_at": "2026-09-30T12:30:35.000559+00:00",
+  "elapsed_seconds": 0.25,
+  "returncode": 0,
+  "tests_run": 8,
+  "passed": 8,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "source_sha256": {
+    "tools/test_ordinary_map_native_poll_cpu.py": "829e122d08f4eb00b1160541cafea4f8087de309b2a26167347af32cb9d37b0d",
+    "tools/ordinary_map_phase_host.py": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c"
+  },
+  "sources_unchanged": true,
+  "log": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-native-poll-cpu-20260930.log",
+    "bytes": 1286,
+    "sha256": "c27083a176855341e5bb6bd7e1c17059507fee0aa8ad990fa41f2400bc259620"
+  },
+  "emulator": {
+    "name": "Unicorn",
+    "version": "2.1.4",
+    "module": "C:\\Users\\andrz\\git\\clash-hd\\.codex-loop\\toolchain\\unicorn-2.1.4\\unicorn\\__init__.py",
+    "dependencies_installed": false
+  },
+  "native_body": {
+    "va": "0x0047bfd0",
+    "original_file_offset": "0x0007b3d0",
+    "bytes": 154,
+    "sha256": "a14789c5b210ada15278f2f6bd1d08864244f7280b662eb54127383e79aa9074",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "binding": "Existing tracked host literal; independent read-only original/assembly audit on 2026-09-30"
+  },
+  "limitations": [
+    "Artificial memory and modeled COM dependencies; no actual device status is measured.",
+    "No game image or candidate is loaded, built or patched.",
+    "No natural activation/acquisition, selection, movement, rendering, endurance, manual input or promotion acceptance."
+  ],
+  "preceding_collection": {
+    "fixture_returncode": 0,
+    "collector_returncode": 1,
+    "tests_run": 8,
+    "passed": 8,
+    "skipped": 0,
+    "reason": "Collector line regex rejected native CRLF; fixture unchanged, exact CLI rerun after splitlines parsing fix.",
+    "log": {
+      "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-native-poll-cpu-first-20260930.log",
+      "bytes": 1286,
+      "sha256": "c27083a176855341e5bb6bd7e1c17059507fee0aa8ad990fa41f2400bc259620"
+    }
+  },
+  "game_runtime_executed": false,
+  "debugger_executed": false,
+  "native_compiler_executed": false,
+  "os_input_executed": false,
+  "actual_device_hresult_measured": false,
+  "gameplay_verified": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "ci_contract": {
+    "workflow": ".github/workflows/ordinary-map-observation.yml",
+    "working_copy_sha256": "353609d484dd633dffc9f2300ae6dd8996faccb67539d280ad4cf3f8c44b205f",
+    "git_blob_sha256": "77cc692bd2ad0eb089873d629cd6bcb87393443d31336edc507ba0fe2033e9e8",
+    "normalization": "Git text normalization makes CRLF working copy and LF tracked YAML distinct byte identities.",
+    "required_command": "python -B tools/test_ordinary_map_native_poll_cpu.py --require-machine-tools -v",
+    "required_dependency": "unicorn==2.1.4",
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2022"
+    ],
+    "scope": "Workflow configuration only; subsequent CI results remain separate."
+  }
+}

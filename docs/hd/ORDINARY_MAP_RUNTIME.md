@@ -266,6 +266,25 @@ drops during compilation stop copying, and drops during copying stop launch.
 Both volumes, exact threshold/budget equality and one-byte-above cases are
 covered. These fixture results provide no new actual runtime acceptance.
 
+## Native polling CPU contracts — 2026-09-30
+
+The [standalone CPU fixture](../../tools/test_ordinary_map_native_poll_cpu.py)
+executes the authenticated 154-byte polling body in artificial x86 memory with
+modeled COM dependencies. Its [source-only receipt](../../reports/ordinary-map-native-poll-cpu-20260930.json)
+keeps these branch checks separate from Run G's actual failed device read.
+Success supplies a distinct packet; NOTACQUIRED copies the preseeded packet
+without Acquire; INPUTLOST performs exactly one Acquire, then copies the same
+packet without a read retry even when acquisition succeeds. X/Y and the three
+zero-extended button fields retain their original ABI. With mouse enabled and
+other devices disabled, final EAX is the middle-button byte, not the saved read HRESULT.
+
+The fixture also covers disabled mouse input, saved registers, native stdcall
+arguments and stack cleanup, and bounded writes. It does not load a game image,
+call Windows input APIs, build a candidate, or observe a real device. Natural
+activation/acquisition, selection/movement and final composition still require
+matching runtime evidence. CI requires the pinned emulator and forbids skipped
+CPU methods on both platforms; existing native acceptance remains unchanged.
+
 ## Actual attempts on 2026-09-26
 
 All six used modalwidgets at 1920x1080, recipe

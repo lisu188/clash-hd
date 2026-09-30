@@ -188,6 +188,14 @@ and all six action cells. The central footer remains unverified, so full frame
 acceptance fails; one sample does not satisfy three-sample control coverage.
 The broad black region has no final-wrapper composition proof.
 
+The [native polling CPU checkpoint](../../reports/ordinary-map-native-poll-cpu-20260930.json)
+passes all eight methods without skips, executing that authenticated 154-byte
+body on artificial memory with modeled COM returns. It preserves NOTACQUIRED's unchanged packet and INPUTLOST's one
+Acquire/no-retry path, plus exact copy/stack/register behavior. This fixture
+supplies no additional game HRESULT or acquisition success. See the
+[runtime guide](ORDINARY_MAP_RUNTIME.md#native-polling-cpu-contracts--2026-09-30)
+for its scope and required no-skip CI lane.
+
 The original assembly copies its uninitialized mouse packet on NOTACQUIRED.
 The hidden startup path bypasses native Acquire calls; its ready flags prove
 controlled startup progress, not actual acquisition. Natural activation and
