@@ -1,0 +1,37 @@
+{
+  "schema": "clash95_ordinary_map_native_ci_verification_v1",
+  "recorded_utc": "2026-09-30T08:02:34.131719+00:00",
+  "source_commit": "be568ee10064f879c3ff2a05ca6ec43988208827",
+  "workflow_run_id": 36686641640,
+  "job_id": 109793920020,
+  "workflow_run_url": "https://github.com/lisu188/clash-hd/actions/runs/36686641640",
+  "artifact_id": 11084255179,
+  "artifact_zip_sha256": "902cad6b8c823fc31b575f9bb91f05a80f447c8b3f639cf60b7d808b8b1a4849",
+  "reports": {
+    "reports/ordinary-map-pause-engine-ci-20260930.json": {
+      "artifact_member": "_temp/ordinary-map-pause-engine-report.json",
+      "sha256": "12140a824d65ee436261401da70d9261b423c1a6a8f865943ce971f921afb6c1"
+    },
+    "reports/ordinary-map-phase-compile-ci-20260930.json": {
+      "artifact_member": "_temp/native-phase-compile-36686641640-1/compile-report.json",
+      "sha256": "018948fefe5238ad252ab15a974fb13135d1d5c91c9e36c45bace085e844965b"
+    },
+    "reports/owned-process-ci-20260930.json": {
+      "artifact_member": "clash-hd/clash-hd/reports/owned-process-ci.json",
+      "sha256": "0489ad93ed84bf0860fd6eafe9b5f49e97fd4c2812cdbc3a92e0391e414065d9"
+    }
+  },
+  "producer_hashes_match_source_commit": true,
+  "generated_sources_replayed": true,
+  "pause_native_cases_passed": 2,
+  "publication_native_cases_passed": 2,
+  "permanent_reader_publication_elapsed_ms": 1000,
+  "owned_descendant_cases_passed": 2,
+  "composed_x86_host_compiled": true,
+  "composed_host_runtime_executed": false,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "prior_failure_report": "reports/ordinary-map-pause-engine-ci-20260930-failure.json",
+  "prior_failure_unchanged": true
+}

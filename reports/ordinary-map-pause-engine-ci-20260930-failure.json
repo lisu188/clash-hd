@@ -1,0 +1,73 @@
+{
+  "schema": "clash95_pause_engine_fixture_v1",
+  "game_runtime_executed": false,
+  "fixture_runtime_executed": true,
+  "host_started": true,
+  "manual_input_proof": false,
+  "host_source_sha256": "d04153b0e8eabc3df4108990f56820c0aca4fc612bb2bd20462ce0518f07f964",
+  "client_source_sha256": "7939f471eb7a56364b13557f0052a577f95e742092b50a30d71260633ccbf05f",
+  "fixture_source_sha256": "694def34d0f24b584014522eb631350275ea60a64ede18eb4543a9f8b20ea258",
+  "inherited_host_sha256": "3b1ec5a8642cf7e371ddccd299d7e35d10c77a1041019a42bb5809e2d8144f62",
+  "compiled_source_sha256": "606739f522c2ca5e98717e815ad14a992497cf00f4eee9ef3848467f862516da",
+  "expected_cases": 2,
+  "completed": true,
+  "passed": false,
+  "cases": [
+    {
+      "case": "pause-resume-counter",
+      "passed": false,
+      "completed": true,
+      "host_started": true,
+      "fixture_entry_observed": true,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "target_cleanup_verified": true,
+      "host_returncode": 1,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\Windows\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\runneradmin\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.20348.2849 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\clash-pause-engine-pfiuphkh\\case-im_1ewwr\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nSECURE: File not allowed to be loaded - C:\\Windows\\system32\\dbghelp.dll\nError code: Win32 error 0n5\nThe call to LoadLibrary(ext) failed, Win32 error 0n2\n    \"The system cannot find the file specified.\"\nPlease check your debugger configuration and/or network access.\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nSymbol search path is: .\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77230000 773da000   ntdll.dll\nModLoad: 76a80000 76b70000   C:\\Windows\\SysWOW64\\KERNEL32.DLL\nModLoad: 756c0000 75912000   C:\\Windows\\SysWOW64\\KERNELBASE.dll\nModLoad: 74f50000 74ff4000   C:\\Windows\\SysWOW64\\apphelp.dll\n(1204.1768): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=4612 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\clash-pause-engine-pfiuphkh\\case-im_1ewwr\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\nREAL_EXE_ENTRY observed=1\n(1204.a74): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=4612 tid=5992 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_CONTEXT pid=4612 tid=5992 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_HARNESS_ERROR lease acknowledgment atomic replace failed winerror=5\n"
+    },
+    {
+      "case": "expired-lease",
+      "passed": true,
+      "completed": true,
+      "host_started": true,
+      "fixture_entry_observed": true,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "counter_stable_while_paused": true,
+      "expired_lease_rejected": true,
+      "acknowledgments": [
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "1b52ba8648044e52bfa3cc8b0a13b0a9",
+          "request_seq": 0,
+          "status": "ready",
+          "lease_id": "",
+          "pid": 4876,
+          "primary_tid": 8164,
+          "creation_filetime": 134352263612103097,
+          "image_base": 4194304,
+          "deadline_tick_ms": 0,
+          "paused": false
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "1b52ba8648044e52bfa3cc8b0a13b0a9",
+          "request_seq": 1,
+          "status": "paused",
+          "lease_id": "d31dd515ed014d9f974b898f16a1d560",
+          "pid": 4876,
+          "primary_tid": 8164,
+          "creation_filetime": 134352263612103097,
+          "image_base": 4194304,
+          "deadline_tick_ms": 470328,
+          "paused": true
+        }
+      ],
+      "retained_target_exited": true,
+      "fixture_file_unchanged": true,
+      "target_cleanup_verified": true,
+      "host_returncode": 2,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\Windows\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\runneradmin\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.20348.2849 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\clash-pause-engine-pfiuphkh\\case-93ujnvkq\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nSECURE: File not allowed to be loaded - C:\\Windows\\system32\\dbghelp.dll\nError code: Win32 error 0n5\nThe call to LoadLibrary(ext) failed, Win32 error 0n2\n    \"The system cannot find the file specified.\"\nPlease check your debugger configuration and/or network access.\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nSymbol search path is: .\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77230000 773da000   ntdll.dll\nModLoad: 76a80000 76b70000   C:\\Windows\\SysWOW64\\KERNEL32.DLL\nModLoad: 756c0000 75912000   C:\\Windows\\SysWOW64\\KERNELBASE.dll\nModLoad: 746b0000 74754000   C:\\Windows\\SysWOW64\\apphelp.dll\n(130c.1fe4): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=4876 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\clash-pause-engine-pfiuphkh\\case-93ujnvkq\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\nREAL_EXE_ENTRY observed=1\n(130c.1d84): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=4876 tid=8164 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_CONTEXT pid=4876 tid=8164 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_HARNESS_ERROR lease expired; owned target must terminate winerror=0\nREAL_CLEANUP absent=1 exit=80004005\n"
+    }
+  ]
+}

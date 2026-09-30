@@ -1,0 +1,38 @@
+{
+  "schema": "clash95_ordinary_map_artifact_cleanup_v1",
+  "date": "2026-09-30",
+  "completed": true,
+  "removed_file_count": 228,
+  "removed_bytes": 5070128718,
+  "free_before": 79071948800,
+  "free_after": 84142317568,
+  "disk_reserve_restored": false,
+  "cleanup_journal": {
+    "path": "C:\\ClashTests\\ordinary-native-input-20260926\\duplicate-static-assets-cleanup-20260930.json",
+    "sha256": "054e4e10bf1236236e36ca66a2da1b7163b5a4a0fb81c2a5a458129630de3053"
+  },
+  "retained_manifest": {
+    "path": "C:\\ClashTests\\ordinary-native-input-20260926\\runtime-manifest.json",
+    "sha256": "6b1631846ef62c9cd0d7dfa242c90d698c8877b664ba4ab750f0575b0f3cd628"
+  },
+  "run_roots": [
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-a",
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-b",
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-c",
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-d",
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-e",
+    "C:\\ClashTests\\ordinary-native-input-20260926\\run-f"
+  ],
+  "per_run_removed_file_count": 38,
+  "scope": "Only exact static DATA/AVI/STRATEG input duplicates; each present file matched the complete retained reference and manifest before removal.",
+  "retained": "Original/candidate/proxy binaries, settings, saves, generated caches, source snapshots, compiler command/log, all captures and failure reports.",
+  "historical_run_reports_unchanged": true,
+  "all_recorded_png_hashes_match": true,
+  "all_generated_host_source_and_executable_hashes_match": true,
+  "all_original_and_candidate_hashes_match": true,
+  "all_available_frozen_producer_hashes_match": true,
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limits": "Working copies require static asset reconstruction from the retained reference before any future run. No historical observation or failure classification changed. Cleanup did not restore the ten-percent reserve."
+}

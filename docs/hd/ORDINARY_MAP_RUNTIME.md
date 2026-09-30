@@ -205,13 +205,93 @@ button/cursor values, but these runs did not measure the actual HRESULT. The
 strict rejections in D/F were preserved; E's success at the native dispatch is not
 evidence that hidden device reads are reliable.
 
+## Read-only mouse polling preparation — 2026-09-30
+
+The phase-host source now prepares a read-only diagnostic for the original
+mouse `GetDeviceState` CALL at `0x47C029`, return at `0x47C02C` and completed
+local-buffer copy at `0x47C065`. One rotating hardware breakpoint observes
+these three stops only while awaiting post-poll/caller-hold boundaries, after
+startup controls retire. Each epoch has the existing 20-second transition
+deadline and a maximum of 64 paired polls; its breakpoint retires before the
+held snapshot or controlled input action. This checkpoint is source and
+portable-fixture preparation only. No September 30 game run or actual device
+HRESULT has been measured, and the six September 26 failures remain unchanged.
+The composed declarations keep the lease owner before startup and phase
+controllers. Startup and phase checks both cover `0x47BFD0`; candidate code is
+authenticated before startup installs its software breakpoint there, and all
+phase byte comparisons remain exact. Loaded-byte readback after breakpoint
+installation still needs a fresh bounded runtime check.
+
+Each `REAL_MOUSE_POLL_V1` record uses
+`clash95_native_mouse_poll_trace_v1` and binds the epoch/action, process/thread,
+creation time, image base, retained root stack, controller SHA and session.
+The host checks original code, the whitelisted caller and native COM arguments.
+It saves the actual return HRESULT before an `Acquire` can overwrite EAX;
+the native `0x8007001E` path falls through into the copy without another
+`GetDeviceState` call. Before/after/copy-time 16-byte samples and all five copied
+backend words remain diagnostic observations. Resolved buttons and raw cursor
+coordinates are separately read snapshots.
+
+The [offline consumer](../../tools/ordinary_map_input_poll_trace.py) binds every
+record to an authenticated phase identity and rejects malformed, unmatched,
+out-of-order or incomplete coverage. Zero observed polls cannot establish
+coverage. Its `complete` flag describes trace structure, including paired
+failed HRESULTs; it never establishes successful input, manual proof, gameplay
+acceptance or promotion. Changes to the local bytes after return are reported
+without relabeling the saved HRESULT. Telemetry adds no target writes and does
+not change the controlled three-field input path or its acceptance checks.
+The driver supplies identity from its retained-process phase client; supplying
+a dictionary to the standalone parser alone does not authenticate a process.
+
 Runs C/D/E/F freeze their producer files under each external `source/` directory
 before execution; source identities, generated C++ and compiled host are
 retained per run. A/B retain source hashes and generated host producers, but have no
 equivalent `source/` tree. Do not reconstruct missing historical sources and
-label them original captures. The old deleted `C:/ClashCaptures` and
-`C:/ClashTests` evidence has not been restored by these new, uniquely named
-runs. Raw captures, assets and binaries remain outside Git.
+label them original captures. The earlier deleted castle/runtime bundles under
+`C:/ClashCaptures` and `C:/ClashTests` have not been restored by these new,
+uniquely named runs. The September 26 ordinary-run captures and producers are
+retained separately. Raw captures, assets and binaries remain outside Git.
+
+The [September 30 cleanup receipt](../../reports/ordinary-map-artifact-cleanup-20260930.json)
+records removal of 228 exact duplicate DATA/AVI/STRATEG inputs, totaling
+5,070,128,718 bytes, from the completed A–F work copies. The full reference,
+manifests, raw failure captures, sources, compiled hosts and candidates remain
+retained, with historical classifications unchanged. Reconstruct those static
+inputs from the retained reference before any future launch of an affected
+work copy. The ten-percent reserve was not restored; large artifact-producing
+operations remain subject to the existing disk guard. Continue regular verified
+cleanup after bounded completed batches without deleting unique proof.
+
+The [September 30 synthetic CI failure](../../reports/ordinary-map-pause-engine-ci-20260930-failure.json)
+retains a separate infrastructure failure at the first pause acknowledgment.
+The target reached its authenticated native stop; atomic replacement of
+`ack.json` failed with Windows error 5 and owned cleanup terminated the target.
+The expiry fixture passed. The failing report remains unchanged. This is
+synthetic debugger infrastructure, with no game or screenshot execution; it
+does not alter the six September 26 game attempts.
+
+The shared pause/phase publisher now retries only actual Windows access-denied
+or sharing-violation failures while replacing the same flushed acknowledgment.
+Its fixed one-second publication bound also honors any earlier active lease
+deadline. Each attempt rechecks ownership, the session token, regular paths and
+exact payload bytes; successful publication checks the destination file identity.
+Other errors fail immediately. The native synthetic fixture holds a real reader
+without delete sharing: one case releases it only after an actual retry marker,
+and another holds it through bounded failure and verified owned-target cleanup.
+These fixtures do not change game input, acknowledgment schemas or lease limits.
+
+The [source-bound CI receipt](../../reports/ordinary-map-native-ci-verification-20260930.json)
+retains [both native pause cases](../../reports/ordinary-map-pause-engine-ci-20260930.json),
+[composed x86 compilation](../../reports/ordinary-map-phase-compile-ci-20260930.json)
+and [both owned-descendant cleanup cases](../../reports/owned-process-ci-20260930.json)
+from workflow run `36686641640` at commit
+`be568ee10064f879c3ff2a05ca6ec43988208827`. The transient reader recovered
+after a real Windows error 5 retry. The permanent reader remained open through
+62 retries, publication expiry at exactly 1,000 ms, host exit 2 and verified
+target cleanup. Counter pause/resume and lease expiry also passed. Raw producer
+hashes match that commit, and both generated source identities replay locally.
+The full observer compiled without being executed; no device HRESULT, game
+input, screenshot or promotion proof is supplied by this synthetic checkpoint.
 
 ## Focused verification and remaining proof
 
@@ -222,17 +302,28 @@ These commands are portable fixtures or a dry run; they launch no game:
 python -B tools/test_ordinary_map_startup.py
 python -B tools/test_ordinary_map_phase_host.py
 python -B tools/test_ordinary_map_phase_client.py
+python -B tools/test_ordinary_map_input_poll_trace.py
 python -B tools/test_ordinary_map_input_plan.py
 python -B tools/test_ordinary_map_observation.py
 python -B tools/test_resolution_playability.py
 python -B tools/resolution_playability.py --mode hidden-controlled --profile modalwidgets --resolution 1920x1080
 ```
 
-The driver suite has 40 passing fixtures at this checkpoint, including its 18
+The September 26 driver suite recorded 40 passing fixtures, including its 18
 previous cases, both prepared-candidate schemas, same-held-lease revalidation,
 genuine state-transition requirements, the exact ordinary previous-index store,
 false native predicates and cleanup after consumed leases. Source fixtures and the separate synthetic pause-engine
 proof remain distinct from game runtime.
+The September 30 preparation passes 201 ordinary-map portable fixtures, with
+the two native engine cases skipped locally, and all 43 driver fixtures.
+The ordinary-map total includes 14 pause-host source fixtures, 26 phase-host
+source fixtures, four engine report fixtures and 36 poll-trace fixtures.
+The three new driver cases bind
+the trace to phase identity, reject identity changes and keep diagnostic
+coverage separate from gameplay acceptance. CI compiles the composed x86 host
+without executing it; successful compilation supplies no actual device or game
+evidence. The real reader-lock cases run only in the opt-in synthetic Windows
+lane; portable source checks do not establish their native execution.
 
 The next run must exercise the corrected native conditional panel-ownership
 contract, retain a fresh held observation for each click, and prove full

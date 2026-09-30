@@ -465,6 +465,18 @@ def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict)
         report['phase_receipts']=peer.receipts
 
 
+def mouse_poll_diagnostics(log: str, receipts: list[dict]) -> dict:
+    """Bind read-only poll records to the already authenticated phase identity."""
+    from ordinary_map_input_poll_trace import parse_trace
+    if not receipts:
+        raise ValueError('Mouse poll trace has no authenticated phase identity')
+    ack=receipts[0]
+    expected={name:ack[name] for name in ('pid','creation_filetime','image_base',
+                                         'controller_sha256','session_id')}
+    expected['tid']=ack['primary_tid']
+    return parse_trace(log,expected)
+
+
 def hidden_success(report: dict) -> bool:
     return (not report['errors'] and report.get('ordinary_controlled_input_passed') is True and
             [a.get('name') for a in report.get('actions',[])]==['select','move'] and
@@ -504,7 +516,8 @@ def run_hidden(args) -> dict:
         startup_scope='Bounded controlled native slot-zero loading; overrides retire at PlayGame before human input')
     source_names=('tools/resolution_playability.py','tools/launcher_resolution_matrix.py','tools/real_exe_smoke.py',
         'tools/run_original_game_smoke.py','tools/owned_hidden_process.py','tools/ordinary_map_startup.py',
-        'tools/ordinary_map_phase_host.py','tools/ordinary_map_phase_client.py','tools/ordinary_map_pause_host.py',
+        'tools/ordinary_map_phase_host.py','tools/ordinary_map_phase_client.py','tools/ordinary_map_input_poll_trace.py',
+        'tools/ordinary_map_pause_host.py',
         'tools/ordinary_map_pause_client.py','tools/ordinary_map_observation.py','tools/ordinary_map_input_plan.py',
         'src/launcher/resolutions.json')
     report['source_hashes']={n:matrix.digest(root/n) for n in source_names}
@@ -601,6 +614,10 @@ def run_hidden(args) -> dict:
             text=logpath.read_text(encoding='utf-8',errors='replace')
             report['outcome']=full_observation(text,proc.returncode if proc else -1)
             report['debugger_log_sha256']=matrix.digest(logpath)
+            try:
+                report['mouse_poll_trace']=mouse_poll_diagnostics(text,report.get('phase_receipts',[]))
+            except Exception as error:
+                report['mouse_poll_trace_error']=f'{type(error).__name__}: {error}'
         try:
             report['snapshots']=matrix.runtime.render(capture)
             if report['snapshots']:
