@@ -1,0 +1,292 @@
+{
+  "schema": "clash95_ordinary_small_world_static_cleanup_v1",
+  "completed": true,
+  "removed_file_count": 38,
+  "removed_bytes": 845021453,
+  "run_root": "C:\\ClashTests\\ordinary-small-world-input-20260930-g",
+  "reference_root": "C:\\ClashTests\\ordinary-native-input-20260926\\reference",
+  "cleanup_journal": {
+    "path": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\duplicate-static-assets-cleanup-20260930.json",
+    "sha256": "35f3a35e9442543b09fa0531bfa100576bd162b313be6a0310c9a6a8e66c4798"
+  },
+  "targets": [
+    {
+      "relative_path": "DATA/GFX3.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\GFX3.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\GFX3.RES",
+      "bytes": 5514969,
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+    },
+    {
+      "relative_path": "DATA/INFOANG.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\INFOANG.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\INFOANG.RES",
+      "bytes": 10170649,
+      "sha256": "6a3c6f7a70052a230ddb9fd79dd83eb2f183dd86b1c645bc195235ad46f740be"
+    },
+    {
+      "relative_path": "DATA/INFOPOL.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\INFOPOL.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\INFOPOL.RES",
+      "bytes": 9659471,
+      "sha256": "011c029ac109d41cd9dbd50eed466e8c05ac654fa8f7fc3535981bee230ac38e"
+    },
+    {
+      "relative_path": "DATA/IS.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\IS.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\IS.RES",
+      "bytes": 327623280,
+      "sha256": "864d9c7c070b73610de938b003e1a0db5d7077094745fea295858ba325c00df9"
+    },
+    {
+      "relative_path": "DATA/MAPS.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\MAPS.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\MAPS.RES",
+      "bytes": 11571421,
+      "sha256": "02d8b33085bf945d99fedb15c5bcaf90bdbb81bcac794ca3e4db3a06a0b1ed1e"
+    },
+    {
+      "relative_path": "DATA/maximum.res",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\maximum.res",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\maximum.res",
+      "bytes": 43971758,
+      "sha256": "44f545780f11081cd0d45421eb8b7ed985221ef776319573bbfd89ff6431ccf2"
+    },
+    {
+      "relative_path": "DATA/minimum.res",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\minimum.res",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\minimum.res",
+      "bytes": 21601784,
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+    },
+    {
+      "relative_path": "DATA/MISINFOA.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\MISINFOA.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\MISINFOA.RES",
+      "bytes": 19554277,
+      "sha256": "8686a33b383d139940919d207af64c58badf39afbd6f59bb11fe72bb986369c7"
+    },
+    {
+      "relative_path": "DATA/MISWAVA.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\MISWAVA.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\MISWAVA.RES",
+      "bytes": 22389782,
+      "sha256": "90e6abf80e42ee922fb92edefc86ef404b99f3253bc4ef42c893d47a90d8d678"
+    },
+    {
+      "relative_path": "DATA/MUSIC.RES",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\MUSIC.RES",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\MUSIC.RES",
+      "bytes": 112388864,
+      "sha256": "1aff45e27614d4d898008ef24ec562dd67d422242ec1aae85cca8d36d9c739db"
+    },
+    {
+      "relative_path": "DATA/normal.res",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\normal.res",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\normal.res",
+      "bytes": 28357077,
+      "sha256": "cfee4443248ac36e2d19184f436dede9054d0761e50246677716d86b0bfe0f2e"
+    },
+    {
+      "relative_path": "DATA/mainmap1.wav",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\mainmap1.wav",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\mainmap1.wav",
+      "bytes": 14553368,
+      "sha256": "dd032d4fd4b048ded58b7a1f9c53400c394eaf5c967bba9c6909a2245bce3f77"
+    },
+    {
+      "relative_path": "DATA/mainmap2.wav",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\mainmap2.wav",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\mainmap2.wav",
+      "bytes": 21846838,
+      "sha256": "c4502c308ed8f561e77be8c791e087f45ac5f510b2f6ae0ca5f86380d0e1998b"
+    },
+    {
+      "relative_path": "DATA/mainmap3.wav",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\DATA\\mainmap3.wav",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\DATA\\mainmap3.wav",
+      "bytes": 14178278,
+      "sha256": "77440e5b368024382b3273488f3f6d94a0eebce9e0b611ca382ccb14ac54953a"
+    },
+    {
+      "relative_path": "AVI/ATAK_ZAM.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ATAK_ZAM.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ATAK_ZAM.AVI",
+      "bytes": 7767514,
+      "sha256": "e71f8fe3f549ccd33a71d808bac02975d970a94c5fca7ac04fb91aa8061b86a5"
+    },
+    {
+      "relative_path": "AVI/ATAK_ZAS.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ATAK_ZAS.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ATAK_ZAS.AVI",
+      "bytes": 6285084,
+      "sha256": "5895f103bd0a7b4b090d5bd61fc3c872df0cdab03fb8da04694d643419ce69e0"
+    },
+    {
+      "relative_path": "AVI/BATTLE.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\BATTLE.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\BATTLE.AVI",
+      "bytes": 1424386,
+      "sha256": "4b9d70869bb4a729c6e61d15825471798cd988f61198b2a08a5d3c95bd3d4d31"
+    },
+    {
+      "relative_path": "AVI/CHLOP.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\CHLOP.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\CHLOP.AVI",
+      "bytes": 4261710,
+      "sha256": "7687c05784c318ca752bec9cc40806dab9462261a354f315ddd03c6c2a5ab02b"
+    },
+    {
+      "relative_path": "AVI/CRE_AN.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\CRE_AN.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\CRE_AN.AVI",
+      "bytes": 16772400,
+      "sha256": "89e63a6a35f3ef05730c979c2c34ea4ccc404fab24d172298f26ad1ef6ae28bc"
+    },
+    {
+      "relative_path": "AVI/INT_A.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\INT_A.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\INT_A.AVI",
+      "bytes": 15679090,
+      "sha256": "556be8637b843f8b193bf42c081c9afc190ddef4dc18a18c2ab2c9c64c8be034"
+    },
+    {
+      "relative_path": "AVI/INT_CLSA.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\INT_CLSA.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\INT_CLSA.AVI",
+      "bytes": 15679090,
+      "sha256": "556be8637b843f8b193bf42c081c9afc190ddef4dc18a18c2ab2c9c64c8be034"
+    },
+    {
+      "relative_path": "AVI/KON_POR1.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\KON_POR1.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\KON_POR1.AVI",
+      "bytes": 9066222,
+      "sha256": "060e2341485e383df4adb29c1e78a8789710020552200f688b67bd6a24141ba7"
+    },
+    {
+      "relative_path": "AVI/KOP_BUD.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\KOP_BUD.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\KOP_BUD.AVI",
+      "bytes": 5547340,
+      "sha256": "c191950c5f80092fd5404958dad81e5b98cf361d04dd82990c5865ba0fc1a7c3"
+    },
+    {
+      "relative_path": "AVI/LOGO.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\LOGO.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\LOGO.AVI",
+      "bytes": 3487694,
+      "sha256": "0727d9343468db91bd31455118c9476eab898618f5a50131f825b141f5ee967a"
+    },
+    {
+      "relative_path": "AVI/P_POSLA.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\P_POSLA.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\P_POSLA.AVI",
+      "bytes": 7007272,
+      "sha256": "c6b6f7e98a4c4600bd20e912fd35af862ebf90bf89fd9c156cf0d76118f4bb1a"
+    },
+    {
+      "relative_path": "AVI/SW_CHS.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\SW_CHS.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\SW_CHS.AVI",
+      "bytes": 7318598,
+      "sha256": "049ef65a20b595f8ad5167e71bbf0bd22c6a729c946454c43fd1c1bd1a9f8841"
+    },
+    {
+      "relative_path": "AVI/SW_POG.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\SW_POG.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\SW_POG.AVI",
+      "bytes": 7390272,
+      "sha256": "bbb7048b22f0dd7417754cf63a7dd9188dd00f9a0526cad2cfcd2aeeb3079d0b"
+    },
+    {
+      "relative_path": "AVI/UKRYCIE.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\UKRYCIE.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\UKRYCIE.AVI",
+      "bytes": 5955226,
+      "sha256": "5c49ea131cd3f73873bcae581c9c33472be7fe51d45b7e872f4f2e805ec1ba79"
+    },
+    {
+      "relative_path": "AVI/UWIEZIC.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\UWIEZIC.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\UWIEZIC.AVI",
+      "bytes": 3730204,
+      "sha256": "42325f1495dd9c5b7d7b8570b757bea191c6ec2d3caf0a0898aa55751794b690"
+    },
+    {
+      "relative_path": "AVI/WPAD_PUL.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\WPAD_PUL.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\WPAD_PUL.AVI",
+      "bytes": 7242622,
+      "sha256": "6eaa2a56dc06cdef39598df3cb93a12166e2b3e7223b329f7f97c1ee161588fe"
+    },
+    {
+      "relative_path": "AVI/ZAKL_PUL.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZAKL_PUL.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZAKL_PUL.AVI",
+      "bytes": 7025724,
+      "sha256": "6632de496484b6608bc83e4d1578fc5111a788f258e6a2184c026f9047995db1"
+    },
+    {
+      "relative_path": "AVI/ZARAZA.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZARAZA.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZARAZA.AVI",
+      "bytes": 8290828,
+      "sha256": "0f57853c676170ef53202af57ab233aed89b4cad7c65ba49e5ea0774590bbbf3"
+    },
+    {
+      "relative_path": "AVI/ZCIECIE.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZCIECIE.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZCIECIE.AVI",
+      "bytes": 8904758,
+      "sha256": "3cdd44d951c3d158ce1ae07e3dac2ebc072309a1f4d6691454245f740691cf57"
+    },
+    {
+      "relative_path": "AVI/ZNISZCZE.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZNISZCZE.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZNISZCZE.AVI",
+      "bytes": 6777962,
+      "sha256": "4ecd4f4ad98bedb333d190658c95629b5a85a790190cfc6493929f1688e26d0e"
+    },
+    {
+      "relative_path": "AVI/ZWY01.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZWY01.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZWY01.AVI",
+      "bytes": 5806992,
+      "sha256": "44208d512011c62f7cb104d4d6eb40512be538c423494111edc5dbcb6a5b9a19"
+    },
+    {
+      "relative_path": "AVI/ZWY02.AVI",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\AVI\\ZWY02.AVI",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\AVI\\ZWY02.AVI",
+      "bytes": 20111840,
+      "sha256": "6e7dd1f8525cd2c6e5c10c9bc0d7277e90a8378c630562d668d3a83b6d9db9ee"
+    },
+    {
+      "relative_path": "STRATEG/CLASH.DAT",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\STRATEG\\CLASH.DAT",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\STRATEG\\CLASH.DAT",
+      "bytes": 106717,
+      "sha256": "95f25a434a1b61d168149895498f133563fcc3d4f54e225901b7235333b4fbd4"
+    },
+    {
+      "relative_path": "STRATEG/PRIOR",
+      "target": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\work\\STRATEG\\PRIOR",
+      "reference": "C:\\ClashTests\\ordinary-native-input-20260926\\reference\\STRATEG\\PRIOR",
+      "bytes": 92,
+      "sha256": "a4e486436855469ecc7c93860debc864bf09540f29f19e50fc7e9f4cb9fecb16"
+    }
+  ],
+  "free_before": 99283369984,
+  "free_after": 100128354304,
+  "disk_reserve_restored_at_completion": true,
+  "protected_artifact_count": 47,
+  "protected_artifacts_unchanged": true,
+  "retained_reference_files": 43,
+  "retained_reference_bytes": 846845958,
+  "retained": "All source snapshots, candidates, original copy, saves, settings, proxy, host source/executable, compiler diagnostics, control receipts, captured image/raw/metadata and failed runtime report.",
+  "reconstruction_required_before_relaunch": true,
+  "runtime_executed_by_cleanup": false,
+  "manual_input_proof": false,
+  "promotion_ready": false
+}

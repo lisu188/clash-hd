@@ -80,7 +80,7 @@ and matrix receipts. The existing six-field planner context, held native
 phases, selection transition, occupied source/destination cells, AP charge and
 natural handler-return requirements remain in force. This option authenticates
 the `.cdb` file but does not execute it; `probe_executed=false` is retained.
-The [current driver suite](../../reports/prepared-small-world-driver-verification-20260930.json)
+The [prepared-driver checkpoint](../../reports/prepared-small-world-driver-verification-20260930.json)
 passes 81 methods without skips: the preceding 60
 remain unchanged and 21 new artificial-bundle methods cover both profiles and
 all six selectors, exact reconstruction, typed tampering, file/source identity
@@ -109,7 +109,14 @@ separate OS-input and visible-capture approval boundaries remain unchanged.
 
 Hidden execution requires explicit approval text, verified user-owned assets,
 a source-bound proxy, a new output directory below `C:/ClashTests`, and the
-project disk reserve. `OwnedHiddenProcess` creates a private desktop and owns
+project disk reserve. Fresh checks cover checkout and output volumes before
+directory creation, after asset verification, immediately before compilation,
+immediately before copying, and before owned launch. Copy preparation reserves
+the full verified runtime bytes plus the existing 128 MiB allowance; launch
+requires the remaining 128 MiB. Each comparison requires strictly more than
+ten percent free, uses integer arithmetic, and reports the failing phase/path.
+Concurrent writers can still consume space between observations, so periodic
+disk checks and bounded cleanup remain necessary. `OwnedHiddenProcess` creates a private desktop and owns
 the host/debuggee job. The driver reads through a retained target handle and
 checks process creation time, image identity and host ownership. Cleanup waits
 for the retained target to exit and records host exit, an empty job and closed
@@ -196,6 +203,68 @@ cleanup. Expiry never silently resumes a usable stale lease. A failed click
 consumes the old lease; the driver releases only its current valid lease.
 Held snapshots use indices `100 + 2 * action_index` and share the decoder's
 native stop. Periodic window-enumeration captures are disabled in this mode.
+
+## Actual small-world diagnostic — 2026-09-30
+
+The [Run G checkpoint](../../reports/ordinary-small-world-input-20260930-g.json)
+records actual hidden execution of modalwidgets1920 candidate `657faf66…7b64fe`,
+with distinct prepared-small-world provenance and unchanged identities. The
+existing user's hidden-control/debugger authorization is recorded accurately;
+no OS or foreground input was performed.
+
+One matched CALL/return/copy epoch records actual HRESULT `0x8007000c`, with the
+16 local bytes unchanged. The native copy includes primary `0x95`, secondary
+`0x97` and middle `0x06`; the later held caller observes resolved buttons `3`.
+Measured selection planning and immediate revalidation pass, but the strict
+pre-click guard rejects the existing data before controlled writes or dispatch.
+There is no post-selection read, movement request or completed observation
+interval. Host exit `2`, empty job, closed handles and retained-target exit are
+verified. Overall acceptance stays failed.
+
+The local Windows SDK's `dinput.h` defines this error as `DIERR_NOTACQUIRED`;
+`DIERR_INPUTLOST` instead equals `0x8007001e`. Original routine `0x47BFD0`
+reacquires only for INPUTLOST and does not retry the read. All outcomes reach
+the native packet copy. Original caller `0x460A50` then consumes those fields
+without a mouse-read success check. The
+[recovered backend at `44928710`](https://github.com/lisu188/clash-disassembly/blob/44928710be14842127d9c581e2e67dfff2d65e09/src/media/0047AA90_0047C760_media_013.cpp#L1102)
+and [original assembly](https://github.com/lisu188/clash-disassembly/blob/44928710be14842127d9c581e2e67dfff2d65e09/clash95.asm#L194599)
+document those branches. These source files were inspected in the user's
+separate checkout; that checkout is not a fresh-clone runtime prerequisite.
+
+The current [controlled startup source](../../tools/ordinary_map_startup.py)
+bypasses mouse Acquire at `0x47BD66` and keyboard Acquire at `0x47BDAE`, setting
+EAX to zero and advancing past their failure checks. Ready flags therefore do
+not establish device acquisition. Original mouse cooperative flags are
+exclusive/foreground; natural `WM_ACTIVATEAPP` calls Acquire or Unacquire.
+The next bounded diagnostic should authenticate actual activation and native
+acquisition return values while preserving startup retirement and pre-click
+rejection. Do not clear the copied buttons or fabricate a successful read.
+
+The only screenshot is a paused pre-action 1920x1080 private-proxy surface.
+Its matching map-owner record passes; all four structural bands and all six
+action cells match. Footer background matches only 464/4,860 pixels and remains
+unverified. Full frame acceptance and required three-sample control coverage
+fail. The broad black area retains no final-wrapper proof. No castle, battle,
+manual-input, endurance or promotion acceptance follows.
+
+The old reserve decision preceded long bundle authentication and compilation.
+Concurrent space loss was detected after this attempt completed, so no process
+was stopped by the attempted preparation stop. The
+[cleanup checkpoint](../../reports/ordinary-small-world-static-cleanup-20260930.json)
+preserves the failed run and removes only exact DATA/AVI/STRATEG duplicates
+from its confirmed inactive work copy. Saves, settings, original/candidate,
+proxy, sources, compiler diagnostics, control receipts and all captures remain.
+Future launches from that work copy require reconstruction from the complete
+retained reference. Its temporary bare-reserve recovery does not authorize a
+new run without fresh full-copy and scratch headroom.
+
+The [fresh-reserve fixture checkpoint](../../reports/ordinary-map-runtime-space-guard-20260930.json)
+passes all 92 driver methods without skips, preserving the earlier 81 and
+adding 11 checks. Tiny artificial assets and mocked native boundaries exercise
+actual driver orchestration: drops during authentication stop compilation,
+drops during compilation stop copying, and drops during copying stop launch.
+Both volumes, exact threshold/budget equality and one-byte-above cases are
+covered. These fixture results provide no new actual runtime acceptance.
 
 ## Actual attempts on 2026-09-26
 

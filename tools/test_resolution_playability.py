@@ -1160,6 +1160,236 @@ class PreparedSmallWorldTests(unittest.TestCase):
                 with self.subTest(action=index,field=field):self.assertFalse(tool.hidden_success(changed))
 
 
+class HiddenDiskReserveTests(unittest.TestCase):
+    """Small artificial files and mocked native boundaries; never launch a host."""
+    SCRATCH=128*1024**2
+    TOTAL=1000*1024**2
+
+    @classmethod
+    def usage(cls,free):
+        from types import SimpleNamespace
+        return SimpleNamespace(total=cls.TOTAL,free=free,used=cls.TOTAL-free)
+
+    def test_checkout_and_output_thresholds_are_strict_and_both_read_fresh(self):
+        root=Path('artificial-checkout');output=Path('artificial-output')
+        for volume in ('checkout','output'):
+            for free in (self.TOTAL//10-1,self.TOTAL//10,self.TOTAL//10+1):
+                readings=[self.usage(free if volume=='checkout' else self.TOTAL//2),
+                          self.usage(free if volume=='output' else self.TOTAL//2)]
+                with self.subTest(volume=volume,free=free),patch.object(tool.shutil,'disk_usage',side_effect=readings) as read:
+                    if free<=self.TOTAL//10:
+                        with self.assertRaisesRegex(ValueError,f'unit-phase: {volume} disk reserve failed') as error:
+                            tool.require_hidden_disk_reserve(root,output,phase='unit-phase')
+                        for detail in (str(root if volume=='checkout' else output),f'free={free}',
+                                       f'total={self.TOTAL}','required_bytes=0'):
+                            self.assertIn(detail,str(error.exception))
+                    else:tool.require_hidden_disk_reserve(root,output,phase='unit-phase')
+                    self.assertEqual([call.args[0] for call in read.call_args_list],[root,output])
+
+    def test_exact_aggregate_budget_equality_fails_and_one_byte_above_passes(self):
+        from types import SimpleNamespace
+        # Integers above binary64 precision prevent a floating-point approximation from passing.
+        total=10*(2**60+123);runtime=37;scratch=self.SCRATCH
+        for extra in (0,1):
+            free=total//10+runtime+scratch+extra
+            readings=[SimpleNamespace(total=total,free=total//2),SimpleNamespace(total=total,free=free)]
+            with self.subTest(extra=extra),patch.object(tool.shutil,'disk_usage',side_effect=readings) as read:
+                if extra==0:
+                    with self.assertRaisesRegex(ValueError,'budget-phase: output disk reserve failed') as error:
+                        tool.require_hidden_disk_reserve('checkout','output',runtime_bytes=runtime,
+                            scratch_bytes=scratch,phase='budget-phase')
+                    self.assertIn(f'required_bytes={runtime+scratch}',str(error.exception))
+                else:tool.require_hidden_disk_reserve('checkout','output',runtime_bytes=runtime,
+                    scratch_bytes=scratch,phase='budget-phase')
+                self.assertEqual(read.call_count,2)
+
+    def test_budget_types_and_negative_values_fail_before_disk_reads(self):
+        for key in ('runtime_bytes','scratch_bytes'):
+            for invalid in (-1,True,False,1.0,'1',None):
+                with self.subTest(field=key,value=invalid),patch.object(tool.shutil,'disk_usage') as read, \
+                        self.assertRaisesRegex(ValueError,'invalid disk budget'):
+                    tool.require_hidden_disk_reserve('checkout','output',phase='invalid-phase',**{key:invalid})
+                read.assert_not_called()
+
+    def test_repeated_helper_checks_do_not_cache_either_volume(self):
+        for failed_volume in ('checkout','output'):
+            healthy=self.usage(self.TOTAL//2);low=self.usage(self.TOTAL//10)
+            readings=[healthy,healthy,low if failed_volume=='checkout' else healthy,
+                      low if failed_volume=='output' else healthy]
+            with self.subTest(volume=failed_volume),patch.object(tool.shutil,'disk_usage',side_effect=readings) as read:
+                tool.require_hidden_disk_reserve('checkout','output',phase='first')
+                with self.assertRaisesRegex(ValueError,f'second: {failed_volume} disk reserve failed'):
+                    tool.require_hidden_disk_reserve('checkout','output',phase='second')
+                self.assertEqual([call.args[0] for call in read.call_args_list],['checkout','output']*2)
+
+    def fixture(self,*,drop_at=None,failed_volume='output',remaining_headroom=False,projected_failure=False):
+        from types import SimpleNamespace
+        temporary=tempfile.TemporaryDirectory(prefix='clash-hidden-disk-fixture-')
+        self.addCleanup(temporary.cleanup)
+        root=Path(temporary.name).resolve();checkout=root/'checkout';checkout.mkdir()
+        allowed=root/'ClashTests';allowed.mkdir();assets=root/'assets';assets.mkdir()
+        original=assets/'clash95.exe';original.write_bytes(b'Artificial original; never executable')
+        source_names=next(ast.literal_eval(node.value) for node in ast.walk(ast.parse(inspect.getsource(tool.run_hidden)))
+            if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=='source_names'
+                                                   for target in node.targets))
+        for name in (*source_names,'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp'):
+            path=checkout/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'Artificial frozen source '+name.encode())
+        manifest=root/'assets.json';manifest.write_text(json.dumps(dict(runtime=dict(empty_directories=[]))),encoding='utf-8')
+        proxy=root/'proxy.dll';proxy.write_bytes(b'Artificial proxy; never loaded')
+        proxy.with_name('ddraw_surfdump_proxy.build.json').write_text(json.dumps(dict(
+            generated_by='clash-hd-surface-dump-proxy',output_sha256=tool.matrix.digest(proxy),
+            source_sha256=tool.matrix.digest(checkout/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp'))),encoding='utf-8')
+        exe=root/'candidate.exe';exe.write_bytes(b'Artificial candidate; never executable')
+        case=tool.small_world_candidate_case('modalwidgets','1920x1080')
+        built=dict(case,candidate_sha256=tool.matrix.digest(exe),prepared_small_world=dict(
+            schema=tool.PREPARED_SMALL_WORLD_SCHEMA,candidate_schema=case['schema'],
+            **{key:case[key] for key in ('profile','resolution','stage','recipe_revision')},
+            candidate_sha256=tool.matrix.digest(exe),source_sha256={},probe_executed=False,
+            runtime_executed=False,manual_input_proof=False,promotion_ready=False))
+        args=SimpleNamespace(profile='modalwidgets',resolution='1920x1080',mode='hidden-controlled',
+            runtime=assets,out=allowed/'fresh-run',manifest=manifest,proxy=proxy,
+            prepared_small_world_candidate=exe,prepared_matrix_candidate=None,prepared_build=None,
+            native_present_bounds=False,approval_text='Artificial orchestration fixture; no runtime approval claim')
+        baseline={original.name:dict(bytes=original.stat().st_size,sha256=tool.matrix.digest(original))}
+        return SimpleNamespace(root=root,checkout=checkout,allowed=allowed,args=args,exe=exe,built=built,
+            baseline=baseline,drop_at=drop_at,failed_volume=failed_volume,remaining_headroom=remaining_headroom,
+            projected_failure=projected_failure,
+            current_stage='initial',guard_calls=[],disk_reads=[],runtime_copies=[])
+
+    def run_fixture(self,value):
+        from types import SimpleNamespace
+        import ordinary_map_pause_client as pause
+        import owned_hidden_process as hidden
+        real_path=tool.Path;copy2=tool.shutil.copy2;guard=tool.require_hidden_disk_reserve
+        def path(name):
+            return value.allowed if str(name)=='C:/ClashTests' else real_path(name)
+        def disk_usage(location):
+            label='checkout' if location==value.checkout else 'output'
+            value.disk_reads.append((value.current_phase,label,location))
+            free=self.TOTAL//2
+            if value.current_stage==value.drop_at and label==value.failed_volume:
+                free=self.TOTAL//10
+                if value.projected_failure:
+                    runtime=0 if value.current_stage=='copy' else sum(row['bytes'] for row in value.baseline.values())
+                    free+=self.SCRATCH+runtime
+            elif value.remaining_headroom and value.current_stage=='copy' and label=='output':
+                free=self.TOTAL//10+self.SCRATCH+1
+            return self.usage(free)
+        def checkpoint(root,output,**kwargs):
+            value.current_phase=kwargs['phase'];value.guard_calls.append((root,output,dict(kwargs)))
+            return guard(root,output,**kwargs)
+        def verify_assets(reference,manifest):
+            if reference==value.args.runtime:value.current_stage='baseline' if value.current_stage=='initial' else value.current_stage
+            return deepcopy(value.baseline)
+        def authenticate(*args,**kwargs):
+            value.current_stage='authentication';return value.exe,deepcopy(value.built)
+        def compile_harness(output):
+            value.current_stage='compile'
+            engine=output/'engine.exe';engine.write_bytes(b'Artificial engine; never executable')
+            (output/'real-exe-engine.cpp').write_bytes(b'Artificial generated compiler input')
+            return engine
+        def copytree(reference,work):
+            work.mkdir()
+            for item in reference.iterdir():(work/item.name).write_bytes(item.read_bytes())
+            value.current_stage='copy';return work
+        def track_copy(source,destination,*args,**kwargs):
+            if Path(destination).is_relative_to(value.args.out/'work'):
+                value.runtime_copies.append((Path(source),Path(destination)))
+            return copy2(source,destination,*args,**kwargs)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(tool,'os',SimpleNamespace(name='nt',environ={})))
+            stack.enter_context(patch.object(tool,'Path',side_effect=path))
+            stack.enter_context(patch.object(tool.matrix,'ROOT',value.checkout))
+            stack.enter_context(patch.object(pause,'checked_directory',side_effect=lambda directory:directory.resolve()))
+            stack.enter_context(patch.object(pause,'prepare_control',side_effect=lambda directory:directory.mkdir()))
+            stack.enter_context(patch.object(tool.subprocess,'check_output',return_value='a'*40+'\n'))
+            stack.enter_context(patch.object(tool.owned,'verify_assets',side_effect=verify_assets))
+            value.authenticate=stack.enter_context(patch.object(tool,'prepared_small_world_candidate',side_effect=authenticate))
+            stack.enter_context(patch.object(tool,'native_phase_source',return_value='Artificial compiler input'))
+            value.compile=stack.enter_context(patch.object(tool.matrix.runtime,'compile_harness',side_effect=compile_harness))
+            value.copytree=stack.enter_context(patch.object(tool.shutil,'copytree',side_effect=copytree))
+            stack.enter_context(patch.object(tool.shutil,'copy2',side_effect=track_copy))
+            value.host=stack.enter_context(patch.object(hidden,'OwnedHiddenProcess',side_effect=RuntimeError(
+                'Fixture stopped before native host creation')))
+            stack.enter_context(patch.object(tool,'require_hidden_disk_reserve',side_effect=checkpoint))
+            stack.enter_context(patch.object(tool.shutil,'disk_usage',side_effect=disk_usage))
+            stack.enter_context(patch.object(tool.matrix.runtime,'render',return_value=[]))
+            stack.enter_context(patch.object(tool.matrix.runtime,'verify_hd_sources'))
+            stack.enter_context(patch.object(tool,'audit_prepared_small_world'))
+            stack.enter_context(patch.object(tool.matrix.runtime,'ORIGINAL_SHA256',value.baseline['clash95.exe']['sha256']))
+            return tool.run_hidden(value.args)
+
+    def assert_failed_checkpoint(self,value,report,phase,*,authentication,compile,copies):
+        self.assertFalse(report['passed']);self.assertFalse(report['ordinary_controlled_input_passed'])
+        self.assertFalse(report['native_input_passed']);self.assertFalse(report['manual_input_proof'])
+        self.assertTrue(any(f'{phase}: {value.failed_volume} disk reserve failed' in row for row in report['errors']))
+        self.assertEqual(value.authenticate.call_count,authentication);self.assertEqual(value.compile.call_count,compile)
+        self.assertEqual(value.copytree.call_count,copies);value.host.assert_not_called()
+        stored=json.loads((value.args.out/'playability.json').read_text(encoding='utf-8'))
+        self.assertEqual(stored,report)
+        self.assertEqual(len(value.disk_reads),2*len(value.guard_calls))
+
+    def test_initial_checkout_or_output_failure_creates_no_run_directory(self):
+        for volume in ('checkout','output'):
+            value=self.fixture(drop_at='initial',failed_volume=volume)
+            with self.subTest(volume=volume),self.assertRaisesRegex(ValueError,
+                    f'before-output-directory: {volume} disk reserve failed'):
+                self.run_fixture(value)
+            self.assertFalse(value.args.out.exists());value.authenticate.assert_not_called()
+            value.compile.assert_not_called();value.copytree.assert_not_called();value.host.assert_not_called()
+            self.assertEqual([row[1] for row in value.disk_reads],['checkout','output'])
+
+    def test_verified_assets_space_drop_stops_before_authentication(self):
+        value=self.fixture(drop_at='baseline');report=self.run_fixture(value)
+        self.assert_failed_checkpoint(value,report,'verified-runtime-assets',authentication=0,compile=0,copies=0)
+        self.assertFalse((value.args.out/'work').exists())
+
+    def test_space_drop_during_authentication_stops_compile_copy_and_host_for_either_volume(self):
+        for volume in ('checkout','output'):
+            value=self.fixture(drop_at='authentication',failed_volume=volume);report=self.run_fixture(value)
+            with self.subTest(volume=volume):
+                self.assert_failed_checkpoint(value,report,'before-harness-compile',authentication=1,compile=0,copies=0)
+                self.assertEqual(value.runtime_copies,[]);self.assertFalse((value.args.out/'work').exists())
+
+    def test_space_drop_during_compile_stops_runtime_copy_and_host(self):
+        value=self.fixture(drop_at='compile');report=self.run_fixture(value)
+        self.assert_failed_checkpoint(value,report,'before-runtime-copy',authentication=1,compile=1,copies=0)
+        self.assertEqual(value.runtime_copies,[]);self.assertFalse((value.args.out/'work').exists())
+
+    def test_space_drop_during_runtime_copy_stops_host_creation(self):
+        value=self.fixture(drop_at='copy');report=self.run_fixture(value)
+        self.assert_failed_checkpoint(value,report,'before-owned-launch',authentication=1,compile=1,copies=1)
+        self.assertEqual(len(value.runtime_copies),2)
+
+    def test_projected_budget_breach_stops_each_later_boundary_despite_raw_free_above_ten_percent(self):
+        for stage,phase,compile,copies in (
+                ('authentication','before-harness-compile',0,0),
+                ('compile','before-runtime-copy',1,0),('copy','before-owned-launch',1,1)):
+            value=self.fixture(drop_at=stage,projected_failure=True);report=self.run_fixture(value)
+            with self.subTest(stage=stage):
+                self.assert_failed_checkpoint(value,report,phase,authentication=1,compile=compile,copies=copies)
+                budget=self.SCRATCH+(0 if stage=='copy' else sum(row['bytes'] for row in value.baseline.values()))
+                self.assertTrue(any(f'free={self.TOTAL//10+budget}' in row and f'required_bytes={budget}' in row
+                                    for row in report['errors']))
+
+    def test_prelaunch_uses_only_remaining_scratch_and_reaches_mock_boundary_one_byte_above(self):
+        value=self.fixture(remaining_headroom=True);report=self.run_fixture(value)
+        self.assertEqual(value.authenticate.call_count,1);self.assertEqual(value.compile.call_count,1)
+        self.assertEqual(value.copytree.call_count,1);self.assertEqual(value.host.call_count,1)
+        self.assertEqual(report['errors'],['RuntimeError: Fixture stopped before native host creation'])
+        self.assertFalse(report['passed']);self.assertFalse(report['ordinary_controlled_input_passed'])
+        phases=[row[2]['phase'] for row in value.guard_calls]
+        self.assertEqual(phases,['before-output-directory','verified-runtime-assets','before-harness-compile',
+                                 'before-runtime-copy','before-owned-launch'])
+        runtime=sum(row['bytes'] for row in value.baseline.values())
+        budgets=[(row[2].get('runtime_bytes',0),row[2].get('scratch_bytes',0)) for row in value.guard_calls]
+        self.assertEqual(budgets,[(0,0),(runtime,self.SCRATCH),(runtime,self.SCRATCH),
+                                 (runtime,self.SCRATCH),(0,self.SCRATCH)])
+        self.assertEqual([row[1] for row in value.disk_reads],['checkout','output']*5)
+        self.assertEqual(value.guard_calls[0][1],value.args.out.parent)
+        self.assertTrue(all(row[1]==value.args.out for row in value.guard_calls[1:]))
+
+
 class MeasuredActionsTests(unittest.TestCase):
     def setUp(self):
         self.new_case()
