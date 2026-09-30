@@ -41,6 +41,12 @@ class PhaseHostTests(unittest.TestCase):
         for declaration in ('StartupController startup(', 'PauseLeaseController leases(', 'NativePhaseController phases('):
             self.assertEqual(source.count(declaration), 1)
         self.assertIn(pause.CONTROLLER_SOURCE, source)
+        self.assertIn('strcmp(argv[4],"proxy")==0,&startup.retired);', source)
+        for old, new in reversed(host.source_replacements(startup_composed=True)):
+            self.assertEqual(source.count(new), 1)
+            source = source.replace(new, old, 1)
+        expected = pause.render_source(startup.render_source(runtime.observation_source(smoke.HARNESS), 1024, 768))
+        self.assertEqual(source, expected)
 
     def test_missing_and_duplicate_anchors_reject(self):
         source = parent_source()
@@ -63,6 +69,7 @@ class PhaseHostTests(unittest.TestCase):
         self.assertIn('argc!=5 && argc!=6 && argc!=7', rendered)
         self.assertIn('leases(s,argc>=6?argv[5]:nullptr,base)', rendered)
         self.assertIn('phases(leases,argc==7?argv[6]:nullptr', rendered)
+        self.assertIn('strcmp(argv[4],"proxy")==0,nullptr);', rendered)
         constructor = host.CONTROLLER_SOURCE.split('NativePhaseController(PauseLeaseController &parent,', 1)[1]
         self.assertLess(constructor.index('if (!mode) return;'), constructor.index('enabled=true;'))
         self.assertIn('strcmp(mode,"native-phase-v1")', constructor)
@@ -126,7 +133,7 @@ class PhaseHostTests(unittest.TestCase):
         self.assertIn('ULONGLONG until=GetTickCount64()+20000;',waiting)
         self.assertIn('deadline(until); owner.verify_owner(); reject_mixed_mailbox();',waiting)
         self.assertIn('deadline(until); accept_acquire(next);',waiting)
-        self.assertIn('arm(phase_bp,phase_id,0x40B0D4); state=AwaitPostpoll; go(); return;',waiting)
+        self.assertIn('arm(phase_bp,phase_id,0x40B0D4); state=AwaitPostpoll; start_mouse_poll(); go(); return;',waiting)
         self.assertEqual(waiting.count('go();'),1)
         for forbidden in ('ack(', 'write_input(', 'pause_owned(', 'WaitForEvent(', 'SetValue('):
             self.assertNotIn(forbidden,waiting)
@@ -199,6 +206,153 @@ class PhaseHostTests(unittest.TestCase):
         self.assertIn('predicate_value>1', source)
         self.assertNotIn('predicate_value!=1', source)
         self.assertIn('snapshot(s,out,capture_index,proxy)', source)
+
+    def test_native_mouse_body_and_three_whitelisted_call_sites_are_authenticated(self):
+        native = bytes.fromhex(host.MOUSE_NATIVE_BYTES)
+        self.assertEqual(len(native), 154)
+        self.assertEqual(hashlib.sha256(native).hexdigest(), host.MOUSE_NATIVE_SHA256)
+        self.assertEqual(native[0x47C029-0x47BFD0:0x47C02C-0x47BFD0], bytes.fromhex('ff5124'))
+        self.assertEqual(native[0x47C02C-0x47BFD0:0x47C03C-0x47BFD0],
+                         bytes.fromhex('3d1e00078075098b4308508b10ff521c'))
+        self.assertEqual(native[0x47C065-0x47BFD0:], bytes.fromhex('e977ffffff'))
+        self.assertEqual(host.NATIVE_ANCHORS[0x47BFD0], host.MOUSE_NATIVE_BYTES)
+        for call, raw, returned in ((0x4463B8, 'e8135c0300', 0x4463BD),
+                                    (0x46092B, 'e8a0b60100', 0x460930),
+                                    (0x460A5C, 'e86fb50100', 0x460A61)):
+            self.assertEqual(host.NATIVE_ANCHORS[call], raw)
+            self.assertEqual(call+5, returned)
+            displacement = int.from_bytes(bytes.fromhex(raw)[1:], 'little', signed=True)
+            self.assertEqual(returned+displacement, 0x47BFD0)
+        # 460A61 is a permitted patched continuation, outside the native CALL5.
+        self.assertFalse(any(a <= 0x460A61 < a+len(bytes.fromhex(raw))
+                             for a, raw in host.NATIVE_ANCHORS.items()))
+
+    def test_genuine_startup_retirement_is_required_only_for_enabled_native_mode(self):
+        source = host.CONTROLLER_SOURCE
+        constructor = source.split('    NativePhaseController(', 1)[1].split('    ~NativePhaseController', 1)[0]
+        self.assertLess(constructor.index('if (!mode) return;'), constructor.index('if (!startup_retired)'))
+        self.assertLess(constructor.index('if (!startup_retired)'), constructor.index('enabled=true;'))
+        retired = source.split('    void require_startup_retired()', 1)[1].split('    static std::string bytes_hex', 1)[0]
+        self.assertIn('!startup_retired || !*startup_retired', retired)
+        human = source.split('        if (human) {', 1)[1].split('        deadline(transition_deadline);', 1)[0]
+        self.assertLess(human.index('require_startup_retired();'), human.index('root_esp=stack();'))
+        self.assertIn('human_return=s.word(root_esp);', human)
+        import ordinary_map_startup as startup
+        parent = pause.render_source(startup.render_source(runtime.observation_source(smoke.HARNESS), 1920, 1080))
+        for defective in (parent.replace(host._STARTUP_CONSTRUCTOR, '', 1),
+                          parent+host._STARTUP_CONSTRUCTOR,
+                          parent.replace('struct StartupController {', 'struct OtherStartupController {', 1)):
+            with self.assertRaisesRegex(ValueError, 'Startup composition'):
+                host.render_source(defective)
+        with self.assertRaises(TypeError):
+            host.source_replacements(startup_composed='true')
+
+    def test_mouse_trace_uses_one_rotating_hardware_slot_between_actions_only(self):
+        source = host.CONTROLLER_SOURCE
+        self.assertEqual(source.count('IDebugBreakpoint *mouse_bp=nullptr;'), 1)
+        telemetry = source.split('    void require_mouse_epoch()', 1)[1].split('    void remember(', 1)[0]
+        self.assertEqual(re.findall(r'arm\(mouse_bp,mouse_id,(0x[0-9A-F]+)\)', telemetry),
+                         ['0x47C029', '0x47C02C', '0x47C065', '0x47C029'])
+        self.assertIn('(state!=AwaitPostpoll && state!=AwaitCaller) || return_bp', telemetry)
+        self.assertIn('bool mouse=mouse_bp && event.Id==mouse_id;', source)
+        owner_event = source.split('    bool on_event(', 1)[1]
+        self.assertLess(owner_event.index('used!=sizeof(event)'), owner_event.index('if (mouse) { mouse_event(ip);'))
+        self.assertIn('actual_process!=process || actual_thread!=thread', owner_event)
+        self.assertIn('process!=owned_process || thread!=primary', owner_event)
+        self.assertIn('current_ip!=ip || breakpoint_ip!=ip', telemetry)
+        self.assertEqual(source.count('start_mouse_poll();'), 3)
+        returned = source.split('        if (returned && state==AwaitPredicateOrReturn', 1)[1]
+        self.assertLess(returned.index('clear_bp(return_bp,return_id);'), returned.index('start_mouse_poll();'))
+
+    def test_mouse_epoch_is_time_count_and_retained_stack_bounded(self):
+        self.assertEqual(host.LEASE_MS, 20_000)
+        self.assertEqual(host.MOUSE_POLL_LIMIT, 64)
+        self.assertEqual(host.MOUSE_STACK_SPAN, 0x4000)
+        source = host.CONTROLLER_SOURCE
+        telemetry = source.split('    void require_mouse_epoch()', 1)[1].split('    void remember(', 1)[0]
+        for contract in ('deadline(mouse_deadline)', 'transition_deadline-now>20000',
+                         'mouse_polls>=64', 'root_esp<0x14000', 'root_esp-0x4000',
+                         'static_cast<ULONGLONG>(mouse_call_esp)+12', 'entry=frame+0x6c,buffer=frame+0x50',
+                         'entry>static_cast<ULONGLONG>(root_esp)-28', 'buffer+16>root_esp',
+                         'entry+4>root_esp', 's.word(root_esp)!=human_return'):
+            self.assertIn(contract, telemetry)
+        self.assertIn('mouse_epoch==0xffffffff', telemetry)
+        self.assertEqual(telemetry.count('stack()!=mouse_frame_esp'), 2)
+
+    def test_mouse_call_keeps_device_args_vtable_method_and_caller_bound(self):
+        source = host.CONTROLLER_SOURCE
+        telemetry = source.split('    void mouse_device_identity()', 1)[1].split('    void retire_mouse_poll()', 1)[0]
+        for contract in ('reg("ebx")!=address(0x545198)', 'word(0x5451A0)!=mouse_device',
+                         's.word(mouse_device)!=mouse_vtable', 's.word(mouse_vtable+0x24)!=mouse_method',
+                         's.word(mouse_entry_esp)!=mouse_caller', 's.word(mouse_call_esp+4)!=16',
+                         's.word(mouse_call_esp+8)!=mouse_buffer', 'reg("eax")!=device || reg("ecx")!=vtable',
+                         'device<0x10000 || device>=0x7ffe0000 || (device&3)',
+                         'vtable<0x10000 || vtable>0x7ffe0000-0x28 || (vtable&3)',
+                         'method<0x10000 || method>=0x7ffe0000',
+                         'device!=mouse_device || vtable!=mouse_vtable || method!=mouse_method',
+                         'mouse_caller!=address(0x4463BD)', 'mouse_caller!=address(0x460930)',
+                         'mouse_caller!=address(0x460A61)'):
+            self.assertIn(contract, telemetry)
+        self.assertEqual(telemetry.count('mouse_device_identity();'), 3)
+
+    def test_mouse_hresult_and_exact_full_backend_copy_words_are_observed_read_only(self):
+        source = host.CONTROLLER_SOURCE
+        telemetry = source.split('    void mouse_event(', 1)[1].split('    void retire_mouse_poll()', 1)[0]
+        for forbidden in ('WriteVirtual(', 'write_input(', 'SetValue(', 'SetValues(', 'SetInstructionOffset(',
+                          'SetStackOffset(', 's.command(', 'ack(', 'snapshot('):
+            self.assertNotRegex(telemetry, r'\b'+re.escape(forbidden))
+        returned = telemetry.split('mouse_step==MouseReturn', 1)[1].split('mouse_step==MouseCopy', 1)[0]
+        self.assertLess(returned.index('mouse_hresult=eax();'), returned.index('mouse_device_identity();'))
+        self.assertLess(returned.index('mouse_log("return"'), returned.index('arm(mouse_bp,mouse_id,0x47C065)'))
+        for contract in ('s.read(mouse_buffer,16)', 'memcpy(&x,local.data(),4)', 'memcpy(&y,local.data()+4,4)',
+                         'bx=word(0x5451A8),by=word(0x5451AC)', 'primary=word(0x5451C0)',
+                         'middle=word(0x5451C4),secondary=word(0x5451C8)',
+                         'bx!=x || by!=y || primary!=local[12] || secondary!=local[13] || middle!=local[14]'):
+            self.assertIn(contract, telemetry)
+        self.assertNotIn('mouse_hresult==', telemetry)
+        self.assertNotIn('mouse_hresult!=', telemetry)
+        self.assertIn('word(0x544D04),word(0x544CFC),word(0x544D00)', telemetry)
+
+    def test_trace_rows_have_exact_consumer_fields_without_changing_ack(self):
+        source = host.CONTROLLER_SOURCE
+        common = source.split('    void mouse_log(', 1)[1].split('    void require_mouse_epoch()', 1)[0]
+        common_keys = set(re.findall(r'\\"([a-z_0-9]+)\\":', common))
+        self.assertEqual(common_keys, set('schema kind epoch action_index pid tid creation_filetime image_base root_esp controller_sha256 session_id'.split()))
+        self.assertIn('REAL_MOUSE_POLL_V1 %s\\n', common)
+        self.assertIn(host.MOUSE_POLL_SCHEMA, common)
+        regions = {
+            'start': source.split('    void start_mouse_poll()', 1)[1].split('    void mouse_device_identity()', 1)[0],
+            'call': source.split('mouse_step==MouseCall &&', 1)[1].split('mouse_step==MouseReturn &&', 1)[0],
+            'return': source.split('mouse_step==MouseReturn &&', 1)[1].split('mouse_step==MouseCopy &&', 1)[0],
+            'copy': source.split('mouse_step==MouseCopy &&', 1)[1].split('    void retire_mouse_poll()', 1)[0],
+            'end': source.split('    void retire_mouse_poll()', 1)[1].split('    void remember(', 1)[0],
+        }
+        expected = {
+            'start': 'startup_retired deadline_tick_ms',
+            'call': 'poll caller call_esp frame_esp entry_esp backend device vtable method buffer pre_hex',
+            'return': 'poll return_esp hresult post_hex',
+            'copy': 'poll copy_esp local_hex backend_x backend_y primary middle secondary resolved raw_x raw_y',
+            'end': 'polls pending retired_before_hold reason',
+        }
+        for kind, region in regions.items():
+            self.assertEqual(set(re.findall(r'\\"([a-z_0-9]+)\\":', region)), set(expected[kind].split()))
+            self.assertIn('mouse_log("'+kind+'",fields)', region)
+
+    def test_telemetry_retires_before_any_held_capture_ack_or_input_and_rejects_pending(self):
+        source = host.CONTROLLER_SOURCE
+        retirement = source.split('    void retire_mouse_poll()', 1)[1].split('    void remember(', 1)[0]
+        self.assertIn('state!=AwaitCaller || mouse_pending || mouse_step!=MouseCall || mouse_polls!=mouse_poll', retirement)
+        self.assertLess(retirement.index('clear_bp(mouse_bp,mouse_id);'), retirement.index('mouse_log("end"'))
+        caller = source.split('phase && state==AwaitCaller &&', 1)[1].split('phase && state==AwaitDispatch &&', 1)[0]
+        self.assertLess(caller.index('retire_mouse_poll();'), caller.index('hold();'))
+        held = source.split('    void hold()', 1)[1].split('    bool on_event(', 1)[0]
+        self.assertLess(held.index('mouse_active || mouse_bp || mouse_pending'), held.index('snapshot('))
+        self.assertLess(held.index('snapshot('), held.index('ack("held"'))
+        click = source.split('    void click(', 1)[1].split('    void hold()', 1)[0]
+        self.assertLess(click.index('mouse_active || mouse_bp || mouse_pending'), click.index('ack("executing"'))
+        self.assertLess(click.index('mouse_active || mouse_bp || mouse_pending'), click.index('write_input('))
+        finish = source.split('    void finish()', 1)[1]
+        self.assertIn('mouse_active || mouse_bp || mouse_pending', finish)
 
 
 if __name__ == '__main__':

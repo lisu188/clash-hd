@@ -937,3 +937,6 @@
 /tools/test_owned_hidden_process_engine.py -text whitespace=cr-at-eol
 /reports/owned-hidden-process-engine-20260926-a.json -text whitespace=cr-at-eol
 /reports/ordinary-map-driver-20260926.json -text whitespace=cr-at-eol
+/tools/ordinary_map_input_poll_trace.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_input_poll_trace.py -text whitespace=cr-at-eol
+/reports/ordinary-map-artifact-cleanup-20260930.json -text whitespace=cr-at-eol

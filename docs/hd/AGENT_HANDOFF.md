@@ -99,6 +99,13 @@ remains unverified. Overall acceptance still fails. Unexpected hidden backend
 input data has a source-supported failed-read hypothesis, but no actual device
 HRESULT was measured. Native dispatch, full selection/movement, manual input
 and promotion remain separate claims.
+
+The September 30 [read-only native mouse-poll preparation](ORDINARY_MAP_RUNTIME.md#read-only-mouse-polling-preparation--2026-09-30)
+adds bounded CALL/return/copy telemetry and a strict offline consumer. It is
+source and fixture preparation only: no September 30 game run or device HRESULT
+has been measured. It does not change the six failed attempts, target-write
+permissions or input-acceptance requirements.
+
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
@@ -119,16 +126,23 @@ The separate matrix builder extends source construction to both profiles and six
 resolutions. Launcher composition, ordinary input, exit/free restoration, all
 interiors and battle still need matching integration and runtime evidence.
 
-The user confirmed that `C:/ClashCaptures` and `C:/ClashTests` were removed for
-cleanup. Their raw captures, source snapshots, candidate bundles and local
-machine-test tools are unavailable at the recorded paths. Retained repository
-manifests describe historical observations; they cannot substitute for the
-missing files in a current hash, screenshot or runtime verification. The
-successor run has no independently reverified screenshot or lifecycle result
-in this checkpoint. Recreate bounded candidates and evidence when the disk
-reserve permits; never infer a pass from the deleted output or fabricate a
-replacement observation. Keep regenerable scratch bounded and clean verified
-inactive intermediates under the root guide's disk policy.
+The user confirmed removal of the earlier `C:/ClashCaptures` and `C:/ClashTests`
+bundles for cleanup. This availability warning applies to those earlier deleted
+castle/runtime bundles and their recorded paths. Their retained repository
+manifests cannot substitute for missing raw captures, sources or candidates in
+a current verification. The castle successor has no independently reverified
+screenshot or lifecycle result in this checkpoint. The new September 26 runs
+under `C:/ClashTests/ordinary-native-input-20260926` are separate retained
+evidence; they do not restore the deleted bundles or supply their missing proof.
+
+The [September 30 verified cleanup](../../reports/ordinary-map-artifact-cleanup-20260930.json)
+removed 228 duplicate DATA/AVI/STRATEG files (5,070,128,718 bytes) from the six
+completed ordinary-run work copies. The full reference, manifests, raw failure
+captures, producers and candidates remain retained. Those work copies require
+static-input reconstruction from the reference before any future launch.
+The cleanup did not restore the ten-percent disk reserve. Inspect verified
+disposable scratch after bounded completed batches, record removals and free
+space, and preserve unique evidence under the root guide's cleanup policy.
 
 ### Complete candidate integration — 2026-09-08
 
