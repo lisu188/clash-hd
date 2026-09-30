@@ -106,6 +106,13 @@ source and fixture preparation only: no September 30 game run or device HRESULT
 has been measured. It does not change the six failed attempts, target-write
 permissions or input-acceptance requirements.
 
+The [separate September 30 synthetic CI failure](../../reports/ordinary-map-pause-engine-ci-20260930-failure.json)
+preserves Windows error 5 during acknowledgment replacement and verified target
+cleanup. The shared publisher now uses a bounded retry for actual file-sharing
+denials, with native transient/permanent reader-lock fixtures. Source checks and
+the synthetic lane remain separate from game runtime and manual input; retain
+the failed report when inspecting newer CI results.
+
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.

@@ -122,7 +122,28 @@ class PhaseHostTests(unittest.TestCase):
         self.assertEqual(set(keys), expected)
         self.assertEqual(len(keys), len(expected))
         self.assertIn('char json[4096]', acknowledgment)
-        self.assertIn('MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH', acknowledgment)
+        self.assertIn('owner.replace_ack("phase-ack.json",json,static_cast<DWORD>(count),last_sequence,until,publication_bound)', acknowledgment)
+        self.assertNotIn('MoveFileExA(', acknowledgment)
+        for operation in ('sprintf_s(', 'WriteFile(', 'FlushFileBuffers(', 'owner.replace_ack('):
+            self.assertEqual(acknowledgment.count(operation), 1)
+        self.assertLess(acknowledgment.index('FlushFileBuffers('), acknowledgment.index('temporary.close();'))
+        self.assertLess(acknowledgment.index('temporary.close();'), acknowledgment.index('owner.replace_ack('))
+
+    def test_phase_publication_uses_the_current_held_bound_without_stale_transition_deadlines(self):
+        source=host.CONTROLLER_SOURCE
+        ack=source.split('    void ack(',1)[1].split('    void publish_ready(',1)[0]
+        self.assertIn('ULONGLONG publication_bound=0',ack)
+        self.assertNotIn('transition_deadline',ack)
+        self.assertNotIn('owner.last_sequence',ack)
+        self.assertIn('ack("executing","executing","",0,false,held_deadline); deadline(held_deadline);',source)
+        self.assertIn('ack("held",after_action?"predispatch-after":"predispatch-before",current_lease,held_deadline,true);',source)
+        self.assertIn('ack("ready","ready","",0,false);',source)
+        released=source.split('ULONGLONG released_bound=held_deadline;',1)[1].split('return;',1)[0]
+        self.assertLess(released.index('held_deadline=0;'),released.index('ack("released"'))
+        self.assertIn('ack("released","released","",0,false,released_bound);',released)
+        rendered=host.render_source(parent_source())
+        self.assertEqual(rendered.count('    void replace_ack('),1)
+        self.assertEqual(rendered.count('MoveFileExA('),1)
 
     def test_maximum_canonical_click_request_fits_existing_bounded_reader(self):
         wire = f'CLASH_PHASE_V1 {"f"*32} {2**64-1} click {"e"*32} {"d"*32} 3839 2159 {"c"*64}\n'
