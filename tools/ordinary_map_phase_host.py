@@ -336,7 +336,7 @@ struct NativePhaseController {
         std::string ignored;
         if (owner.read_file("request.txt",ignored,true)) throw std::runtime_error("generic pause requests forbidden in native phase mode");
     }
-    void ack(const char *status,const char *phase,const std::string &lease,ULONGLONG until,bool paused) const {
+    void ack(const char *status,const char *phase,const std::string &lease,ULONGLONG until,bool paused,ULONGLONG publication_bound=0) const {
         owner.verify_token(); owner.verify_owner();
         owner.absent_or_regular(owner.path("phase-ack.json"),false);
         char json[4096];
@@ -362,8 +362,7 @@ struct NativePhaseController {
             written!=static_cast<DWORD>(count) || !FlushFileBuffers(temporary.value))
             throw std::runtime_error("phase acknowledgment write failed");
         temporary.close();
-        if (!MoveFileExA(owner.path("phase-ack.json.tmp").c_str(),owner.path("phase-ack.json").c_str(),
-            MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH)) throw std::runtime_error("phase acknowledgment atomic replace failed");
+        owner.replace_ack("phase-ack.json",json,static_cast<DWORD>(count),last_sequence,until,publication_bound);
     }
     void publish_ready(bool entered) {
         if (!enabled || ready_published || !entered) return;
@@ -443,7 +442,7 @@ struct NativePhaseController {
         remember(next.successor); pending_lease=next.successor; accept(next);
         current_lease.clear(); binding_sha256=next.binding; target_x=next.x; target_y=next.y;
         raw_x=static_cast<ULONG>(x); raw_y=static_cast<ULONG>(y); reset_trace(); ++action_index;
-        ack("executing","executing","",0,false); deadline(held_deadline);
+        ack("executing","executing","",0,false,held_deadline); deadline(held_deadline);
         write_input(0x544CFC,previous_x,raw_x); write_input(0x544D00,previous_y,raw_y); write_input(0x544D04,0,1);
         deadline(held_deadline); arm(phase_bp,phase_id,0x4084A0);
         transition_deadline=GetTickCount64()+20000; held_deadline=0; state=AwaitDispatch; go();
@@ -469,8 +468,9 @@ struct NativePhaseController {
                 if (next.lease!=current_lease) throw std::runtime_error("phase request has a different held lease");
                 if (next.operation=="click") { click(next); return; }
                 if (next.operation!="release") throw std::runtime_error("phase held operation rejected");
-                require_frame(); deadline(held_deadline); accept(next); current_lease.clear(); held_deadline=0;
-                state=Idle; go(); ack("released","released","",0,false); return;
+                require_frame(); deadline(held_deadline); ULONGLONG released_bound=held_deadline;
+                accept(next); current_lease.clear(); held_deadline=0;
+                state=Idle; go(); ack("released","released","",0,false,released_bound); return;
             }
             Sleep(10);
         }

@@ -111,6 +111,19 @@ jobs:
           suite = unittest.defaultTestLoader.loadTestsFromName('test_ordinary_map_pause_engine.PauseEngineTests')
           result = unittest.TextTestRunner(verbosity=2).run(suite)
           report = json.loads(Path(os.environ['CLASH_PAUSE_ENGINE_REPORT']).read_text(encoding='utf-8'))
+          publication = next((row.get('publication_cases', []) for row in report['cases']
+                              if row['case'] == 'pause-resume-counter'), [])
+          publication_ok = (
+              len(publication) == 2
+              and {row['case'] for row in publication} == {'transient-reader', 'permanent-reader'}
+              and all(row['passed'] is True and row['actual_retry_observed'] is True
+                      and row['reader_closed'] is True for row in publication)
+              and next(row for row in publication if row['case'] == 'transient-reader')['released_after_retry'] is True
+              and all(next(row for row in publication if row['case'] == 'permanent-reader')[key] is True
+                      for key in ('deadline_expired', 'target_cleanup_verified', 'fixture_file_unchanged',
+                                  'held_through_terminal', 'ready_ack_unchanged'))
+              and next(row for row in publication if row['case'] == 'permanent-reader')['host_returncode'] == 2
+          )
           report_ok = (
               report['schema'] == 'clash95_pause_engine_fixture_v1'
               and report['expected_cases'] == 2
@@ -122,6 +135,7 @@ jobs:
               and len(report['cases']) == 2
               and {row['case'] for row in report['cases']} == {'pause-resume-counter', 'expired-lease'}
               and all(row['passed'] is True for row in report['cases'])
+              and publication_ok
           )
           sys.exit(0 if result.wasSuccessful() and result.testsRun == 2 and not result.skipped and report_ok else 1)
           '@ | Set-Content -Encoding utf8 $entry
@@ -141,6 +155,7 @@ jobs:
           python -B tools/test_owned_hidden_process_engine.py --execute --scratch "C:/ClashTests/owned-process-${{ github.run_id }}-${{ github.run_attempt }}" --report "$env:GITHUB_WORKSPACE/reports/owned-process-ci.json"
           if ($LASTEXITCODE -ne 0) { throw 'Synthetic private-desktop process fixture failed.' }
       - name: Compile the composed native phase observer without executing it
+        if: ${{ !cancelled() }}
         shell: pwsh
         run: |
           @'

@@ -262,6 +262,24 @@ work copy. The ten-percent reserve was not restored; large artifact-producing
 operations remain subject to the existing disk guard. Continue regular verified
 cleanup after bounded completed batches without deleting unique proof.
 
+The [September 30 synthetic CI failure](../../reports/ordinary-map-pause-engine-ci-20260930-failure.json)
+retains a separate infrastructure failure at the first pause acknowledgment.
+The target reached its authenticated native stop; atomic replacement of
+`ack.json` failed with Windows error 5 and owned cleanup terminated the target.
+The expiry fixture passed. The failing report remains unchanged. This is
+synthetic debugger infrastructure, with no game or screenshot execution; it
+does not alter the six September 26 game attempts.
+
+The shared pause/phase publisher now retries only actual Windows access-denied
+or sharing-violation failures while replacing the same flushed acknowledgment.
+Its fixed one-second publication bound also honors any earlier active lease
+deadline. Each attempt rechecks ownership, the session token, regular paths and
+exact payload bytes; successful publication checks the destination file identity.
+Other errors fail immediately. The native synthetic fixture holds a real reader
+without delete sharing: one case releases it only after an actual retry marker,
+and another holds it through bounded failure and verified owned-target cleanup.
+These fixtures do not change game input, acknowledgment schemas or lease limits.
+
 ## Focused verification and remaining proof
 
 Use [Development and verification](DEVELOPMENT.md#python-and-dependencies) for interpreter discovery.
@@ -283,11 +301,16 @@ previous cases, both prepared-candidate schemas, same-held-lease revalidation,
 genuine state-transition requirements, the exact ordinary previous-index store,
 false native predicates and cleanup after consumed leases. Source fixtures and the separate synthetic pause-engine
 proof remain distinct from game runtime.
-The September 30 preparation passes 25 phase-host source fixtures, 36 portable
-poll-trace fixtures and 43 driver fixtures. The three new driver cases bind
+The September 30 preparation passes 201 ordinary-map portable fixtures, with
+the two native engine cases skipped locally, and all 43 driver fixtures.
+The ordinary-map total includes 14 pause-host source fixtures, 26 phase-host
+source fixtures, four engine report fixtures and 36 poll-trace fixtures.
+The three new driver cases bind
 the trace to phase identity, reject identity changes and keep diagnostic
 coverage separate from gameplay acceptance. CI compiles the composed x86 host
-without executing it; compilation supplies no actual device or game evidence.
+without executing it; successful compilation supplies no actual device or game
+evidence. The real reader-lock cases run only in the opt-in synthetic Windows
+lane; portable source checks do not establish their native execution.
 
 The next run must exercise the corrected native conditional panel-ownership
 contract, retain a fresh held observation for each click, and prove full
