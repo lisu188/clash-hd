@@ -1,0 +1,164 @@
+name: Complete small-world integration
+
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_complete_small_world_candidate.py'
+      - 'tools/test_complete_small_world*.py'
+      - 'tools/test_framed_loaded_probe_engine.py'
+      - 'docs/hd/SMALL_WORLD_INPUT.md'
+      - '.gitattributes'
+      - '.github/workflows/complete-small-world.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_complete_small_world_candidate.py'
+      - 'tools/test_complete_small_world*.py'
+      - 'tools/test_framed_loaded_probe_engine.py'
+      - 'docs/hd/SMALL_WORLD_INPUT.md'
+      - '.gitattributes'
+      - '.github/workflows/complete-small-world.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: complete-small-world-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Complete small-world bytes and x86 (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned synthetic fixture dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4 -r tools/requirements-framed-offline.txt
+      - name: Execute portable and synthetic integrated contracts without skips
+        run: python -B tools/test_complete_small_world_candidate.py --synthetic-only --require-machine-tools -v
+      - name: Preserve predecessor byte and admission contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B tools/test_ordinary_castle_entry_matrix.py PortableTests -v
+          python -B tools/test_ordinary_castle_entry_matrix_inherited.py PortableTests -v
+          python -B tools/test_ordinary_castle_entry_gate_cpu.py --require-machine-tools -v
+
+  engine:
+    name: Complete small-world actual x86 verifier
+    runs-on: windows-2022
+    timeout-minutes: 10
+    env:
+      CLASH_DEBUGGER_INTEGRATION: '1'
+      _NT_SYMBOL_PATH: '.'
+      _NT_ALT_SYMBOL_PATH: ''
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify the signed system x86 debugger engine
+        shell: pwsh
+        run: |
+          $engine = Join-Path $env:WINDIR 'SysWOW64\dbgeng.dll'
+          if (-not (Test-Path -LiteralPath $engine)) { throw 'System x86 debugger engine is required.' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $engine
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Microsoft') {
+            throw 'System debugger engine signature did not verify as Microsoft.'
+          }
+          Get-FileHash -LiteralPath $engine -Algorithm SHA256
+      - name: Execute the final verifier on paused marked synthetic PE32 fixtures
+        shell: pwsh
+        run: |
+          $env:CLASH_COMPLETE_SMALL_WORLD_ENGINE_REPORT = Join-Path $env:RUNNER_TEMP 'complete-small-world-engine-report.json'
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'MSVC x86 tools are required.' }
+          $devcmd = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'
+          $entry = Join-Path $env:RUNNER_TEMP 'run-complete-small-world-engine.py'
+          @'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools', pattern='test_complete_small_world_probe_engine.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun == 6 and not result.skipped else 1)
+          '@ | Set-Content -LiteralPath $entry -Encoding utf8
+          $batch = Join-Path $env:RUNNER_TEMP 'run-complete-small-world-engine.cmd'
+          @"
+          @echo off
+          call "$devcmd" -arch=x86 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          python "$entry"
+          exit /b %errorlevel%
+          "@ | Set-Content -LiteralPath $batch -Encoding ascii
+          & cmd.exe /d /c $batch
+          if ($LASTEXITCODE -ne 0) { throw 'Final synthetic debugger-verifier tests failed.' }
+      - name: Require all eight distinct native case receipts
+        shell: pwsh
+        run: |
+          $validation = Join-Path $env:RUNNER_TEMP 'validate-complete-small-world-report.py'
+          @'
+          import hashlib, json, os, re
+          from pathlib import Path
+          report = json.loads((Path(os.environ['RUNNER_TEMP'])/'complete-small-world-engine-report.json').read_text(encoding='utf-8'))
+          assert report.get('schema') == 'clash95_complete_small_world_debugger_fixture_v1'
+          for field in ('fixture_only', 'completed', 'passed'):
+              assert report.get(field) is True, field
+          for field in ('original_game_read', 'fixture_entry_executed', 'game_runtime_executed', 'manual_input_proof', 'promotion_ready'):
+              assert report.get(field) is False, field
+          sources = {
+              'generator_sha256': 'src/patcher/complete_small_world_candidate.py',
+              'fixture_source_sha256': 'tools/test_complete_small_world_probe_engine.py',
+              'synthetic_builder_source_sha256': 'tools/test_complete_small_world_candidate.py',
+              'harness_source_sha256': 'tools/test_framed_loaded_probe_engine.py',
+          }
+          for field, source in sources.items():
+              assert report.get(field) == hashlib.sha256(Path(source).read_bytes()).hexdigest(), field
+          expected = {'fixed-file': True, 'fixed-block': True, 'aslr': True, 'corrupt-absolute': False,
+                      'corrupt-highbit': False, 'missing': False, 'reordered': False, 'unreadable': False}
+          cases = report.get('cases')
+          assert type(report.get('expected_cases')) is int and report['expected_cases'] == 8
+          assert type(cases) is list and len(cases) == 8 and {case['case'] for case in cases} == set(expected)
+          for case in cases:
+              accept = expected[case['case']]
+              assert case.get('passed') is True and type(case.get('returncode')) is int and case['returncode'] == 0
+              assert case.get('expected_acceptance') is accept and case.get('observed_acceptance') is accept
+              assert case.get('paused_unchanged_receipt') is True
+              log, marker = case['log'], case['expected_final_marker']
+              assert re.fullmatch(r'CSW_FINAL_OK stage=\S+-smallworld-validation resolution=1920x1080 candidate_sha256=[0-9a-f]{64}', marker)
+              assert 'HARNESS_END hr=00000000 paused=1 same_ip=1 unchanged=1' in log
+              assert 'HARNESS_CONTEXT before=014c after=014c' in log and 'Syntax error' not in log
+              actual = re.findall(r'^CSW_FINAL_OK[^\r\n]*', log, re.M)
+              assert actual == ([marker] if accept else [])
+              if accept:
+                  assert 'CSW_BASE_INVALID' not in log and not re.search(r'^CSW_CHUNK_\d+_BAD', log, re.M)
+              else:
+                  assert case.get('observed_rejection') is True and 'CSW_INCOMPLETE' in log
+              if case['case'] == 'aslr':
+                  assert case.get('actual_relocation_verified') is True
+          print('Eight source-bound synthetic verifier receipts passed; no game entry executed.')
+          '@ | Set-Content -LiteralPath $validation -Encoding utf8
+          python -B $validation
+          if ($LASTEXITCODE -ne 0) { throw 'Final verifier receipt validation failed.' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: complete-small-world-engine-report
+          path: ${{ runner.temp }}/complete-small-world-engine-report.json
+          retention-days: 7
+          if-no-files-found: warn

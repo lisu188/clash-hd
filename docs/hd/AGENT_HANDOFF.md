@@ -127,9 +127,19 @@ at 1,000 ms with owned cleanup, both lease cases, both descendant-cleanup cases
 and successful composed x86 compilation. The full observer was not executed;
 this checkpoint does not measure game device reads or repair the failed runs.
 
-The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
-bounded component and its new complete-wrapper CPU checks; composition into the
-Complete HD/modalwidgets candidate remains required.
+The [small-world successor](SMALL_WORLD_INPUT.md) integrates bounded repaint
+and both ordinary and army-private input-axis guards above the exact
+Complete HD/modalwidgets castle-entry matrix. It retains integrated army
+composition, native presentation and the inherited castle gate. Its distinct
+recipe and final `CSW_FINAL_OK` verifier remain outside the launcher and runtime
+driver; the driver's prepared-matrix option accepts only the older matrix.
+The [September 30 source/CPU checkpoint](../../reports/complete-small-world-source-verification-20260930.json)
+passes 32 methods without skips, including eight methods on one original-bound
+modalwidgets1920 image constructed in memory. Synthetic byte checks cover both
+profiles and all six existing geometries; draw returns are modeled. The local
+checkpoint launched no game, compiler or debugger and wrote no candidate bundle.
+Fresh selection/movement, final visual composition, castle lifecycle,
+endurance, manual input and promotion evidence remain required.
 The September 24 review remains historical; the new driver attempts do not
 replace the controlled component evidence below. Stable and manual-input
 boundaries remain unchanged.

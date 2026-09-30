@@ -1,0 +1,20 @@
+{
+  "schema": "clash95_complete_small_world_ci_startup_failure_v1",
+  "head_commit": "f676d715bc8f7704cae427944af75227a299e0d9",
+  "workflow": ".github/workflows/complete-small-world.yml",
+  "workflow_sha256": "19b386e7bd8e64097611a293365c9bfd873f88296600f5d47e3ec815eee048a0",
+  "run_id": 36701734994,
+  "run_url": "https://github.com/lisu188/clash-hd/actions/runs/36701734994",
+  "check_suite_id": 99395033148,
+  "event": "push",
+  "conclusion": "failure",
+  "jobs_started": 0,
+  "annotation": "Invalid workflow file: .github/workflows/complete-small-world.yml#L48. You have an error in your yaml syntax on line 48.",
+  "cause": "The unquoted inline pip command contained a colon followed by a space in --only-binary=:all:.",
+  "correction": "Use a YAML literal block for that command; retain the same pinned packages and required no-skip test commands.",
+  "producer_and_cpu_fixture_changed": false,
+  "game_runtime_executed": false,
+  "debugger_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false
+}
