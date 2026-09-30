@@ -33,7 +33,8 @@ static void map_state(Session &s, const std::string &out, int sample) {
          <<",\"map_active_word\":"<<s.word(0x527c24)<<",\"native_modal_word\":"<<s.word(0x52698c)
          <<",\"render_hook\":"<<s.word(0x5199d8)<<",\"post_callback\":"<<s.word(0x526990)
          <<",\"lower_owner\":"<<s.word(0x526994)<<",\"current_player\":"<<s.word(0x5202ec)
-         <<",\"selected_stack\":"<<s.word(0x511b58)<<",\"previous_stack\":"<<s.word(0x514194)
+         <<",\"selected_stack\":"<<s.word(0x511b58)<<",\"previous_stack\":"<<s.word(0x511b5c)
+         <<",\"panel_stack\":"<<s.word(0x514194)
          <<",\"map_surface\":"<<s.word(0x5202e0)
          <<",\"map_extent\":"<<(s.word(0x5202e0)?s.word(s.word(0x5202e0)):0)
          <<",\"map_pixels\":"<<(s.word(0x5202e0)?s.word(s.word(0x5202e0)+4):0)
@@ -250,7 +251,7 @@ def prepare_client(user, pid: int, width: int, height: int) -> dict:
                 desktop_size=list(bounds),scaled=target!=(width,height),native_pixel_display=target==(width,height))
 
 
-def run(args) -> dict:
+def run_foreground(args) -> dict:
     case=matrix.select_case(args.profile,args.resolution)
     root=matrix.ROOT;reference=args.runtime.resolve();out=args.out.resolve()
     if os.name!='nt' or os.environ.get('GITHUB_ACTIONS')!='true':raise ValueError('Disposable Windows Actions runner required')
@@ -328,12 +329,7 @@ def run(args) -> dict:
             ox,oy=(width-640)//2,(height-480)//2
             if not click('campaign',f'campaign:{224+ox},{185+oy};first-campaign:{225+ox},{305+oy}','--steps'):
                 raise ValueError('Campaign input did not complete')
-            wait_until(43)
-            click('dismiss','dismiss:320,220','--aim-points')
-            wait_until(58)
-            click('select-unit','select-unit:320,365','--aim-points')
-            wait_until(75)
-            click('preview-move','preview-move:384,430','--aim-points')
+            report['ordinary_input_pending'] = 'Foreground campaign diagnostic has no native action-boundary transport; fixed map clicks are disabled'
             proc.wait(timeout=max(1,begin+170-time.monotonic()))
         report['display']=display.report
     except Exception as error:
@@ -361,8 +357,8 @@ def run(args) -> dict:
         except Exception as error:report['errors'].append('Identity audit: '+str(error))
         report['menu_and_campaign_input_passed']=not report['errors'] and report.get('menu',{}).get('matches_original') is True and all(
             a['passed'] for a in report['actions'] if a['name']=='campaign') and any(a['name']=='campaign' for a in report['actions'])
-        report['unit_selected_observed']=selected_unit(report.get('states',[]))
-        report['native_input_passed']=len(report['actions'])==4 and all(a['passed'] for a in report['actions'])
+        report['unit_selected_observed']=False  # Legacy scalar samples cannot prove an action's exact transition.
+        report['native_input_passed']=False  # Cursor/OS-delivery receipts do not prove native map input.
         report['map_controls_pixels_passed']=map_controls_passed(report.get('map_pixels',[]))
         report['source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
         report['source_hashes']={name:matrix.digest(root/name) for name in ('tools/resolution_playability.py','tools/launcher_resolution_matrix.py','tools/real_exe_smoke.py','tools/runner_menu_input.py','tools/menu_pulse_click.py','src/launcher/resolutions.json')}
@@ -370,19 +366,282 @@ def run(args) -> dict:
     return report
 
 
+def prepared_candidate(path: Path, case: dict) -> tuple[Path, dict]:
+    """Reuse only an intact, current source-bound launcher build receipt."""
+    receipt=json.loads(path.read_text(encoding='utf-8-sig'))
+    if not isinstance(receipt,dict) or set(receipt)!={'path','built'}:
+        raise ValueError('Exact prepared launcher receipt required')
+    exe=Path(receipt['path']).resolve();built=receipt['built']
+    if any(built.get(k)!=v for k,v in case.items()):
+        raise ValueError('Prepared build differs from the current launcher case')
+    build=built['launcher_build'];expected=built['candidate_sha256']
+    if (build.get('base_sha256')!=matrix.runtime.ORIGINAL_SHA256 or
+            build.get('output_sha256')!=expected or matrix.digest(exe)!=expected):
+        raise ValueError('Prepared executable or original identity differs')
+    for key in ('profile','resolution','stage','recipe_revision'):
+        if build['display_plan'].get(key if key!='profile' else 'renderer')!=case[key]:
+            raise ValueError('Prepared display plan differs: '+key)
+    metadata_path=Path(build['candidate_manifest']['path']).resolve()
+    if (metadata_path!=exe.with_suffix('.candidate.json') or
+            matrix.digest(metadata_path)!=build['candidate_manifest']['sha256']):
+        raise ValueError('Prepared candidate manifest differs')
+    metadata=json.loads(metadata_path.read_text(encoding='utf-8'))
+    original_field,schema=('base_sha256',1) if case['profile']=='completehd' else (
+        'original_sha256','clash95_framed_modal_widgets_candidate_v1')
+    if (metadata.get('schema')!=schema or metadata.get(original_field)!=matrix.runtime.ORIGINAL_SHA256 or
+            metadata.get('candidate_sha256')!=expected or
+            any(metadata.get(k)!=case[k] for k in ('stage','resolution','recipe_revision')) or
+            metadata.get('source_hashes')!=build.get('source_sha256')):
+        raise ValueError('Prepared metadata or source inventory differs')
+    matrix.runtime.verify_hd_sources(metadata,matrix.ROOT)
+    artifacts=build.get('artifact_sha256')
+    if not isinstance(artifacts,dict) or set(artifacts)!={exe.name,metadata_path.name,exe.with_suffix('.cdb').name}:
+        raise ValueError('Prepared artifact inventory differs')
+    for name,digest in artifacts.items():
+        if matrix.digest(exe.parent/name)!=digest:
+            raise ValueError('Prepared artifact changed: '+name)
+    return exe,built
+
+
+def native_phase_source(width: int, height: int) -> str:
+    import ordinary_map_startup as startup
+    import ordinary_map_pause_host as pause
+    import ordinary_map_phase_host as phase
+    return phase.render_source(pause.render_source(
+        startup.render_source(observation_source(matrix.runtime.HARNESS),width,height)))
+
+
+def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict) -> None:
+    """Read, revalidate and commit through the SAME held native input boundary."""
+    import ordinary_map_observation as decoder
+    import ordinary_map_input_plan as planner
+    from ordinary_map_phase_client import verify_dispatch
+    sequence=0;lease=None
+    report['observations']=[];report['actions']=[]
+    def observe(name, indices=None):
+        nonlocal sequence
+        sequence+=1
+        value=decoder.observe(read_exact,candidate=candidate,identity=peer.identity,
+            sequence=sequence,lease=lease,check_lease=peer.check_lease,stack_indices=indices)
+        value['native_phase']=peer.ack()
+        destination=out/(name+'.json')
+        destination.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
+        report['observations'].append(dict(name=name,path=str(destination),sha256=matrix.digest(destination),
+            capture_index=value['native_phase']['capture_index'],receipt=value['receipt']))
+        print(json.dumps(dict(milestone=name,capture_index=value['native_phase']['capture_index'])),flush=True)
+        return value['snapshot']
+    try:
+        lease=peer.acquire()
+        initial=observe('map-before-plan')
+        plan=planner.plan_input(initial,candidate)
+        (out/'measured-plan.json').write_text(json.dumps(plan,indent=2)+'\n',encoding='utf-8')
+        report['plan_sha256']=matrix.digest(out/'measured-plan.json')
+        indices=tuple(s['index'] for s in plan['basis']['stacks'])
+        for action in ('select','move'):
+            before=observe('map-before-'+action,indices)
+            validation=planner.revalidate_before_click(plan,before,action)
+            held=peer.ack()
+            binding=dict(plan_sha256=report['plan_sha256'],action=action,
+                         validation=validation,held_phase=held)
+            binding_sha256=planner.digest(binding)
+            row=dict(name=action,passed=False,point=validation['point'],
+                     binding=binding,binding_sha256=binding_sha256)
+            report['actions'].append(row)
+            lease=peer.click(lease,validation['point'],binding_sha256)
+            row['dispatch_receipt']=peer.ack()
+            after=observe('map-after-'+action,indices)
+            row['native_dispatch']=verify_dispatch(row['dispatch_receipt'],peer.identity,binding_sha256)
+            if action=='select' and after['context']['previous_stack']!=before['context']['selected_stack']:
+                raise planner.PlanError('ordinary 4084A0 selection did not preserve the exact old selected index')
+            verifier=planner.verify_selection if action=='select' else planner.verify_movement
+            row['state_transition']=verifier(plan,before,after)
+            row['passed']=True
+        report['ordinary_controlled_input_passed']=True
+    finally:
+        # If click failed the old lease was consumed; never release or reuse it.
+        if lease is not None and peer._active==lease and not peer._poisoned:
+            try:report['phase_release']=peer.release(lease)
+            except Exception as error:report['errors'].append('Phase release: '+str(error))
+        report['phase_receipts']=peer.receipts
+
+
+def hidden_success(report: dict) -> bool:
+    return (not report['errors'] and report.get('ordinary_controlled_input_passed') is True and
+            [a.get('name') for a in report.get('actions',[])]==['select','move'] and
+            all(a.get('passed') is True and a.get('native_dispatch',{}).get('passed') is True and
+                a.get('state_transition',{}).get(key) is True for a,key in zip(report['actions'],
+                    ('selection_state_transition','movement_state_transition'))) and
+            report.get('outcome',{}).get('observation_complete') is True and
+            all(report.get(k) is True for k in ('reference_unchanged','candidate_unchanged',
+                'working_original_unchanged','retained_process_exited','sources_unchanged',
+                'startup_retired_before_actions','map_controls_pixels_passed')) and
+            all(report.get('host_cleanup',{}).get(k) is True for k in ('host_exited','job_empty','handles_closed')))
+
+
+def run_hidden(args) -> dict:
+    import ordinary_map_input_plan as planner
+    import ordinary_map_phase_host as phase_host
+    from ordinary_map_phase_client import PhaseClient
+    from ordinary_map_pause_client import RetainedTarget, prepare_control, checked_directory, unique_object
+    from owned_hidden_process import OwnedHiddenProcess
+    case=matrix.select_case(args.profile,args.resolution)
+    root=matrix.ROOT;reference=args.runtime.resolve();out=checked_directory(args.out)
+    if os.name!='nt' or args.profile not in ('completehd','modalwidgets'):
+        raise ValueError('Hidden native input requires Windows and a complete framed army profile')
+    if args.native_present_bounds:
+        raise ValueError('Hidden input uses the exact launcher candidate, without a presentation override')
+    if out.exists() or not out.is_relative_to(Path('C:/ClashTests').resolve()) or any(
+            out.is_relative_to(p) or p.is_relative_to(out) for p in (root,reference)):
+        raise ValueError('New external candidate output required')
+    if shutil.disk_usage(out.parent).free/shutil.disk_usage(out.parent).total<=.1:
+        raise ValueError('Ten-percent disk reserve required before runtime preparation')
+    out.mkdir(parents=True);capture=out/'capture';capture.mkdir()
+    report=dict(schema=2,mode='hidden-controlled',case=case,approval_text=args.approval_text,
+        actions=[],errors=[],ordinary_controlled_input_passed=False,native_input_passed=False,
+        os_input_executed=False,manual_input_proof=False,gameplay_verified=False,promotion_ready=False,
+        proof_scope='controlled native ordinary handler with measured input fields; no OS or manual input',
+        capture_scope='Private desktop and non-presenting proxy; paused software surface only',
+        startup_scope='Bounded controlled native slot-zero loading; overrides retire at PlayGame before human input')
+    source_names=('tools/resolution_playability.py','tools/launcher_resolution_matrix.py','tools/real_exe_smoke.py',
+        'tools/run_original_game_smoke.py','tools/owned_hidden_process.py','tools/ordinary_map_startup.py',
+        'tools/ordinary_map_phase_host.py','tools/ordinary_map_phase_client.py','tools/ordinary_map_pause_host.py',
+        'tools/ordinary_map_pause_client.py','tools/ordinary_map_observation.py','tools/ordinary_map_input_plan.py',
+        'src/launcher/resolutions.json')
+    report['source_hashes']={n:matrix.digest(root/n) for n in source_names}
+    report['source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+    source_copy=out/'source'
+    for name,digest in report['source_hashes'].items():
+        destination=source_copy/name;destination.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(root/name,destination)
+        if matrix.digest(destination)!=digest:raise ValueError('Source changed before freezing: '+name)
+    proc=retained=peer=None;baseline=manifest=built=exe=target=None
+    work=out/'work';logpath=capture/'debugger.log'
+    try:
+        manifest=json.loads(args.manifest.read_text(encoding='utf-8-sig'))
+        baseline=owned.verify_assets(reference,manifest)
+        usage=shutil.disk_usage(out)
+        if usage.free-sum(r['bytes'] for r in baseline.values())-128*1024**2<=usage.total*.1:
+            raise ValueError('Runtime copy would breach disk reserve')
+        report['runtime_manifest_sha256']=matrix.digest(args.manifest)
+        proxy=args.proxy.resolve()
+        build=json.loads(proxy.with_name('ddraw_surfdump_proxy.build.json').read_text(encoding='utf-8-sig'))
+        if (build.get('generated_by')!='clash-hd-surface-dump-proxy' or matrix.digest(proxy)!=build['output_sha256'].lower()
+                or matrix.digest(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp')!=build['source_sha256'].lower()):
+            raise ValueError('Proxy build identity differs')
+        if args.prepared_build:
+            exe,built=prepared_candidate(args.prepared_build,case)
+            report['prepared_build_receipt_sha256']=matrix.digest(args.prepared_build)
+        else:exe,built=matrix.stage_candidate(args.profile,args.resolution,reference,out)
+        report.update(built=built,proxy_build=build,executed_stage=built['stage'],executed_revision=built['recipe_revision'])
+        width,height=map(int,args.resolution.split('x'))
+        source=native_phase_source(width,height)
+        with patch.object(matrix.runtime,'HARNESS',source):
+            engine=matrix.runtime.compile_harness(out)
+        report.update(engine_sha256=matrix.digest(engine),engine_source_sha256=matrix.digest(out/'real-exe-engine.cpp'))
+        shutil.copytree(reference,work)
+        if owned.verify_assets(work,manifest)!=baseline:
+            raise ValueError('Working assets differ after copying')
+        for name in manifest['runtime']['empty_directories']:
+            directory=(work/name).resolve()
+            if not directory.is_relative_to(work):raise ValueError('Escaping runtime directory')
+            directory.mkdir(parents=True,exist_ok=True)
+        target=work/exe.name
+        if target.exists() or (work/'ddraw.dll').exists():raise ValueError('Candidate/proxy collides with runtime assets')
+        shutil.copy2(exe,target);shutil.copy2(proxy,work/'ddraw.dll')
+        control=out/'control';prepare_control(control)
+        with logpath.open('w',encoding='utf-8') as log:
+            proc=OwnedHiddenProcess([str(engine),str(target),str(capture),'110','proxy',str(control),'native-phase-v1'],
+                cwd=work,env=os.environ,stdout=log)
+            report['host']=dict(pid=proc.pid,creation_filetime=proc.creation_filetime,desktop=proc.desktop_name)
+            end=time.monotonic()+30
+            ready=control/'phase-ack.json'
+            while not ready.exists() and proc.poll() is None and time.monotonic()<end:time.sleep(.02)
+            if not ready.is_file():raise ValueError('Native host produced no ready acknowledgment')
+            if ready.stat().st_size>4096:raise ValueError('Oversize native acknowledgment')
+            ack=json.loads(ready.read_text(encoding='ascii'),object_pairs_hook=unique_object)
+            identity={k:ack[k] for k in ('pid','creation_filetime','image_base')}
+            identity['candidate_sha256']=built['candidate_sha256']
+            text=logpath.read_text(encoding='utf-8',errors='replace')
+            loaded=re.findall(r'^REAL_LOADED pid=(\d+) base=([0-9a-f]+) entry=[0-9a-f]+ executable_sections_match=1$',text,re.M)
+            if len(loaded)!=1 or (int(loaded[0][0]),int(loaded[0][1],16))!=(identity['pid'],identity['image_base']) or 'REAL_EXE_ENTRY observed=1' not in text:
+                raise ValueError('Native acknowledgment has no matching loaded-code/entry authentication')
+            retained=RetainedTarget(identity=identity,candidate_path=target)
+            peer=PhaseClient(control,controller_sha256=phase_host.source_sha256(),identity=identity,
+                check_owner=retained.check_owner,host_alive=lambda:proc.poll() is None)
+            peer.wait_ready()
+            startup_deadline=time.monotonic()+60
+            while True:
+                text=logpath.read_text(encoding='utf-8',errors='replace')
+                if 'OWNED_STARTUP_RETIRED ' in text and 'REAL_PHASE_HUMAN ' in text:break
+                if proc.poll() is not None or time.monotonic()>=startup_deadline:
+                    raise ValueError('Controlled startup did not retire before the natural human loop')
+                time.sleep(.02)
+            report['startup_retired_before_actions']=True
+            report['owner']=identity
+            candidate=dict(schema=planner.CANDIDATE_SCHEMA,sha256=built['candidate_sha256'],
+                stage=built['stage'],profile=args.profile,resolution=args.resolution,layout=planner.LAYOUT)
+            measured_actions(peer,retained.read_exact,candidate,out,report)
+            proc.wait(timeout=130)
+    except Exception as error:
+        report['errors'].append(f'{type(error).__name__}: {error}')
+    finally:
+        if proc is not None:
+            try:
+                if proc.poll() is None:proc.wait(timeout=125)
+            except subprocess.TimeoutExpired:report['errors'].append('Hidden native host exceeded bounded interval')
+            finally:
+                try:proc.close()
+                except Exception as error:report['errors'].append('Owned host cleanup: '+str(error))
+                report['host_cleanup']=proc.cleanup
+                report['host_returncode']=proc.returncode
+        if retained is not None:
+            report['retained_process_exited']=retained.kernel.WaitForSingleObject(retained.handle,5000)==0
+            retained.close()
+        if logpath.exists():
+            text=logpath.read_text(encoding='utf-8',errors='replace')
+            report['outcome']=full_observation(text,proc.returncode if proc else -1)
+            report['debugger_log_sha256']=matrix.digest(logpath)
+        try:
+            report['snapshots']=matrix.runtime.render(capture)
+            if report['snapshots']:
+                report['map_pixels']=validate_map_pixels(capture,reference,args.profile,args.resolution)
+        except Exception as error:report['errors'].append('Capture audit: '+str(error))
+        try:
+            report['reference_unchanged']=baseline is not None and owned.verify_assets(reference,manifest)==baseline
+            if built is not None and target is not None:
+                report['candidate_unchanged']=matrix.digest(target)==built['candidate_sha256']==matrix.digest(exe)
+                matrix.runtime.verify_hd_sources({'source_hashes':built['launcher_build']['source_sha256']},root)
+                report['working_original_unchanged']=matrix.digest(work/'clash95.exe')==matrix.runtime.ORIGINAL_SHA256
+            report['sources_unchanged']=report['source_hashes']=={n:matrix.digest(root/n) for n in source_names}
+            if not report['sources_unchanged']:raise ValueError('Driver/controller source changed during run')
+        except Exception as error:report['errors'].append('Identity audit: '+str(error))
+        report['unit_selected_observed']=any(a['name']=='select' and a['passed'] for a in report['actions'])
+        report['map_controls_pixels_passed']=map_controls_passed(report.get('map_pixels',[]))
+        report['passed']=hidden_success(report)
+        (out/'playability.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    return report
+
+
+def run(args) -> dict:
+    return run_hidden(args) if args.mode=='hidden-controlled' else run_foreground(args)
+
 def main() -> int:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile',choices=tuple(matrix.BACKENDS),default='modalwidgets')
     parser.add_argument('--resolution',default='1024x768')
+    parser.add_argument('--mode',choices=('hidden-controlled','foreground-diagnostic'),default='hidden-controlled')
+    parser.add_argument('--prepared-build',type=Path)
     for name in ('runtime','manifest','proxy','out'):parser.add_argument('--'+name,type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--approval-text')
     parser.add_argument('--native-present-bounds',action='store_true')
     args=parser.parse_args();case=matrix.select_case(args.profile,args.resolution)
     if not args.execute:
-        print(json.dumps(dict(executed=False,case=case,actions=['campaign','dismiss','select-unit','preview-move'])));return 0
+        print(json.dumps(dict(executed=False,case=case,mode=args.mode,actions=['controlled-slot0-startup','measured-select','measured-one-cell-move'] if args.mode=='hidden-controlled' else ['campaign-diagnostic'])));return 0
     if not args.approval_text or not args.approval_text.strip() or not all((args.runtime,args.manifest,args.proxy,args.out)):
         parser.error('Execution requires explicit approval, assets, source-bound proxy and isolated output')
     report=run(args);print(json.dumps(report,indent=2))
+    if args.mode == 'hidden-controlled':
+        return int(not hidden_success(report))
     return int(bool(report['errors']) or not report.get('menu_and_campaign_input_passed') or not report.get('map_controls_pixels_passed')
                or not report.get('outcome',{}).get('observation_complete') or not report.get('reference_unchanged') or not report.get('retained_process_exited') or not report.get('native_input_passed') or not report.get('unit_selected_observed'))
 
