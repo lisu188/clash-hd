@@ -1,0 +1,56 @@
+{
+  "schema": "clash95_complete_small_world_ci_verification_v1",
+  "source_head_commit": "9d0233c276707670b144ab165f74c45232436cc4",
+  "run_id": 36702432760,
+  "run_url": "https://github.com/lisu188/clash-hd/actions/runs/36702432760",
+  "engine_job_id": 109844759042,
+  "raw_engine_report": "reports/complete-small-world-engine-20260930.json",
+  "raw_engine_report_sha256": "ecf7891709027d3c97d11ac62c82518d0087173bd95bcfbbf1dcb0d2cb38b538",
+  "native_methods_passed": 6,
+  "native_cases_passed": 8,
+  "native_fixture_only": true,
+  "actual_game_candidate_loaded": false,
+  "original_game_read": false,
+  "fixture_entry_executed": false,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "source_hashes": {
+    "generator_sha256": "c6b055f98717e91a467e259321e90b9b7df07250c3f448d59d0bc34dc742d66e",
+    "fixture_source_sha256": "feafb5e63dcdf1693a7757e98f39a5c1c2cddf61ccce157922999d14c95f5f7f",
+    "synthetic_builder_source_sha256": "38176591ed99a132b656fa1d9f2b80919631e350023b66023e2afb51fe883768",
+    "harness_source_sha256": "29bbc4f9255fca3272452f0bbad3bd0f9e0614b8c8272be5606a700aeb1a95cb"
+  },
+  "case_labels": [
+    "aslr",
+    "corrupt-highbit",
+    "corrupt-absolute",
+    "fixed-file",
+    "fixed-block",
+    "missing",
+    "reordered",
+    "unreadable"
+  ],
+  "contract_jobs": [
+    {
+      "job_id": 109844759222,
+      "os": "ubuntu-24.04",
+      "passed": true,
+      "methods": 24,
+      "skipped": 0
+    },
+    {
+      "job_id": 109844759311,
+      "os": "windows-2022",
+      "passed": true,
+      "methods": 24,
+      "skipped": 0
+    }
+  ],
+  "initial_workflow_failure": "reports/complete-small-world-ci-startup-failure-20260930.json",
+  "limits": [
+    "The actual debugger reads paused marked artificial fixtures only; the original-bound game candidate was not loaded.",
+    "Local original-backed CPU checks and synthetic native verifier behavior are distinct from rendering, measured input, lifecycle, endurance and promotion."
+  ],
+  "predecessor_compile_timeout": "reports/complete-small-world-predecessor-ci-timeout-20260930.json"
+}
