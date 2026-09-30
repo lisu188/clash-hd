@@ -280,6 +280,19 @@ without delete sharing: one case releases it only after an actual retry marker,
 and another holds it through bounded failure and verified owned-target cleanup.
 These fixtures do not change game input, acknowledgment schemas or lease limits.
 
+The [source-bound CI receipt](../../reports/ordinary-map-native-ci-verification-20260930.json)
+retains [both native pause cases](../../reports/ordinary-map-pause-engine-ci-20260930.json),
+[composed x86 compilation](../../reports/ordinary-map-phase-compile-ci-20260930.json)
+and [both owned-descendant cleanup cases](../../reports/owned-process-ci-20260930.json)
+from workflow run `36686641640` at commit
+`be568ee10064f879c3ff2a05ca6ec43988208827`. The transient reader recovered
+after a real Windows error 5 retry. The permanent reader remained open through
+62 retries, publication expiry at exactly 1,000 ms, host exit 2 and verified
+target cleanup. Counter pause/resume and lease expiry also passed. Raw producer
+hashes match that commit, and both generated source identities replay locally.
+The full observer compiled without being executed; no device HRESULT, game
+input, screenshot or promotion proof is supplied by this synthetic checkpoint.
+
 ## Focused verification and remaining proof
 
 Use [Development and verification](DEVELOPMENT.md#python-and-dependencies) for interpreter discovery.

@@ -112,6 +112,11 @@ cleanup. The shared publisher now uses a bounded retry for actual file-sharing
 denials, with native transient/permanent reader-lock fixtures. Source checks and
 the synthetic lane remain separate from game runtime and manual input; retain
 the failed report when inspecting newer CI results.
+The [subsequent source-bound CI receipt](../../reports/ordinary-map-native-ci-verification-20260930.json)
+at commit `be568ee1` records actual transient recovery, permanent-lock expiry
+at 1,000 ms with owned cleanup, both lease cases, both descendant-cleanup cases
+and successful composed x86 compilation. The full observer was not executed;
+this checkpoint does not measure game device reads or repair the failed runs.
 
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the

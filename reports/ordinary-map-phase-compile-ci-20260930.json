@@ -1,0 +1,14 @@
+{
+  "compiled": true,
+  "runtime_executed": false,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "source_sha256": {
+    "resolution_playability.py": "6f186cd4e1c1d02569ae0310688174bdeadf0eb3ee7190339522501d83f0c8a3",
+    "ordinary_map_startup.py": "04fd8d9d24e9b244ba274e99b82207a09c3f2b6129a7b6717c29785d7a09388c",
+    "ordinary_map_pause_host.py": "dc1951bf4ca32f05d42eedc2c93fc5bb11c6f4bf2b967f72a6a435301fb93a0d",
+    "ordinary_map_phase_host.py": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c"
+  },
+  "generated_cpp_sha256": "0d07ecdd6f890bb92f5f22a31e5eb4a25d32a69582db480472742c25509c34d0",
+  "engine_sha256": "b9bf6a304234204382ba07b5583a4eb57db27e604f03310e9b824557183f31df"
+}
