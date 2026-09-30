@@ -216,6 +216,11 @@ deadline and a maximum of 64 paired polls; its breakpoint retires before the
 held snapshot or controlled input action. This checkpoint is source and
 portable-fixture preparation only. No September 30 game run or actual device
 HRESULT has been measured, and the six September 26 failures remain unchanged.
+The composed declarations keep the lease owner before startup and phase
+controllers. Startup and phase checks both cover `0x47BFD0`; candidate code is
+authenticated before startup installs its software breakpoint there, and all
+phase byte comparisons remain exact. Loaded-byte readback after breakpoint
+installation still needs a fresh bounded runtime check.
 
 Each `REAL_MOUSE_POLL_V1` record uses
 `clash95_native_mouse_poll_trace_v1` and binds the epoch/action, process/thread,
@@ -278,7 +283,7 @@ previous cases, both prepared-candidate schemas, same-held-lease revalidation,
 genuine state-transition requirements, the exact ordinary previous-index store,
 false native predicates and cleanup after consumed leases. Source fixtures and the separate synthetic pause-engine
 proof remain distinct from game runtime.
-The September 30 preparation passes 24 phase-host source fixtures, 36 portable
+The September 30 preparation passes 25 phase-host source fixtures, 36 portable
 poll-trace fixtures and 43 driver fixtures. The three new driver cases bind
 the trace to phase identity, reject identity changes and keep diagnostic
 coverage separate from gameplay acceptance. CI compiles the composed x86 host

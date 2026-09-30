@@ -40,6 +40,9 @@ class PhaseHostTests(unittest.TestCase):
         self.assertLess(source.index('if (phases.on_event('), source.index('if (ip==entry && !entered)'))
         for declaration in ('StartupController startup(', 'PauseLeaseController leases(', 'NativePhaseController phases('):
             self.assertEqual(source.count(declaration), 1)
+        self.assertLess(source.index('PauseLeaseController leases('), source.index('StartupController startup('))
+        self.assertLess(source.index('StartupController startup('), source.index('NativePhaseController phases('))
+        self.assertLess(source.index('StartupController startup('), source.index('&startup.retired);'))
         self.assertIn(pause.CONTROLLER_SOURCE, source)
         self.assertIn('strcmp(argv[4],"proxy")==0,&startup.retired);', source)
         for old, new in reversed(host.source_replacements(startup_composed=True)):
@@ -47,6 +50,25 @@ class PhaseHostTests(unittest.TestCase):
             source = source.replace(new, old, 1)
         expected = pause.render_source(startup.render_source(runtime.observation_source(smoke.HARNESS), 1024, 768))
         self.assertEqual(source, expected)
+
+    def test_composed_constructor_anchor_rejects_missing_reordered_or_duplicate_declarations(self):
+        import ordinary_map_startup as startup
+        source = pause.render_source(startup.render_source(runtime.observation_source(smoke.HARNESS), 1920, 1080))
+        combined = host._CONSTRUCTOR + host._STARTUP_CONSTRUCTOR
+        self.assertEqual(source.count(combined), 1)
+        defective_sources = {
+            'missing_both': source.replace(combined, '', 1),
+            'missing_lease': source.replace(host._CONSTRUCTOR, '', 1),
+            'missing_startup': source.replace(host._STARTUP_CONSTRUCTOR, '', 1),
+            'reordered': source.replace(combined, host._STARTUP_CONSTRUCTOR+host._CONSTRUCTOR, 1),
+            'separated': source.replace(combined, host._CONSTRUCTOR+'\n'+host._STARTUP_CONSTRUCTOR, 1),
+            'duplicate_combined': source+combined,
+            'duplicate_lease': source+host._CONSTRUCTOR,
+            'duplicate_startup': source+host._STARTUP_CONSTRUCTOR,
+        }
+        for defect, defective in defective_sources.items():
+            with self.subTest(defect=defect), self.assertRaisesRegex(ValueError, 'anchor'):
+                host.render_source(defective)
 
     def test_missing_and_duplicate_anchors_reject(self):
         source = parent_source()
