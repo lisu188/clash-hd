@@ -1,0 +1,138 @@
+{
+  "schema": "clash95_activation_source_checkpoint_v1",
+  "date": "2026-09-30",
+  "parent_commit": "5763fc6ceb1e5d0d2a7f2bd2fa579a7b19f76cec",
+  "started_at": "2026-09-30T16:16:24.607363+00:00",
+  "finished_at": "2026-09-30T16:16:47.941472+00:00",
+  "elapsed_seconds": 23.328,
+  "modules": [
+    "test_ordinary_map_activation_host",
+    "test_ordinary_map_activation_trace",
+    "test_resolution_activation_diagnostics",
+    "test_resolution_playability"
+  ],
+  "tests_run": 154,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "source_sha256": {
+    "tools/resolution_playability.py": "1d90f59fecd7955ba5070cf4709ea5bbcecbcdbfa570ccb50c83af1c5d314ec7",
+    "tools/ordinary_map_activation_host.py": "20fb407290ba5f4cab2150967114bb0d7b52c84d16e917a53b7973c0f86a3787",
+    "tools/ordinary_map_activation_trace.py": "cddf6ac367b55e00dcee11245435abcbe089f6461fb7b735032137bb15baea64",
+    "tools/test_ordinary_map_activation_host.py": "6c10155596e3a4a4fdb7009f46a1d7ec25996a2b4a4fa7b96f2c127dfd7780fd",
+    "tools/test_ordinary_map_activation_trace.py": "37d1e9181401be5d8ce59ce85ddf935d969afdc7b832f383a8d88e8e456a600c",
+    "tools/test_resolution_activation_diagnostics.py": "7ab0ef7e814daf5e603fed80eea7792b6e80dc1c00e2aa9ed6dd34a9fc40c242",
+    "tools/ordinary_map_phase_host.py": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+    "tools/test_resolution_playability.py": "cea56c4e174a918a40bd2061f18225351f60ddbf1f192de136d64c95e47ccd71"
+  },
+  "sources_unchanged": true,
+  "acceptance_ast_unchanged": true,
+  "log": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-activation-source-fixtures-20260930.log",
+    "bytes": 29750,
+    "sha256": "b7d0f05a566d9e5b3e4936768aa00bb047abd2fdc768f476c603857da065b0db"
+  },
+  "original_read_only": {
+    "path": "C:/Clash/clash95.exe",
+    "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "unchanged": true,
+    "anchors": [
+      {
+        "va": "0x4617c0",
+        "bytes": 16,
+        "sha256": "14744cf9c4c1793d7a4f6681af0771044f822af4d857906607a0d8e6df931cc2"
+      },
+      {
+        "va": "0x461823",
+        "bytes": 24,
+        "sha256": "9be0fe226607e9a3fe59fd16472c48c3cf7de7a11d78b84b54b1a63c1d79e55c"
+      },
+      {
+        "va": "0x461864",
+        "bytes": 17,
+        "sha256": "42b58b33167fae38c11ef8739e4b68428a53a6f0e246dbf438f76427365dd362"
+      },
+      {
+        "va": "0x46189a",
+        "bytes": 15,
+        "sha256": "86e45f43418d6deff3bea67b2a3f0f8496b0dfc749bcae51ddbbe84e8b46cb13"
+      },
+      {
+        "va": "0x4618b6",
+        "bytes": 17,
+        "sha256": "ab6112128761c402d5b762efcc086879ef024d6c131948b1c3b5ac0ea8f12803"
+      },
+      {
+        "va": "0x47bf30",
+        "bytes": 69,
+        "sha256": "f1a3c7b2e62c0f7c977f18b5a0f134477d84663344abd79e221130ec85ab0827"
+      },
+      {
+        "va": "0x47bf80",
+        "bytes": 69,
+        "sha256": "9d0b0e3bfb56272638bce0f20594ed763c12262f8f4c5b755bdab7031088bef8"
+      }
+    ]
+  },
+  "game_runtime_executed": false,
+  "debugger_executed": false,
+  "native_compiler_executed": false,
+  "os_input_executed": false,
+  "actual_device_hresult_measured": false,
+  "manual_input_proof": false,
+  "gameplay_verified": false,
+  "promotion_ready": false,
+  "limitations": [
+    "Portable source and synthetic-log fixtures only; composed C++ compilation is a separate CI check.",
+    "No fresh natural activation, native device acquisition, selection, movement or final composition evidence.",
+    "One rotating breakpoint cannot establish all activation-event coverage; native pre-RET observation is not callback-return proof."
+  ],
+  "initial_integration_fixture_draft": {
+    "tests_run": 6,
+    "errors": 3,
+    "reason": "Artificial check_owner returned None instead of the retained fake identity; corrected fixture only.",
+    "external_log_retained": false
+  },
+  "initial_collector_setup": {
+    "error": "Temporary collector omitted repository root from sys.path; original-anchor helper import failed before fixtures. Corrected collector path only.",
+    "tests_run": 0,
+    "external_log_retained": false
+  },
+  "suite_counts": {
+    "host_source": 18,
+    "synthetic_log": 38,
+    "driver_integration": 6,
+    "existing_driver": 92
+  },
+  "documentation_checks": {
+    "focused_fixtures_passed": true,
+    "actual_checkout_guards": {
+      "handoff": {
+        "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-activation-handoff-20260930.json",
+        "sha256": "cce5f7759e9e20afec4407d0738af05d451962e1e2895f8b6c921dd40a6a16cd",
+        "returncode": 0
+      },
+      "docs": {
+        "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-activation-docs-20260930.json",
+        "sha256": "aed04883d36310246ad38aa9f093c1d6b95d12e1d00410216495fa406ab1d7f6",
+        "returncode": 0
+      }
+    }
+  },
+  "ci_contract": {
+    "workflow": ".github/workflows/ordinary-map-observation.yml",
+    "working_copy_sha256": "7873bac1e78cd62e00507a78a68e1706a1932c5535b249e41ac9068fe28cf90e",
+    "portable_platforms": [
+      "ubuntu-24.04",
+      "windows-2022"
+    ],
+    "new_suites": [
+      "test_ordinary_map_activation_host.py",
+      "test_ordinary_map_activation_trace.py",
+      "test_resolution_activation_diagnostics.py"
+    ],
+    "composed_x86_compile_only": true,
+    "scope": "Configuration only; subsequent CI outcomes are separate."
+  }
+}
