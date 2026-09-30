@@ -712,8 +712,9 @@ def native_phase_source(width: int, height: int) -> str:
     import ordinary_map_startup as startup
     import ordinary_map_pause_host as pause
     import ordinary_map_phase_host as phase
-    return phase.render_source(pause.render_source(
-        startup.render_source(observation_source(matrix.runtime.HARNESS),width,height)))
+    import ordinary_map_activation_host as activation
+    return activation.render_source(phase.render_source(pause.render_source(
+        startup.render_source(observation_source(matrix.runtime.HARNESS),width,height))))
 
 
 def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict) -> None:
@@ -782,6 +783,36 @@ def mouse_poll_diagnostics(log: str, receipts: list[dict]) -> dict:
     return parse_trace(log,expected)
 
 
+def activation_trace_identity(ready: dict, *, phase_sha256: str, controller_sha256: str) -> dict:
+    """Derive diagnostics from PhaseClient's authenticated initial ready receipt.
+
+    The caller must first retain/authenticate the target and validate this ready
+    receipt through PhaseClient. The activation observer has its own frozen
+    controller digest; it must not inherit the phase controller's identity.
+    """
+    from ordinary_map_phase_client import SCHEMA, ACK_KEYS
+    if (type(ready) is not dict or set(ready)!=ACK_KEYS or ready['schema']!=SCHEMA
+            or ready['status']!='ready' or ready['phase']!='ready'
+            or type(ready['request_seq']) is not int or ready['request_seq']!=0
+            or ready['paused'] is not False or ready['lease_id']!=''
+            or ready['deadline_tick_ms']!=0 or ready['controller_sha256']!=phase_sha256):
+        raise ValueError('Activation trace requires an authenticated initial phase readiness receipt')
+    if any(type(value) is not str or re.fullmatch('[0-9a-f]{64}',value) is None
+           for value in (phase_sha256,controller_sha256)):
+        raise ValueError('Activation trace requires frozen controller digests')
+    identity={key:ready[key] for key in ('pid','creation_filetime','image_base','session_id')}
+    identity.update(tid=ready['primary_tid'],controller_sha256=controller_sha256)
+    return identity
+
+
+def activation_diagnostics(log: str, identity: dict | None) -> dict:
+    """Read-only observed-call diagnostics, independent of input acceptance."""
+    from ordinary_map_activation_trace import parse_trace
+    if identity is None:
+        raise ValueError('Activation trace has no authenticated owned readiness identity')
+    return parse_trace(log,identity)
+
+
 def hidden_success(report: dict) -> bool:
     return (not report['errors'] and report.get('ordinary_controlled_input_passed') is True and
             [a.get('name') for a in report.get('actions',[])]==['select','move'] and
@@ -836,6 +867,7 @@ def run_hidden(args) -> dict:
     source_names=('tools/resolution_playability.py','tools/launcher_resolution_matrix.py','tools/real_exe_smoke.py',
         'tools/run_original_game_smoke.py','tools/owned_hidden_process.py','tools/ordinary_map_startup.py',
         'tools/ordinary_map_phase_host.py','tools/ordinary_map_phase_client.py','tools/ordinary_map_input_poll_trace.py',
+        'tools/ordinary_map_activation_host.py','tools/ordinary_map_activation_trace.py',
         'tools/ordinary_map_pause_host.py',
         'tools/ordinary_map_pause_client.py','tools/ordinary_map_observation.py','tools/ordinary_map_input_plan.py',
         'src/launcher/resolutions.json')
@@ -911,7 +943,10 @@ def run_hidden(args) -> dict:
             retained=RetainedTarget(identity=identity,candidate_path=target)
             peer=PhaseClient(control,controller_sha256=phase_host.source_sha256(),identity=identity,
                 check_owner=retained.check_owner,host_alive=lambda:proc.poll() is None)
-            peer.wait_ready()
+            ready=peer.wait_ready()
+            report['activation_identity']=activation_trace_identity(ready,
+                phase_sha256=phase_host.source_sha256(),
+                controller_sha256=report['source_hashes']['tools/ordinary_map_activation_host.py'])
             startup_deadline=time.monotonic()+60
             while True:
                 text=logpath.read_text(encoding='utf-8',errors='replace')
@@ -943,6 +978,10 @@ def run_hidden(args) -> dict:
             text=logpath.read_text(encoding='utf-8',errors='replace')
             report['outcome']=full_observation(text,proc.returncode if proc else -1)
             report['debugger_log_sha256']=matrix.digest(logpath)
+            try:
+                report['activation_trace']=activation_diagnostics(text,report.get('activation_identity'))
+            except Exception as error:
+                report['activation_trace_error']=f'{type(error).__name__}: {error}'
             try:
                 report['mouse_poll_trace']=mouse_poll_diagnostics(text,report.get('phase_receipts',[]))
             except Exception as error:
