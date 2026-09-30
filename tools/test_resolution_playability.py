@@ -435,7 +435,7 @@ class PreparedMatrixTests(unittest.TestCase):
         from src.patcher import ordinary_castle_entry_matrix as builder
         temporary=tempfile.TemporaryDirectory(prefix='clash-prepared-matrix-')
         self.addCleanup(temporary.cleanup)
-        root=Path(temporary.name);assets=root/'assets';assets.mkdir()
+        root=Path(temporary.name).resolve();assets=root/'assets';assets.mkdir()
         original=assets/'clash95.exe';original.write_bytes(b'Artificial original fixture; never executable')
         exe=root/'matrix-fixture.exe';probe=exe.with_suffix('.cdb');manifest=exe.with_suffix('.candidate.json')
         image=b'Artificial matrix fixture; never executable '+profile.encode()+resolution.encode()
