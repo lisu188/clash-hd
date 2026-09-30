@@ -55,6 +55,7 @@ jobs:
           python -B tools/test_ordinary_map_startup.py -v
           python -B tools/test_ordinary_map_phase_host.py -v
           python -B tools/test_ordinary_map_phase_client.py -v
+          python -B tools/test_ordinary_map_input_poll_trace.py -v
           python -B tools/test_owned_hidden_process.py -v
           python -B tools/test_owned_hidden_process_engine.py
           python -B tools/test_resolution_playability.py -v
@@ -139,6 +140,34 @@ jobs:
         run: |
           python -B tools/test_owned_hidden_process_engine.py --execute --scratch "C:/ClashTests/owned-process-${{ github.run_id }}-${{ github.run_attempt }}" --report "$env:GITHUB_WORKSPACE/reports/owned-process-ci.json"
           if ($LASTEXITCODE -ne 0) { throw 'Synthetic private-desktop process fixture failed.' }
+      - name: Compile the composed native phase observer without executing it
+        shell: pwsh
+        run: |
+          @'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          from unittest.mock import patch
+          sys.path.insert(0, str(Path('tools').resolve()))
+          import resolution_playability as runtime
+          out = Path(os.environ['RUNNER_TEMP']) / ('native-phase-compile-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          out.mkdir(exist_ok=False)
+          source = runtime.native_phase_source(1920, 1080)
+          with patch.object(runtime.matrix.runtime, 'HARNESS', source):
+              engine = runtime.matrix.runtime.compile_harness(out)
+          report = dict(compiled=True, runtime_executed=False, game_runtime_executed=False,
+                        manual_input_proof=False,
+                        source_sha256={name: hashlib.sha256(Path('tools', name).read_bytes()).hexdigest()
+                                       for name in ('resolution_playability.py', 'ordinary_map_startup.py',
+                                                    'ordinary_map_pause_host.py', 'ordinary_map_phase_host.py')},
+                        generated_cpp_sha256=hashlib.sha256((out/'real-exe-engine.cpp').read_bytes()).hexdigest(),
+                        engine_sha256=hashlib.sha256(engine.read_bytes()).hexdigest())
+          (out/'compile-report.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
+          print(json.dumps(report))
+          '@ | python -B -
+          if ($LASTEXITCODE -ne 0) { throw 'Composed native observer compilation failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -146,5 +175,7 @@ jobs:
           path: |
             ${{ runner.temp }}/ordinary-map-pause-engine-report.json
             reports/owned-process-ci.json
+            ${{ runner.temp }}/native-phase-compile-*/compile-report.json
+            ${{ runner.temp }}/native-phase-compile-*/compile.log
           retention-days: 7
           if-no-files-found: error

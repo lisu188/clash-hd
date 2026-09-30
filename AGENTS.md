@@ -16,7 +16,7 @@ instructions. Preserve existing uncommitted and untracked work.
   act earlier if the next operation is likely to reach it. For WSL, check both
   the Linux filesystem and the Windows volume backing its virtual disk. Honor
   any stricter project or task reserve; never lower a guard to continue.
-- At the end of each meaningful build, test or capture batch, and periodically
+- After each bounded, completed build, test or capture batch, and periodically
   during long-running work, inspect project-owned scratch and caches for verified
   disposable artifacts even when usage is below the threshold. Remove only
   completed, inactive outputs that satisfy the ownership, reproducibility and
@@ -53,6 +53,10 @@ retained candidates, original game files, saves and launcher settings.
 `tools/repo_compaction_cleanup.py` is dry-run by default: review its exact
 targets before execution. Its default archive on `C:\ClashCaptures` is on the
 same volume as this checkout and does not reclaim C: space.
+When removing verified duplicate static runtime inputs, retain the full reference
+and its manifest, record the exact removed paths, and require reconstruction of
+those inputs before any future launch from the affected work copy. Preserve
+unique captures, failed-run diagnostics and their producers through routine cleanup.
 
 ## Project purpose
 
