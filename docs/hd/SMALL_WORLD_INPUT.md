@@ -1,8 +1,88 @@
-# Small-world input: component proof and remaining integration
+# Small-world input: complete successor and evidence limits
 
-Review date: 2026-09-24. This document distinguishes the existing working
-component from the complete candidate's missing integration. It does not
-declare the September ordinary-input runs repaired.
+Updated: 2026-09-30. The additive complete successor integrates the bounded
+component into both complete profiles. The historical component evidence and
+September 24 allocation analysis below explain its source dependencies. Source
+construction and CPU fixtures do not declare the September ordinary-input runs
+repaired.
+
+## Complete successor
+
+`src/patcher/complete_small_world_candidate.py` reconstructs the exact
+original-bound `ordinary_castle_entry_matrix` parent before applying six
+old-byte-checked replacements: two 124-byte render dispatch guards and four
+16-byte input-axis guards across the ordinary and army-private routes. It
+retains the ordinary army-backing exclusion, private ownership checks, native
+predicate order, integrated frame/panel/presentation targets and the inherited
+96-byte castle-entry gate. Single-squad selection retains the native ordinary
+route; the authenticated multi-squad private route is not broadened.
+
+The helper is appended after the actual matrix `SizeOfImage`, within an
+extension of its final RX section. No section is added. Existing payload and
+relocation-directory bytes remain unchanged; a new merged directory preserves
+all inherited HIGHLOW entries and adds the five helper absolute operands.
+Declared PE-header changes and appended bytes are checked separately from the
+six semantic replacements. Frozen predecessors and their source pins remain
+unchanged.
+
+The distinct stage is `ordinary_castle_entry_matrix.stage(profile)` with its
+trailing `-validation` replaced by `-smallworld-validation`. Its schema is
+`clash95_complete_small_world_candidate_v1`, revision `complete_small_world_v1`.
+Only `completehd` and `modalwidgets` at the existing 800x600, 802x602,
+1024x768, 1280x720, 1280x960 and 1920x1080 resolutions are supported.
+
+The [September 30 source/CPU checkpoint](../../reports/complete-small-world-source-verification-20260930.json)
+passes 32 methods without skips: nine portable, seven CLI, eight synthetic CPU
+and eight original-backed CPU methods. The actual modalwidgets1920 image was
+constructed once in memory: candidate SHA
+`657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe`,
+parent SHA `2a3dac1e51ffe2ec12a91e8d1d687171135a31ed3c88b8bcbdb7974e85149e3d`.
+The inherited gate remains at `0x648000`; the new helper starts at `0x649000`.
+Both profiles and all six geometries have synthetic byte coverage; this
+checkpoint does not construct twelve original-backed candidates or qualify
+their runtime. Drawing dependency returns are modeled. No game, compiler,
+debugger, bundle write or screen capture accompanied the local checkpoint.
+The [initial CI startup failure](../../reports/complete-small-world-ci-startup-failure-20260930.json)
+is retained separately: GitHub rejected the inline pip command's YAML before
+starting a job. The correction uses a literal block; it changes no producer or
+CPU fixture bytes. Actual debugger-verifier results require the subsequent run.
+
+The final CRLF verifier checks final headers, executable file-backed ranges
+and inherited legacy wrapper spans. It masks loaded DWORD values and relocation
+arithmetic, requires ordered chunks, and emits a candidate-, stage- and
+resolution-bound `CSW_FINAL_OK` only after all checks complete. Missing,
+reordered or unreadable chunks cannot qualify. Earlier component or
+`OCEM_CONTRACT_PASS` markers identify other images and cannot qualify this one.
+
+Safe source verification commands are:
+
+```powershell
+python -B tools/test_complete_small_world_candidate.py --synthetic-only --require-machine-tools -v
+python -B tools/test_complete_small_world_candidate.py --source-exe C:/Clash/clash95.exe --require-machine-tools -v
+python -B tools/build_complete_small_world_candidate.py --original C:/Clash/clash95.exe --profile modalwidgets --resolution 1920x1080 --preflight
+```
+
+The synthetic and original-backed CPU lanes execute only fixture memory. The
+original-backed lane reconstructs one actual candidate in memory and writes no
+candidate bundle. The preflight also writes no bundle and launches no game.
+Unicorn must be available; an existing retained library can be selected with
+`--toolchain PATH` without installing another copy. The required-tools mode rejects missing dependencies
+and the synthetic CI lane rejects skips. The separate Windows CI verifier lane
+uses the restricted debugger harness on explicitly marked artificial PE32
+fixtures paused before their entrypoints; it never reads the original game.
+
+The CLI can write a fresh `.exe`, `.candidate.json` and `.cdb` bundle only to
+a nonlinked external path under `C:/ClashTests`, after rechecking original and
+source identities and more than ten percent disk reserve on both relevant
+volumes, including the aggregate bundle size. Local bundle creation and game
+runs remain paused while the checkout volume is below that reserve.
+
+This source successor remains outside the launcher and measured runtime driver.
+The driver's `--prepared-matrix-candidate` accepts the older matrix recipe;
+it must reject this distinct successor. A matching execution adapter and fresh
+runtime evidence are still required. Construction, synthetic execution,
+loaded-byte verification, ordinary/manual input, final visual composition,
+endurance and promotion are separate claims. No stable stage is changed.
 
 ## Existing component
 
@@ -75,7 +155,7 @@ Its ordered chunk counter prevents read/expression errors from producing a
 success marker. Generation does not run CDB. That component verifier must not
 be relabeled as a complete/modalwidgets verifier.
 
-## Complete/modalwidgets integration is required
+## Historical integration gap — 2026-09-24
 
 The launcher nativepresent chain still reconstructs the frozen framed or
 complete/modalwidgets predecessors. It does not incorporate bounded paint or
@@ -98,7 +178,7 @@ The complete chain cannot safely import an entire frozen input helper:
   assumption fails for the complete chain. Existing predecessor modules and
   pins must remain unchanged.
 
-The required successor must authenticate the exact final parent, retain those
+The successor requirement identified at that review was to authenticate the exact final parent, retain those
 army changes, append the bounded renderer, replace the two 124-byte render
 dispatch regions, and correct both axes in both ordinary and army-private
 world guards. Merely fixing ordinary selection leaves selected-army map
@@ -135,16 +215,18 @@ There are already 16 PE sections. The final `.hdpblit` header is at file offset
 and RX characteristics `0x60000020`. `SizeOfImage=0x248000`; the file has
 1803264 bytes. Another section header does not fit the frozen 1024-byte header.
 
-One bounded allocation design to validate is extending this final RX section,
+The historical proposed allocation extended this final RX section,
 leaving all predecessor addresses and existing raw bytes unchanged. The next
 page begins at VA `0x648000`, with a 1024-byte raw gap to fill before the new
 code. Source emission of the bounded helper at this VA is 481 bytes with five
 absolute and five relative relocation records. A new allocator must preserve
 the old relocation directory bytes, append a complete merged directory,
 update the final section extents and PE sizes/directories with old-byte checks,
-and verify rebase behavior. This is a proposed composition, not an implemented
-or qualified allocator. Do not treat the helper size as permission to overwrite
-existing zero padding or reserved data.
+and verify rebase behavior. These addresses describe that older nativepresent
+image. The current matrix already appends its castle gate, so the new successor
+derives the next allocation from the reconstructed matrix instead of reusing
+the historical `0x648000` location. Existing zero padding and reserved data
+must not be overwritten.
 
 The complete predecessor currently accepts only 800x600, 802x602, 1024x768,
 1280x720, 1280x960 and 1920x1080. A 4K component test does not extend that
@@ -152,7 +234,7 @@ allowlist. A complete 4K candidate requires an explicit additional integration
 and validation step. Classic uses another recipe and has neither framed input
 helper; this correction cannot be applied there by matching byte patterns.
 
-## Required successor validation
+## Verification requirements and remaining runtime
 
 Authenticate source paths and raw hashes, original identity, complete parent
 bytes and typed ancestor metadata before modification. Keep the existing
@@ -161,7 +243,7 @@ paint files match their tracked LF bytes. Other tools can have differing CRLF
 checkout bytes; do not invent a platform-only pin or normalize arbitrary source
 to make a check pass.
 
-The complete successor needs byte fixtures for all six replacement spans,
+The complete successor's fixtures must cover all six replacement spans,
 tail allocation and merged relocations, and CPU composition cases for lower
 owner0 and authenticated owner1. Test backing/minimap/action-bar exclusions,
 out-of-world cells, partial tails, stale cameras, unsupported owners and exact
