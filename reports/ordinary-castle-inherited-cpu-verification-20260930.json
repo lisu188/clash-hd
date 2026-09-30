@@ -1,0 +1,61 @@
+{
+  "schema": "clash95_ordinary_castle_inherited_cpu_verification_v1",
+  "recorded_utc": "2026-09-30T08:31:00.612061+00:00",
+  "evidence_class": "original_backed_synthetic_cpu_and_byte_checks",
+  "pre_commit_head": "7917a826ab702fa49474de31fea4944aa78c99ac",
+  "uncommitted_fixture_source_included": true,
+  "completed": true,
+  "passed": true,
+  "passing_method_tests": 32,
+  "passing_original_backed_method_tests": 20,
+  "skipped_tests": 0,
+  "reports": {
+    "reports/ordinary-castle-inherited-cpu-20260930-legacy.json": {
+      "sha256": "351cfc6afbffafdcd0c6be365a70f87e01d43cb940a57652a2d7f5677a1a1610",
+      "passed": true,
+      "tests_run": 15
+    },
+    "reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-a.json": {
+      "sha256": "dd58714e3be6331ba1cc609c6e1e050af3451aaac891e6b8cd11f6fd9ab1020a",
+      "passed": false,
+      "tests_run": 17
+    },
+    "reports/ordinary-castle-inherited-cpu-20260930-1920-attempt-b.json": {
+      "sha256": "911066b234d9dee6fbe8d144a86aa0dee8e98f94bebf5326a110b0501a560954",
+      "passed": true,
+      "tests_run": 17
+    }
+  },
+  "fixture_source_hashes": {
+    "tools/test_ordinary_castle_entry.py": "cc6362e1062b0ca4bc62dc896f1416cff342516c33dc452b742bce4a0d69e11d",
+    "tools/test_ordinary_castle_entry_matrix_inherited.py": "164017891c6a4be9a389815423a5e628a1718bd486e7cde608c7c115ca18f23b"
+  },
+  "legacy_fixture_unchanged_since_passing_run": true,
+  "matrix_candidate_sha256": "2a3dac1e51ffe2ec12a91e8d1d687171135a31ed3c88b8bcbdb7974e85149e3d",
+  "matrix_recipe_revision": "owned_ordinary_castle_entry_matrix_v1",
+  "matrix_profile": "modalwidgets",
+  "matrix_resolution": "1920x1080",
+  "matrix_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-validation",
+  "candidate_bytes_unchanged_between_matrix_attempts": true,
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "engine": {
+    "name": "Unicorn",
+    "version": "2.1.4"
+  },
+  "initial_failure": "One unsupported assertion assumed different state addresses; both are 0x596000. Raw attempt-a remains failed.",
+  "correction": "Compare Machine state/entry/return addresses to authenticated Admission; all other fixture assertions unchanged.",
+  "external_source_retention": {
+    "root": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-castle-cpu-20260930",
+    "wrapper_sha256": "7206c34dbee47124b0d53412ed368c47083ddf8d47fde5dd382bb37da806d695",
+    "initial_fixture": "initial-fixture-reconstructed-to-recorded-sha.py",
+    "initial_fixture_sha256": "392f518add806a276268253749b826b4c54ec5b7587da586da162002c2578ecb",
+    "initial_fixture_provenance": "Reconstructed after correction by reversing the assertion edit; byte hash matches pre-run frozen identity. Not labeled an original source capture."
+  },
+  "emulated_cpu_executed": true,
+  "game_runtime_executed": false,
+  "debugger_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "boundary": "Admission/constructors/rollback in emulated memory only; allocator/free/thread import modeled; stops before castle body; no screenshot, real exit/free lifecycle or interior proof"
+}
