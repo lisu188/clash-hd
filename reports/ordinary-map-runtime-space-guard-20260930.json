@@ -1,0 +1,51 @@
+{
+  "schema": "clash95_hidden_runtime_disk_reserve_verification_v1",
+  "created_utc": "2026-09-30T11:53:19.546510+00:00",
+  "base_commit": "30bf566601a55d9ee21d16089f136be99aad8c33",
+  "passed": true,
+  "command": [
+    "C:/Users/andrz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+    "-B",
+    "tools/test_resolution_playability.py",
+    "-v"
+  ],
+  "tests_run": 92,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 13.674,
+  "unchanged_prior_methods": 81,
+  "new_disk_reserve_methods": 11,
+  "raw_log": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-runtime-space-guard-fixtures-20260930.log",
+    "sha256": "5313f0eba330c85efb0a3290e7e526aefe85aa3f262a30253c7f0b37de067e3f",
+    "bytes": 16402
+  },
+  "source_sha256": {
+    "tools/resolution_playability.py": "acd939a5c393533a30dd5cc576f237886bf0eb6dcd310a3a9bf911e6fe97e9fe",
+    "tools/test_resolution_playability.py": "cea56c4e174a918a40bd2061f18225351f60ddbf1f192de136d64c95e47ccd71"
+  },
+  "threshold_percent_free": 10,
+  "comparison": "strictly greater; integer arithmetic",
+  "scratch_allowance_bytes": 134217728,
+  "checks": [
+    "before-output-directory",
+    "verified-runtime-assets",
+    "before-harness-compile",
+    "before-runtime-copy",
+    "before-owned-launch"
+  ],
+  "mocked_orchestration": true,
+  "tiny_artificial_files_only": true,
+  "original_executable_read": false,
+  "compiler_executed": false,
+  "debugger_executed": false,
+  "game_runtime_executed": false,
+  "screen_capture_performed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "Fresh checks do not atomically reserve space or prevent concurrent writers; periodic measurement remains required.",
+    "Source safety fixtures do not repair the failed actual Run G or establish game input/visual/promotion acceptance."
+  ]
+}

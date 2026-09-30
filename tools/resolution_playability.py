@@ -795,6 +795,21 @@ def hidden_success(report: dict) -> bool:
             all(report.get('host_cleanup',{}).get(k) is True for k in ('host_exited','job_empty','handles_closed')))
 
 
+def require_hidden_disk_reserve(root, output_directory, *, runtime_bytes=0,
+                                scratch_bytes=0, phase):
+    """Check fresh checkout/output usage without caching or lowering reserves."""
+    if any(type(value) is not int or value < 0 for value in (runtime_bytes,scratch_bytes)):
+        raise ValueError(f'{phase}: invalid disk budget')
+    checkout=shutil.disk_usage(root)
+    output=shutil.disk_usage(output_directory)
+    for label,path,usage,budget in (('checkout',root,checkout,0),
+                                   ('output',output_directory,output,runtime_bytes+scratch_bytes)):
+        if usage.free*10<=usage.total or (usage.free-budget)*10<=usage.total:
+            raise ValueError(f'{phase}: {label} disk reserve failed for {path} '
+                             f'(free={usage.free}, total={usage.total}, required_bytes={budget}; '
+                             'more than ten-percent free required)')
+
+
 def run_hidden(args) -> dict:
     import ordinary_map_input_plan as planner
     import ordinary_map_phase_host as phase_host
@@ -810,8 +825,7 @@ def run_hidden(args) -> dict:
     if out.exists() or not out.is_relative_to(Path('C:/ClashTests').resolve()) or any(
             out.is_relative_to(p) or p.is_relative_to(out) for p in (root,reference)):
         raise ValueError('New external candidate output required')
-    if shutil.disk_usage(out.parent).free/shutil.disk_usage(out.parent).total<=.1:
-        raise ValueError('Ten-percent disk reserve required before runtime preparation')
+    require_hidden_disk_reserve(root,out.parent,phase='before-output-directory')
     out.mkdir(parents=True);capture=out/'capture';capture.mkdir()
     report=dict(schema=2,mode='hidden-controlled',case=case,approval_text=args.approval_text,
         actions=[],errors=[],ordinary_controlled_input_passed=False,native_input_passed=False,
@@ -837,9 +851,9 @@ def run_hidden(args) -> dict:
     try:
         manifest=json.loads(args.manifest.read_text(encoding='utf-8-sig'))
         baseline=owned.verify_assets(reference,manifest)
-        usage=shutil.disk_usage(out)
-        if usage.free-sum(r['bytes'] for r in baseline.values())-128*1024**2<=usage.total*.1:
-            raise ValueError('Runtime copy would breach disk reserve')
+        runtime_bytes=sum(r['bytes'] for r in baseline.values())
+        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+                                    phase='verified-runtime-assets')
         report['runtime_manifest_sha256']=matrix.digest(args.manifest)
         proxy=args.proxy.resolve()
         build=json.loads(proxy.with_name('ddraw_surfdump_proxy.build.json').read_text(encoding='utf-8-sig'))
@@ -860,8 +874,12 @@ def run_hidden(args) -> dict:
         width,height=map(int,args.resolution.split('x'))
         source=native_phase_source(width,height)
         with patch.object(matrix.runtime,'HARNESS',source):
+            require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+                                        phase='before-harness-compile')
             engine=matrix.runtime.compile_harness(out)
         report.update(engine_sha256=matrix.digest(engine),engine_source_sha256=matrix.digest(out/'real-exe-engine.cpp'))
+        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+                                    phase='before-runtime-copy')
         shutil.copytree(reference,work)
         if owned.verify_assets(work,manifest)!=baseline:
             raise ValueError('Working assets differ after copying')
@@ -874,6 +892,7 @@ def run_hidden(args) -> dict:
         shutil.copy2(exe,target);shutil.copy2(proxy,work/'ddraw.dll')
         control=out/'control';prepare_control(control)
         with logpath.open('w',encoding='utf-8') as log:
+            require_hidden_disk_reserve(root,out,scratch_bytes=128*1024**2,phase='before-owned-launch')
             proc=OwnedHiddenProcess([str(engine),str(target),str(capture),'110','proxy',str(control),'native-phase-v1'],
                 cwd=work,env=os.environ,stdout=log)
             report['host']=dict(pid=proc.pid,creation_filetime=proc.creation_filetime,desktop=proc.desktop_name)

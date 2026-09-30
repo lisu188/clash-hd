@@ -110,11 +110,12 @@ input data has a source-supported failed-read hypothesis, but no actual device
 HRESULT was measured. Native dispatch, full selection/movement, manual input
 and promotion remain separate claims.
 
-The September 30 [read-only native mouse-poll preparation](ORDINARY_MAP_RUNTIME.md#read-only-mouse-polling-preparation--2026-09-30)
+The preceding September 30 [read-only native mouse-poll preparation](ORDINARY_MAP_RUNTIME.md#read-only-mouse-polling-preparation--2026-09-30)
 adds bounded CALL/return/copy telemetry and a strict offline consumer. It is
-source and fixture preparation only: no September 30 game run or device HRESULT
-has been measured. It does not change the six failed attempts, target-write
-permissions or input-acceptance requirements.
+source and fixture preparation; that earlier checkpoint measured no game device
+HRESULT. The later actual Run G below supplies one failed native-read diagnostic.
+Neither changes the six failed attempts, target-write permissions or
+input-acceptance requirements.
 
 The [separate September 30 synthetic CI failure](../../reports/ordinary-map-pause-engine-ci-20260930-failure.json)
 preserves Windows error 5 during acknowledgment replacement and verified target
@@ -136,7 +137,7 @@ recipe and final `CSW_FINAL_OK` verifier remain outside the launcher. The driver
 has a separate `--prepared-small-world-candidate` authentication option; its
 prepared-matrix option accepts only the older matrix. Each path retains the
 same measured selection/movement requirements and distinct provenance.
-The [current driver suite](../../reports/prepared-small-world-driver-verification-20260930.json)
+The [prepared-driver checkpoint](../../reports/prepared-small-world-driver-verification-20260930.json)
 passes all 81 methods without skips, retaining the
 prior 60 methods and adding 21 artificial-bundle methods for the successor.
 These fixtures use mocked reconstruction and establish no actual bundle or
@@ -157,11 +158,57 @@ including actual ASLR and corrupt/missing/reordered/unreadable checks. Every
 case retains unchanged initial-breakpoint EIP/context/image proof; the actual
 game candidate was not loaded. The initial YAML failure and separate unchanged
 predecessor compiler-timeout retry remain recorded.
+The [prepared-driver CI checkpoint](../../reports/prepared-small-world-ci-verification-20260930.json)
+records 81 passing driver methods on both platforms and in the launcher source
+job. The final verifier's first attempt timed out in `fixed-block`; its raw
+incomplete report remains retained. The unchanged retry passed all eight cases,
+and PR 137 merged with 16 successful checks and one intentional runtime skip.
+These synthetic CI checks remain separate from actual Run G.
 Fresh selection/movement, final visual composition, castle lifecycle,
 endurance, manual input and promotion evidence remain required.
 The September 24 review remains historical; the new driver attempts do not
 replace the controlled component evidence below. Stable and manual-input
 boundaries remain unchanged.
+
+### Actual small-world input diagnostic and disk boundaries — 2026-09-30
+
+[Run G](../../reports/ordinary-small-world-input-20260930-g.json) uses the
+original-bound modalwidgets1920 small-world candidate `657faf66…7b64fe` and
+the private-desktop driver at `ca87aeff`. Loaded executable sections and the
+natural entry match; startup overrides retire before the first held human
+boundary. One authenticated mouse-poll epoch completes with actual HRESULT
+`0x8007000c` (`DIERR_NOTACQUIRED`), unchanged local bytes and their native copy.
+The selected stack's measured target and pre-click revalidation pass, then the
+strict guard rejects existing native button data before writes or dispatch.
+Selection, movement and the observation interval fail; owned cleanup and
+source/original/reference/candidate identity checks pass.
+
+Its one 1920x1080 pre-action proxy screenshot has exact four structural bands
+and all six action cells. The central footer remains unverified, so full frame
+acceptance fails; one sample does not satisfy three-sample control coverage.
+The broad black region has no final-wrapper composition proof.
+
+The original assembly copies its uninitialized mouse packet on NOTACQUIRED.
+The hidden startup path bypasses native Acquire calls; its ready flags prove
+controlled startup progress, not actual acquisition. Natural activation and
+Acquire/Unacquire returns still need measured diagnostics. Preserve the strict
+input guard and do not turn diagnostic completeness into gameplay acceptance.
+See [the runtime guide](ORDINARY_MAP_RUNTIME.md#actual-small-world-diagnostic--2026-09-30)
+for source references and the acquisition evidence boundary.
+
+Disk usage fell during long authentication/compilation, after the old early
+copy-budget check. The [completed-run cleanup](../../reports/ordinary-small-world-static-cleanup-20260930.json)
+removed only 38 verified static duplicates (845,021,453 bytes) from G's inactive
+work copy, preserving all 47 other artifacts and the full 43-file reference.
+Removed inputs must be reconstructed before any future launch from G's work.
+Its recorded bare-reserve recovery was temporary; later observations fell
+below ten percent again. Pause large outputs until a fresh measurement leaves
+enough headroom. The driver now rechecks both volumes before compilation,
+copying and owned launch without lowering the threshold or 128 MiB allowance.
+Its [fresh-reserve fixture checkpoint](../../reports/ordinary-map-runtime-space-guard-20260930.json)
+passes all 92 methods without skips, preserving 81 prior methods and adding 11
+boundary/orchestration cases. Auth/compile/copy-time space loss stops the next
+native operation; fixture completion is not a new game run.
 
 ### Castle admission and local evidence availability — 2026-09-26
 
