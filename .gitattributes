@@ -957,3 +957,4 @@
 /tools/test_complete_small_world_probe_engine.py text eol=lf
 /.github/workflows/complete-small-world.yml text eol=lf
 /reports/complete-small-world-source-verification-20260930.json text eol=lf
+/reports/complete-small-world-ci-startup-failure-20260930.json text eol=lf

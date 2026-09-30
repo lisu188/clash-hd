@@ -45,7 +45,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned synthetic fixture dependencies
-        run: python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4 -r tools/requirements-framed-offline.txt
+        run: |
+          python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4 -r tools/requirements-framed-offline.txt
       - name: Execute portable and synthetic integrated contracts without skips
         run: python -B tools/test_complete_small_world_candidate.py --synthetic-only --require-machine-tools -v
       - name: Preserve predecessor byte and admission contracts
