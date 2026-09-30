@@ -26,6 +26,35 @@ candidate checksums, profile-specific metadata schema, source hashes and the
 exact executable/manifest/probe inventory. It does not accept a presentation
 override or overwrite `C:/Clash/clash95.exe`.
 
+The explicit `--prepared-matrix-candidate EXE` option selects the separate
+[ordinary castle-entry matrix recipe](ORDINARY_CASTLE_ENTRY_MATRIX.md). It is
+available only in hidden-controlled mode and cannot be combined with
+`--prepared-build` or `--native-present-bounds`. The default launcher selection
+and receipt interface remain unchanged. A dry run describes the matrix case;
+it does not read or authenticate the supplied bundle:
+
+```powershell
+python -B tools/resolution_playability.py --profile modalwidgets --resolution 1920x1080 --mode hidden-controlled --prepared-matrix-candidate C:/ClashTests/new-matrix/matrix.exe
+```
+
+Before hidden execution, `prepared_matrix_candidate` reconstructs the expected
+candidate once in memory from the authenticated original. It requires exact
+executable bytes, the complete canonical CLI-produced `.candidate.json`, and
+the matching CRLF `.cdb` verifier. Schema, revision, stage, profile, resolution,
+typed ancestry, admission, edits, source inventory and probe contract must all
+match. Duplicate JSON fields, linked/reparse paths, stale sources and changes
+during authentication fail closed. The final audit rechecks all three bundle
+members and their sources without rebuilding.
+
+The result records distinct `prepared_matrix` provenance; it does not invent a
+launcher receipt. The actual matrix SHA and stage populate the same strict
+six-field planner context used by held observations and measured selection and
+movement. This option does not execute the generated castle verifier or add a
+castle transition to the ordinary-map driver. The September 30 adapter fixtures
+pass all 60 methods without skips, including 17 artificial-bundle methods.
+Actual matrix bundle compatibility and game runtime acceptance remain separate
+verification requirements.
+
 `--mode foreground-diagnostic` retains fixed campaign-menu coordinates only.
 Timed dismissal and fixed ordinary-map selection/movement clicks have been
 removed. It does not acquire the native-phase leases described here, and no
