@@ -81,6 +81,15 @@ under C:/ClashTests. Existing bundle members, repository destinations and
 symlink/junction paths are rejected. Check disk reserve first. No command here
 launches Clash95 or supplies runtime approval.
 
+The [ordinary-map driver](ORDINARY_MAP_RUNTIME.md) now accepts a bundle through
+the explicit `--prepared-matrix-candidate EXE` option in hidden-controlled mode.
+It reconstructs and authenticates this recipe under its own identity, with
+separate provenance and unchanged native selection/movement requirements.
+The default launcher and `--prepared-build` receipt path remain unchanged.
+Its dry run only selects the case; it does not authenticate bundle bytes.
+The adapter's artificial-bundle fixtures do not establish actual bundle
+compatibility, castle entry, interiors, rendering or runtime acceptance.
+
 ### Inherited 1920x1080 CPU checkpoint — 2026-09-30
 
 The [source-bound CPU receipt](../../reports/ordinary-castle-inherited-cpu-verification-20260930.json)
