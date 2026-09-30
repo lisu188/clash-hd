@@ -1,0 +1,51 @@
+{
+  "schema": "clash95_prepared_small_world_driver_verification_v1",
+  "base_commit": "0ace03e4ec6d3b77cb055434559e303193c93f74",
+  "passed": true,
+  "executor": "native_poll_consumer collaboration agent",
+  "command": [
+    "C:/Users/andrz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+    "-B",
+    "tools/test_resolution_playability.py"
+  ],
+  "cwd": "C:/Users/andrz/.codex/worktrees/hd-completion-current/clash-hd",
+  "exit_code": 0,
+  "tests_run": 81,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 14.866,
+  "unchanged_prior_methods": 60,
+  "new_artificial_bundle_methods": 21,
+  "source_sha256": {
+    "tools/resolution_playability.py": "02d9bc9886d121aceddbd7f2a3f33173719af80a69fef7d9b65ef4373e0d161a",
+    "tools/test_resolution_playability.py": "4eaee4e54bf179b8796289ccc3c25afb0bdd9878c1d0034eac3f7171e9ef6cd3"
+  },
+  "tool_evidence": {
+    "exec_session": 54619,
+    "output_chunks": ["3454a7", "e6c0b0"],
+    "standalone_log_path": null,
+    "standalone_log_sha256": null,
+    "wall_clock_start_utc": null,
+    "wall_clock_finish_utc": null,
+    "note": "The executor reported the terminal unittest count, success and no skips. Initial output was tool-truncated; no separate full log or wall-clock timestamps were retained."
+  },
+  "review": {
+    "executor": "native_poll_review collaboration agent",
+    "passed": true,
+    "prior_60_methods_ast_unchanged": true,
+    "default_launcher_matrix_and_native_acceptance_unchanged": true,
+    "tests_rerun_by_reviewer": false
+  },
+  "original_bound_reconstruction_mocked": true,
+  "game_runtime_executed": false,
+  "debugger_executed": false,
+  "compiler_executed": false,
+  "screen_capture_performed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The new fixtures authenticate tiny artificial three-file bundles with mocked reconstruction and do not prove actual serialized game-bundle compatibility.",
+    "The old suite and native gameplay acceptance requirements remain unchanged. No successful game selection, movement, visual composition, lifecycle, endurance or promotion is inferred."
+  ]
+}

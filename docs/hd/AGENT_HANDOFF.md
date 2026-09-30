@@ -59,8 +59,9 @@ on the map but fail controls/input checks. The audit now requires matching pause
 screen-owner records. The explicit foreground diagnostic retains fixed
 campaign-menu coordinates only; timed dismissal and fixed ordinary-map clicks
 were removed, and no ordinary-map acceptance is inferred. The hidden measured
-driver described below uses held native phases. The framed input guard for
-worlds smaller than the viewport still needs integration repairs. The separate
+driver described below uses held native phases. Launcher predecessors retain
+their old small-world guards; the integrated successor below still needs
+matching runtime validation. The separate
 [ordinary castle-entry successor](ORDINARY_CASTLE_ENTRY.md) authenticates the
 real native caller before admitting its owned canvas at 1024x768; it remains
 outside the launcher and protected stable stage. The additive
@@ -72,7 +73,7 @@ The [ordinary-map driver](ORDINARY_MAP_RUNTIME.md) has an explicit
 that distinct recipe. It authenticates exact candidate, complete producer
 metadata, verifier and source bytes before use, keeps matrix provenance
 separate from launcher receipts, and retains the same measured selection and
-movement contracts. The September 30 focused driver suite passes 60 methods
+movement contracts. The preceding September 30 matrix checkpoint passes 60 methods
 without skips, including 17 artificial-bundle methods. A dry run does not
 authenticate a bundle; actual bundle compatibility and game runtime remain
 unmeasured at this source checkpoint. The option adds no castle-transition proof.
@@ -131,13 +132,31 @@ The [small-world successor](SMALL_WORLD_INPUT.md) integrates bounded repaint
 and both ordinary and army-private input-axis guards above the exact
 Complete HD/modalwidgets castle-entry matrix. It retains integrated army
 composition, native presentation and the inherited castle gate. Its distinct
-recipe and final `CSW_FINAL_OK` verifier remain outside the launcher and runtime
-driver; the driver's prepared-matrix option accepts only the older matrix.
+recipe and final `CSW_FINAL_OK` verifier remain outside the launcher. The driver
+has a separate `--prepared-small-world-candidate` authentication option; its
+prepared-matrix option accepts only the older matrix. Each path retains the
+same measured selection/movement requirements and distinct provenance.
+The [current driver suite](../../reports/prepared-small-world-driver-verification-20260930.json)
+passes all 81 methods without skips, retaining the
+prior 60 methods and adding 21 artificial-bundle methods for the successor.
+These fixtures use mocked reconstruction and establish no actual bundle or
+game acceptance.
+The [actual bundle checkpoint](../../reports/prepared-small-world-bundle-verification-20260930.json)
+separately passes exact CLI-to-adapter compatibility for modalwidgets1920.
+Its three-file bundle totals 38,798,089 bytes; the adapter reconstructs once,
+and the final audit preserves all sources, original and bundle identities.
+Other actual profile/resolution bundles and game runtime remain unmeasured.
 The [September 30 source/CPU checkpoint](../../reports/complete-small-world-source-verification-20260930.json)
 passes 32 methods without skips, including eight methods on one original-bound
 modalwidgets1920 image constructed in memory. Synthetic byte checks cover both
 profiles and all six existing geometries; draw returns are modeled. The local
 checkpoint launched no game, compiler or debugger and wrote no candidate bundle.
+The [source-bound CI receipt](../../reports/complete-small-world-ci-verification-20260930.json)
+also passes the eight final-verifier cases on marked synthetic Windows images,
+including actual ASLR and corrupt/missing/reordered/unreadable checks. Every
+case retains unchanged initial-breakpoint EIP/context/image proof; the actual
+game candidate was not loaded. The initial YAML failure and separate unchanged
+predecessor compiler-timeout retry remain recorded.
 Fresh selection/movement, final visual composition, castle lifecycle,
 endurance, manual input and promotion evidence remain required.
 The September 24 review remains historical; the new driver attempts do not
@@ -276,9 +295,10 @@ The diagnostic PNG is a single hidden software capture, not a stable pair or
 final visible-color proof. All four borders and six action cells were visually
 inspected, but blank terrain and full rendering acceptance remain unproven.
 
-Prepared bundles for 800x600, 1024x768 and 1920x1080 are under
+Prepared bundles for 800x600, 1024x768 and 1920x1080 were recorded under
 `C:/ClashTests/completehd-validation-20260908/prepared-<resolution>/`.
-The 1080p candidate is
+That directory is no longer available locally after cleanup; reconstruction
+and fresh evidence are required before reuse. The recorded 1080p candidate is
 `95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0`.
 The initial run plan records producer hashes; later producer edits require a
 new immutable run plan. Its unexecuted 1024/1080 entries are not evidence.

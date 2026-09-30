@@ -9,6 +9,7 @@ import json
 import os
 import re
 import shutil
+import stat
 from pathlib import Path
 import subprocess
 import sys
@@ -404,7 +405,13 @@ def prepared_candidate(path: Path, case: dict) -> tuple[Path, dict]:
 
 
 PREPARED_MATRIX_SCHEMA='clash95_prepared_ordinary_castle_entry_matrix_v1'
+PREPARED_SMALL_WORLD_SCHEMA='clash95_prepared_complete_small_world_v1'
 MATRIX_BUNDLE_MAX_BYTES=64*1024**2
+SMALL_WORLD_PRODUCER='tools/build_complete_small_world_candidate.py'
+SMALL_WORLD_SCOPES=dict(validation_stage_only=True,installation_ready=False,
+    runtime_executed=False,manual_input_proof=False,promotion_ready=False,
+    bounded_small_world_integrated=True,small_world_input_enabled=True,
+    camera_clamp=True,predecessor_probe_reusable=False)
 
 
 def matrix_candidate_case(profile: str, resolution: str) -> dict:
@@ -415,7 +422,21 @@ def matrix_candidate_case(profile: str, resolution: str) -> dict:
                 stage=builder.stage(profile),recipe_revision=builder.REVISION)
 
 
+def small_world_candidate_case(profile: str, resolution: str) -> dict:
+    from src.patcher import complete_small_world_candidate as builder
+    if profile not in builder.PROFILES or resolution not in builder.RESOLUTIONS:
+        raise ValueError('Prepared small-world requires a supported complete profile and six-resolution case')
+    return dict(schema=builder.SCHEMA,profile=profile,resolution=resolution,
+                stage=builder.stage(profile),recipe_revision=builder.REVISION)
+
+
 def candidate_case(args) -> dict:
+    if getattr(args,'prepared_small_world_candidate',None) is not None:
+        if (args.mode!='hidden-controlled' or getattr(args,'prepared_build',None) is not None
+                or getattr(args,'prepared_matrix_candidate',None) is not None
+                or getattr(args,'native_present_bounds',False)):
+            raise ValueError('Prepared small-world requires hidden-controlled mode without another prepared candidate or presentation override')
+        return small_world_candidate_case(args.profile,args.resolution)
     if getattr(args,'prepared_matrix_candidate',None) is not None:
         if (args.mode!='hidden-controlled' or getattr(args,'prepared_build',None) is not None
                 or getattr(args,'native_present_bounds',False)):
@@ -512,7 +533,105 @@ def prepared_matrix_candidate(exe: Path, *, original: Path, profile: str,
     return exe,dict(case,candidate_sha256=expected['candidate_sha256'],prepared_matrix=provenance)
 
 
+def _prepared_file_snapshot(path: Path) -> tuple[bytes,dict]:
+    """Read one bounded plain file without accepting replacement during read."""
+    path=_matrix_plain_path(path)
+    def identity():
+        info=path.stat(follow_symlinks=False)
+        if not stat.S_ISREG(info.st_mode):raise ValueError('Prepared candidate requires a regular file')
+        return dict(device=info.st_dev,inode=info.st_ino,size=info.st_size,mtime_ns=info.st_mtime_ns)
+    before=identity();data=_matrix_bytes(path)
+    if identity()!=before or _matrix_plain_path(path)!=path:
+        raise ValueError('Prepared candidate file changed while reading: '+str(path))
+    return data,before
+
+
+def _small_world_sources(metadata: dict) -> dict:
+    _matrix_sources(metadata)
+    identities={}
+    for name,digest in metadata['source_hashes'].items():
+        data,identity=_prepared_file_snapshot(matrix.ROOT/name)
+        if hashlib.sha256(data).hexdigest()!=digest:
+            raise ValueError('Prepared small-world source changed while reading: '+name)
+        identities[name]=identity
+    return identities
+
+
+def prepared_small_world_candidate(exe: Path, *, original: Path, profile: str,
+                                   resolution: str) -> tuple[Path,dict]:
+    """Bind the distinct successor to one source reconstruction; no file writes."""
+    from src.patcher import complete_small_world_candidate as builder
+    case=small_world_candidate_case(profile,resolution)
+    exe=_matrix_plain_path(exe);original=_matrix_plain_path(original)
+    if (exe.suffix.lower()!='.exe' or exe.is_relative_to(matrix.ROOT.resolve())
+            or exe.is_relative_to(original.parent)):
+        raise ValueError('Prepared small-world executable must be external to repository and original assets')
+    paths=(exe,exe.with_suffix('.candidate.json'),exe.with_suffix('.cdb'))
+    before={path:_prepared_file_snapshot(path) for path in paths}
+    original_bytes,original_identity=_prepared_file_snapshot(original)
+    if hashlib.sha256(original_bytes).hexdigest()!=builder.pe.ORIGINAL_SHA256:
+        raise ValueError('Prepared small-world original executable identity differs')
+    metadata=json.loads(before[paths[1]][0].decode('utf-8'),object_pairs_hook=_matrix_unique_object)
+    if (type(metadata) is not dict or any(type(metadata.get(k)) is not type(v) or metadata.get(k)!=v
+            for k,v in case.items()) or metadata.get('original_sha256')!=builder.pe.ORIGINAL_SHA256):
+        raise ValueError('Prepared small-world schema, recipe, case or original identity differs')
+    if any(metadata.get(k) is not v for k,v in SMALL_WORLD_SCOPES.items()):
+        raise ValueError('Prepared small-world source-only evidence scope differs')
+    sources=metadata.get('source_hashes')
+    if type(sources) is not dict or not {builder.SOURCE,SMALL_WORLD_PRODUCER}<=sources.keys():
+        raise ValueError('Prepared small-world source and CLI producer identities required')
+    source_before=_small_world_sources(metadata)
+    producer_before=sources[SMALL_WORLD_PRODUCER]
+    image,expected,probe=builder.build_candidate(original_bytes,profile,resolution)
+    if type(expected) is not dict or type(expected.get('source_hashes')) is not dict or type(image) is not bytes or type(probe) is not str:
+        raise ValueError('Reconstructed small-world builder result differs')
+    expected=dict(expected,source_hashes=dict(expected['source_hashes']))
+    expected['source_hashes'][SMALL_WORLD_PRODUCER]=producer_before
+    if (any(type(expected.get(k)) is not type(v) or expected.get(k)!=v for k,v in case.items())
+            or expected.get('original_sha256')!=builder.pe.ORIGINAL_SHA256
+            or any(expected.get(k) is not v for k,v in SMALL_WORLD_SCOPES.items())
+            or hashlib.sha256(image).hexdigest()!=expected.get('candidate_sha256')
+            or hashlib.sha256(probe.encode('ascii')).hexdigest()!=expected.get('probe_sha256')
+            or not probe.endswith('\r\n') or any(ch in probe.replace('\r\n','') for ch in '\r\n')):
+        raise ValueError('Reconstructed small-world builder identity differs')
+    if (before[exe][0]!=image or before[paths[1]][0]!=(json.dumps(expected,indent=2)+'\n').encode('utf-8')
+            or before[paths[2]][0]!=probe.encode('ascii')):
+        raise ValueError('Prepared small-world executable, complete metadata or CRLF probe differs from source reconstruction')
+    if (_small_world_sources(expected)!=source_before or _prepared_file_snapshot(original)!=(original_bytes,original_identity)
+            or any(_matrix_plain_path(path)!=path or _prepared_file_snapshot(path)!=snapshot for path,snapshot in before.items())):
+        raise ValueError('Prepared small-world original, sources or bundle changed during authentication')
+    provenance=dict(schema=PREPARED_SMALL_WORLD_SCHEMA,candidate_schema=case['schema'],
+        **{key:case[key] for key in ('profile','resolution','stage','recipe_revision')},
+        candidate_sha256=expected['candidate_sha256'],original_sha256=builder.pe.ORIGINAL_SHA256,
+        original=dict(path=str(original),sha256=builder.pe.ORIGINAL_SHA256,identity=original_identity),
+        candidate_manifest=dict(path=str(paths[1]),sha256=hashlib.sha256(before[paths[1]][0]).hexdigest()),
+        probe=dict(path=str(paths[2]),sha256=expected['probe_sha256']),
+        artifact_sha256={path.name:hashlib.sha256(snapshot[0]).hexdigest() for path,snapshot in before.items()},
+        artifact_identity={path.name:snapshot[1] for path,snapshot in before.items()},
+        source_sha256=dict(expected['source_hashes']),source_identity=source_before,
+        authentication_scope='Exact source reconstruction and bundle bytes only',
+        probe_executed=False,runtime_executed=False,manual_input_proof=False,promotion_ready=False)
+    return exe,dict(case,candidate_sha256=expected['candidate_sha256'],prepared_small_world=provenance)
+
+
+def _candidate_origins(built: dict) -> None:
+    if sum(key in built for key in ('launcher_build','prepared_matrix','prepared_small_world'))>1:
+        raise ValueError('Ambiguous prepared candidate provenance')
+
+
 def candidate_sources(built: dict) -> dict:
+    _candidate_origins(built)
+    if 'prepared_small_world' in built:
+        provenance=built['prepared_small_world']
+        if type(provenance) is not dict or provenance.get('schema')!=PREPARED_SMALL_WORLD_SCHEMA:
+            raise ValueError('Prepared small-world provenance schema differs')
+        if (provenance.get('candidate_schema')!=built.get('schema')
+                or any(type(provenance.get(k)) is not type(built.get(k)) or provenance.get(k)!=built.get(k)
+                       for k in ('profile','resolution','stage','recipe_revision','candidate_sha256'))
+                or any(provenance.get(k) is not False for k in ('probe_executed','runtime_executed','manual_input_proof','promotion_ready'))
+                or type(provenance.get('source_sha256')) is not dict):
+            raise ValueError('Prepared small-world provenance and candidate context differ')
+        return provenance['source_sha256']
     if 'prepared_matrix' in built:
         provenance=built['prepared_matrix']
         if ('launcher_build' in built or type(provenance) is not dict
@@ -528,7 +647,13 @@ def candidate_sources(built: dict) -> dict:
 
 def candidate_context(built: dict) -> dict:
     import ordinary_map_input_plan as planner
-    if 'prepared_matrix' in built:
+    _candidate_origins(built)
+    if 'prepared_small_world' in built:
+        case=small_world_candidate_case(built['profile'],built['resolution'])
+        if any(type(built.get(k)) is not type(v) or built.get(k)!=v for k,v in case.items()):
+            raise ValueError('Prepared small-world context identity differs')
+        candidate_sources(built)
+    elif 'prepared_matrix' in built:
         case=matrix_candidate_case(built['profile'],built['resolution'])
         if any(type(built.get(k)) is not type(v) or built.get(k)!=v for k,v in case.items()):
             raise ValueError('Prepared matrix context identity differs')
@@ -551,6 +676,36 @@ def audit_prepared_matrix(exe: Path, built: dict) -> None:
                    for path in paths)):
         raise ValueError('Prepared matrix bundle changed after authentication')
     _matrix_sources({'source_hashes':candidate_sources(built)})
+
+
+def audit_prepared_small_world(exe: Path, built: dict) -> None:
+    candidate_context(built);provenance=built['prepared_small_world']
+    paths=(exe,exe.with_suffix('.candidate.json'),exe.with_suffix('.cdb'))
+    if (provenance['candidate_manifest']['path']!=str(paths[1]) or provenance['probe']['path']!=str(paths[2])
+            or set(provenance['artifact_sha256'])!={path.name for path in paths}
+            or set(provenance['artifact_identity'])!={path.name for path in paths}
+            or provenance['artifact_sha256'].get(exe.name)!=built['candidate_sha256']
+            or provenance['candidate_manifest']['sha256']!=provenance['artifact_sha256'].get(paths[1].name)
+            or provenance['probe']['sha256']!=provenance['artifact_sha256'].get(paths[2].name)):
+        raise ValueError('Prepared small-world artifact provenance differs')
+    snapshots={path:_prepared_file_snapshot(path) for path in paths}
+    if any(hashlib.sha256(snapshot[0]).hexdigest()!=provenance['artifact_sha256'][path.name]
+           or snapshot[1]!=provenance['artifact_identity'][path.name] for path,snapshot in snapshots.items()):
+        raise ValueError('Prepared small-world bundle changed after authentication')
+    metadata=json.loads(snapshots[paths[1]][0].decode('utf-8'),object_pairs_hook=_matrix_unique_object)
+    case=small_world_candidate_case(built['profile'],built['resolution'])
+    if (type(metadata) is not dict or any(type(metadata.get(k)) is not type(v) or metadata.get(k)!=v for k,v in case.items())
+            or metadata.get('candidate_sha256')!=built['candidate_sha256']
+            or metadata.get('probe_sha256')!=provenance['probe']['sha256']
+            or any(metadata.get(k) is not v for k,v in SMALL_WORLD_SCOPES.items())
+            or metadata.get('source_hashes')!=candidate_sources(built)):
+        raise ValueError('Prepared small-world metadata or source provenance differs from retained manifest')
+    if _small_world_sources(metadata)!=provenance['source_identity']:
+        raise ValueError('Prepared small-world source identity changed after authentication')
+    original=provenance['original'];data,identity=_prepared_file_snapshot(Path(original['path']))
+    if (original['sha256']!=metadata['original_sha256'] or original['sha256']!=provenance['original_sha256']
+            or hashlib.sha256(data).hexdigest()!=original['sha256'] or identity!=original['identity']):
+        raise ValueError('Prepared small-world original changed after authentication')
 
 
 def native_phase_source(width: int, height: int) -> str:
@@ -691,7 +846,10 @@ def run_hidden(args) -> dict:
         if (build.get('generated_by')!='clash-hd-surface-dump-proxy' or matrix.digest(proxy)!=build['output_sha256'].lower()
                 or matrix.digest(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp')!=build['source_sha256'].lower()):
             raise ValueError('Proxy build identity differs')
-        if getattr(args,'prepared_matrix_candidate',None) is not None:
+        if getattr(args,'prepared_small_world_candidate',None) is not None:
+            exe,built=prepared_small_world_candidate(args.prepared_small_world_candidate,original=reference/'clash95.exe',
+                                                    profile=args.profile,resolution=args.resolution)
+        elif getattr(args,'prepared_matrix_candidate',None) is not None:
             exe,built=prepared_matrix_candidate(args.prepared_matrix_candidate,original=reference/'clash95.exe',
                                                 profile=args.profile,resolution=args.resolution)
         elif args.prepared_build:
@@ -781,6 +939,7 @@ def run_hidden(args) -> dict:
                 report['candidate_unchanged']=matrix.digest(target)==built['candidate_sha256']==matrix.digest(exe)
                 matrix.runtime.verify_hd_sources({'source_hashes':candidate_sources(built)},root)
                 if 'prepared_matrix' in built:audit_prepared_matrix(exe,built)
+                if 'prepared_small_world' in built:audit_prepared_small_world(exe,built)
                 report['working_original_unchanged']=matrix.digest(work/'clash95.exe')==matrix.runtime.ORIGINAL_SHA256
             report['sources_unchanged']=report['source_hashes']=={n:matrix.digest(root/n) for n in source_names}
             if not report['sources_unchanged']:raise ValueError('Driver/controller source changed during run')
@@ -802,6 +961,7 @@ def main() -> int:
     parser.add_argument('--mode',choices=('hidden-controlled','foreground-diagnostic'),default='hidden-controlled')
     parser.add_argument('--prepared-build',type=Path)
     parser.add_argument('--prepared-matrix-candidate',type=Path)
+    parser.add_argument('--prepared-small-world-candidate',type=Path)
     for name in ('runtime','manifest','proxy','out'):parser.add_argument('--'+name,type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--approval-text')
     parser.add_argument('--native-present-bounds',action='store_true')
