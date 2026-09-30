@@ -1,0 +1,132 @@
+{
+  "schema": "clash95_owned_hidden_process_engine_v1",
+  "recorded_utc": "2026-09-30T07:57:59.310625+00:00",
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "desktop_capture_executed": false,
+  "fixture_runtime_executed": true,
+  "expected_cases": 2,
+  "completed": true,
+  "passed": true,
+  "setup_error": null,
+  "source_sha256": {
+    "tools/owned_hidden_process.py": "c3861e3495c2ad4e11cb92213ab6f20623096683b79cbef79ae767aec4f4e00c",
+    "tools/test_owned_hidden_process_engine.py": "b3c70a9184880ca62556b3bfa68472573c484ebe616564e5004050c70450c0cb"
+  },
+  "compiled_fixture": {
+    "cpp_sha256": "4b72f64af0f16f6d3320c62e6117508abc2454cd08482761f5b11c708df7fb92",
+    "executable_sha256": "c0eb5452971cf3e7de9218b0a76ee247b77a9f84121223f8d6d536e3ded7257e",
+    "compiler_command_sha256": "0efbb2a93b14bb1243b885f54fb6d8de67d6b7151a71248c7f09013846decee2",
+    "executable": "C:\\ClashTests\\owned-process-36686641640-1\\owned-process-fixture.exe"
+  },
+  "cases": [
+    {
+      "case": "parent-and-child-waiting",
+      "passed": true,
+      "completed": true,
+      "host_started": true,
+      "parent_entry_observed": true,
+      "child_entry_observed": true,
+      "errors": [],
+      "native_records": {
+        "parent": {
+          "marker": "CLASH_OWNED_DESKTOP_FIXTURE_V1",
+          "role": "parent",
+          "pid": 7952,
+          "child_pid": 7720,
+          "desktop": "ClashOwnedHost_83af9c9e6f274ee7abd7cb855b1a673f"
+        },
+        "child": {
+          "marker": "CLASH_OWNED_DESKTOP_FIXTURE_V1",
+          "role": "child",
+          "pid": 7720,
+          "child_pid": 0,
+          "desktop": "ClashOwnedHost_83af9c9e6f274ee7abd7cb855b1a673f"
+        }
+      },
+      "retained_identities": {
+        "parent": {
+          "path": "C:\\ClashTests\\owned-process-36686641640-1\\owned-process-fixture.exe",
+          "creation_filetime": 134352286792097157,
+          "in_owned_job": true
+        },
+        "child": {
+          "path": "C:\\ClashTests\\owned-process-36686641640-1\\owned-process-fixture.exe",
+          "creation_filetime": 134352286792269408,
+          "in_owned_job": true
+        }
+      },
+      "parent_and_child_live_before_cleanup": true,
+      "cleanup": {
+        "host_exited": true,
+        "job_empty": true,
+        "handles_closed": true,
+        "errors": []
+      },
+      "retained_exit_codes": {
+        "parent": 1,
+        "child": 1
+      },
+      "stdout_remained_caller_owned": true,
+      "executable_unchanged": true,
+      "stdout_stderr_verified": true,
+      "log_sha256": "ff1fd4369ce8c8a784c123fc311c4387c34d312325b2b47e2ae7e277ae3b16ee"
+    },
+    {
+      "case": "parent-exits-first",
+      "passed": true,
+      "completed": true,
+      "host_started": true,
+      "parent_entry_observed": true,
+      "child_entry_observed": true,
+      "errors": [],
+      "native_records": {
+        "parent": {
+          "marker": "CLASH_OWNED_DESKTOP_FIXTURE_V1",
+          "role": "parent",
+          "pid": 2592,
+          "child_pid": 6336,
+          "desktop": "ClashOwnedHost_ae9afa2d26fa4bbf9c40dfba722ac2bd"
+        },
+        "child": {
+          "marker": "CLASH_OWNED_DESKTOP_FIXTURE_V1",
+          "role": "child",
+          "pid": 6336,
+          "child_pid": 0,
+          "desktop": "ClashOwnedHost_ae9afa2d26fa4bbf9c40dfba722ac2bd"
+        }
+      },
+      "retained_identities": {
+        "parent": {
+          "path": "C:\\ClashTests\\owned-process-36686641640-1\\owned-process-fixture.exe",
+          "creation_filetime": 134352286792534642,
+          "in_owned_job": true
+        },
+        "child": {
+          "path": "C:\\ClashTests\\owned-process-36686641640-1\\owned-process-fixture.exe",
+          "creation_filetime": 134352286792672931,
+          "in_owned_job": true
+        }
+      },
+      "parent_exit_before_cleanup": true,
+      "child_live_after_parent_exit": true,
+      "cleanup": {
+        "host_exited": true,
+        "job_empty": true,
+        "handles_closed": true,
+        "errors": []
+      },
+      "retained_exit_codes": {
+        "parent": 0,
+        "child": 1
+      },
+      "stdout_remained_caller_owned": true,
+      "executable_unchanged": true,
+      "stdout_stderr_verified": true,
+      "log_sha256": "ff1fd4369ce8c8a784c123fc311c4387c34d312325b2b47e2ae7e277ae3b16ee"
+    }
+  ],
+  "scope": "Native synthetic parent/child desktop inheritance and owned job cleanup only; no game, debugger, input or capture",
+  "scratch": "C:\\ClashTests\\owned-process-36686641640-1",
+  "elapsed_seconds": 3.266
+}

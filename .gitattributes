@@ -941,3 +941,7 @@
 /tools/test_ordinary_map_input_poll_trace.py -text whitespace=cr-at-eol
 /reports/ordinary-map-artifact-cleanup-20260930.json -text whitespace=cr-at-eol
 /reports/ordinary-map-pause-engine-ci-20260930-failure.json -text whitespace=cr-at-eol
+/reports/ordinary-map-pause-engine-ci-20260930.json -text whitespace=cr-at-eol
+/reports/ordinary-map-phase-compile-ci-20260930.json -text whitespace=cr-at-eol
+/reports/owned-process-ci-20260930.json -text whitespace=cr-at-eol
+/reports/ordinary-map-native-ci-verification-20260930.json -text whitespace=cr-at-eol
