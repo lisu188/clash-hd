@@ -971,3 +971,9 @@
 /reports/ordinary-map-runtime-space-guard-20260930.json text eol=lf
 /reports/ordinary-map-native-poll-cpu-20260930.json text eol=lf
 /tools/test_ordinary_map_native_poll_cpu.py -text
+/tools/ordinary_map_activation_host.py -text
+/tools/test_ordinary_map_activation_host.py -text
+/tools/ordinary_map_activation_trace.py -text
+/tools/test_ordinary_map_activation_trace.py -text
+/tools/test_resolution_activation_diagnostics.py -text
+/reports/ordinary-map-activation-source-20260930.json text eol=lf
