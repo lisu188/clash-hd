@@ -1,0 +1,1013 @@
+{
+  "schema": "clash95_ordinary_small_world_input_checkpoint_v1",
+  "created_utc": "2026-09-30T11:47:39.690584+00:00",
+  "source_commit": "ca87aeff1f08e2b7c7ecd3a2ad715e37be030e24",
+  "passed": false,
+  "run_root": "C:\\ClashTests\\ordinary-small-world-input-20260930-g",
+  "raw_report": {
+    "path": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\playability.json",
+    "sha256": "c4693eb438024e4cda033ab8a8d135f422f2654340086a73ac42dfa4cc94a83b"
+  },
+  "candidate": {
+    "schema": "clash95_complete_small_world_candidate_v1",
+    "profile": "modalwidgets",
+    "resolution": "1920x1080",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation",
+    "recipe_revision": "complete_small_world_v1"
+  },
+  "executed_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-ordinarycastleentry-matrix-smallworld-validation",
+  "executed_revision": "complete_small_world_v1",
+  "candidate_sha256": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe",
+  "human_approval_text": "Human user in this active task: I approve hidden controle run; Approve debugger runs. Authorized hidden-controlled private-desktop validation. No visible/manual or OS input approval.",
+  "mode": "hidden-controlled",
+  "capture_scope": "Private desktop and non-presenting proxy; paused software surface only",
+  "proof_scope": "controlled native ordinary handler with measured input fields; no OS or manual input",
+  "host": {
+    "pid": 54972,
+    "creation_filetime": 134352408708560732,
+    "desktop": "ClashOwnedHost_1a9db96008fa474f8efc338c1ed50bdf"
+  },
+  "owner": {
+    "pid": 34516,
+    "creation_filetime": 134352408710965202,
+    "image_base": 4194304,
+    "candidate_sha256": "657faf66ca2858f9b07dd7a2d9c96bd1853821c0e23e6f7042ec448f747b64fe"
+  },
+  "host_returncode": 2,
+  "host_cleanup": {
+    "host_exited": true,
+    "job_empty": true,
+    "handles_closed": true,
+    "errors": []
+  },
+  "retained_process_exited": true,
+  "startup_retired_before_actions": true,
+  "actions": [
+    {
+      "name": "select",
+      "passed": false,
+      "point": [
+        320,
+        368
+      ],
+      "binding": {
+        "plan_sha256": "2e3bfc5bd92fdb14758119c5fad8fd8ac1da6ca0ea8dd2d4f5fc361b7b6f6b84",
+        "action": "select",
+        "validation": {
+          "action": "select",
+          "stack_index": 0,
+          "point": [
+            320,
+            368
+          ],
+          "observation_sequence": 2,
+          "observation_sha256": "7397556684bfb2f2f5951e7151bc5cd8aeee560d91c961f40e1ef8ca64ea6b53",
+          "proof_scope": "measured pre-click state only; cursor and actual input remain unverified"
+        },
+        "held_phase": {
+          "schema": "clash95_native_phase_ack_v1",
+          "session_id": "00a428212ac64c76b7b3027c826a2c88",
+          "request_seq": 1,
+          "status": "held",
+          "lease_id": "aafb4820a5b24395ba407b34bb0afce6",
+          "pid": 34516,
+          "primary_tid": 43388,
+          "creation_filetime": 134352408710965202,
+          "image_base": 4194304,
+          "deadline_tick_ms": 798989671,
+          "paused": true,
+          "phase": "predispatch-before",
+          "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+          "root_esp": 974032,
+          "held_esp": 974004,
+          "held_eip": 4239923,
+          "human_entry_seen": true,
+          "postpoll_seen": true,
+          "action_index": 0,
+          "capture_index": 100,
+          "binding_sha256": "",
+          "target_x": 0,
+          "target_y": 0,
+          "dispatch_seen": false,
+          "dispatch_eip": 0,
+          "dispatch_esp": 0,
+          "dispatch_return": 0,
+          "predicate_observed": false,
+          "predicate_value": 0,
+          "return_seen": false,
+          "return_eip": 0,
+          "return_esp": 0
+        }
+      },
+      "binding_sha256": "df9b7e12b4d9a29396016eb37f276c7d4816984377aad5bf5dacd76ff206044c"
+    }
+  ],
+  "errors": [
+    "LeaseError: Owned target is no longer live"
+  ],
+  "outcome": {
+    "entry_observed": true,
+    "loaded_code_matches": true,
+    "owned_process_absent": true,
+    "observation_complete": false,
+    "harness_errors": [
+      "REAL_HARNESS_ERROR phase cursor overflow or existing native button input winerror=0"
+    ],
+    "requested_interval_completed": false
+  },
+  "mouse_poll_trace": {
+    "schema": "clash95_native_mouse_poll_trace_report_v1",
+    "scope": "native_mouse_poll_diagnostic_only",
+    "complete": true,
+    "errors": [],
+    "observed_marker_count": 5,
+    "completed_epochs": 1,
+    "completed_polls": 1,
+    "failed_hresult_count": 1,
+    "completed_failed_hresult_count": 1,
+    "return_observations": [
+      {
+        "line": 272,
+        "record": {
+          "schema": "clash95_native_mouse_poll_trace_v1",
+          "kind": "return",
+          "epoch": 1,
+          "action_index": 0,
+          "pid": 34516,
+          "tid": 43388,
+          "creation_filetime": 134352408710965202,
+          "image_base": 4194304,
+          "root_esp": 974032,
+          "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+          "session_id": "00a428212ac64c76b7b3027c826a2c88",
+          "poll": 1,
+          "return_esp": 973808,
+          "hresult": 2147942412,
+          "post_hex": "8100000016199d642149aa0b95970600"
+        },
+        "paired": true,
+        "hresult_failed": true
+      }
+    ],
+    "failed_hresult_with_unchanged_buffer_count": 1,
+    "local_changed_after_return_count": 0,
+    "hresults": {
+      "0x8007000c": 1
+    },
+    "epochs": [
+      {
+        "epoch": 1,
+        "action_index": 0,
+        "root_esp": 974032,
+        "start_line": 264,
+        "deadline_tick_ms": 798989656,
+        "polls": 1,
+        "complete": true,
+        "mouse_interface": [
+          8136916,
+          1364385872,
+          1364293248
+        ],
+        "end_line": 285
+      }
+    ],
+    "polls": [
+      {
+        "epoch": 1,
+        "action_index": 0,
+        "poll": 1,
+        "call_line": 268,
+        "return_line": 272,
+        "copy_line": 276,
+        "call": {
+          "schema": "clash95_native_mouse_poll_trace_v1",
+          "kind": "call",
+          "epoch": 1,
+          "action_index": 0,
+          "pid": 34516,
+          "tid": 43388,
+          "creation_filetime": 134352408710965202,
+          "image_base": 4194304,
+          "root_esp": 974032,
+          "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+          "session_id": "00a428212ac64c76b7b3027c826a2c88",
+          "poll": 1,
+          "caller": 4590177,
+          "call_esp": 973796,
+          "frame_esp": 973808,
+          "entry_esp": 973916,
+          "backend": 5525912,
+          "device": 8136916,
+          "vtable": 1364385872,
+          "method": 1364293248,
+          "buffer": 973888,
+          "pre_hex": "8100000016199d642149aa0b95970600"
+        },
+        "returned": {
+          "schema": "clash95_native_mouse_poll_trace_v1",
+          "kind": "return",
+          "epoch": 1,
+          "action_index": 0,
+          "pid": 34516,
+          "tid": 43388,
+          "creation_filetime": 134352408710965202,
+          "image_base": 4194304,
+          "root_esp": 974032,
+          "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+          "session_id": "00a428212ac64c76b7b3027c826a2c88",
+          "poll": 1,
+          "return_esp": 973808,
+          "hresult": 2147942412,
+          "post_hex": "8100000016199d642149aa0b95970600"
+        },
+        "copy": {
+          "schema": "clash95_native_mouse_poll_trace_v1",
+          "kind": "copy",
+          "epoch": 1,
+          "action_index": 0,
+          "pid": 34516,
+          "tid": 43388,
+          "creation_filetime": 134352408710965202,
+          "image_base": 4194304,
+          "root_esp": 974032,
+          "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+          "session_id": "00a428212ac64c76b7b3027c826a2c88",
+          "poll": 1,
+          "copy_esp": 973808,
+          "local_hex": "8100000016199d642149aa0b95970600",
+          "backend_x": 129,
+          "backend_y": 1688017174,
+          "primary": 149,
+          "middle": 6,
+          "secondary": 151,
+          "resolved": 0,
+          "raw_x": 20480,
+          "raw_y": 10624
+        },
+        "hresult_failed": true,
+        "device_buffer_unchanged": true,
+        "local_changed_after_return": false
+      }
+    ],
+    "os_input_executed": false,
+    "os_input_proof": false,
+    "manual_input_proof": false,
+    "gameplay_verified": false,
+    "gameplay_proof": false,
+    "promotion_ready": false,
+    "expected_identity": {
+      "pid": 34516,
+      "creation_filetime": 134352408710965202,
+      "image_base": 4194304,
+      "controller_sha256": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+      "session_id": "00a428212ac64c76b7b3027c826a2c88",
+      "tid": 43388
+    }
+  },
+  "all_retained_primary_pixel_audits": [
+    {
+      "sample": "primary-100.json",
+      "screen_context": {
+        "state_sample": "map-state-100.json",
+        "ordinary_map": true,
+        "screen": "ordinary_map",
+        "render_hook": 4238656,
+        "reason": "Native map owner and context observed",
+        "primary_metadata_sha256": "bd47647d4aed91dbfdc6f93677671fa71700869d2a75b10482f13d721d8a7f60",
+        "state_sha256": "4d94a6ff8860b0ac2df146688a310bc9668f6a841cb107a15601a7ed97e06b49"
+      },
+      "map_audit_applicable": true,
+      "frame_required": true,
+      "frame": {
+        "profile": "native_four_border_tiles_v1",
+        "resolution": "1920x1080",
+        "passed": false,
+        "structural_border_exact": true,
+        "checked_border_pixels": 123652,
+        "bands": [
+          {
+            "name": "top",
+            "rectangle_inclusive": [
+              0,
+              0,
+              1919,
+              15
+            ],
+            "checked_pixels": 30720,
+            "exact_matches": 30720,
+            "mismatches": 0,
+            "first_mismatches": []
+          },
+          {
+            "name": "bottom",
+            "rectangle_inclusive": [
+              0,
+              1064,
+              1919,
+              1079
+            ],
+            "checked_pixels": 25860,
+            "exact_matches": 25860,
+            "mismatches": 0,
+            "first_mismatches": []
+          },
+          {
+            "name": "left",
+            "rectangle_inclusive": [
+              0,
+              16,
+              31,
+              1063
+            ],
+            "checked_pixels": 33536,
+            "exact_matches": 33536,
+            "mismatches": 0,
+            "first_mismatches": []
+          },
+          {
+            "name": "right",
+            "rectangle_inclusive": [
+              1888,
+              16,
+              1919,
+              1063
+            ],
+            "checked_pixels": 33536,
+            "exact_matches": 33536,
+            "mismatches": 0,
+            "first_mismatches": []
+          }
+        ],
+        "footer": {
+          "sprite": 5,
+          "origin": [
+            795,
+            1065
+          ],
+          "size": [
+            324,
+            15
+          ],
+          "checked_pixels": 4860,
+          "exact_matches": 464,
+          "exact": false,
+          "status": "unverified_background_or_active_tooltip_text"
+        },
+        "opaque_frame_pixels": 128512,
+        "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance."
+      },
+      "action_cells": [
+        {
+          "cell": 0,
+          "anchor": [
+            1696,
+            1000
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 0,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 0,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "cell": 1,
+          "anchor": [
+            1760,
+            1000
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 2,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 2,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "cell": 2,
+          "anchor": [
+            1824,
+            1000
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 4,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 4,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "cell": 3,
+          "anchor": [
+            1696,
+            1032
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 6,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 6,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "cell": 4,
+          "anchor": [
+            1760,
+            1032
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 8,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 8,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "cell": 5,
+          "anchor": [
+            1824,
+            1032
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_source_variant": {
+            "sprite": 10,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "matching_variants": [
+            {
+              "sprite": 10,
+              "hover_overlay": false,
+              "mismatched_pixels": 0,
+              "exact_rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31
+              ]
+            }
+          ]
+        }
+      ],
+      "action_cells_exact": true,
+      "frame_source_sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+      "action_source_sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+      "action_member_sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620"
+    }
+  ],
+  "required_three_sample_control_coverage": false,
+  "screenshot": {
+    "path": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\capture\\primary-100.png",
+    "sha256": "d5988352939a6be0a1b56f4c42bf02a2da4fe558c7f27703ad4820e0ddef16cb",
+    "width": 1920,
+    "height": 1080,
+    "method": "pre-action paused private-proxy software surface",
+    "final_wrapper_composition": false
+  },
+  "source_hashes": {
+    "tools/resolution_playability.py": "02d9bc9886d121aceddbd7f2a3f33173719af80a69fef7d9b65ef4373e0d161a",
+    "tools/launcher_resolution_matrix.py": "e225bea2abf5bcfea8b41ee2d2fde42110ac0b7a66043a1149a45bdd65702b9c",
+    "tools/real_exe_smoke.py": "3b1ec5a8642cf7e371ddccd299d7e35d10c77a1041019a42bb5809e2d8144f62",
+    "tools/run_original_game_smoke.py": "ac436a0aff33be57375bf85ab95326b06c8d0bf0dc841d7f8615f4b798c9da7e",
+    "tools/owned_hidden_process.py": "c3861e3495c2ad4e11cb92213ab6f20623096683b79cbef79ae767aec4f4e00c",
+    "tools/ordinary_map_startup.py": "04fd8d9d24e9b244ba274e99b82207a09c3f2b6129a7b6717c29785d7a09388c",
+    "tools/ordinary_map_phase_host.py": "1569262c0455112da2eebf3bfdc4947f4405b328ff258a384683713017244a6c",
+    "tools/ordinary_map_phase_client.py": "7879595bd6efb73556d90c340150f97aaf5be491c783614ac6be11988274c9d4",
+    "tools/ordinary_map_input_poll_trace.py": "c0d4728d8bd0757fa227d3cfcd5fc35a9fb51397e78870c56c5405d6968f083c",
+    "tools/ordinary_map_pause_host.py": "dc1951bf4ca32f05d42eedc2c93fc5bb11c6f4bf2b967f72a6a435301fb93a0d",
+    "tools/ordinary_map_pause_client.py": "7939f471eb7a56364b13557f0052a577f95e742092b50a30d71260633ccbf05f",
+    "tools/ordinary_map_observation.py": "775466962cabbf532059f9940d58450fa62f4525752edfd70bf6c8be3e766148",
+    "tools/ordinary_map_input_plan.py": "d070ec21d5233c7cb43caf1bfbde75987e3d12aea080aac55e29400a28067b70",
+    "src/launcher/resolutions.json": "9974a7f5e06dcd6314e2a56bad9bcbecd6c880dc90e3a588ac78a833b9345a4e"
+  },
+  "source_audit_sha256": "acd939a5c393533a30dd5cc576f237886bf0eb6dcd310a3a9bf911e6fe97e9fe",
+  "retained_reference": {
+    "path": "C:\\ClashTests\\ordinary-native-input-20260926\\reference",
+    "manifest": "C:\\ClashTests\\ordinary-native-input-20260926\\runtime-manifest-cache.json",
+    "manifest_sha256": "73982fbeccead37aacb0977a01c5a134470e7c62daed7ce57105b6f8a04a39cc",
+    "verified_files": 43,
+    "verified_bytes": 846845958
+  },
+  "preserved_identity_audits": {
+    "reference_unchanged": true,
+    "candidate_unchanged": true,
+    "sources_unchanged": true,
+    "working_original_unchanged": true
+  },
+  "raw_artifacts": {
+    "capture\\debugger.log": {
+      "bytes": 20514,
+      "sha256": "8f6185c4606b44fd4dfd99ec3c6a5df937a5911172a0359824551acf5338bee6"
+    },
+    "capture\\map-state-100.json": {
+      "bytes": 470,
+      "sha256": "4d94a6ff8860b0ac2df146688a310bc9668f6a841cb107a15601a7ed97e06b49"
+    },
+    "capture\\primary-100-backend.bin": {
+      "bytes": 176,
+      "sha256": "95e5f08f90ceceacb50f0b026a0cd8c42c910676cb2a42324384d3d6294d5edd"
+    },
+    "capture\\primary-100-header.bin": {
+      "bytes": 220,
+      "sha256": "514a3d0522cd772e162e11f7a3a2715967f5ea64f2ef5e95ec14d6730e214880"
+    },
+    "capture\\primary-100-palette.bin": {
+      "bytes": 1024,
+      "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+    },
+    "capture\\primary-100.json": {
+      "bytes": 509,
+      "sha256": "bd47647d4aed91dbfdc6f93677671fa71700869d2a75b10482f13d721d8a7f60"
+    },
+    "capture\\primary-100.png": {
+      "bytes": 493501,
+      "sha256": "d5988352939a6be0a1b56f4c42bf02a2da4fe558c7f27703ad4820e0ddef16cb"
+    },
+    "capture\\primary-100.raw": {
+      "bytes": 2073600,
+      "sha256": "6e6238f4f9b49099b0f5dd2c063412fa4274192f8381d2895ebaf7e5a6f2ee02"
+    }
+  },
+  "cleanup_journal": {
+    "path": "C:\\ClashTests\\ordinary-small-world-input-20260930-g\\duplicate-static-assets-cleanup-20260930.json",
+    "sha256": "35f3a35e9442543b09fa0531bfa100576bd162b313be6a0310c9a6a8e66c4798",
+    "removed_static_file_count": 38,
+    "removed_bytes": 845021453,
+    "protected_artifact_count": 47,
+    "protected_artifacts_unchanged": true,
+    "reconstruction_required_before_relaunch": true
+  },
+  "native_input_passed": false,
+  "ordinary_controlled_input_passed": false,
+  "os_input_executed": false,
+  "manual_input_proof": false,
+  "gameplay_verified": false,
+  "promotion_ready": false,
+  "limits": [
+    "One paired failed native read is diagnostic coverage, not successful selection or movement.",
+    "Only one pre-action ordinary-map surface exists; the four structural bands and six cells match, footer and full visual acceptance do not pass.",
+    "The runtime copy used the old early reserve decision after slow authentication/compilation. Subsequent pressure was detected after completion; no process was stopped by the attempted preparation stop.",
+    "Verified cleanup preserved all unique/failing artifacts and the complete reference. Future launches must reconstruct removed static inputs."
+  ]
+}
