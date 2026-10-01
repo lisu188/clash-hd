@@ -977,3 +977,9 @@
 /tools/test_ordinary_map_activation_trace.py -text
 /tools/test_resolution_activation_diagnostics.py -text
 /reports/ordinary-map-activation-source-20260930.json text eol=lf
+/tools/resolution_release_matrix.py text eol=lf
+/tools/test_resolution_release_matrix.py text eol=lf
+/docs/hd/RESOLUTION_RELEASE_MATRIX.md text eol=lf
+/reports/resolution-matrix-ci-failure-20261001.json text eol=lf
+/reports/resolution-matrix-source-verification-20261001.json text eol=lf
+/reports/resolution-manifest-ci-failure-20261001.json text eol=lf

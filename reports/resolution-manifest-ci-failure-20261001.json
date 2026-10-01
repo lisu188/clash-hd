@@ -1,0 +1,25 @@
+{
+  "schema": "resolution_manifest_source_ci_failure_v1",
+  "evidence_class": "source_fixture_failure",
+  "date": "2026-10-01",
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/141",
+  "head_commit": "3794dc805993d30bc92beb8f4652edd11d03bc94",
+  "jobs": [
+    "https://github.com/lisu188/clash-hd/actions/runs/36845878557/job/110315868514",
+    "https://github.com/lisu188/clash-hd/actions/runs/36845878557/job/110315867554"
+  ],
+  "suite": "tools/test_resolution_manifest_guard.py",
+  "test": "test_profiles_and_bound_evidence",
+  "observed_error": "launcher profile manifest rejected: Unrecognized Classic wide-menu recipe.",
+  "diagnosis": "The older profile fixture substitutes a synthetic stable stage for each top-level profile stage, but leaves the nested Classic wide_menu_recipe stage bound to the real protected stage. The shared schema validator correctly rejects that inconsistent fixture. Substitute the same synthetic stage in that nested recipe; leave production schema and recipe checks unchanged.",
+  "preceding_suites": {
+    "matrix": "35 passed, zero skips",
+    "promotion": "passed",
+    "complete_hd_evidence": "13 offline test groups passed"
+  },
+  "retry_result": "pending_at_record_creation",
+  "runtime_executed": false,
+  "runtime_evidence_accepted": false,
+  "promotion_ready": false,
+  "stable_stage_should_change": false
+}
