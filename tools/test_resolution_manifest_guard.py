@@ -417,6 +417,30 @@ def test_completehd_profile_rejects_contract_drift_and_promotion(fixture: Path) 
         assert not guard["passed"], (mutation, guard)
 
 
+def test_modalwidgets_profile_is_audited_without_borrowing_classic_evidence(fixture: Path) -> None:
+    manifest = good_profile_manifest(completehd=True)
+    profile = copy.deepcopy(manifest["profiles"]["completehd"])
+    profile.update(stage=manifest["stable_stage"] + "-completehd-modalwidgets-validation",
+                   recipe_revision="owned_modal_widget_bounds_v1")
+    profile["resolutions"]["800x600"]["tiles"] = [11, 8]
+    manifest["profiles"]["modalwidgets"] = profile
+    args = make_good_fixture(fixture, manifest)
+    result = resolution_manifest_guard.build_guard(args)
+    assert result["passed"], result["failures"]
+    assert "modalwidgets" in result["checks"]["profile_recipes"]["summary"]["audited_profiles"]
+    profile["resolutions"]["800x600"]["tiles"] = [12, 9]
+    write_json(fixture / args.manifest, manifest)
+    result = resolution_manifest_guard.build_guard(args)
+    assert not result["checks"]["tiles_formula"]["passed"], result
+    assert any("modalwidgets/800x600" in row for row in result["failures"])
+    profile["resolutions"]["800x600"]["tiles"] = [11, 8]
+    write_json(fixture / args.manifest, manifest)
+    source = fixture / "src/patcher/framed_modal_widget_bounds.py"
+    source.write_bytes(source.read_bytes() + b"\n# fixture-only source drift\n")
+    result = resolution_manifest_guard.build_guard(args)
+    assert not result["checks"]["source_context"]["passed"], result
+
+
 def test_legacy_missing_patch_resolution_is_800_only(fixture: Path) -> None:
     args = make_good_fixture(fixture)
     rewrite_json(fixture / "captures/current/patch-report.json", lambda d: d.pop("resolution"))
@@ -484,6 +508,8 @@ def profile_fixture(root: Path, *, complete: bool = True) -> argparse.Namespace:
         manifest["profiles"].pop("completehd", None)
     for config in manifest["profiles"].values():
         config["stage"] = config["stage"].replace(original_stage, STABLE_STAGE)
+        if "wide_menu_recipe" in config:
+            config["wide_menu_recipe"]["stage"] = config["wide_menu_recipe"]["stage"].replace(original_stage, STABLE_STAGE)
     classic = manifest["profiles"]["classic"]
     classic["resolutions"] = good_manifest()["resolutions"]
     classic["resolutions"]["800x600"]["evidence_scope"] = {
@@ -605,6 +631,7 @@ def run_tests() -> None:
         test_profile_manifest_rejects_duplicate_keys_and_schema_aliases(fixture / "profile-schema")
         test_completehd_profile_remains_experimental_and_geometry_checked(fixture / "completehd-profile")
         test_completehd_profile_rejects_contract_drift_and_promotion(fixture / "completehd-contract")
+        test_modalwidgets_profile_is_audited_without_borrowing_classic_evidence(fixture / "modalwidgets-profile")
         test_legacy_missing_patch_resolution_is_800_only(fixture / "legacy-resolution")
         test_bad_bounds_fail(fixture / "bounds")
         test_bad_key_fails(fixture / "key")
