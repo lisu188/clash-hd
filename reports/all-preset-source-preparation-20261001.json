@@ -1,0 +1,78 @@
+{
+  "schema": "all_preset_source_preparation_v1",
+  "date": "2026-10-01",
+  "evidence_class": "source_synthetic_pe_synthetic_cpu_and_single_original_backed_construction",
+  "base_merge_commit": "4e6cd3771c643fd0377d31d192dd6e5e9c920544",
+  "source_sha256": {
+    "src/patcher/complete_hd_all_presets_candidate.py": "856de49937c5d66b83a3dc7d5d22c94503fd2890147781580635eeabb7a91043",
+    "tools/test_complete_hd_all_presets_candidate.py": "e6908fd592c9a93e04f5f3c9c2bf10b051778eec589518d012294ad1632af24c",
+    "src/patcher/framed_battle_saved_views.py": "490243e02763986696b596a856e8c5fc0baa4fd6cc28307f4aafd9fc87614c71",
+    "tools/test_framed_battle_saved_views.py": "6f38423998e298d2354522c1563d560d44ff9305ff32bcd268eab17c55df1b50",
+    "tools/complete_hd_evidence.py": "536b4a9b6b5fde38f4f594e5235228d30877b58dd1ecbf67dff03f9d34071bfe",
+    "tools/test_complete_hd_evidence.py": "358c724fa1d83c0043fee8b155af61f9ab32d424b9b006f534b5eeca25f6651e"
+  },
+  "focused_verification": {
+    "complete_hd_all_presets_source_and_synthetic_pe": {
+      "passed": true,
+      "tests": 15,
+      "skips": 0
+    },
+    "saved_camera_source_and_synthetic_cpu": {
+      "passed": true,
+      "tests": 10,
+      "skips": 0,
+      "synthetic_adapter_executions": 1880,
+      "original_spans_authenticated": true
+    },
+    "complete_hd_evidence_fixtures": {
+      "passed": true,
+      "offline_test_groups": 27
+    }
+  },
+  "complete_hd_all_presets": {
+    "recipe_revision": "complete_hd_all_presets_v1",
+    "resolution": "1366x768",
+    "original_backed_construction_passed": true,
+    "candidate_sha256": "9f0990108100cca88c6a8224d24efe522c09800e3e4ff1fa72142d10254f112e",
+    "candidate_bytes": 1458176,
+    "in_memory_only": true,
+    "final_pe_header_hook_ownership_and_declared_relocation_gates_passed": true,
+    "complete_original_byte_replay_passed": true,
+    "source_snapshots_unchanged": true,
+    "other_original_backed_presets_not_run": [
+      "800x600",
+      "1024x768",
+      "1280x720",
+      "1280x960",
+      "1920x1080",
+      "2560x1440",
+      "3440x1440",
+      "3840x2160"
+    ],
+    "canonical_probe_scope": "Preferred-address loaded-byte checks and initial ordinary-map observer; no loader-rebased full-runtime acceptance",
+    "launcher_registered": false,
+    "matrix_registered": false,
+    "expanded_battle_installed": false
+  },
+  "hidden_soak_raw_audit": {
+    "production_lanes_registered": false,
+    "unimplemented_production_lane_count": 14,
+    "release_evidence_verified": false,
+    "scope": "Pure replay of supplied logs, full raw buffers and telemetry; existing producer lacks candidate binding, every-frame references, owned termination receipts, authenticated run envelope and menu-idle route."
+  },
+  "preservation": {
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "initial_untracked_source_sha256": {
+      "src/patcher/framed_smallworld_input.py": "f1726c7b773cbd96b0c2f0a03f3c70103eaa3753e40f6897b82ccb21ad2846ac",
+      "tools/build_framed_smallworld_input_candidate.py": "9727842f6c7263931ba2d5cc2bcdbee752d5489b2f03a8febdec76ef3ff036de"
+    }
+  },
+  "runtime_executed": false,
+  "native_debugger_compiler_or_loader_started": false,
+  "candidate_bundle_written": false,
+  "screenshots_created": false,
+  "manual_input_proven": false,
+  "accepted_runtime_cells": 0,
+  "promotion_ready": false,
+  "stable_stage_should_change": false
+}

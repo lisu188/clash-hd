@@ -983,3 +983,10 @@
 /reports/resolution-matrix-ci-failure-20261001.json text eol=lf
 /reports/resolution-matrix-source-verification-20261001.json text eol=lf
 /reports/resolution-manifest-ci-failure-20261001.json text eol=lf
+/src/patcher/complete_hd_all_presets_candidate.py text eol=lf
+/src/patcher/framed_battle_saved_views.py text eol=lf
+/tools/test_complete_hd_all_presets_candidate.py text eol=lf
+/tools/test_framed_battle_saved_views.py text eol=lf
+/.github/workflows/resolution-source-contracts.yml text eol=lf
+/reports/resolution-matrix-ci-verification-20261001.json text eol=lf
+/reports/all-preset-source-preparation-20261001.json text eol=lf

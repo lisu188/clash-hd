@@ -384,6 +384,282 @@ def test_release_summary_never_replaces_immutable_input(root):
     assert status == 2 and fixture.path.read_bytes() == before
 
 
+def raw_soak_fixture(route="map-idle"):
+    """Tiny invented bytes/observations in the existing format, never runtime proof."""
+    identity = {"stage": evidence.STABLE_STAGE, "resolution": "4x4", "base_sha256": evidence.BASE_SHA256,
+                "candidate_sha256": evidence.digest(b"synthetic raw-soak fixture, not an executable")}
+    pan = int(route == "map-pan")
+    ready = {"source": "SOAK_SURFDUMP_READY", "redraw_seq": 4, "surface": "00100000", "base": "00110000",
+             "width": 4, "height": 4, "bytes": 16}
+    start = {"route_ticks": 7680, "pan": pan, "player": 0, "tick": 10000, "game_data": "00200000", "scroll_x": 4, "scroll_y": 4}
+    end = {"route_ticks": 7680, "pan": pan, "hits": 8192, "tick_delta": 7680, "player": 0, "scroll_x": 4, "scroll_y": 5 if pan else 4}
+    events = [{"phase": phase, "x": x, "y": y, "hits": hits, "tick_delta": ticks, "delta_x": 1, "delta_y": 1}
+              for phase, x, y, hits, ticks in ((0, 4, 4, 1, 1280), (1, 5, 4, 2, 2560),
+                                              (2, 5, 5, 2049, 3840), (3, 4, 5, 3000, 5120))] if pan else []
+    lines = [f"SOAK_ROUTE_START route_ticks=7680 pan={pan} player=0 tick=10000 gd=00200000 scroll=(4,4)",
+             "SOAK_SURFDUMP_READY redraw_seq=4 surface=00100000 size=(4,4) base=00110000 bytes=16"]
+    heartbeat = f"SOAK_HEARTBEAT hits=2048 tickdelta=3840 player=0 scroll=({5 if pan else 4},4)"
+    if pan:
+        lines.append("SOAK_PAN_PLAN base=(4,4) delta=(1,1) max=(10,10) safe=1")
+        for event in events:
+            if event["phase"] == 2:
+                lines.append(heartbeat)
+            lines.append(f"SOAK_PAN_SET phase={event['phase']} x={event['x']} y={event['y']} hits={event['hits']} tickdelta={event['tick_delta']} delta=(1,1)")
+    else:
+        lines.append(heartbeat)
+    lines += [f"SOAK_ROUTE_END route_ticks=7680 pan={pan} hits=8192 tickdelta=7680 player=0 scroll=(4,{5 if pan else 4})",
+              "SURFDUMP_READY redraw_seq=4 surface=00100000 size=(4,4) base=00110000 bytes=16"]
+    raw = {f"frame-{index + 1:04d}": bytes(range(index, index + 16)) for index in range(3)}
+    begin = datetime(2026, 10, 1, 12, 0, tzinfo=timezone.utc)
+    frames, processes = [], []
+    for index, (name, data) in enumerate(raw.items()):
+        timestamp = (begin + timedelta(seconds=index * 60)).isoformat()
+        frames.append({"Name": name, "Timestamp": timestamp, "Width": 4, "Height": 4,
+                       "Hash": evidence.digest(data), "NonblackPercent": round(100 * (16 - data.count(0)) / 16, 3),
+                       "UniqueSampleColors": len(set(data)), "CaptureMode": "hidden-cdb-host-readprocessmemory", "RenderEvidence": True})
+        processes.append({"Timestamp": timestamp, "HasExited": False, "ExitCode": None,
+                          "WorkingSet64": 8 * 1024 * 1024, "PrivateMemorySize64": 16 * 1024 * 1024, "HandleCount": 20})
+    samples = {"schema": "hidden_cdb_host_soak_samples_v1", "executed": True, "environment": "hidden_cdb_host",
+               "launch_mode": "hidden-desktop", "frame_read_method": "host_readprocessmemory", "route": route,
+               "duration_sec": 120, "duration_ticks": 7680, "frame_interval_sec": 60, "pan_interval_sec": 20 if pan else None,
+               "stage": identity["stage"], "candidate_sha256": identity["candidate_sha256"], "input_sha256": identity["base_sha256"],
+               "input_responsiveness": "not_applicable_hidden", "ready_marker": ready, "route_start_marker": start,
+               "route_end_marker": end, "heartbeat_count": 1, "pan_event_count": len(events), "pan_events": events,
+               "surface": {"Base": "00110000", "Width": 4, "Height": 4, "Bytes": 16, "Source": "SOAK_SURFDUMP_READY"},
+               "runner_failures": [], "capture_errors": [], "frame_samples": frames, "process_samples": processes,
+               "cleanup": {"game_stopped": True, "cdb_stopped": True, "errors": [], "stopped_process_ids": [123, 456]},
+               "clean_stop": True, "elapsed_coverage": {"passed": True}}
+    for field in ("av_observed", "surface_invalid_observed", "app_request_quit_observed", "cdb_exit_before_duration",
+                  "game_exit_before_duration", "process_exited_unexpectedly"):
+        samples[field] = False
+    return samples, "\n".join(lines), raw, identity
+
+
+def audit_raw_fixture(parts):
+    return evidence.audit_hidden_soak_raw(*parts, minimum_duration_sec=120)
+
+
+def assert_raw_rejected(parts, expected):
+    result = audit_raw_fixture(parts)
+    assert not result["raw_validation_passed"] and not result["passed"] and not result["release_evidence_verified"], result
+    assert any(expected in failure for failure in result["raw_failures"]), (expected, result)
+
+
+def test_consistent_raw_diagnostics_never_become_release_proof(root):
+    for route in ("map-idle", "map-pan"):
+        result = audit_raw_fixture(raw_soak_fixture(route))
+        assert result["raw_validation_passed"] and result["raw_failures"] == [], result
+        assert not any(result[key] for key in ("passed", "release_evidence_verified", "candidate_authenticated",
+                                               "clean_stop_verified", "input_evidence_verified")), result
+        assert result["failures"] == result["producer_gaps"] == list(evidence.HIDDEN_SOAK_PRODUCER_GAPS)
+        assert result["observations"]["frame_span_sec"] == result["observations"]["process_span_sec"] == 120
+        assert result["observations"]["frame_metrics"][0]["unique_colors"] == 16
+        assert result["observations"]["process_growth"] == {"WorkingSet64": 0, "PrivateMemorySize64": 0, "HandleCount": 0}
+    assert len(set(evidence.LANES) - set(evidence.LANE_VERIFIERS)) == 14
+    assert all(name not in evidence.LANE_VERIFIERS for name in ("short_soak_ladder", "long_map_idle", "long_map_pan"))
+
+
+def test_raw_frame_inventory_requires_every_middle_buffer(root):
+    for case in ("missing-middle", "truncated", "orphan", "duplicate-name", "omitted-row"):
+        samples, log, raw, identity = raw_soak_fixture()
+        if case == "missing-middle": raw.pop("frame-0002")
+        elif case == "truncated": raw["frame-0002"] = raw["frame-0002"][:-1]
+        elif case == "orphan": raw["frame-0004"] = bytes(range(16))
+        elif case == "duplicate-name": samples["frame_samples"][1]["Name"] = "frame-0001"
+        else: samples["frame_samples"].pop(1)
+        assert_raw_rejected((samples, log, raw, identity), "raw")
+
+
+def test_raw_bytes_recompute_hash_histogram_and_render_thresholds(root):
+    for case in ("hash", "percent", "colors", "black-bytes", "uniform-bytes"):
+        samples, log, raw, identity = raw_soak_fixture()
+        row = samples["frame_samples"][1]
+        if case == "hash": row["Hash"] = "f" * 64
+        elif case == "percent": row["NonblackPercent"] = 99.0
+        elif case == "colors": row["UniqueSampleColors"] = 8
+        else:
+            data = (b"\x00" if case == "black-bytes" else b"\x01") * 16
+            raw["frame-0002"] = data
+            row.update(Hash=evidence.digest(data), NonblackPercent=0 if case == "black-bytes" else 100, UniqueSampleColors=1)
+        assert_raw_rejected((samples, log, raw, identity), "raw frame")
+
+
+def test_raw_candidate_binding_cannot_reuse_stable_evidence_for_complete(root):
+    for field, value in (("stage", evidence.STAGE), ("candidate_sha256", "f" * 64),
+                         ("base_sha256", "0" * 64), ("resolution", "8x4")):
+        samples, log, raw, identity = raw_soak_fixture()
+        identity[field] = value
+        assert_raw_rejected((samples, log, raw, identity), "candidate")
+    samples, log, raw, identity = raw_soak_fixture()
+    assert_raw_rejected((samples, log, raw, {}), "candidate identity")
+
+
+def test_raw_metadata_comparison_rejects_bool_int_aliases_and_nonfinite_values(root):
+    for case in ("marker-bool", "marker-float", "dimension-bool", "process-bool", "count-bool", "nan", "infinity"):
+        samples, log, raw, identity = raw_soak_fixture()
+        if case == "marker-bool": samples["route_start_marker"]["pan"] = False
+        elif case == "marker-float": samples["ready_marker"]["redraw_seq"] = 4.0
+        elif case == "dimension-bool": samples["frame_samples"][1]["Width"] = True
+        elif case == "process-bool": samples["process_samples"][1]["HasExited"] = 0
+        elif case == "count-bool": samples["heartbeat_count"] = True
+        else: samples["untrusted_nested_metrics"] = {"value": float("nan") if case == "nan" else float("inf")}
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"] and not result["passed"], (case, result)
+
+
+def test_raw_markers_require_anchoring_unique_inventory_and_probe_order(root):
+    for case in ("missing-log", "duplicate-end", "malformed", "unanchored-start", "missing-heartbeat", "ready-before-start", "short-end"):
+        samples, log, raw, identity = raw_soak_fixture()
+        lines = log.splitlines()
+        if case == "missing-log": log = ""
+        elif case == "duplicate-end": log += "\n" + lines[-2]
+        elif case == "malformed": log += "\nSOAK_ROUTE_END route_ticks=not-a-number"
+        elif case == "unanchored-start": log = log.replace("SOAK_ROUTE_START", "0:000> SOAK_ROUTE_START", 1)
+        elif case == "missing-heartbeat": log = "\n".join(line for line in lines if not line.startswith("SOAK_HEARTBEAT"))
+        elif case == "ready-before-start": log = "\n".join([lines[1], lines[0], *lines[2:]])
+        else:
+            log = log.replace("tickdelta=7680", "tickdelta=7679")
+            samples["route_end_marker"]["tick_delta"] = 7679
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"], (case, result)
+
+
+def test_raw_policy_duration_and_measured_sample_coverage_cannot_be_shortened(root):
+    parts = raw_soak_fixture()
+    assert not evidence.audit_hidden_soak_raw(*parts)["raw_validation_passed"]  # default is two hours
+    for case in ("short-duration", "short-span", "large-gap", "duplicate-time", "no-timezone", "missing-time", "bool-interval", "oversized-interval"):
+        samples, log, raw, identity = raw_soak_fixture()
+        if case == "short-duration": samples["duration_sec"] = 119
+        elif case in ("short-span", "large-gap"):
+            begin = datetime(2026, 10, 1, 12, 0, tzinfo=timezone.utc)
+            for index, row in enumerate(samples["frame_samples"]):
+                row["Timestamp"] = (begin + timedelta(seconds=index * (1 if case == "short-span" else 120))).isoformat()
+        elif case == "duplicate-time": samples["frame_samples"][1]["Timestamp"] = samples["frame_samples"][0]["Timestamp"]
+        elif case == "no-timezone": samples["process_samples"][1]["Timestamp"] = "2026-10-01T12:01:00"
+        elif case == "missing-time": samples["process_samples"][1].pop("Timestamp")
+        else: samples["frame_interval_sec"] = True if case == "bool-interval" else 120
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"], (case, result)
+
+
+def test_raw_process_measurements_and_fixed_growth_limits_ignore_green_summaries(root):
+    for case in ("missing-metric", "bool-metric", "negative-metric", "exited", "exit-code", "error", "missing-row",
+                 "working-growth", "private-growth", "handle-growth"):
+        samples, log, raw, identity = raw_soak_fixture()
+        row = samples["process_samples"][1]
+        samples.update(passed=True, process_growth_passed=True, max_working_set_growth_mb=999999,
+                       max_private_memory_growth_mb=999999, max_handle_growth=999999)
+        if case == "missing-metric": row.pop("WorkingSet64")
+        elif case == "bool-metric": row["HandleCount"] = True
+        elif case == "negative-metric": row["PrivateMemorySize64"] = -1
+        elif case == "exited": row["HasExited"] = True
+        elif case == "exit-code": row["ExitCode"] = 0
+        elif case == "error": row["Error"] = "process query failed"
+        elif case == "missing-row": samples["process_samples"] = samples["process_samples"][:1]
+        elif case == "working-growth": row["WorkingSet64"] += 64 * 1024 * 1024 + 1
+        elif case == "private-growth": row["PrivateMemorySize64"] += 64 * 1024 * 1024 + 1
+        else: row["HandleCount"] += 129
+        assert_raw_rejected((samples, log, raw, identity), "process")
+
+
+def test_raw_hidden_evidence_never_accepts_manual_input_claims(root):
+    for field, value in (("input_responsiveness", "passed"), ("input_max_abs_error", 0),
+                         ("input_max_sample_abs_error", False), ("route_results", {"native_click": True})):
+        samples, log, raw, identity = raw_soak_fixture("map-pan")
+        samples[field] = value
+        assert_raw_rejected((samples, log, raw, identity), "input")
+
+
+def test_raw_forced_pan_replays_bounds_phase_order_and_frame_progression(root):
+    for case in ("unsafe", "wrong-phase", "wrong-inward-delta", "out-of-order", "heartbeat-position", "cross-stream-order", "no-progression"):
+        samples, log, raw, identity = raw_soak_fixture("map-pan")
+        if case == "unsafe": log += "\nSOAK_PAN_UNSAFE base=(4,4) max=(10,10) reason=no_inward_direction"
+        elif case == "wrong-phase":
+            log = log.replace("SOAK_PAN_SET phase=1", "SOAK_PAN_SET phase=0")
+            samples["pan_events"][1]["phase"] = 0
+        elif case == "wrong-inward-delta":
+            log = log.replace("delta=(1,1)", "delta=(-1,-1)")
+            for row in samples["pan_events"]: row.update(delta_x=-1, delta_y=-1)
+        elif case == "out-of-order":
+            log = log.replace("hits=2 tickdelta=2560", "hits=1 tickdelta=1280")
+            samples["pan_events"][1].update(hits=1, tick_delta=1280)
+        elif case == "heartbeat-position": log = log.replace("player=0 scroll=(5,4)", "player=0 scroll=(4,4)")
+        elif case == "cross-stream-order":
+            log = log.replace("SOAK_HEARTBEAT hits=2048 tickdelta=3840", "SOAK_HEARTBEAT hits=4096 tickdelta=5000")
+        else:
+            data = raw["frame-0001"]
+            for name in raw: raw[name] = data
+            for row in samples["frame_samples"]:
+                row.update(Hash=evidence.digest(data), NonblackPercent=93.75, UniqueSampleColors=16)
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"], (case, result)
+
+
+def test_raw_runtime_failure_markers_override_claimed_green_report_flags(root):
+    for marker in ("AV_SURFDUMP", "SURFDUMP_INVALID", "SURFDUMP_APP_REQUEST_QUIT text_ptr=00100000 caption_ptr=00110000"):
+        samples, log, raw, identity = raw_soak_fixture()
+        samples.update(passed=True, no_crash=True, render_integrity=True, clean_stop=True)
+        assert_raw_rejected((samples, log + "\n" + marker, raw, identity), "runtime failure")
+
+
+def test_raw_malformed_containers_fail_without_a_completed_adapter(root):
+    for index, value in ((0, None), (1, None), (2, []), (3, [])):
+        parts = list(raw_soak_fixture())
+        parts[index] = value
+        result = audit_raw_fixture(parts)
+        assert not result["raw_validation_passed"] and not result["passed"], result
+    for field, value in (("frame_samples", {}), ("process_samples", [True]), ("frame_samples", [None])):
+        samples, log, raw, identity = raw_soak_fixture()
+        samples[field] = value
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"], result
+    for minimum in (0, True, "120"):
+        result = evidence.audit_hidden_soak_raw(*raw_soak_fixture(), minimum_duration_sec=minimum)
+        assert not result["raw_validation_passed"] and not result["release_evidence_verified"], result
+
+
+def test_raw_bounded_tokens_and_metadata_fail_without_conversion_errors(root):
+    for case in ("surface-backticks", "base-backticks", "game-data-backticks", "long-decimal", "long-hex",
+                 "out-of-range-address", "long-resolution", "oversized-resolution", "huge-duration", "huge-interval", "huge-telemetry"):
+        samples, log, raw, identity = raw_soak_fixture()
+        if case == "surface-backticks": log = log.replace("surface=00100000", "surface=``")
+        elif case == "base-backticks": log = log.replace("base=00110000", "base=`")
+        elif case == "game-data-backticks": log = log.replace("gd=00200000", "gd=``")
+        elif case == "long-decimal": log = log.replace("route_ticks=7680", "route_ticks=" + "9" * 5000)
+        elif case == "long-hex": log = log.replace("gd=00200000", "gd=" + "f" * 2048)
+        elif case == "out-of-range-address":
+            log = log.replace("gd=00200000", "gd=ffffffffffffffff")
+            samples["route_start_marker"]["game_data"] = "ffffffffffffffff"
+        elif case == "long-resolution": identity["resolution"] = "9" * 5000 + "x4"
+        elif case == "oversized-resolution": identity["resolution"] = "99999x99999"
+        elif case == "huge-duration": samples["duration_sec"] = 2 ** 2048
+        elif case == "huge-interval": samples["frame_interval_sec"] = 2 ** 2048
+        else: samples["process_samples"][1]["PrivateMemorySize64"] = 2 ** 2048
+        result = audit_raw_fixture((samples, log, raw, identity))
+        assert not result["raw_validation_passed"] and not result["passed"], (case, result)
+    result = evidence.audit_hidden_soak_raw(*raw_soak_fixture(), minimum_duration_sec=2 ** 2048)
+    assert not result["raw_validation_passed"], result
+    # CDB can pad x86 pointers or print the normal 8+8 backtick notation.
+    samples, log, raw, identity = raw_soak_fixture()
+    log = log.replace("00100000", "0000000000100000").replace("00110000", "00000000`00110000").replace("00200000", "00000000`00200000")
+    samples["ready_marker"].update(surface="0000000000100000", base="00000000`00110000")
+    samples["surface"]["Base"] = "00000000`00110000"
+    samples["route_start_marker"]["game_data"] = "00000000`00200000"
+    result = audit_raw_fixture((samples, log, raw, identity))
+    assert result["raw_validation_passed"] and not result["release_evidence_verified"], result
+
+
+def test_raw_deep_metadata_is_rejected_without_recursion_error(root):
+    samples, log, raw, identity = raw_soak_fixture()
+    deep = []
+    for _ in range(10000):
+        deep = [deep]
+    samples["untrusted_nested_metadata"] = deep
+    result = audit_raw_fixture((samples, log, raw, identity))
+    assert not result["raw_validation_passed"] and not result["passed"], result
+    assert any("finite JSON" in failure for failure in result["raw_failures"]), result
+
+
 def main():
     tests = [value for name, value in globals().items() if name.startswith("test_") and callable(value)]
     with tempfile.TemporaryDirectory(prefix="complete-hd-evidence-fixtures-") as directory:
