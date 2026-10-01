@@ -1,0 +1,113 @@
+{
+  "schema": "resolution_matrix_source_verification_v1",
+  "date": "2026-10-01",
+  "source_checkpoint_commit": "4f24d669",
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/141",
+  "evidence_class": "source_tests_and_original_backed_in_memory_construction",
+  "source_sha256": {
+    "tools/resolution_release_matrix.py": "934f52d130c75ebca4ced22b734bc70b6738cc542a401620ede493e3040a169e",
+    "tools/test_resolution_release_matrix.py": "ad9b9ad8ec0f3ce5f3cc091d0dc79f22ee1e66695a7689724b669eac2bd96380",
+    "tools/complete_hd_promotion.py": "9a014ebb8b2180425742466e887d63f7dce6da6f6dfa4d96ac4a055a3fc475d7",
+    "tools/test_complete_hd_promotion.py": "2ab4c82ee045d388bb41b3e59595538e30bba5570f8958bc01cc1558dc461abb",
+    "tools/resolution_manifest_guard.py": "bd2a3030d57600f9656c10fb7db93b7843ce6492e558e94ee3f41b2d55cc2c43",
+    "tools/test_resolution_manifest_guard.py": "cba86a037a621a6299a5d511d7a98aca992d24ba2ab33e4f251143f0c5945c66",
+    "tools/test_framed_battle_viewport.py": "90d7a3a8cbe62792552eb98c08d5fd1cd7271aedd68a2dcf3984e78f5da08dde",
+    "tools/test_framed_battle_hud.py": "1a0c02cc24517ee6c58e30497481a26b6a4fc6a16372add858b4d50b32657d83"
+  },
+  "local_fixtures": {
+    "matrix": {
+      "passed": true,
+      "tests": 35,
+      "skips": 0
+    },
+    "battle_geometry_and_hud_contracts": {
+      "passed": true,
+      "tests": 10,
+      "skips": 0
+    },
+    "legacy_promotion_suite": {
+      "passed": true
+    },
+    "focused_modalwidgets_guard_group": {
+      "passed": true
+    }
+  },
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged_before_after_in_memory_builds": true,
+  "actual_recipe_reconstruction": [
+    {
+      "profile": "classic",
+      "resolution": "800x600",
+      "recipe_revision": "classic-frozen-800-v1",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "canonical_probe_sha256": null,
+      "producer_source_count": 3,
+      "in_memory_only": true
+    },
+    {
+      "profile": "classic",
+      "resolution": "1920x1080",
+      "recipe_revision": "classic_menu_widgets_v1",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-menuwidgets-validation",
+      "candidate_sha256": "2b1f0f22ea4eca8e28fccca38de3f33cba73ef63c7649df14c68613a2827adbc",
+      "canonical_probe_sha256": "e998dc491a95733007de85ed94a995922793bf6e5a16d6a8e8be494f95f8ab97",
+      "producer_source_count": 5,
+      "in_memory_only": true
+    },
+    {
+      "profile": "framed",
+      "resolution": "1920x1080",
+      "recipe_revision": "four-border-partial-initial-v1",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "034e184ee3c48fbea6a31a2b55a6339451f7f32f11fa77ce97e0e457ebedc3c1",
+      "canonical_probe_sha256": "68f825a8847fe64390153271ae08d6506e723fbb6e8b2d46fa38c8c12c7cf32c",
+      "producer_source_count": 15,
+      "in_memory_only": true
+    },
+    {
+      "profile": "completehd",
+      "resolution": "1920x1080",
+      "recipe_revision": "complete_hd_v1",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+      "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+      "canonical_probe_sha256": "746886872acdb5c87f7bb23062297174982ffe8db597eadc3dba9ab9b6bca3a3",
+      "producer_source_count": 25,
+      "in_memory_only": true
+    },
+    {
+      "profile": "modalwidgets",
+      "resolution": "1920x1080",
+      "recipe_revision": "owned_modal_widget_bounds_v1",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-validation",
+      "candidate_sha256": "baea13ce80c89d0f9369947881c187adcf9065ddaee5295978fdfea4f72ca5a9",
+      "canonical_probe_sha256": "8bdec01791012e2eaf39fa67fed3a72048ffb06652c08c8467df7ed3efa6578b",
+      "producer_source_count": 36,
+      "in_memory_only": true
+    }
+  ],
+  "preserved_initial_untracked_source_sha256": {
+    "src/patcher/framed_smallworld_input.py": "f1726c7b773cbd96b0c2f0a03f3c70103eaa3753e40f6897b82ccb21ad2846ac",
+    "tools/build_framed_smallworld_input_candidate.py": "9727842f6c7263931ba2d5cc2bcdbee752d5489b2f03a8febdec76ef3ff036de"
+  },
+  "inventory": {
+    "required_cells": 36,
+    "advertised_cells": 28,
+    "accepted_runtime_cells": 0,
+    "missing_production_lane_verifiers": 14,
+    "expanded_battle_installed": false
+  },
+  "runtime_executed": false,
+  "compiler_or_debugger_launched": false,
+  "candidate_or_probe_bundle_written": false,
+  "screenshots_created": false,
+  "manual_input_proven": false,
+  "promotion_ready": false,
+  "stable_stage_should_change": false,
+  "limits": [
+    "Original-backed construction used five existing resolved recipes only; it does not authenticate a saved candidate bundle or prove any runtime lane.",
+    "The remaining fourteen production lane verifiers and expanded-battle acceptance remain missing.",
+    "All 36 target acceptance cells remain failed.",
+    "Initial Windows CI fixture failure is preserved in resolution-matrix-ci-failure-20261001.json; the corrected head requires fresh CI verification."
+  ]
+}

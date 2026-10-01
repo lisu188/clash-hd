@@ -61,6 +61,14 @@ remain preserved. Disk reserve still gates native execution; source tests and
 matrix inventory cannot satisfy the missing actual acquisition, composition,
 manual-input, endurance or promotion evidence below.
 
+The [source checkpoint](../../reports/resolution-matrix-source-verification-20261001.json)
+records 35 portable matrix methods and ten battle geometry/HUD methods without
+skips, plus five original-backed in-memory reconstructions covering both Classic
+recipes and the three other profiles. No candidate bundle or runtime evidence
+was produced. The [first Windows CI failure](../../reports/resolution-matrix-ci-failure-20261001.json)
+retains the short-path versus resolved-path fixture mismatch; the corrected
+head requires its own passing CI results.
+
 ## Evidence snapshot and active work
 
 The [2026-09-24 review of the latest resolution runtime](../../reports/resolution-playability-screen-audit-20260924.md)
