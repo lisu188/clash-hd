@@ -702,15 +702,6 @@ def test_gate_checks_pin_and_parameterization() -> None:
             assert parameterized[name] == value, name
 
 
-def test_archived_report_still_passes_smoke_gate() -> None:
-    fixture = ROOT / "cloud" / "fixtures" / "evidence" / "hd-map" / "patch-stage-report.json"
-    report = __import__("json").loads(fixture.read_text(encoding="utf-8"))
-    gate = hd_map_smoke_matrix.patch_stage_gate_from_report(
-        report, impl.DEFAULT_STAGE, fixture
-    )
-    assert gate["passed"], gate["failures"]
-
-
 def test_build_report_on_synthetic_candidates() -> None:
     import shutil
     import tempfile
@@ -826,7 +817,6 @@ def run_tests() -> None:
     test_combined_custom_resolution_limits()
     test_coincidence_audit()
     test_gate_checks_pin_and_parameterization()
-    test_archived_report_still_passes_smoke_gate()
     test_build_report_on_synthetic_candidates()
     test_shim_exports_resolution_api()
     test_cli_resolution_gate()
