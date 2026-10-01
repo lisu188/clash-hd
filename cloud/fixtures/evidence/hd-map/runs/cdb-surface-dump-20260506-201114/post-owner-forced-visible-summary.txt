@@ -1,8 +1,0 @@
-coverage: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-201114\map-tile-coverage.json
-log: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-201114\cdb-surface-dump.log
-passed: True
-gameplay_frame_likely: True
-blank_active_cells: -
-markers: force=1 done=1 action=1 ready=1
-missing_cells: -
-zero_hit_cells: -
