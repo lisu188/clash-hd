@@ -46,9 +46,8 @@ instructions. Preserve existing uncommitted and untracked work.
 
 ### Project-specific artifact boundaries
 
-Inspect inactive Python/tool caches and verified test scratch under
-`.codex-loop/tmp-tests*` and `captures/tmp-tests-probe` first. Preserve referenced
-captures (including current, archived and failed runs), source snapshots,
+Inspect inactive Python/tool caches and verified local test scratch first. Preserve
+unique local runtime evidence outside the repository, along with source snapshots,
 retained candidates, original game files, saves and launcher settings.
 `tools/repo_compaction_cleanup.py` is dry-run by default: review its exact
 targets before execution. Its default archive on `C:\ClashCaptures` is on the
@@ -60,18 +59,20 @@ unique captures, failed-run diagnostics and their producers through routine clea
 
 ## Project purpose
 
-`clash-hd` is a reverse-engineering and binary-patching project for the 32-bit
+`clash-hd` is an independent compatibility and binary-patching project for the 32-bit
 Windows game `clash95.exe`. The goal is to support larger render resolutions,
 expanded gameplay viewports, correctly anchored UI, reliable input transforms,
 and reproducible evidence without distributing proprietary game material.
 
 ## Repository boundaries
 
-- Track source code, scripts, documentation, tests, patch metadata, and small
-  evidence manifests.
+- Track independently authored source code, scripts, documentation, tests, and
+  minimal patch metadata.
 - Do not commit original or patched executables, wrapper DLL binaries, saves,
-  copied game assets, CD/ISO contents, cracks, memory dumps, or large raw
-  captures.
+  copied game assets, manuals, CD/ISO contents, screenshots, runtime captures,
+  debugger/memory dumps, Ghidra/IDA exports, decompiler output, or cracks.
+- Public CI must not fetch the original executable or retail runtime from another
+  repository. Runtime-dependent validation uses a user-supplied local copy only.
 - Never modify `C:\Clash\clash95.exe` in place.
 - Build and test candidates under `C:\ClashTests\...` or as distinctly named
   local copies under `C:\Clash`.
@@ -238,26 +239,16 @@ where possible and separate visual proof from input callback proof.
 
 ## Repository checks
 
-Run the aggregate repo-only evidence refresh:
+Run public/source-only checks first:
 
 ```powershell
-python tools/current_evidence_refresh.py
+python tools/check-public-boundary.py
+python tools/cloud_check.py --mode cloud
 ```
 
-Inspect the generated summary:
-
-```powershell
-python -c "import json;d=json.load(open('captures/current/current-evidence-refresh-current.json',encoding='utf-8'));print(sum(1 for v in d['checks'].values() if not v.get('passed')),'/',len(d['checks']),'failing')"
-```
-
-Run focused fixtures with:
-
-```powershell
-python tools/test_<name>.py
-```
-
-Do not launch Clash95, CDB, wrappers, PowerShell runtime harnesses, or visible
-windows as part of a repo-only check.
+Run focused synthetic fixtures with `python tools/test_<name>.py` when relevant.
+Do not launch Clash95, CDB, wrappers, PowerShell runtime harnesses, download a
+retail runtime, or capture game screens as part of a public/repo-only check.
 
 ## Launcher and resolution work
 
@@ -291,8 +282,8 @@ windows as part of a repo-only check.
   Existing runtime, input, and capture approval boundaries still apply. A merge
   or screenshot never implies stable promotion or manual-input proof.
 
-- Update relevant files under `docs/hd/`, `reports/`, `captures/current/`, and
-  patch metadata when a durable engineering claim changes.
+- Update relevant files under `docs/hd/`, `reports/`, and patch metadata when a
+  durable public engineering claim changes. Keep raw runtime/capture evidence local.
 - Prefer direct file paths and exact evidence identifiers over narrative claims
   without supporting artifacts.
 - Distinguish current evidence from archived diagnostics.
@@ -317,7 +308,7 @@ windows as part of a repo-only check.
 
 A change is complete only when:
 
-- proprietary material remains untracked;
+- proprietary and retail-derived material, including screenshots/captures and reverse-engineering exports, remains untracked;
 - the original executable remains untouched;
 - old-byte verification is preserved for patch changes;
 - relevant repo-only tests have been run or the inability to run them is stated;
