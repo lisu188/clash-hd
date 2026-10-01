@@ -312,6 +312,295 @@ def _check(condition: bool, failures: list[str], message: str) -> None:
         failures.append(message)
 
 
+# The existing hidden runner is a stable-stage diagnostic producer. These are
+# missing producer capabilities, not fields which an evidence author can fill
+# with a green boolean. In particular, replay below never registers a release
+# lane or treats a CDB-forced route/pan as native manual input.
+HIDDEN_SOAK_PRODUCER_GAPS = (
+    "hidden soak producer only builds the protected stable stage; it lacks a source-bound complete candidate and loaded candidate contracts",
+    "hidden soak producer retains only edge raw frames; immutable raw references for every sampled frame are required",
+    "hidden soak producer lacks PID, executable path and creation-time-bound termination receipts for its game, debugger and descendants",
+    "hidden soak producer lacks an authenticated run start/finish envelope binding candidate, generated probe, wrapper and raw observations",
+    "hidden soak producer has no menu-idle route; the short ladder needs a separate authentic menu-idle producer",
+)
+
+
+def _same_raw_json(left: Any, right: Any) -> bool:
+    """Compare JSON values without Python's bool/int aliases or NaN equality."""
+    try:
+        options = {"sort_keys": True, "separators": (",", ":"), "allow_nan": False}
+        return json.dumps(left, **options) == json.dumps(right, **options)
+    except (TypeError, ValueError, RecursionError):
+        return False
+
+
+def _hidden_soak_log(log: str, failures: list[str]) -> dict[str, list[dict[str, Any]]]:
+    """Replay the anchored records emitted by clash95_hidden_soak_route_extra.cdb."""
+    patterns = (
+        ("ready", r"(SOAK_SURFDUMP_READY|SURFDUMP_READY) redraw_seq=(\d{1,10}) surface=([0-9a-fA-F]{1,16}|[0-9a-fA-F]{1,8}`[0-9a-fA-F]{1,8}) size=\((\d{1,5}),(\d{1,5})\) base=([0-9a-fA-F]{1,16}|[0-9a-fA-F]{1,8}`[0-9a-fA-F]{1,8}) bytes=(\d{1,10})",
+         "source redraw_seq surface width height base bytes"),
+        ("start", r"SOAK_ROUTE_START route_ticks=(\d{1,10}) pan=(0|1) player=(-?\d{1,10}) tick=(-?\d{1,10}) gd=([0-9a-fA-F]{1,16}|[0-9a-fA-F]{1,8}`[0-9a-fA-F]{1,8}) scroll=\((-?\d{1,10}),(-?\d{1,10})\)",
+         "route_ticks pan player tick game_data scroll_x scroll_y"),
+        ("end", r"SOAK_ROUTE_END route_ticks=(\d{1,10}) pan=(0|1) hits=(\d{1,10}) tickdelta=(\d{1,10}) player=(-?\d{1,10}) scroll=\((-?\d{1,10}),(-?\d{1,10})\)",
+         "route_ticks pan hits tick_delta player scroll_x scroll_y"),
+        ("heartbeat", r"SOAK_HEARTBEAT hits=(\d{1,10}) tickdelta=(\d{1,10}) player=(-?\d{1,10}) scroll=\((-?\d{1,10}),(-?\d{1,10})\)",
+         "hits tick_delta player scroll_x scroll_y"),
+        ("plan", r"SOAK_PAN_PLAN base=\((-?\d{1,10}),(-?\d{1,10})\) delta=\((-?\d{1,10}),(-?\d{1,10})\) max=\((-?\d{1,10}),(-?\d{1,10})\) safe=1",
+         "base_x base_y delta_x delta_y max_x max_y"),
+        ("unsafe", r"SOAK_PAN_UNSAFE base=\((-?\d{1,10}),(-?\d{1,10})\) max=\((-?\d{1,10}),(-?\d{1,10})\) reason=([a-z0-9_-]{1,64})",
+         "base_x base_y max_x max_y reason"),
+        ("pan", r"SOAK_PAN_SET phase=(\d) x=(-?\d{1,10}) y=(-?\d{1,10}) hits=(\d{1,10}) tickdelta=(\d{1,10}) delta=\((-?\d{1,10}),(-?\d{1,10})\)",
+         "phase x y hits tick_delta delta_x delta_y"),
+    )
+    rows: dict[str, list[dict[str, Any]]] = {kind: [] for kind, _, _ in patterns}
+    marker_names = r"(?:SOAK_SURFDUMP_READY|SURFDUMP_READY|SOAK_ROUTE_START|SOAK_ROUTE_END|SOAK_HEARTBEAT|SOAK_PAN_PLAN|SOAK_PAN_UNSAFE|SOAK_PAN_SET)\b"
+    for number, text in enumerate(log.splitlines(), 1):
+        line = text.strip()
+        for kind, pattern, fields in patterns:
+            match = re.fullmatch(pattern, line)
+            if match:
+                try:
+                    row = {name: value if name in {"source", "surface", "base", "game_data", "reason"} else int(value)
+                           for name, value in zip(fields.split(), match.groups())}
+                except (ValueError, OverflowError):
+                    failures.append(f"malformed numeric hidden soak record at line {number}")
+                    break
+                row["_line"] = number
+                rows[kind].append(row)
+                break
+        else:
+            if re.match(marker_names, line):
+                failures.append(f"malformed anchored hidden soak record at line {number}")
+        if line in {"AV_SURFDUMP", "SURFDUMP_INVALID"} or line.startswith("SURFDUMP_APP_REQUEST_QUIT"):
+            failures.append(f"raw hidden soak log records runtime failure: {line}")
+    if rows["unsafe"]:
+        failures.append("raw hidden soak log records SOAK_PAN_UNSAFE")
+    return rows
+
+
+def _hidden_sample_times(rows: list[Any], kind: str, interval: int, duration: int,
+                         failures: list[str]) -> float | None:
+    times = []
+    for row in rows:
+        try:
+            times.append(_time(_object(row, f"{kind} sample").get("Timestamp")))
+        except (TypeError, ValueError):
+            failures.append(f"{kind} sample has a missing or invalid timezone timestamp")
+    if len(times) < 2:
+        failures.append(f"at least two timestamped {kind} samples are required")
+        return None
+    gaps = [(right - left).total_seconds() for left, right in zip(times, times[1:])]
+    _check(all(gap > 0 for gap in gaps), failures, f"{kind} sample timestamps are not strictly increasing")
+    if interval > 0:
+        _check(all(gap <= interval + 2 for gap in gaps), failures, f"{kind} samples have unexplained gaps beyond the declared interval")
+    span = (times[-1] - times[0]).total_seconds()
+    # Preserve the existing producer's endpoint allowance. Native route ticks
+    # are checked independently; this span is not authenticated wall-clock proof.
+    _check(span >= max(0, duration - interval - 2), failures, f"{kind} sample span is shorter than the requested soak coverage")
+    return span
+
+
+def audit_hidden_soak_raw(samples: Any, log: Any, raw_frames: Any, identity: Any, *,
+                          minimum_duration_sec: int = 7200) -> dict[str, Any]:
+    """Validate existing hidden-soak raw diagnostics without accepting a lane.
+
+    ``raw_frames`` maps the existing frame ``Name`` to its full indexed-8 bytes.
+    The caller must separately authenticate artifact references and candidate
+    bytes. This pure helper performs no file reads, runtime or approval writes.
+    It replays measured bytes/records instead of trusting assembled reports;
+    even consistent diagnostics leave ``passed`` and release verification false.
+    """
+    failures: list[str] = []
+    for value, label in ((samples, "samples"), (raw_frames, "raw_frames"), (identity, "identity")):
+        _check(isinstance(value, dict), failures, f"hidden soak {label} must be an object")
+    samples = samples if isinstance(samples, dict) else {}
+    raw_frames = raw_frames if isinstance(raw_frames, dict) else {}
+    identity = identity if isinstance(identity, dict) else {}
+    _check(isinstance(log, str) and bool(log.strip()), failures, "raw hidden soak CDB log is missing")
+    log = log if isinstance(log, str) else ""
+    _check(_same_raw_json(samples, samples) and _same_raw_json(identity, identity), failures,
+           "raw hidden soak metadata must contain finite JSON values")
+    _check(samples.get("schema") == "hidden_cdb_host_soak_samples_v1", failures, "unsupported raw hidden soak samples schema")
+    _check(samples.get("executed") is True, failures, "hidden soak execution was not recorded")
+    _check(samples.get("environment") == "hidden_cdb_host" and samples.get("launch_mode") == "hidden-desktop"
+           and samples.get("frame_read_method") == "host_readprocessmemory", failures,
+           "hidden soak capture method or environment differs from the raw producer")
+    _check(samples.get("input_responsiveness") == "not_applicable_hidden", failures,
+           "hidden diagnostics cannot establish visible or manual input responsiveness")
+    for field in ("input_max_abs_error", "input_max_sample_abs_error", "route_results"):
+        value = samples.get(field)
+        _check(value is None or _same_raw_json(value, []) or _same_raw_json(value, ""), failures,
+               f"hidden diagnostics contain forbidden input evidence: {field}")
+    for field in ("runner_failures", "capture_errors"):
+        _check(_same_raw_json(samples.get(field), []), failures, f"hidden soak {field} must be an empty array")
+    for field in ("av_observed", "surface_invalid_observed", "app_request_quit_observed",
+                  "cdb_exit_before_duration", "game_exit_before_duration", "process_exited_unexpectedly"):
+        _check(samples.get(field) is False, failures, f"hidden soak reports a failure or lacks a boolean observation: {field}")
+    for field, source in (("stage", "stage"), ("candidate_sha256", "candidate_sha256"), ("input_sha256", "base_sha256")):
+        expected = identity.get(source)
+        valid = _text(expected) if source == "stage" else isinstance(expected, str) and bool(SHA_RE.fullmatch(expected))
+        _check(valid and _same_raw_json(samples.get(field), expected), failures, f"hidden soak differs from supplied candidate identity: {source}")
+    match = re.fullmatch(r"([1-9][0-9]{0,4})x([1-9][0-9]{0,4})", identity.get("resolution", "")) if isinstance(identity.get("resolution"), str) else None
+    width, height = (int(value) for value in match.groups()) if match else (0, 0)
+    _check(bool(match) and width <= 65535 and height <= 65535, failures, "supplied candidate resolution must be positive 16-bit WxH")
+    duration = samples.get("duration_sec")
+    interval = samples.get("frame_interval_sec")
+    maximum_duration = 0x7fffffff // 64  # The existing probe prints signed 32-bit route ticks.
+    minimum_valid = type(minimum_duration_sec) is int and 0 < minimum_duration_sec <= maximum_duration
+    duration_valid = type(duration) is int and 0 < duration <= maximum_duration
+    interval_valid = type(interval) is int and duration_valid and 0 < interval and 2 * interval <= duration
+    _check(minimum_valid, failures, "minimum soak duration must be a positive policy integer within the probe range")
+    _check(duration_valid and minimum_valid and duration >= minimum_duration_sec, failures,
+           "raw hidden soak duration is below the requested policy duration or outside the probe range")
+    _check(interval_valid, failures,
+           "raw hidden soak sampling interval must be positive and at most half the duration")
+    duration = duration if duration_valid else 0
+    interval = interval if interval_valid else 0
+    route = samples.get("route")
+    _check(route in ("map-idle", "map-pan"), failures, "hidden raw producer does not implement this soak route")
+    expected_pan = int(route == "map-pan")
+    _check(type(samples.get("duration_ticks")) is int and samples["duration_ticks"] == duration * 64, failures,
+           "raw hidden soak duration ticks differ from the requested 64 Hz duration")
+    rows = _hidden_soak_log(log, failures)
+    ready_rows = [row for row in rows["ready"] if row["source"] == "SOAK_SURFDUMP_READY"]
+    for kind, values in (("ready", ready_rows), ("start", rows["start"]), ("end", rows["end"])):
+        _check(len(values) == 1, failures, f"raw hidden soak requires exactly one {kind} marker")
+    ready = ready_rows[0] if len(ready_rows) == 1 else {}
+    start = rows["start"][0] if len(rows["start"]) == 1 else {}
+    end = rows["end"][0] if len(rows["end"]) == 1 else {}
+    for field, actual in (("ready_marker", ready), ("route_start_marker", start), ("route_end_marker", end)):
+        _check(bool(actual) and _same_raw_json(samples.get(field), {key: value for key, value in actual.items() if key != "_line"}),
+               failures, f"{field} differs from raw anchored CDB records")
+    _check(type(samples.get("heartbeat_count")) is int and samples["heartbeat_count"] == len(rows["heartbeat"])
+           and bool(rows["heartbeat"]), failures, "raw heartbeat inventory is absent or differs from the samples")
+    _check(type(samples.get("pan_event_count")) is int and samples["pan_event_count"] == len(rows["pan"]), failures,
+           "raw pan event count differs from the samples")
+    _check(_same_raw_json(samples.get("pan_events"), [{key: value for key, value in row.items() if key != "_line"} for row in rows["pan"]]),
+           failures, "pan_events differ from raw anchored CDB records")
+    if ready:
+        _check(ready["width"] == width and ready["height"] == height and ready["bytes"] == width * height, failures,
+               "raw surface dimensions or byte count differ from the supplied candidate")
+        _check(ready["redraw_seq"] > 0, failures, "raw surface ready marker lacks redraw liveness")
+        for field in ("surface", "base"):
+            _check(0 < int(ready[field].replace("`", ""), 16) <= 0xffffffff, failures, f"raw {field} pointer is not a nonzero x86 address")
+        _check(_same_raw_json(samples.get("surface"), {"Base": ready["base"], "Width": width, "Height": height,
+                                                        "Bytes": width * height, "Source": ready["source"]}), failures,
+               "surface metadata differs from raw CDB surface records")
+    if start and ready and end:
+        # The actual probe emits START immediately before SOAK_SURFDUMP_READY.
+        _check(start["_line"] < ready["_line"] < end["_line"], failures, "raw start, ready and end markers are not ordered")
+        _check(start["route_ticks"] == end["route_ticks"] == duration * 64
+               and start["pan"] == end["pan"] == expected_pan, failures, "raw route markers differ from the requested route or duration")
+        _check(end["tick_delta"] >= duration * 64 and end["hits"] > 0 and end["player"] == start["player"], failures,
+               "raw route end lacks full duration, liveness or same-turn continuity")
+        _check(0 <= start["player"] < 8 and 0 < int(start["game_data"].replace("`", ""), 16) <= 0xffffffff, failures,
+               "raw route start lacks a valid player or nonzero x86 game-data address")
+        previous = (-1, -1)
+        for row in rows["heartbeat"]:
+            _check(start["_line"] < row["_line"] < end["_line"] and row["player"] == start["player"]
+                   and previous[0] < row["tick_delta"] <= end["tick_delta"] and previous[1] < row["hits"] <= end["hits"]
+                   and row["hits"] > 0 and row["hits"] % 2048 == 0, failures, "raw heartbeat records violate the probe order or liveness contract")
+            previous = (row["tick_delta"], row["hits"])
+        if not expected_pan:
+            _check(not rows["plan"] and not rows["pan"], failures, "map-idle raw log contains forced pan records")
+            _check((start["scroll_x"], start["scroll_y"]) == (end["scroll_x"], end["scroll_y"]), failures,
+                   "map-idle raw scroll position changed")
+        else:
+            _check(len(rows["plan"]) == 1 and bool(rows["pan"]), failures, "map-pan raw log lacks one safe plan and pan events")
+            if len(rows["plan"]) == 1:
+                plan = rows["plan"][0]
+                _check(ready["_line"] < plan["_line"] < end["_line"] and plan["base_x"] == start["scroll_x"]
+                       and plan["base_y"] == start["scroll_y"], failures, "raw pan plan order or base differs from route start")
+                delta = tuple(1 if plan[f"base_{axis}"] < plan[f"max_{axis}"] else -1 if plan[f"base_{axis}"] > 0 else 0 for axis in ("x", "y"))
+                _check(any(delta) and all(0 <= plan[f"base_{axis}"] <= plan[f"max_{axis}"] for axis in ("x", "y"))
+                       and delta == (plan["delta_x"], plan["delta_y"]), failures, "raw pan plan is not the probe's bounded inward direction")
+                previous = (0, -1)
+                pan_interval = samples.get("pan_interval_sec")
+                _check(type(pan_interval) is int and 0 < pan_interval < duration, failures, "raw pan interval must be a positive integer below the duration")
+                pan_ticks = pan_interval * 64 if type(pan_interval) is int and pan_interval > 0 else duration * 64
+                for index, row in enumerate(rows["pan"]):
+                    phase = index % 4
+                    target = (plan["base_x"] + (plan["delta_x"] if phase in (1, 2) else 0),
+                              plan["base_y"] + (plan["delta_y"] if phase in (2, 3) else 0))
+                    _check(plan["_line"] < row["_line"] < end["_line"] and row["phase"] == phase
+                           and (row["delta_x"], row["delta_y"]) == delta and (row["x"], row["y"]) == target
+                           and row["tick_delta"] - previous[0] >= pan_ticks and max(0, previous[1]) < row["hits"] <= end["hits"]
+                           and row["tick_delta"] < end["tick_delta"], failures, "raw pan records violate the bounded phase, interval or liveness contract")
+                    previous = (row["tick_delta"], row["hits"])
+        scroll = (start["scroll_x"], start["scroll_y"])
+        previous = (-1, -1)
+        for row in sorted(rows["heartbeat"] + rows["pan"], key=lambda row: row["_line"]):
+            _check(row["tick_delta"] >= previous[0] and row["hits"] >= previous[1], failures,
+                   "raw heartbeat and pan streams disagree on clock or redraw order")
+            previous = (row["tick_delta"], row["hits"])
+            if "phase" in row:
+                scroll = (row["x"], row["y"])
+            else:
+                _check((row["scroll_x"], row["scroll_y"]) == scroll, failures, "raw heartbeat scroll differs from the preceding pan phase")
+        _check((end["scroll_x"], end["scroll_y"]) == scroll, failures, "raw end scroll differs from the replayed route")
+    frames = samples.get("frame_samples")
+    processes = samples.get("process_samples")
+    _check(isinstance(frames, list) and isinstance(processes, list), failures, "raw frame and process inventories must be arrays")
+    frames = frames if isinstance(frames, list) else []
+    processes = processes if isinstance(processes, list) else []
+    frame_span = _hidden_sample_times(frames, "frame", interval, duration, failures)
+    process_span = _hidden_sample_times(processes, "process", interval, duration, failures)
+    seen: set[str] = set()
+    measured_frames = []
+    for row in frames:
+        if not isinstance(row, dict):
+            failures.append("raw frame sample must be an object")
+            continue
+        name = row.get("Name")
+        if not isinstance(name, str) or not re.fullmatch(r"frame-[0-9]{4,}", name) or name in seen:
+            failures.append("raw frame names are missing, malformed or duplicated")
+            continue
+        seen.add(name)
+        data = raw_frames.get(name)
+        if not isinstance(data, bytes) or len(data) != width * height or not data:
+            failures.append(f"full raw indexed-8 bytes are missing or truncated for {name}")
+            continue
+        measured = {"name": name, "sha256": digest(data), "nonblack_percent": round(100 * (len(data) - data.count(0)) / len(data), 3),
+                    "unique_colors": len(set(data))}
+        measured_frames.append(measured)
+        _check(type(row.get("Width")) is int and row["Width"] == width and type(row.get("Height")) is int and row["Height"] == height,
+               failures, f"raw frame dimensions differ for {name}")
+        _check(row.get("CaptureMode") == "hidden-cdb-host-readprocessmemory", failures, f"raw frame capture method differs for {name}")
+        _check(row.get("Hash") == measured["sha256"], failures, f"raw frame SHA-256 differs for {name}")
+        _check(type(row.get("NonblackPercent")) in (int, float) and row["NonblackPercent"] == measured["nonblack_percent"]
+               and type(row.get("UniqueSampleColors")) is int and row["UniqueSampleColors"] == measured["unique_colors"], failures,
+               f"raw frame histogram metrics differ for {name}")
+        _check(measured["nonblack_percent"] >= 10 and measured["unique_colors"] >= 8, failures, f"raw frame fails the diagnostic rendering thresholds for {name}")
+    _check(set(raw_frames) == seen, failures, "raw frame byte inventory differs from the samples")
+    if expected_pan:
+        _check(len({row["sha256"] for row in measured_frames}) >= 2, failures, "map-pan raw frames have no measured progression")
+    metrics: dict[str, list[int]] = {"WorkingSet64": [], "PrivateMemorySize64": [], "HandleCount": []}
+    for row in processes:
+        if not isinstance(row, dict):
+            failures.append("raw process sample must be an object")
+            continue
+        _check(row.get("HasExited") is False and row.get("ExitCode") is None and row.get("Error") in (None, ""), failures,
+               "raw process telemetry records exit, error or missing liveness")
+        for field in metrics:
+            value = row.get(field)
+            maximum_value = 0x7fffffff if field == "HandleCount" else 0x7fffffffffffffff
+            if type(value) is not int or not 0 <= value <= maximum_value:
+                failures.append(f"raw process {field} must be a nonnegative measured integer within its native range")
+            else:
+                metrics[field].append(value)
+    growth = {field: max(values) - values[0] for field, values in metrics.items() if values}
+    for field, maximum in (("WorkingSet64", 64 * 1024 * 1024), ("PrivateMemorySize64", 64 * 1024 * 1024), ("HandleCount", 128)):
+        _check(len(metrics[field]) == len(processes) and len(processes) >= 2 and growth.get(field, maximum + 1) <= maximum,
+               failures, f"raw process {field} growth is missing or exceeds the fixed diagnostic limit")
+    failures = list(dict.fromkeys(failures))
+    return {"passed": False, "raw_validation_passed": not failures, "release_evidence_verified": False,
+            "candidate_authenticated": False, "clean_stop_verified": False, "input_evidence_verified": False,
+            "raw_failures": failures, "producer_gaps": list(HIDDEN_SOAK_PRODUCER_GAPS),
+            "failures": failures + list(HIDDEN_SOAK_PRODUCER_GAPS),
+            "observations": {"native_route_ticks": end.get("tick_delta"), "frame_span_sec": frame_span,
+                             "process_span_sec": process_span, "frame_metrics": measured_frames, "process_growth": growth}}
+
+
 def verify_reference_graph(value: Any, base: Path, seen: set[tuple[Path, str]] | None = None) -> None:
     """Recheck pinned input bytes at completion, including nested proof/approval refs."""
     seen = set() if seen is None else seen
