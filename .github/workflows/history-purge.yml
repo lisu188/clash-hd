@@ -1,0 +1,63 @@
+name: One-shot public history purge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/history-purge.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  purge:
+    if: github.repository == 'lisu188/clash-hd'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rewrite public branches and tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install git-filter-repo
+
+          STUBS="$RUNNER_TEMP/public-stubs"
+          mkdir -p "$STUBS/docs/hd" "$STUBS/cloud"
+          cp docs/hd/AGENT_HANDOFF.md "$STUBS/docs/hd/"
+          cp docs/hd/FINISH_LINE_RUNBOOK.md "$STUBS/docs/hd/"
+          cp docs/hd/AUTONOMOUS_HD_MOD_CODEX_PROMPT.md "$STUBS/docs/hd/"
+          cp docs/hd/HD_MOD_PROGRESS.md "$STUBS/docs/hd/"
+          cp docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md "$STUBS/docs/hd/"
+          cp docs/hd/README.md "$STUBS/docs/hd/"
+          cp docs/hd/DEVELOPMENT.md "$STUBS/docs/hd/"
+          cp cloud/README.md "$STUBS/cloud/"
+
+          cd "$RUNNER_TEMP"
+          AUTH="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --bare "$AUTH" purge.git
+          cd purge.git
+
+          git filter-repo --force --invert-paths             --path captures/             --path cloud/fixtures/             --path tools/build_cloud_fixtures.py             --path reports/disassembly_cross_check_hd_next_steps.md             --path .github/workflows/asset-backed-text.yml             --path .github/workflows/classic-menu-candidate.yml             --path .github/workflows/launcher-campaign-probe.yml             --path .github/workflows/launcher-resolution-runtime.yml             --path .github/workflows/launcher-resolution-sweep.yml             --path .github/workflows/modal-widget-candidate.yml             --path .github/workflows/native-present-bounds.yml             --path .github/workflows/original-game-launch.yml             --path .github/workflows/real-exe-smoke.yml             --path .github/workflows/widget-runtime.yml             --path .github/workflows/history-purge.yml             --path docs/hd/AGENT_HANDOFF.md             --path docs/hd/FINISH_LINE_RUNBOOK.md             --path docs/hd/AUTONOMOUS_HD_MOD_CODEX_PROMPT.md             --path docs/hd/HD_MOD_PROGRESS.md             --path docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md             --path docs/hd/README.md             --path docs/hd/DEVELOPMENT.md             --path cloud/README.md
+
+          git remote add origin "$AUTH"
+          git push --force --all origin
+          git push --force --tags origin
+
+          cd "$RUNNER_TEMP"
+          git clone --branch main "$AUTH" restored
+          cd restored
+          mkdir -p docs/hd cloud
+          cp "$STUBS/docs/hd/"* docs/hd/
+          cp "$STUBS/cloud/README.md" cloud/README.md
+          git config user.name "lisu188"
+          git config user.email "andrzej.lis3@gmail.com"
+          git add docs/hd cloud/README.md
+          git commit -m "docs: restore source-only public documentation after purge"
+          git push origin main
