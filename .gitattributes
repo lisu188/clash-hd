@@ -980,3 +980,4 @@
 /tools/resolution_release_matrix.py text eol=lf
 /tools/test_resolution_release_matrix.py text eol=lf
 /docs/hd/RESOLUTION_RELEASE_MATRIX.md text eol=lf
+/reports/resolution-matrix-ci-failure-20261001.json text eol=lf

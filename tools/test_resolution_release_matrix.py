@@ -335,7 +335,8 @@ class MatrixTests(unittest.TestCase):
             report = matrix.evaluate_matrix(fixture.matrix_path, repo_root=fixture.repo)
         self.assert_blocked(report)
         self.assertEqual(report["authenticated_candidate_count"], 1)
-        replay.assert_called_once_with(Path(fixture.release_ref["path"]), candidate_manifest=Path(fixture.spec["metadata"]["path"]))
+        replay.assert_called_once_with(Path(fixture.release_ref["path"]).resolve(),
+                                      candidate_manifest=Path(fixture.spec["metadata"]["path"]).resolve())
         errors = report["cells"][fixture.id]["failures"]
         self.assertEqual(sum("production lane verifier is not implemented" in error for error in errors), 14)
         self.assertIn("candidate-bound expanded-battle production acceptance verifier is not implemented", errors)
