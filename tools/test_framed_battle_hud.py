@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 import test_framed_modal_canvas as fixture
+from test_framed_battle_viewport import GEOMETRY_CASES
 from src.patcher import framed_battle_hud as hud
 from src.patcher import partial_tile_clip as clip
 from tools import build_framed_army_candidate as builder
@@ -128,13 +129,56 @@ class ContractTests(unittest.TestCase):
     def test_source_bound_edges_and_uninstalled_split(self):
         self.assertEqual(hud.verify_sources(),hud.PINNED_SOURCES)
         self.assertIn('15',hud.integration_required()['overlay_animation'])
-        for w,h in RESOLUTIONS:
+        for w,h,columns in GEOMETRY_CASES:
             for l,t,r,b,x,y in hud.composition_rectangles(w,h):
                 self.assertTrue(0<=l<=r<640 and 0<=t<=b<480)
                 self.assertTrue(0<=x and x+r-l<w and 0<=y and y+b-t<h)
                 # Every frame/HUD pixel lies outside the field's reserved area.
-                right=31+64*min(20,(w-192)//64)
+                right=31+64*columns
                 self.assertTrue(x+r-l<32 or x>right or y+b-t<16 or y>463)
+
+    def test_all_presets_four_edges_and_hud_have_disjoint_complete_coverage(self):
+        for w,h,_ in GEOMETRY_CASES:
+            copies=hud.composition_rectangles(w,h)
+            for y in range(h):
+                intervals=sorted((x,x+r-l+1) for l,t,r,b,x,dy in copies if dy<=y<=dy+b-t)
+                merged=[]
+                for left,right in intervals:
+                    if merged:
+                        self.assertGreaterEqual(left,merged[-1][1],(w,h,y))
+                    if merged and left==merged[-1][1]:
+                        merged[-1]=(merged[-1][0],right)
+                    else:
+                        merged.append((left,right))
+                if y<16 or y>=h-16:
+                    expected=[(0,w)]
+                elif y<368 or y>=h-112:
+                    expected=[(0,32),(w-160,w)]
+                else:
+                    expected=[(0,32),(w-16,w)]
+                self.assertEqual(merged,expected,(w,h,y))
+
+    def test_all_presets_copy_native_corners_and_repeat_art_without_scaling(self):
+        for w,h,_ in GEOMETRY_CASES:
+            copies=hud.composition_rectangles(w,h)
+            def source_at(x,y):
+                found=[(l+x-dx,t+y-dy) for l,t,r,b,dx,dy in copies
+                       if dx<=x<=dx+r-l and dy<=y<=dy+b-t]
+                self.assertEqual(len(found),1,(w,h,x,y))
+                return found[0]
+            for point,source in (((0,0),(0,0)),((31,h-1),(31,479)),
+                                 ((w-1,0),(639,0)),((w-1,h-1),(639,479)),
+                                 ((w-160,367),(480,367)),((w-160,h-112),(480,368))):
+                self.assertEqual(source_at(*point),source)
+            for x in range(32,w-160,448):
+                self.assertEqual(source_at(x,0),(32,0))
+                self.assertEqual(source_at(x,h-1),(32,479))
+            for y in range(16,h-16,448):
+                self.assertEqual(source_at(0,y),(0,16))
+            for y in range(368,h-112,352):
+                self.assertEqual(source_at(w-1,y),(639,16))
+            self.assertIn((480,0,639,367,w-160,0),copies)
+            self.assertIn((480,368,639,479,w-160,h-112),copies)
 
 
 @unittest.skipUnless(os.name=='nt' and fixture.CSC.is_file(),'requires existing no-window x86 fixture compiler')

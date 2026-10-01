@@ -5,7 +5,8 @@ Fresh affirmative JSON decisions, bound to the assembled manual proof, are
 required; a successful tool exit can also describe a valid deferred decision.
 The default component sequence cannot establish whole-HD release acceptance.
 --release-manifest evaluates the fixed complete-HD set against a deterministically
-rebuilt candidate. Both paths preserve the stable stage and release checklist;
+rebuilt candidate. --matrix-manifest requires independent runtime acceptance for
+all 36 profile/preset combinations. All modes preserve the stable stage and release checklist;
 --update-checklist is a rejected compatibility option. No runtime is launched.
 """
 
@@ -346,14 +347,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--run-manifest", type=Path, help="Run manifest for the legacy component eligibility sequence")
     mode.add_argument("--release-manifest", type=Path, help="Hash-bound complete-HD candidate and fixed acceptance evidence index")
+    mode.add_argument("--matrix-manifest", type=Path, help="Immutable 36-cell release index; missing runtime evidence always fails")
     parser.add_argument("--candidate-manifest", type=Path, help="Exact complete builder .candidate.json context required in release mode")
     parser.add_argument("--observations", type=Path, help="Optional operator observations JSON")
     parser.add_argument("--proof-json", type=Path, default=PROOF_JSON, help="Where to write/read the proof manifest")
     parser.add_argument("--battle-run-dir", type=Path, help="Battle visible-input run dir for the click-consumed gate")
     parser.add_argument("--update-checklist", action="store_true", help="Rejected compatibility option; this evaluator never edits release checklists")
-    parser.add_argument("--write-json", type=Path, default=DEFAULT_SUMMARY_JSON)
+    parser.add_argument("--write-json", type=Path, default=argparse.SUPPRESS)
     parser.add_argument("--require-pass", action="store_true", help="Require the selected evidence evaluation to pass; eligibility never changes the stable stage or checklist")
     args = parser.parse_args(argv)
+    if not hasattr(args, "write_json"):
+        args.write_json = None if args.matrix_manifest else DEFAULT_SUMMARY_JSON
+    if args.matrix_manifest and args.candidate_manifest is not None:
+        parser.error("matrix candidates must be supplied in the immutable matrix index")
     if args.release_manifest and args.candidate_manifest is None:
         parser.error("--release-manifest requires --candidate-manifest")
     if args.run_manifest and args.candidate_manifest is not None:
@@ -363,7 +369,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    if args.release_manifest:
+    evidence_mode = bool(args.release_manifest or args.matrix_manifest)
+    if args.matrix_manifest:
+        import resolution_release_matrix
+        summary = resolution_release_matrix.evaluate_matrix(repo_path(args.matrix_manifest))
+        if args.observations or args.battle_run_dir or args.proof_json != PROOF_JSON:
+            summary["failures"].append("component arguments cannot amend matrix evidence")
+            summary["passed"] = summary["promotion_ready"] = False
+        if args.update_checklist:
+            summary["failures"].append("--update-checklist is blocked: matrix evaluation never changes release state")
+            summary["passed"] = False
+    elif args.release_manifest:
         summary = complete_hd_evidence.evaluate_release_manifest(
             repo_path(args.release_manifest), candidate_manifest=repo_path(args.candidate_manifest))
         if args.observations or args.battle_run_dir:
@@ -378,11 +394,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.write_json:
         summary_path = repo_path(args.write_json)
-        if args.release_manifest and args.write_json == DEFAULT_SUMMARY_JSON:
+        if evidence_mode and args.write_json == DEFAULT_SUMMARY_JSON:
             summary_path = summary_path.parent / "complete-hd-release-evaluations" / (uuid4().hex + ".json")
         try:
             summary_path.parent.mkdir(parents=True, exist_ok=True)
-            if args.release_manifest:
+            if evidence_mode:
                 # Release reports never replace an earlier result or an input
                 # artifact, including a path supplied as --write-json.
                 with summary_path.open("x", encoding="utf-8") as output:
@@ -396,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"runtime-policy: {RUNTIME_POLICY}")
     for step in summary.get("steps", []):
         print(f"  {'PASS' if step['passed'] else 'FAIL'} {step['name']} (exit {step['exit_code']})")
-    if args.release_manifest:
+    if evidence_mode:
         print(f"evidence-ready: {summary['evidence_ready']}")
         print(f"promotion-approved: {summary['promotion_approved']}")
         print(f"promotion-ready: {summary['promotion_ready']}")
@@ -406,7 +422,7 @@ def main(argv: list[str] | None = None) -> int:
     if summary["failures"]:
         print(f"failures: {summary['failures']}")
 
-    if not summary["passed"] and (args.release_manifest or args.require_pass or args.update_checklist):
+    if not summary["passed"] and (evidence_mode or args.require_pass or args.update_checklist):
         return 2
     return 0
 

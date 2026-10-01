@@ -306,11 +306,61 @@ def test_checklist_request_is_blocked_and_main_uses_unique_outputs(fixture: Path
     assert checklist.read_bytes() == before
 
 
+def test_matrix_mode_preserves_legacy_defaults_and_requires_index_candidates() -> None:
+    args = promo.parse_args(["--matrix-manifest", "matrix.json"])
+    assert args.write_json is None
+    assert _args().write_json == promo.DEFAULT_SUMMARY_JSON
+    for argv in (["--matrix-manifest", "matrix.json", "--candidate-manifest", "candidate.json"],
+                 ["--matrix-manifest", "matrix.json", "--release-manifest", "release.json"],
+                 ["--release-manifest", "release.json"]):
+        with contextlib.redirect_stderr(io.StringIO()):
+            try:
+                promo.parse_args(argv)
+            except SystemExit as exc:
+                assert exc.code == 2
+            else:
+                raise AssertionError("incompatible evidence mode accepted")
+
+
+def test_matrix_mode_is_read_only_and_fails_without_require_pass(fixture: Path) -> None:
+    from resolution_release_matrix import MATRIX_SCHEMA
+    index = fixture / "matrix.json"
+    write_json(index, {"schema": MATRIX_SCHEMA, "rows": [], "passed": True,
+                       "promotion_ready": True})
+    before = {str(p): p.read_bytes() for p in fixture.rglob("*") if p.is_file()}
+    with contextlib.redirect_stdout(io.StringIO()):
+        status = promo.main(["--matrix-manifest", str(index)])
+    assert status == 2
+    after = {str(p): p.read_bytes() for p in fixture.rglob("*") if p.is_file()}
+    assert before == after
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        status = promo.main(["--matrix-manifest", str(index), "--write-json", str(index)])
+    assert status == 2 and index.read_bytes() == before[str(index)]
+
+
+def test_matrix_mode_records_fresh_failures_without_promoting(fixture: Path) -> None:
+    from resolution_release_matrix import MATRIX_SCHEMA
+    index, output = fixture / "matrix.json", fixture / "evaluation.json"
+    write_json(index, {"schema": MATRIX_SCHEMA, "rows": []})
+    with contextlib.redirect_stdout(io.StringIO()):
+        status = promo.main(["--matrix-manifest", str(index), "--write-json", str(output)])
+    result = json.loads(output.read_bytes())
+    assert status == 2 and not result["passed"] and not result["promotion_ready"]
+    assert not result["evidence_ready"] and result["failures"]
+    saved = output.read_bytes()
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        status = promo.main(["--matrix-manifest", str(index), "--write-json", str(output)])
+    assert status == 2 and output.read_bytes() == saved
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "complete-hd-promotion"
     shutil.rmtree(fixture, ignore_errors=True)
     fixture.mkdir(parents=True)
     try:
+        test_matrix_mode_preserves_legacy_defaults_and_requires_index_candidates()
+        test_matrix_mode_is_read_only_and_fails_without_require_pass(fixture / "matrix-read-only")
+        test_matrix_mode_records_fresh_failures_without_promoting(fixture / "matrix-report")
         test_step_plan_order_without_battle()
         test_step_plan_includes_battle_when_dir_given()
         test_every_planned_step_has_an_isolated_artifact()

@@ -17,6 +17,7 @@ save tooling.
 | [Development and verification](DEVELOPMENT.md) | Python setup, check selection and report-writing behavior |
 | [Launcher](LAUNCHER.md) | User workflow, profiles, preparation and packaging |
 | [Current handoff](AGENT_HANDOFF.md) | Active work, dated observations and unresolved acceptance gaps |
+| [Resolution release matrix](RESOLUTION_RELEASE_MATRIX.md) | Mandatory 36-combination target, candidate authentication and runtime acceptance gaps |
 | [Release runbook](FINISH_LINE_RUNBOOK.md) and [complete-HD evidence](COMPLETE_HD_EVIDENCE.md) | Candidate-bound release requirements and verifier contracts |
 
 The handoff owns changing status. Topic guides own implementation details and

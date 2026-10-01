@@ -49,6 +49,18 @@ missing local artifacts or exact older producer sources. Preserve failures and
 redirect diagnostic guard outputs to task scratch when no durable evidence
 refresh is intended.
 
+## All-preset release preparation - 2026-10-01
+
+The user selected all four profiles at all nine presets, with expanded battles
+in every profile and mandatory runtime evidence. The
+[resolution release matrix](RESOLUTION_RELEASE_MATRIX.md) describes the 36-cell
+contract, read-only evaluator and remaining recipe/verifier/runtime gaps.
+The source checkpoint adds no accepted runtime cell or stable status. The
+frozen Classic fallback, existing candidate identities and failed diagnostics
+remain preserved. Disk reserve still gates native execution; source tests and
+matrix inventory cannot satisfy the missing actual acquisition, composition,
+manual-input, endurance or promotion evidence below.
+
 ## Evidence snapshot and active work
 
 The [2026-09-24 review of the latest resolution runtime](../../reports/resolution-playability-screen-audit-20260924.md)

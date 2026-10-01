@@ -409,9 +409,12 @@ def source_pins(profiles: set[str]) -> dict[str, str]:
     builders = []
     if profiles - {"classic"}:
         builders = ["build_partial_tile_candidate", "build_framed_candidate"]
-    if "completehd" in profiles:
+    if profiles & {"completehd", "modalwidgets"}:
         builders += ["build_framed_modal_candidate", "build_framed_army_candidate"]
         names.append("src/patcher/complete_hd_candidate.py")
+    if "modalwidgets" in profiles:
+        names += ["tools/build_framed_modal_widgets_candidate.py",
+                  "src/patcher/framed_modal_widget_bounds.py"]
     pins: dict[str, str] = {}
     for builder in builders:
         name = f"tools/{builder}.py"
@@ -535,7 +538,8 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         errors.append("the stable default must remain Classic 800x600")
     stable = []
     tile_errors, evidence_errors, status_errors, recipe_errors = [], [], [], []
-    suffixes = {"classic": "", "framed": "-combinedui-partialtiles-initialpaint-framed-validation", "completehd": "-completehd-validation"}
+    suffixes = {"classic": "", "framed": "-combinedui-partialtiles-initialpaint-framed-validation",
+                "completehd": "-completehd-validation", "modalwidgets": "-completehd-modalwidgets-validation"}
     for renderer, config in profiles.items():
         if not isinstance(config, dict) or renderer not in suffixes:
             continue  # Already rejected by the shared schema validator.
@@ -570,7 +574,7 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     if stable != ["classic/800x600"]:
         errors.append(f"exactly Classic 800x600 must be stable, found {stable}")
     check("single_stable_default", errors, stable=stable)
-    check("profile_recipes", recipe_errors)
+    check("profile_recipes", recipe_errors, audited_profiles=sorted(profiles))
     check("experimental_profiles", status_errors)
     check("tiles_formula", tile_errors, framed_formula="FramedViewport.full_tiles; four reserved borders")
     check("evidence_backed", evidence_errors, scope="retained hidden component evidence; no whole-release eligibility")
