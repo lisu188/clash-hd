@@ -1,0 +1,111 @@
+{
+  "schema": "resolution_matrix_ci_verification_v1",
+  "date": "2026-10-01",
+  "evidence_class": "source_and_synthetic_ci",
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/141",
+  "verified_head": "53ec1a99156613b0abe228d7dd0c6a384ae0808d",
+  "merge_commit": "4e6cd3771c643fd0377d31d192dd6e5e9c920544",
+  "merged_at": "2026-10-01T10:11:53Z",
+  "successful_check_count": 15,
+  "checks": [
+    {
+      "name": "Source-only fixtures (ubuntu-24.04)",
+      "workflow": "Battle HD source-only validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846505970/job/110317801678"
+    },
+    {
+      "name": "Complete small-world bytes and x86 (ubuntu-24.04)",
+      "workflow": "Complete small-world integration",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506034/job/110317801103"
+    },
+    {
+      "name": "Bounded repaint x86 (ubuntu-24.04)",
+      "workflow": "Framed bounded repaint",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506229/job/110317802028"
+    },
+    {
+      "name": "Offline fixtures (ubuntu-24.04)",
+      "workflow": "Framed offline validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506195/job/110317801706"
+    },
+    {
+      "name": "Castle matrix actual x86 debugger interpreter",
+      "workflow": "Ordinary castle entry matrix validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506063/job/110317800820"
+    },
+    {
+      "name": "Portable observation and mocked input (ubuntu-24.04)",
+      "workflow": "Ordinary map paused observation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846505964/job/110317800854"
+    },
+    {
+      "name": "Source-only fixtures (windows-2022)",
+      "workflow": "Battle HD source-only validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846505970/job/110317801396"
+    },
+    {
+      "name": "Complete small-world bytes and x86 (windows-2022)",
+      "workflow": "Complete small-world integration",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506034/job/110317801397"
+    },
+    {
+      "name": "Bounded repaint x86 (windows-2022)",
+      "workflow": "Framed bounded repaint",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506229/job/110317801562"
+    },
+    {
+      "name": "Offline fixtures (windows-2022)",
+      "workflow": "Framed offline validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506195/job/110317801995"
+    },
+    {
+      "name": "Portable observation and mocked input (windows-2022)",
+      "workflow": "Ordinary map paused observation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846505964/job/110317800805"
+    },
+    {
+      "name": "Complete small-world actual x86 verifier",
+      "workflow": "Complete small-world integration",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506034/job/110317802026"
+    },
+    {
+      "name": "Castle matrix portable and CPU contracts (ubuntu-24.04)",
+      "workflow": "Ordinary castle entry matrix validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506063/job/110317801331"
+    },
+    {
+      "name": "Owned pause lease on a synthetic x86 process",
+      "workflow": "Ordinary map paused observation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846505964/job/110317800621"
+    },
+    {
+      "name": "Castle matrix portable and CPU contracts (windows-2022)",
+      "workflow": "Ordinary castle entry matrix validation",
+      "result": "SUCCESS",
+      "job": "https://github.com/lisu188/clash-hd/actions/runs/36846506063/job/110317801229"
+    }
+  ],
+  "preserved_initial_failures": [
+    "reports/resolution-matrix-ci-failure-20261001.json",
+    "reports/resolution-manifest-ci-failure-20261001.json"
+  ],
+  "scope": "Source fixtures and explicitly labelled synthetic processes only; optional missing proprietary/native fixture cases remain subject to each suite skip record.",
+  "runtime_evidence_accepted": false,
+  "manual_input_proven": false,
+  "promotion_ready": false,
+  "stable_stage_should_change": false
+}

@@ -69,6 +69,18 @@ was produced. The [first Windows CI failure](../../reports/resolution-matrix-ci-
 retains the short-path versus resolved-path fixture mismatch; the corrected
 head requires its own passing CI results.
 
+The [corrected CI receipt](../../reports/resolution-matrix-ci-verification-20261001.json)
+records all 15 checks passing on the final PR 141 head before merge. The
+[subsequent source preparation](../../reports/all-preset-source-preparation-20261001.json)
+records 15 source/synthetic-PE methods, ten saved-camera methods with 1,880
+synthetic x86 executions, 27 evidence fixture groups and one original-backed
+1366x768 Complete HD construction in memory. The new constructor is outside the
+launcher and matrix registry; its initial-map probe is not a loader-rebased
+whole-runtime verifier. The saved-camera adapters remain uninstalled. The raw
+soak audit always keeps release acceptance false and exposes missing producer
+capabilities; all fourteen production lane verifiers remain unimplemented.
+No fresh game run, screenshot, native input, endurance or promotion resulted.
+
 ## Evidence snapshot and active work
 
 The [2026-09-24 review of the latest resolution runtime](../../reports/resolution-playability-screen-audit-20260924.md)
