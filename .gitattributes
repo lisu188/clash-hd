@@ -990,3 +990,4 @@
 /.github/workflows/resolution-source-contracts.yml text eol=lf
 /reports/resolution-matrix-ci-verification-20261001.json text eol=lf
 /reports/all-preset-source-preparation-20261001.json text eol=lf
+/reports/resolution-source-workflow-failure-20261001.json text eol=lf
