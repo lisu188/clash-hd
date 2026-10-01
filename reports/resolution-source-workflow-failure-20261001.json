@@ -1,0 +1,17 @@
+{
+  "schema": "source_ci_failure_v1",
+  "recorded_date": "2026-10-01",
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/142",
+  "head_sha": "d80c8231569d9b1738318fe45a15635c80f64b25",
+  "run_id": 36848971709,
+  "run_url": "https://github.com/lisu188/clash-hd/actions/runs/36848971709",
+  "workflow": ".github/workflows/resolution-source-contracts.yml",
+  "event": "push",
+  "conclusion": "failure",
+  "job_count": 0,
+  "observed_boundary": "Workflow failed before any job was created; the ordinary PR check rollup did not include this workflow failure.",
+  "source_diagnosis": "The plain run scalar at line 36 contained a colon followed by a space in --only-binary=:all: unicorn==2.1.4, which is invalid YAML in this position.",
+  "repair": "Use a literal block scalar for the unchanged pip command, then require both operating-system source-contract jobs to execute successfully on the repaired head.",
+  "runtime_evidence": false,
+  "promotion_decision": false
+}
