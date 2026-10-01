@@ -508,6 +508,8 @@ def profile_fixture(root: Path, *, complete: bool = True) -> argparse.Namespace:
         manifest["profiles"].pop("completehd", None)
     for config in manifest["profiles"].values():
         config["stage"] = config["stage"].replace(original_stage, STABLE_STAGE)
+        if "wide_menu_recipe" in config:
+            config["wide_menu_recipe"]["stage"] = config["wide_menu_recipe"]["stage"].replace(original_stage, STABLE_STAGE)
     classic = manifest["profiles"]["classic"]
     classic["resolutions"] = good_manifest()["resolutions"]
     classic["resolutions"]["800x600"]["evidence_scope"] = {
