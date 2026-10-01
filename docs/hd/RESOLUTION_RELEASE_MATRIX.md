@@ -42,6 +42,35 @@ The existing release evaluator implements two of sixteen production lane
 verifiers; the remaining fourteen still fail explicitly. No new stable status,
 whole-release pass or promotion is established by this checkpoint.
 
+## Subsequent source preparation
+
+`src/patcher/complete_hd_all_presets_candidate.py` provides a separately versioned
+nine-preset Complete HD constructor. It reconstructs exact frozen producer
+snapshots in a private namespace, verifies the final PE and declared relocation
+inventory, and replays original-to-final byte records. The old six-size recipe
+is unchanged. The new constructor remains outside the launcher and matrix recipe
+registry; its inherited initial-map probe uses preferred addresses and is not
+the loader-rebased final verifier of the newer small-world chain. The Modal
+Widgets slot/primary/text/widget chain still needs a versioned successor.
+
+`src/patcher/framed_battle_saved_views.py` supplies two uninstalled initial-camera
+adapters. With complete phase-2 ownership admission, right-start X is actual
+arena columns minus visible columns. Rejection preserves the original subtraction
+and continuation. CPU fixtures cover all nine presets, small arenas, relocation
+at two bases, registers, flags and inert state. Rendering, animation, HUD, input,
+presentation and restoration must be installed atomically before these adapters
+can become an expanded-battle recipe.
+
+`tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
+samples/log format and recomputes every supplied raw frame's hash and histogram,
+sample timing and process growth. It remains a diagnostic helper: its overall
+pass, candidate authentication, cleanup verification and release acceptance are
+always false. The producer lacks complete-candidate loaded contracts, every-frame
+raw references, PID/path/creation-bound termination receipts, an authenticated
+candidate/probe/wrapper run envelope and the menu-idle ladder route. These gaps
+cannot be filled by passing report booleans; all fourteen production lane
+verifiers remain unimplemented.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
