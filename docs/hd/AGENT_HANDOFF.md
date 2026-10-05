@@ -161,6 +161,8 @@ establishes archive consistency only. It supplies no native or filesystem
 adapter. Coherent native capture, loaded candidate/probe identity, process
 health, job cleanup and producer provenance remain required. Pending original
 bytes after persistence failure remain in memory and are not durable evidence.
+This host-monotonic schedule does not prove two hours of running time; a future
+producer must measure running intervals and exclude capture pauses.
 The budget includes all frames, an atomic temporary file, scratch, metadata
 and external runtime assets, with the strict disk reserve checked before each
 write. No endurance, runtime, manual-input or promotion claim is established.

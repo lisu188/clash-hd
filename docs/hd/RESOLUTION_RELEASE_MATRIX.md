@@ -194,6 +194,10 @@ the outer host. The component provides no actual reader or filesystem adapter.
 Archive consistency does not establish native provenance, coherent rendering,
 loaded candidate/probe bytes, process health or no-breakaway job cleanup. All
 broader acceptance flags remain false, and no production lane is registered.
+The host-monotonic envelope is not measured process running time. A future
+producer must retain native pause/resume receipts and exclude paused or unknown
+intervals from the required two-hour running duration; the frozen archive
+schedule cannot supply that proof.
 
 ## Required acceptance and next work
 
