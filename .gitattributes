@@ -1006,3 +1006,6 @@
 /tools/test_battle_profile_lifecycle.py text eol=lf
 /src/patcher/battle_profile_routing.py text eol=lf
 /tools/test_battle_profile_routing.py text eol=lf
+/src/patcher/battle_profile_field.py text eol=lf
+/tools/test_battle_profile_field.py text eol=lf
+/.github/workflows/battle-field-source-contracts.yml text eol=lf

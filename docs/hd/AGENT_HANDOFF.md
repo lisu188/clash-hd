@@ -78,6 +78,26 @@ from dynamic surface, backing and battle ownership; unused page bytes cannot
 become substitute heap receipts. Changed fixed owner/global receipts reject
 before routing rereads cached heap headers after its thread query.
 
+[`battle_profile_field.py`](../../src/patcher/battle_profile_field.py)
+prepares separate terrain loops and coordinate queries for the authenticated
+profile/routing chain. It checks the current world cell before calling the
+original native tile routine, keeps 64-pixel tiles at `(32,16)`, and limits the
+field to seven rows and the actual arena width. Drawing snapshots the complete
+owner records, surface headers, globals and arena geometry around each tile
+and ownership query. Receipt loss returns a distinct failure without another
+tile call, presentation, native fallback or unauthorized target restoration.
+These helpers install no hooks, clear no pixels and make no runtime claim.
+The original tile's neighbor, unit/type and resource-provider accesses require
+separate preconditions before atomic integration; a synthetic tile pattern
+does not prove native artwork or array safety. Camera repair, clearing, HUD,
+animation, input, presentation, dialogs/results and termination remain required.
+Native sprite dispatches disable caller clipping, so explicit arena clipping
+must also be installed and verified before these loops can qualify a candidate.
+At 4K the current Complete HD/Modal Widgets components occupy 112,481 bytes of
+the authenticated 128 KiB RX reservation, leaving 18,591 bytes. Remaining
+families need shared bounded helpers or a separately reviewed allocation
+contract; an installer must reject overflow or missing families.
+
 The matrix can authenticate these fixed source recipes separately from the
 launcher-resolved recipes. Unadvertised presets, missing production verifiers
 and missing expanded-battle evidence remain failures. The complete target is
@@ -110,6 +130,7 @@ python -B tools/test_resolution_release_matrix.py
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
+python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 ```
 

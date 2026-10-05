@@ -122,6 +122,21 @@ The complete state page remains protected from dynamic object aliases.
 Protected-page fixtures also require changed owner/global receipts to reject
 before cached heap headers or arena words are dereferenced after a callback.
 
+`src/patcher/battle_profile_field.py` adds uninstalled terrain loops and
+read-only coordinate queries, independently reconstructed from those fixed
+parents. Native tile calls require strict bound ownership and a valid visible
+world cell. The scoped physical target is restored only while the exact
+invocation receipts remain valid. Receipt loss has a distinct result and never
+permits another tile, fallback or presentation. Synthetic tile patterns check
+call coordinates, native-size projection and untouched regions; they establish
+no native rendering or artwork proof. The original tile's unchecked neighbor
+and unit/type accesses, cold resource providers and fatal sprite paths require
+separate validation and termination integration. Native sprite dispatches
+disable caller clipping, so explicit arena clipping must be installed and
+verified as well. Clearing and all remaining
+battle families still need one atomic installer before any candidate can be
+qualified.
+
 `tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
 samples/log format and recomputes every supplied raw frame's hash and histogram,
 sample timing and process growth. It remains a diagnostic helper: its overall
