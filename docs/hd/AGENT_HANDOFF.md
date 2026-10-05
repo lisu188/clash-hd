@@ -30,11 +30,17 @@ resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable
 identity and old bytes before applying changes.
 
-The all-preset source constructors are
+The four all-preset source constructors are
+[`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),
+[`framed_all_presets_candidate.py`](../../src/patcher/framed_all_presets_candidate.py),
 [`complete_hd_all_presets_candidate.py`](../../src/patcher/complete_hd_all_presets_candidate.py)
 and [`modal_widgets_all_presets_candidate.py`](../../src/patcher/modal_widgets_all_presets_candidate.py).
+Classic retains the actual scalar predecessor at 800x600 and 1024x768, and the
+menu-widget predecessor at the seven wider presets. Framed retains its inset
+four-border map/minimap and native modal fallback; it borrows no owned-modal
+bytes from the other profiles.
 The Modal Widgets successor carries the full owned slots, primary surface,
-text and widget chain across the nine canonical presets. Both use separate
+text and widget chain across the nine canonical presets. All use separate
 validation identities and retain the frozen recipes. They do not install the
 expanded-battle successor or change launcher defaults or stable status.
 
@@ -50,6 +56,8 @@ Use the public boundary and cloud checks before focused source fixtures:
 ```powershell
 python -B tools/check-public-boundary.py
 python -B tools/cloud_check.py --mode cloud
+python -B tools/test_classic_all_presets_candidate.py
+python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
 ```
