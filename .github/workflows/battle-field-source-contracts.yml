@@ -36,7 +36,10 @@ jobs:
         run: >-
           python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4
       - name: Execute guarded fields and coordinate boundaries
-        run: python -B tools/test_battle_profile_field.py --require-machine-tools
+        run: |
+          set -euo pipefail
+          python -B tools/test_battle_profile_field.py --require-machine-tools
+          python -B tools/test_battle_profile_field_v2.py --require-machine-tools
       - name: Summarize evidence boundaries
         if: always()
         run: |
@@ -46,6 +49,7 @@ jobs:
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
               output.write('## Tactical field source contracts\n\n')
               output.write('The native tile call is modeled in synthetic x86 memory. Test pixels are deterministic patterns, not game frames or screenshots.\n\n')
+              output.write('The versioned successor shares frame-relative receipt helpers and compares pixels, queries, callback order and the outer ABI against the frozen predecessor at all 36 geometries and two image bases.\n\n')
               output.write('The field component remains uninstalled. Passing checks establish no native rendering, expanded-battle candidate, runtime input, composition, endurance, healthy map return or promotion.\n\n')
               output.write('No proprietary original, game, debugger, renderer, compiler, capture or input driver runs in this job.\n')
           PY

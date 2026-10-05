@@ -131,11 +131,26 @@ permits another tile, fallback or presentation. Synthetic tile patterns check
 call coordinates, native-size projection and untouched regions; they establish
 no native rendering or artwork proof. The original tile's unchecked neighbor
 and unit/type accesses, cold resource providers and fatal sprite paths require
-separate validation and termination integration. Native sprite dispatches
-disable caller clipping, so explicit arena clipping must be installed and
-verified as well. Clearing and all remaining
-battle families still need one atomic installer before any candidate can be
-qualified.
+separate validation and termination integration. The frozen v1 metadata's
+blanket disabled-clipping statement is corrected by the current original-backed
+v2 audit: seven Tile sprite sites disable clips, Tile `0x430733` keeps cell
+bounds, and ordinary Unit `0x42FC1B` keeps a finite 64-pixel cell clip. Explicit
+arena clipping must intersect those existing bounds and still requires
+installation and verification. The v1 source remains unchanged. Clearing and
+all remaining battle families still need one atomic installer before any
+candidate can be qualified.
+
+The separate `src/patcher/battle_profile_field_v2.py` successor shares private
+invocation receipt helpers without changing v1, its native dependency spans or
+the allocation contract. Nested failures return through each helper's own
+CALL frame before the outer draw reports ownership loss. The synthetic tests
+compare the two versions' pixels, coordinate results, callback order and outer
+ABI at every preset/profile and two image bases, and verify internal and
+external relocation operands. At 4K the shared version leaves 58,079 RX bytes
+for Complete HD/Modal Widgets and 77,359 for Classic/Framed. Private helper
+addresses are frame-dependent implementation details, not caller-selected
+admission authority. This successor remains uninstalled and does not discharge
+the native clipping, content/provider, quit or complete-family requirements.
 
 `tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
 samples/log format and recomputes every supplied raw frame's hash and histogram,

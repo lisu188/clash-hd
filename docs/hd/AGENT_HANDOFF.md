@@ -91,12 +91,30 @@ The original tile's neighbor, unit/type and resource-provider accesses require
 separate preconditions before atomic integration; a synthetic tile pattern
 does not prove native artwork or array safety. Camera repair, clearing, HUD,
 animation, input, presentation, dialogs/results and termination remain required.
-Native sprite dispatches disable caller clipping, so explicit arena clipping
-must also be installed and verified before these loops can qualify a candidate.
-At 4K the current Complete HD/Modal Widgets components occupy 112,481 bytes of
+The frozen v1 metadata overstates disabled native clipping. The original-backed
+audit found seven Tile sprite sites with disabled clips, one Tile site with a
+finite cell clip, and a finite 64-pixel cell clip on the ordinary Unit path.
+Current v2 metadata records these separate cases. An arena adapter must
+intersect existing clips with arena bounds; that integration remains unverified
+and required before these loops can qualify a candidate. The v1 source remains
+unchanged for reproducibility.
+At 4K the frozen v1 Complete HD/Modal Widgets components occupy 112,481 bytes of
 the authenticated 128 KiB RX reservation, leaving 18,591 bytes. Remaining
 families need shared bounded helpers or a separately reviewed allocation
 contract; an installer must reject overflow or missing families.
+
+[`battle_profile_field_v2.py`](../../src/patcher/battle_profile_field_v2.py)
+is a separate successor that preserves the frozen v1 emission and native
+dependencies. It shares invocation capture/check helpers using the outer
+stack frame. Each private helper consumes its own return address before the
+outer loop handles failure; its private entrypoints require that frame and
+cannot supply independent admission. Paired synthetic fixtures compare pixels,
+coordinates, callback order, relocations and register/stack behavior across
+all 36 geometries at two image bases, including ownership loss inside nested
+calls. At 4K the complete chain uses 53,713 RX bytes for Classic/Framed and
+72,993 for Complete HD/Modal Widgets, leaving 77,359 and 58,079 bytes
+respectively in the same 128 KiB reservation. It installs no hooks and leaves
+the same clipping, content, presentation and runtime requirements unfinished.
 
 The matrix can authenticate these fixed source recipes separately from the
 launcher-resolved recipes. Unadvertised presets, missing production verifiers
@@ -145,6 +163,7 @@ python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
+python -B tools/test_battle_profile_field_v2.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_hidden_soak_process_lease.py
 ```
