@@ -14,6 +14,7 @@ import math
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,19 @@ RECIPE_MODULES = {
     "four-border-partial-initial-v1": "build_framed_candidate",
     "complete_hd_v1": "src.patcher.complete_hd_candidate",
     "owned_modal_widget_bounds_v1": "build_framed_modal_widgets_candidate",
+    "complete_hd_all_presets_v1": "src.patcher.complete_hd_all_presets_candidate",
+    "modal_widgets_all_presets_v1": "src.patcher.modal_widgets_all_presets_candidate",
+}
+# Source authentication is available before launcher registration. These fixed
+# validation recipes never replace the launcher-resolved recipes above; an
+# unadvertised preset and missing runtime/promotion proof remain gate failures.
+VALIDATION_RECIPES = {
+    "complete_hd_all_presets_v1": {
+        "profile": "completehd", "stage": evidence.STABLE_STAGE + "-completehd-allpresets-validation",
+    },
+    "modal_widgets_all_presets_v1": {
+        "profile": "modalwidgets", "stage": evidence.STABLE_STAGE + "-modalwidgets-allpresets-validation",
+    },
 }
 PROFILE_RECIPES = {
     "classic": ("classic-frozen-800-v1", "classic_menu_widgets_v1"),
@@ -52,6 +66,9 @@ RECIPE_SOURCES = {
     "four-border-partial-initial-v1": ("tools/build_framed_candidate.py",),
     "complete_hd_v1": ("src/patcher/complete_hd_candidate.py",),
     "owned_modal_widget_bounds_v1": ("tools/build_framed_modal_widgets_candidate.py",),
+    "complete_hd_all_presets_v1": ("src/patcher/complete_hd_all_presets_candidate.py",),
+    "modal_widgets_all_presets_v1": (
+        "src/patcher/modal_widgets_all_presets_candidate.py", "src/patcher/owned_modal_all_presets_emit.py"),
 }
 
 
@@ -152,12 +169,21 @@ def _rebuild(profile: str, resolution: str, original: bytes, display, repo_root:
     if repo_root.resolve() != ROOT.resolve():
         raise ValueError("production reconstruction requires the fixed repository ROOT")
     revision = display.recipe_revision
-    if revision not in PROFILE_RECIPES[profile]:
+    validation = VALIDATION_RECIPES.get(revision)
+    if validation is not None:
+        if (validation["profile"] != profile or resolution not in PRESETS
+                or display.stage != validation["stage"]):
+            raise ValueError("validation recipe does not belong to this exact profile, preset and stage")
+    elif revision not in PROFILE_RECIPES[profile]:
         raise ValueError("resolved recipe is not in the fixed profile registry")
     before = _source_hashes(RECIPE_SOURCES[revision], repo_root)
     module = importlib.import_module(RECIPE_MODULES[revision])
     if Path(module.__file__).resolve() != (ROOT / RECIPE_SOURCES[revision][0]).resolve():
         raise ValueError("loaded recipe module belongs to another checkout")
+    if validation is not None and (
+            getattr(module, "ROOT", None) != ROOT or getattr(module, "STAGE", None) != validation["stage"]
+            or getattr(module, "REVISION", None) != revision or getattr(module, "RESOLUTIONS", None) != PRESETS):
+        raise ValueError("loaded validation recipe constants differ from the fixed source contract")
     if revision == "classic-frozen-800-v1":
         if Path(module._IMPL.__file__).resolve() != (ROOT / "src/patcher/patch_clash95_hd.py").resolve():
             raise ValueError("Classic shim loaded a patcher from another checkout")
@@ -197,9 +223,6 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
         raise ValueError("candidate requires base_executable, executable, metadata and recipe-specific probe references")
     profile, resolution = cell_id.split("/")
     from src.launcher import presets
-    if resolution not in manifest["profiles"][profile]["resolutions"]:
-        raise ValueError("candidate preset is not advertised by the actual launcher profile")
-    display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
     paths, values, refs = {}, {}, {}
     for name, reference in spec.items():
         path, value = read_reference(reference, base, object_required=name == "metadata")
@@ -218,6 +241,19 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     original, actual, metadata = values["base_executable"], values["executable"], values["metadata"]
     if sha(original) != evidence.BASE_SHA256:
         raise ValueError("unknown original executable SHA-256; matrix has no override")
+    revision = metadata.get("recipe_revision")
+    validation = VALIDATION_RECIPES.get(revision) if isinstance(revision, str) else None
+    advertised = resolution in manifest["profiles"][profile]["resolutions"]
+    if validation is not None:
+        if validation["profile"] != profile or metadata.get("stage") != validation["stage"]:
+            raise ValueError("validation recipe does not belong to this exact profile and stage")
+        display = SimpleNamespace(recipe_revision=revision, stage=validation["stage"])
+        selection_scope = "unregistered_source_validation_recipe"
+    else:
+        if not advertised:
+            raise ValueError("candidate preset is not advertised by the actual launcher profile")
+        display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+        selection_scope = "launcher_resolved_recipe"
     try:
         rebuilt = _rebuild(profile, resolution, original, display, repo_root)
     except SystemExit as exc:
@@ -258,6 +294,7 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     return {"identity": identity, "artifact_refs": refs,
             "candidate_path": str(candidate_path), "metadata_path": str(paths["metadata"]),
             "source_hashes": rebuilt["source_hashes"], "byte_rebuild_passed": True,
+            "recipe_selection_scope": selection_scope, "preset_advertised": advertised,
             "runtime_evidence_verified": False}
 
 

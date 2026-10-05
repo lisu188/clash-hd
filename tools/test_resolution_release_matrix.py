@@ -23,12 +23,16 @@ def write(path: Path, value) -> dict:
 
 
 class SyntheticBundle:
-    def __init__(self, root: Path, manifest: dict, profile="completehd", resolution="1920x1080"):
+    def __init__(self, root: Path, manifest: dict, profile="completehd", resolution="1920x1080", *, successor=None):
         self.root, self.manifest = root, manifest
         self.repo, self.external = root / "repo", root / "external"
         self.id = f"{profile}/{resolution}"
         from src.launcher import presets
-        self.display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+        if successor is None:
+            self.display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+        else:
+            selected = matrix.VALIDATION_RECIPES[successor]
+            self.display = SimpleNamespace(stage=selected["stage"], recipe_revision=successor)
         self.original = b"fixture-only original, not game material"
         self.image = self.original + b"synthetic candidate change"
         self.probe = None if profile == "classic" and resolution == "800x600" else "fixture-only canonical probe\n"
@@ -177,6 +181,93 @@ class MatrixTests(unittest.TestCase):
         self.assertIs(context["runtime_evidence_verified"], False)
         self.assertEqual(context["identity"]["candidate_sha256"], matrix.sha(fixture.image))
         self.assertEqual(context["identity"]["profile"], "completehd")
+
+    def test_all_preset_successors_authenticate_source_without_changing_launcher(self):
+        before = matrix.canonical(self.manifest)
+        for revision, selected in matrix.VALIDATION_RECIPES.items():
+            for resolution in matrix.PRESETS:
+                with self.subTest(revision=revision, resolution=resolution):
+                    fixture = SyntheticBundle(self.root, self.manifest, selected["profile"], resolution,
+                                              successor=revision)
+                    context = fixture.authenticate()
+                    self.assertEqual(context["identity"]["recipe_revision"], revision)
+                    self.assertEqual(context["identity"]["stage"], selected["stage"])
+                    self.assertEqual(context["identity"]["resolution"], resolution)
+                    self.assertEqual(context["recipe_selection_scope"], "unregistered_source_validation_recipe")
+                    self.assertIs(context["runtime_evidence_verified"], False)
+                    self.assertEqual(context["preset_advertised"],
+                                     resolution in self.manifest["profiles"][selected["profile"]]["resolutions"])
+        self.assertEqual(matrix.canonical(self.manifest), before)
+
+    def test_successor_rehashed_wrong_profile_or_stage_fails(self):
+        fixture = SyntheticBundle(self.root, self.manifest, successor="complete_hd_all_presets_v1")
+        with fixture.authentication(), self.assertRaisesRegex(ValueError, "exact profile and stage"):
+            matrix.authenticate_candidate("modalwidgets/1920x1080", fixture.spec, fixture.external,
+                                          self.manifest, repo_root=fixture.repo)
+        changed = dict(fixture.metadata, stage=matrix.evidence.STAGE)
+        fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), changed)
+        with self.assertRaisesRegex(ValueError, "exact profile and stage"):
+            fixture.authenticate()
+
+    def test_successor_rehashed_candidate_metadata_probe_and_sources_fail(self):
+        mutations = ("candidate", "metadata", "probe", "source")
+        for name in mutations:
+            with self.subTest(mutation=name):
+                fixture = SyntheticBundle(self.root, self.manifest, successor="complete_hd_all_presets_v1")
+                if name == "candidate":
+                    fixture.spec["executable"] = write(Path(fixture.spec["executable"]["path"]), fixture.image + b"changed")
+                elif name == "metadata":
+                    fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]),
+                                                     dict(fixture.metadata, resolution="1024x768"))
+                elif name == "probe":
+                    fixture.spec["probe"] = write(Path(fixture.spec["probe"]["path"]), b"changed probe")
+                else:
+                    Path(fixture.source["path"]).write_bytes(b"changed source")
+                with self.assertRaises(ValueError):
+                    fixture.authenticate()
+
+    def test_successor_production_rebuild_rejects_profile_stage_and_custom_size(self):
+        revision = "complete_hd_all_presets_v1"
+        selected = matrix.VALIDATION_RECIPES[revision]
+        display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
+        cases = (("modalwidgets", "1920x1080", display), ("completehd", "802x602", display),
+                 ("completehd", "1920x1080", SimpleNamespace(recipe_revision=revision, stage="wrong")))
+        for profile, resolution, proposed in cases:
+            with self.subTest(profile=profile, resolution=resolution, stage=proposed.stage), \
+                 patch.object(matrix.importlib, "import_module") as load:
+                with self.assertRaisesRegex(ValueError, "exact profile, preset and stage"):
+                    matrix._rebuild(profile, resolution, b"synthetic", proposed, matrix.ROOT)
+                load.assert_not_called()
+
+    def test_successor_loaded_module_paths_and_constants_are_bound(self):
+        revision = "complete_hd_all_presets_v1"
+        selected = matrix.VALIDATION_RECIPES[revision]
+        display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
+        attributes = dict(__file__=str(matrix.ROOT / matrix.RECIPE_SOURCES[revision][0]),
+                          ROOT=matrix.ROOT, STAGE=selected["stage"], REVISION=revision, RESOLUTIONS=matrix.PRESETS)
+        mutations = (("__file__", str(self.root / "other.py")), ("ROOT", self.root),
+                     ("STAGE", matrix.evidence.STAGE), ("REVISION", matrix.evidence.RECIPE_REVISION),
+                     ("RESOLUTIONS", ("1920x1080",)))
+        for name, value in mutations:
+            module = SimpleNamespace(**dict(attributes, **{name: value}))
+            with self.subTest(attribute=name), patch.object(matrix.importlib, "import_module", return_value=module):
+                with self.assertRaisesRegex(ValueError, "another checkout|fixed source contract"):
+                    matrix._rebuild("completehd", "1920x1080", b"synthetic", display, matrix.ROOT)
+
+    def test_successor_source_authentication_does_not_fill_missing_runtime_or_advertisement(self):
+        fixture = SyntheticBundle(self.root, self.manifest, "modalwidgets", "3840x2160",
+                                  successor="modal_widgets_all_presets_v1")
+        with fixture.authentication(), \
+             patch.object(matrix, "_inventory", return_value=(self.manifest, copy.deepcopy(self.inventory))):
+            report = matrix.evaluate_matrix(fixture.matrix_path, repo_root=fixture.repo)
+        self.assert_blocked(report)
+        self.assertEqual(report["authenticated_candidate_count"], 1)
+        cell = report["cells"][fixture.id]
+        self.assertIs(cell["preset_advertised"], False)
+        self.assertIn("required preset is absent from this launcher profile", cell["failures"])
+        self.assertIs(cell["candidate_context"]["byte_rebuild_passed"], True)
+        self.assertIs(cell["runtime_evidence_verified"], False)
+        self.assertTrue(any("legacy complete-HD" in error for error in cell["failures"]))
 
     def test_rehashed_candidate_fails(self):
         fixture = self.fixture()
