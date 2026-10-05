@@ -10,7 +10,7 @@ from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import resolution_release_matrix as matrix
 
@@ -35,7 +35,7 @@ class SyntheticBundle:
             self.display = SimpleNamespace(stage=selected["stage"], recipe_revision=successor)
         self.original = b"fixture-only original, not game material"
         self.image = self.original + b"synthetic candidate change"
-        self.probe = None if profile == "classic" and resolution == "800x600" else "fixture-only canonical probe\n"
+        self.probe = None if successor is None and profile == "classic" and resolution == "800x600" else "fixture-only canonical probe\n"
         self.source = write(self.repo / "tools/fixture_producer.py", b"# synthetic producer source\n")
         self.source_hashes = {"tools/fixture_producer.py": self.source["sha256"]}
         self.metadata = {"schema": "synthetic-authentication-fixture-only", "stage": self.display.stage,
@@ -227,32 +227,60 @@ class MatrixTests(unittest.TestCase):
                     fixture.authenticate()
 
     def test_successor_production_rebuild_rejects_profile_stage_and_custom_size(self):
-        revision = "complete_hd_all_presets_v1"
-        selected = matrix.VALIDATION_RECIPES[revision]
-        display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
-        cases = (("modalwidgets", "1920x1080", display), ("completehd", "802x602", display),
-                 ("completehd", "1920x1080", SimpleNamespace(recipe_revision=revision, stage="wrong")))
-        for profile, resolution, proposed in cases:
-            with self.subTest(profile=profile, resolution=resolution, stage=proposed.stage), \
-                 patch.object(matrix.importlib, "import_module") as load:
-                with self.assertRaisesRegex(ValueError, "exact profile, preset and stage"):
-                    matrix._rebuild(profile, resolution, b"synthetic", proposed, matrix.ROOT)
-                load.assert_not_called()
+        for revision, selected in matrix.VALIDATION_RECIPES.items():
+            display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
+            wrong_profile = "framed" if selected["profile"] == "classic" else "classic"
+            cases = ((wrong_profile, "1920x1080", display), (selected["profile"], "802x602", display),
+                     (selected["profile"], "1920x1080", SimpleNamespace(recipe_revision=revision, stage="wrong")))
+            for profile, resolution, proposed in cases:
+                with self.subTest(revision=revision, profile=profile, resolution=resolution, stage=proposed.stage), \
+                     patch.object(matrix.importlib, "import_module") as load:
+                    with self.assertRaisesRegex(ValueError, "exact profile, preset and stage"):
+                        matrix._rebuild(profile, resolution, b"synthetic", proposed, matrix.ROOT)
+                    load.assert_not_called()
 
     def test_successor_loaded_module_paths_and_constants_are_bound(self):
-        revision = "complete_hd_all_presets_v1"
-        selected = matrix.VALIDATION_RECIPES[revision]
-        display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
-        attributes = dict(__file__=str(matrix.ROOT / matrix.RECIPE_SOURCES[revision][0]),
-                          ROOT=matrix.ROOT, STAGE=selected["stage"], REVISION=revision, RESOLUTIONS=matrix.PRESETS)
-        mutations = (("__file__", str(self.root / "other.py")), ("ROOT", self.root),
-                     ("STAGE", matrix.evidence.STAGE), ("REVISION", matrix.evidence.RECIPE_REVISION),
-                     ("RESOLUTIONS", ("1920x1080",)))
-        for name, value in mutations:
-            module = SimpleNamespace(**dict(attributes, **{name: value}))
-            with self.subTest(attribute=name), patch.object(matrix.importlib, "import_module", return_value=module):
-                with self.assertRaisesRegex(ValueError, "another checkout|fixed source contract"):
-                    matrix._rebuild("completehd", "1920x1080", b"synthetic", display, matrix.ROOT)
+        for revision, selected in matrix.VALIDATION_RECIPES.items():
+            display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
+            attributes = dict(__file__=str(matrix.ROOT / matrix.RECIPE_SOURCES[revision][0]),
+                              ROOT=matrix.ROOT, STAGE=selected["stage"], REVISION=revision, RESOLUTIONS=matrix.PRESETS)
+            mutations = (("__file__", str(self.root / "other.py")), ("ROOT", self.root),
+                         ("STAGE", matrix.evidence.STAGE), ("REVISION", matrix.evidence.RECIPE_REVISION),
+                         ("RESOLUTIONS", ("1920x1080",)))
+            for name, value in mutations:
+                module = SimpleNamespace(**dict(attributes, **{name: value}))
+                with self.subTest(revision=revision, attribute=name), patch.object(matrix.importlib, "import_module", return_value=module):
+                    with self.assertRaisesRegex(ValueError, "another checkout|fixed source contract"):
+                        matrix._rebuild(selected["profile"], "1920x1080", b"synthetic", display, matrix.ROOT)
+
+    def test_successor_call_interface_and_legacy_framed_option(self):
+        selections = [(revision, selected["profile"], selected["stage"], {})
+                      for revision, selected in matrix.VALIDATION_RECIPES.items()]
+        selections.append(("four-border-partial-initial-v1", "framed", "fixture-only-legacy-stage",
+                           {"minimap_viewport": True}))
+        pins = {"fixture-only-source.py": "a" * 64}
+        for revision, profile, stage, options in selections:
+            build = Mock(return_value=(b"synthetic", {"source_hashes": pins}, "synthetic probe"))
+            module = SimpleNamespace(__file__=str(matrix.ROOT / matrix.RECIPE_SOURCES[revision][0]),
+                                     ROOT=matrix.ROOT, STAGE=stage, REVISION=revision, RESOLUTIONS=matrix.PRESETS,
+                                     build_candidate=build)
+            display = SimpleNamespace(recipe_revision=revision, stage=stage)
+            with self.subTest(revision=revision), patch.object(matrix, "_source_hashes", return_value=pins), \
+                 patch.object(matrix.importlib, "import_module", return_value=module):
+                matrix._rebuild(profile, "1920x1080", b"synthetic", display, matrix.ROOT)
+            build.assert_called_once_with(b"synthetic", "1920x1080", **options)
+
+    def test_successor_extra_timestamp_is_rejected_without_removing_legacy_compatibility(self):
+        for revision, selected in matrix.VALIDATION_RECIPES.items():
+            fixture = SyntheticBundle(self.root, self.manifest, selected["profile"], successor=revision)
+            changed = dict(fixture.metadata, generated_at={"invented": True})
+            fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), changed)
+            with self.subTest(revision=revision), self.assertRaisesRegex(ValueError, "metadata differs"):
+                fixture.authenticate()
+        legacy = SyntheticBundle(self.root, self.manifest, "framed")
+        legacy.spec["metadata"] = write(Path(legacy.spec["metadata"]["path"]),
+                                        dict(legacy.metadata, generated_at="2026-10-05T00:00:00Z"))
+        self.assertIs(legacy.authenticate()["byte_rebuild_passed"], True)
 
     def test_successor_source_authentication_does_not_fill_missing_runtime_or_advertisement(self):
         fixture = SyntheticBundle(self.root, self.manifest, "modalwidgets", "3840x2160",

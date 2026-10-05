@@ -994,3 +994,7 @@
 /src/patcher/owned_modal_all_presets_emit.py text eol=lf
 /src/patcher/modal_widgets_all_presets_candidate.py text eol=lf
 /tools/test_modal_widgets_all_presets_candidate.py text eol=lf
+/src/patcher/classic_all_presets_candidate.py text eol=lf
+/src/patcher/framed_all_presets_candidate.py text eol=lf
+/tools/test_classic_all_presets_candidate.py text eol=lf
+/tools/test_framed_all_presets_candidate.py text eol=lf

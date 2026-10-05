@@ -42,11 +42,19 @@ RECIPE_MODULES = {
     "owned_modal_widget_bounds_v1": "build_framed_modal_widgets_candidate",
     "complete_hd_all_presets_v1": "src.patcher.complete_hd_all_presets_candidate",
     "modal_widgets_all_presets_v1": "src.patcher.modal_widgets_all_presets_candidate",
+    "classic_all_presets_v1": "src.patcher.classic_all_presets_candidate",
+    "framed_all_presets_v1": "src.patcher.framed_all_presets_candidate",
 }
 # Source authentication is available before launcher registration. These fixed
 # validation recipes never replace the launcher-resolved recipes above; an
 # unadvertised preset and missing runtime/promotion proof remain gate failures.
 VALIDATION_RECIPES = {
+    "classic_all_presets_v1": {
+        "profile": "classic", "stage": evidence.STABLE_STAGE + "-classic-allpresets-validation",
+    },
+    "framed_all_presets_v1": {
+        "profile": "framed", "stage": evidence.STABLE_STAGE + "-framed-allpresets-validation",
+    },
     "complete_hd_all_presets_v1": {
         "profile": "completehd", "stage": evidence.STABLE_STAGE + "-completehd-allpresets-validation",
     },
@@ -69,6 +77,8 @@ RECIPE_SOURCES = {
     "complete_hd_all_presets_v1": ("src/patcher/complete_hd_all_presets_candidate.py",),
     "modal_widgets_all_presets_v1": (
         "src/patcher/modal_widgets_all_presets_candidate.py", "src/patcher/owned_modal_all_presets_emit.py"),
+    "classic_all_presets_v1": ("src/patcher/classic_all_presets_candidate.py",),
+    "framed_all_presets_v1": ("src/patcher/framed_all_presets_candidate.py",),
 }
 
 
@@ -199,7 +209,7 @@ def _rebuild(profile: str, resolution: str, original: bytes, display, repo_root:
                     "build_inputs": inputs, "build_id": display.build_identity(sha(original), inputs)}
         probe, projection, source_pins = None, True, {}
     else:
-        options = {"minimap_viewport": True} if profile == "framed" else {}
+        options = {"minimap_viewport": True} if profile == "framed" and validation is None else {}
         image, metadata, probe = module.build_candidate(original, resolution, **options)
         projection = False
         source_pins = metadata.get("source_hashes", metadata.get("source_sha256", {}))
@@ -267,8 +277,8 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     else:
         observed = dict(metadata)
         expected_metadata = dict(expected_metadata)
-        if profile == "framed":
-            # Only Framed's wall-clock field is nondeterministic.
+        if profile == "framed" and validation is None:
+            # Only the legacy Framed recipe emits this wall-clock field.
             observed.pop("generated_at", None)
             expected_metadata.pop("generated_at", None)
         if canonical(observed) != canonical(expected_metadata):

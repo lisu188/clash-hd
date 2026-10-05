@@ -27,7 +27,8 @@ Wide Classic uses its actual resolved menu-widget recipe rather than borrowing
 the narrow Classic identity. A candidate or source change invalidates the
 matching acceptance evidence.
 
-The fixed source registry also admits `complete_hd_all_presets_v1` and
+The fixed source registry also admits `classic_all_presets_v1`,
+`framed_all_presets_v1`, `complete_hd_all_presets_v1` and
 `modal_widgets_all_presets_v1` for candidate reconstruction under their exact
 profile, preset, stage and repository source identity. This is explicitly
 reported as `unregistered_source_validation_recipe`; it does not substitute
@@ -39,7 +40,7 @@ without all applicable production evidence and a promotion decision.
 
 The matrix adds mandatory inventory, exact candidate reconstruction, existing
 complete-HD release replay and refusal of unsupported acceptance. The separate
-source successors cover the nine-preset Complete HD and Modal Widgets chains;
+source successors cover all four profiles at the nine presets;
 they remain outside launcher registration. The matrix does not install the
 expanded-battle successor, implement the fourteen missing runtime verifiers,
 or supply fresh runtime evidence. Existing
@@ -52,6 +53,22 @@ verifiers; the remaining fourteen still fail explicitly. No new stable status,
 whole-release pass or promotion is established by this checkpoint.
 
 ## Subsequent source preparation
+
+`src/patcher/classic_all_presets_candidate.py` preserves the narrow scalar
+and wide menu-widget recipes as distinct authenticated predecessors. Its
+initial probe binds the final image to the selected predecessor and source
+identity. The protected Classic 800x600 fallback and its launcher selection
+remain unchanged. Inherited scalar patches do not declare every instruction
+operand; exact source/byte reconstruction is not a complete loader audit.
+
+`src/patcher/framed_all_presets_candidate.py` reconstructs the frozen Framed
+map/input/minimap recipe with four inset bands and native modal fallback. An
+independent second reconstruction binds every declared operand, hook and
+typed metadata field before PE and original-to-final replay checks. Only the
+known top-level legacy wall-clock field is omitted. It preserves the exact
+source-owned DGROUP fallback and documents its deployment execution limit.
+Both constructors retain their existing candidate bytes, add no battle hooks
+and remain outside launcher registration.
 
 `src/patcher/complete_hd_all_presets_candidate.py` provides a separately versioned
 nine-preset Complete HD constructor. It reconstructs exact frozen producer
