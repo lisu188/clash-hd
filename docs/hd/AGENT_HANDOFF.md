@@ -91,8 +91,13 @@ The original tile's neighbor, unit/type and resource-provider accesses require
 separate preconditions before atomic integration; a synthetic tile pattern
 does not prove native artwork or array safety. Camera repair, clearing, HUD,
 animation, input, presentation, dialogs/results and termination remain required.
-Native sprite dispatches disable caller clipping, so explicit arena clipping
-must also be installed and verified before these loops can qualify a candidate.
+The frozen v1 metadata overstates disabled native clipping. The original-backed
+audit found seven Tile sprite sites with disabled clips, one Tile site with a
+finite cell clip, and a finite 64-pixel cell clip on the ordinary Unit path.
+Current v2 metadata records these separate cases. An arena adapter must
+intersect existing clips with arena bounds; that integration remains unverified
+and required before these loops can qualify a candidate. The v1 source remains
+unchanged for reproducibility.
 At 4K the frozen v1 Complete HD/Modal Widgets components occupy 112,481 bytes of
 the authenticated 128 KiB RX reservation, leaving 18,591 bytes. Remaining
 families need shared bounded helpers or a separately reviewed allocation

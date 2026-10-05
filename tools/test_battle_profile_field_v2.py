@@ -8,6 +8,7 @@ identity is checked before reuse. No game, native renderer or output is created.
 from __future__ import annotations
 
 import argparse
+import ast
 from copy import deepcopy
 import hashlib
 from pathlib import Path
@@ -49,6 +50,38 @@ class VersionedOracleMixin:
 
 
 class SourceTests(VersionedOracleMixin, oracle.SourceTests):
+    def test_native_caller_clip_classification(self):
+        # Exact original-backed call-site ledger, independent of synthetic
+        # pixel callbacks. Whole native bodies remain bound by NATIVE_SPANS.
+        tree = ast.parse((ROOT / v2.SOURCE).read_text(encoding="utf-8"))
+        producers = [node for node in ast.walk(tree)
+                     if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                     and node.func.id == "dict" and any(
+                         item.arg == "schema" and isinstance(item.value, ast.Constant)
+                         and item.value.value == "clash95_battle_profile_field_v2"
+                         for item in node.keywords)]
+        self.assertEqual(len(producers), 1)
+        fields = {item.arg: item.value for item in producers[0].keywords if item.arg}
+        self.assertNotIn("native_caller_sprite_clipping_enabled", fields)
+        expected = {
+            "native_tile_disabled_clip_sprite_sites":
+                [0x430035, 0x4300F3, 0x43024E, 0x430349, 0x4307AA, 0x43080C, 0x430991],
+            "native_tile_cell_clip_sprite_sites": [0x430733],
+            "native_unit_cell_clipping_present": True,
+            "native_unit_cell_clip_sprite_sites": [0x42FC1B],
+            "arena_intersection_verified": False,
+            "native_arena_clipping_verified": False,
+        }
+        for name, value in expected.items():
+            self.assertEqual(ast.literal_eval(fields[name]), value, name)
+        for lane, span in (("native_tile_disabled_clip_sprite_sites", "tile"),
+                           ("native_tile_cell_clip_sprite_sites", "tile"),
+                           ("native_unit_cell_clip_sprite_sites", "unit_draw")):
+            lo, hi, _ = v2.NATIVE_SPANS[span]
+            self.assertTrue(all(lo <= site < hi for site in expected[lane]))
+        self.assertEqual(len(set(expected["native_tile_disabled_clip_sprite_sites"]
+                                 + expected["native_tile_cell_clip_sprite_sites"])), 8)
+
     def test_shared_layout_and_relocation_inventory(self):
         self.assertEqual(v2.PINNED_SOURCES[v1.SOURCE], V1_SOURCE_SHA256)
         self.assertEqual(v2.NATIVE_SPANS, v1.NATIVE_SPANS)
