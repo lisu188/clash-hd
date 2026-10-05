@@ -95,6 +95,19 @@ at two bases, registers, flags and inert state. Rendering, animation, HUD, input
 presentation and restoration must be installed atomically before these adapters
 can become an expanded-battle recipe.
 
+`src/patcher/battle_profile_lifecycle.py` supplies a separate uninstalled
+ownership component for the four source successors. Its production API derives
+addresses from a freshly authenticated profile parent; caller-supplied plans
+and the old fixed army/state layout are not authority. Entry snapshots and
+revalidates globals, thread and the inherited modal owner around private
+allocations. A null native battle allocation retires the prepared private
+backing before replaying the original fatal branch. Normal retirement restores
+borrowed rendering before destruction and waits for the native epilogue to
+verify restoration. Its guarded synthetic x86 fixtures cover all nine presets
+and both image bases with explicit callback models. No lifecycle hook is
+installed, and unimplemented quit interception or other battle hook families
+remain required; this cannot supply runtime, healthy map-return or release proof.
+
 `tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
 samples/log format and recomputes every supplied raw frame's hash and histogram,
 sample timing and process growth. It remains a diagnostic helper: its overall

@@ -47,6 +47,8 @@ jobs:
         run: python -B tools/test_resolution_release_matrix.py
       - name: Verify profile-specific battle parent and allocation plans
         run: python -B tools/test_battle_profile_context.py
+      - name: Execute uninstalled profile lifecycle on guarded synthetic x86
+        run: python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
       - name: Execute saved-camera adapters on synthetic x86 state
         run: python -B tools/test_framed_battle_saved_views.py --require-machine-tools
       - name: Reject incomplete and substituted raw soak diagnostics
@@ -62,6 +64,7 @@ jobs:
               output.write('All four preset constructors use synthetic PE fixtures here. Their optional original-backed lanes are separate local evidence.\n\n')
               output.write('Successor recipe authentication does not register a launcher recipe or establish runtime acceptance.\n\n')
               output.write('Battle parent allocation plans install no hooks, code, state or relocations. Runtime ownership and complete battle routing remain separate requirements.\n\n')
+              output.write('Profile lifecycle CPU fixtures use explicit allocator/constructor/destructor/thread models. The emitted lifecycle remains uninstalled and cannot establish native lifetime, healthy map return or expanded-battle acceptance.\n\n')
               output.write('Saved-camera machine checks require Unicorn and execute synthetic x86 state. The original-byte case explicitly skips because proprietary originals are unavailable in CI.\n\n')
               output.write('The raw soak helper always keeps release acceptance false. Fourteen production lane verifiers and installed expanded battles remain outstanding.\n\n')
               output.write('No game, native debugger, compiler, capture, manual input or stable promotion occurs in this job.\n')
