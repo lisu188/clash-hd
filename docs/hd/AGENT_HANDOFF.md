@@ -118,6 +118,20 @@ independently reconstructed `--prepared-matrix-candidate` or
 outside this raw-retention path. See [Development](DEVELOPMENT.md) for its disk
 allowance and evidence limits.
 
+[`hidden_soak_process_lease.py`](../../tools/hidden_soak_process_lease.py)
+prepares bounded retained-handle cleanup for a future hidden-soak producer.
+The caller must independently authenticate its in-memory run authority;
+artifact hashes and report flags cannot supply it. Process adoption checks the
+PID, creation time, image identity and retained parent generation. Cleanup
+attempts the debugger first and replays ordered source, adoption, termination,
+wait, enumeration and close receipts. Unknown children of an exited parent,
+PID reuse, incomplete receipts and native failures keep verification false.
+The fixtures model Windows paths and API results; actual Windows behavior is
+unverified. File-path hashing does not prove loaded candidate or probe bytes.
+Complete host cleanup still requires the existing no-breakaway job host's
+authenticated assignment, membership and drain receipts. This component
+registers no production evidence lane and makes no runtime or release claim.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -132,6 +146,7 @@ python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
+python -B tools/test_hidden_soak_process_lease.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a

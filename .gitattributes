@@ -1009,3 +1009,5 @@
 /src/patcher/battle_profile_field.py text eol=lf
 /tools/test_battle_profile_field.py text eol=lf
 /.github/workflows/battle-field-source-contracts.yml text eol=lf
+/tools/hidden_soak_process_lease.py text eol=lf
+/tools/test_hidden_soak_process_lease.py text eol=lf
