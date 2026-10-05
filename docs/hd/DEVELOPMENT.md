@@ -41,6 +41,7 @@ python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_complete_hd_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_battle_profile_context.py
 python -B tools/test_ordinary_map_observation.py
 python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_resolution_playability.py

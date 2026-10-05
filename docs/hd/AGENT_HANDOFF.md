@@ -44,6 +44,15 @@ text and widget chain across the nine canonical presets. All use separate
 validation identities and retain the frozen recipes. They do not install the
 expanded-battle successor or change launcher defaults or stable status.
 
+[`battle_profile_context.py`](../../src/patcher/battle_profile_context.py)
+independently reconstructs those parents and derives profile-specific code/state
+allocation plans. Classic and Framed need fresh RX and RW sections; Complete HD
+and Modal Widgets can reserve a disjoint region in the authenticated existing
+state page. The plan checks header bounds, zero state, declared fields and the
+active relocation inventory. It installs no battle code. Dynamic state lifetime,
+loader behavior, animation/dialog/exit routing and runtime acceptance remain
+separate unfinished requirements.
+
 The matrix can authenticate these fixed source recipes separately from the
 launcher-resolved recipes. Unadvertised presets, missing production verifiers
 and missing expanded-battle evidence remain failures. The complete target is
@@ -73,6 +82,7 @@ python -B tools/test_classic_all_presets_candidate.py
 python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_battle_profile_context.py
 python -B tools/test_ordinary_map_read_replay.py
 ```
 
