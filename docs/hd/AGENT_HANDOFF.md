@@ -53,6 +53,17 @@ active relocation inventory. It installs no battle code. Dynamic state lifetime,
 loader behavior, animation/dialog/exit routing and runtime acceptance remain
 separate unfinished requirements.
 
+[`battle_profile_lifecycle.py`](../../src/patcher/battle_profile_lifecycle.py)
+emits an uninstalled lifecycle component from independently authenticated
+profile parents. It stages a private native-size backing, checks the complete
+inactive modal owner, and prepares separate cleanup paths for native allocation
+failure and normal battle return. The allocation-failure path preserves native
+termination. Normal cleanup retains a receipt until the native epilogue restores
+the saved owner and globals. Synthetic x86 fixtures use explicit callback models;
+they establish no native lifetime or healthy map-return proof. Drawing, input,
+camera, animation, dialogs/results and all quit paths still need atomic
+integration before an expanded-battle candidate can be installed.
+
 The matrix can authenticate these fixed source recipes separately from the
 launcher-resolved recipes. Unadvertised presets, missing production verifiers
 and missing expanded-battle evidence remain failures. The complete target is
@@ -83,6 +94,7 @@ python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
 python -B tools/test_battle_profile_context.py
+python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 ```
 
