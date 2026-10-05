@@ -108,6 +108,20 @@ and both image bases with explicit callback models. No lifecycle hook is
 installed, and unimplemented quit interception or other battle hook families
 remain required; this cannot supply runtime, healthy map-return or release proof.
 
+`src/patcher/battle_profile_routing.py` derives its code and state addresses from
+that fixed lifecycle and parent. Read-only prepared/bound admission checks and
+private HUD targeting validate complete owner snapshots before and after the
+thread query. Chrome composition copies native artwork to all four edges and
+the two anchored sidebar slices; it preserves arena and unused interior pixels.
+No state counters or fields are added. Two initial render-target hook
+descriptions remain uninstalled. The independent synthetic pixel oracle is a
+source contract, separate from runtime screenshots, final-wrapper composition
+and healthy screen return. All remaining battle families must still be
+installed together under a new candidate identity.
+The complete state page remains protected from dynamic object aliases.
+Protected-page fixtures also require changed owner/global receipts to reject
+before cached heap headers or arena words are dereferenced after a callback.
+
 `tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
 samples/log format and recomputes every supplied raw frame's hash and histogram,
 sample timing and process growth. It remains a diagnostic helper: its overall

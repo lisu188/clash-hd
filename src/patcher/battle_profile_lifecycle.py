@@ -192,6 +192,8 @@ def _emit_code(plan, *, modal_state_va, assembler_module):
              and (state + STATE_SIZE <= base or state >= base + 0x20000)
              and state % 4 == 0 and type(plan["rw"]["used_bytes"]) is int
              and plan["rw"]["used_bytes"] == STATE_SIZE
+             and plan["rw"]["page_bytes"] == 4096
+             and plan["rw"]["page_offset"] == (0 if modal_state_va is None else 0x100)
              and plan["rx"]["characteristics"] == 0x60000020
              and plan["rw"]["characteristics"] == 0xC0000040, "owned lifecycle allocation differs")
     _require((modal_state_va is None) == (profile in ("classic", "framed")), "profile modal ownership differs")
@@ -199,6 +201,7 @@ def _emit_code(plan, *, modal_state_va, assembler_module):
         _require(type(modal_state_va) is int and 0x10000 <= modal_state_va <= 0x7FFFF000 and modal_state_va % 4096 == 0
                  and state == modal_state_va + 0x100, "reserved inherited state offset differs")
     a = assembler_module._Assembler(base)
+    state_page = state if modal_state_va is None else modal_state_va
     LOCAL, OWN_SNAPSHOT, MODAL_SNAPSHOT = 384, 64, 192
     LS = dict(physical=0, render=4, owner=8, backend=12, tid=16, root=20,
               header=24, pixels=28, physical_pixels=56)
@@ -246,11 +249,13 @@ def _emit_code(plan, *, modal_state_va, assembler_module):
         a.emit("f7" + f"{0xc0 + reg:02x}" + "03000000"); ne(reject)
     def memory_header(reg, w, h, reject, private=False):
         user_pointer(reg, HEADER_BYTES, reject)
+        outside_state_page(reg, HEADER_BYTES, reject)
         a.emit("81" + f"{0x38 + reg:02x}"); a.u32(w | (h << 16)); ne(reject)
         a.emit("81" + f"{0xb8 + reg:02x}" + "b8000000")
         address(MEMORY_VTABLE, "memory surface vtable"); ne(reject)
         a.emit("8b" + f"{0x40 + reg:02x}" + "04")
         user_pointer(0, w*h, reject)
+        outside_state_page(0, w*h, reject)
         if private:
             a.emit("83" + f"{0xb8 + reg:02x}" + "ac00000000"); ne(reject)
     def primary(reject):
@@ -258,6 +263,7 @@ def _emit_code(plan, *, modal_state_va, assembler_module):
         a.emit("813d"); address(PRIMARY+0xB8, "primary vtable"); address(PRIMARY_VTABLE, "primary vtable value"); ne(reject)
         cmp_abs(PRIMARY+0xD4, 8, "primary depth"); ne(reject)
         read(6, PRIMARY+0xBC, "primary backend"); user_pointer(6, 0xA8, reject)
+        outside_state_page(6, 0xA8, reject)
         a.emit("83bea400000000"); eq(reject)
     def modal(reject, snapshot=False, local=False):
         if modal_state_va is None:
@@ -334,13 +340,18 @@ def _emit_code(plan, *, modal_state_va, assembler_module):
         a.emit("89"+f"{0xc0 | (other_reg << 3) | 2:02x}"+"81c2"); a.u32(other_size)
         a.emit("39"+f"{0xc0 | (2 << 3) | reg:02x}"); a.branch("0f82",reject)
         a.label(tag)
+    def outside_state_page(reg, size, reject):
+        # The complete allocation is owned even though the current record
+        # uses only 128 bytes. Padding cannot become a forged heap object.
+        a.emit("b9"); address(state_page,"owned lifecycle RW page extent")
+        disjoint(reg,size,1,4096,reject,reject+".rwpage"+str(len(a.code)))
     def allocation_interval(reg,size,reject,label,pixels=False):
         user_pointer(reg,size,reject)
         local_read(1,LS["physical"]); disjoint(reg,size,1,HEADER_BYTES,reject,label+".map_header")
         local_read(1,LS["physical_pixels"]); disjoint(reg,size,1,width*height,reject,label+".map_pixels")
         a.emit("b9"); address(0x400000,"parent image extent")
         disjoint(reg,size,1,image_extent,reject,label+".parent_image")
-        a.emit("b9"); address(state,"lifecycle state extent"); disjoint(reg,size,1,STATE_SIZE,reject,label+".state")
+        a.emit("b9"); address(state_page,"lifecycle RW page extent"); disjoint(reg,size,1,4096,reject,label+".state")
         a.emit("b9"); address(base,"lifecycle code extent"); disjoint(reg,size,1,0x20000,reject,label+".code")
         a.emit("b9"); address(PRIMARY,"physical primary extent"); disjoint(reg,size,1,0xD8,reject,label+".primary")
         local_read(1,LS["backend"]); disjoint(reg,size,1,0xA8,reject,label+".backend")
@@ -725,6 +736,8 @@ def _emit_authenticated(original: bytes, profile: str, resolution: str) -> Battl
             native_root_body_esp_delta=-168,native_free_call_esp_delta=-172,
             native_root_return=0x42F5BC,native_root_stack_cleanup=4,
             helper_stack_snapshot_bytes=384,inherited_state_snapshot_bytes=0 if modal_state is None else 128,
+            protected_state_page_va=emission.state_va if modal_state is None else modal_state,
+            protected_state_page_bytes=4096,
             allocation_plan_only=False,emission_preparation_only=True,installed=False,
             **{name:False for name in context.FALSE_CLAIMS},
             required_unemitted_families=["native HUD target/draw/composition routing", "field and input admission",

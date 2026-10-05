@@ -64,6 +64,20 @@ they establish no native lifetime or healthy map-return proof. Drawing, input,
 camera, animation, dialogs/results and all quit paths still need atomic
 integration before an expanded-battle candidate can be installed.
 
+[`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
+prepares admission checks, private HUD target routing and native-size chrome
+copies for those authenticated parents. It snapshots owner records, headers,
+globals and arena geometry around its thread query. It owns no additional state
+fields and emits only two uninstalled initial-target hook descriptions. The
+synthetic pixel oracle covers the four frame edges, top/right sidebar and
+bottom/right command slice while preserving field and interior bytes. These
+buffers are not runtime captures. Field drawing, per-step presentation, input,
+camera, dialogs/results and quit handling remain installation requirements.
+Both lifecycle and routing exclude the complete 4096-byte state allocation
+from dynamic surface, backing and battle ownership; unused page bytes cannot
+become substitute heap receipts. Changed fixed owner/global receipts reject
+before routing rereads cached heap headers after its thread query.
+
 The matrix can authenticate these fixed source recipes separately from the
 launcher-resolved recipes. Unadvertised presets, missing production verifiers
 and missing expanded-battle evidence remain failures. The complete target is
@@ -95,6 +109,7 @@ python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
+python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 ```
 
