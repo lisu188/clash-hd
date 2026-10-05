@@ -147,6 +147,17 @@ candidate/probe/wrapper run envelope and the menu-idle ladder route. These gaps
 cannot be filled by passing report booleans; all fourteen production lane
 verifiers remain unimplemented.
 
+`tools/hidden_soak_process_lease.py` prepares one part of a replacement
+producer's cleanup contract. It retains handles rather than terminating by
+reusable PID, checks parent generations, bounds adoption/reconciliation and
+recomputes scoped cleanup from the ordered receipt stream. Its external run
+authority must come from the fixed authenticated producer. Mocked tests do
+not establish native process behavior, loaded candidate/probe identity or
+genuine artifact provenance. Full host cleanup additionally requires original
+no-breakaway job assignment, membership and drain receipts. The component
+keeps host cleanup, runtime, manual-input, release and promotion claims false;
+it does not fill or register any of the missing production verifiers.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
