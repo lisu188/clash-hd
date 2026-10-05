@@ -1004,3 +1004,5 @@
 /tools/test_battle_profile_context.py text eol=lf
 /src/patcher/battle_profile_lifecycle.py text eol=lf
 /tools/test_battle_profile_lifecycle.py text eol=lf
+/src/patcher/battle_profile_routing.py text eol=lf
+/tools/test_battle_profile_routing.py text eol=lf

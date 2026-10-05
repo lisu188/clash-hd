@@ -465,7 +465,7 @@ class CPUTests(unittest.TestCase):
 
     def test_invalid_or_aliased_allocator_receipts_never_authorize_a_free(self):
         for target in (0xFFFF, Machine.PRIVATE + 1, Machine.PHYSICAL, Machine.PHYSICAL_PIXELS,
-                       Machine.BACKEND, 0x10000000, 0x10020000):
+                       Machine.BACKEND, 0x10000000, 0x10020000, 0x10020200, 0x10020F44):
             with self.subTest(header_receipt=hex(target)):
                 machine = Machine(self.tools)
                 machine.allocator_returns = [target]
@@ -475,7 +475,7 @@ class CPUTests(unittest.TestCase):
                 self.assertEqual(machine.state("native"), 0)
                 self.assertEqual(machine.frees, [])
                 self.assertNotIn("construct", machine.callbacks)
-        for target in (Machine.PRIVATE, Machine.PHYSICAL_PIXELS, 0x10000000, 0x10020000):
+        for target in (Machine.PRIVATE, Machine.PHYSICAL_PIXELS, 0x10000000, 0x10020000, 0x10020200):
             with self.subTest(pixel_receipt=hex(target)):
                 machine = Machine(self.tools)
                 machine.allocator_returns = [machine.PRIVATE, target]
@@ -485,6 +485,37 @@ class CPUTests(unittest.TestCase):
                 self.assertEqual(machine.state("pending_header"), machine.PRIVATE)
                 self.assertEqual(machine.frees, [])
                 self.assertNotIn("construct", machine.callbacks)
+
+    def test_unused_rw_page_cannot_become_surface_backend_or_world_owner(self):
+        for profile in ("classic", "framed"):
+            for role in ("physical", "backend", "world", "private"):
+                with self.subTest(profile=profile, role=role):
+                    machine = Machine(self.tools, profile)
+                    forged = machine.state_va + 512
+                    if role == "physical":
+                        machine.cpu.mem_write(forged, bytes(machine.cpu.mem_read(machine.PHYSICAL, 188)))
+                        machine.put(native.MAP, forged)
+                        machine.put(native.RENDER, forged)
+                        self.assertEqual(machine.enter()["EAX"], 0)
+                        self.assertEqual(machine.allocs, [])
+                    elif role == "backend":
+                        machine.cpu.mem_write(forged, bytes(machine.cpu.mem_read(machine.BACKEND, 168)))
+                        machine.put(native.PRIMARY + 0xBC, forged)
+                        self.assertEqual(machine.enter()["EAX"], 0)
+                        self.assertEqual(machine.allocs, [])
+                    elif role == "world":
+                        self.assertEqual(machine.enter()["EAX"], 1)
+                        machine.put(native.HOOK_OWNER, 0x42E8B0)
+                        machine.put(0x532048, forged)
+                        self.assertEqual(machine.invoke("bind_or_abort", eax=forged, edx=machine.ROOT_SP - 168)["EAX"], 0)
+                    else:
+                        self.assertEqual(machine.enter()["EAX"], 1)
+                        self.assertEqual(machine.bind()["EAX"], 1)
+                        machine.cpu.mem_write(forged, bytes(machine.cpu.mem_read(machine.PRIVATE, 188)))
+                        machine.set_state("native", forged)
+                        self.assertEqual(machine.invoke("try_leave", eax=machine.ROOT_SP - 172)["EAX"], 0)
+                    self.assertEqual(machine.frees, [])
+                    self.assertEqual(machine.destructions, [])
 
     def test_native_allocation_abort_cleans_phase_one_without_healthy_return(self):
         for profile in context.PROFILES:
