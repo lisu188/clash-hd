@@ -137,6 +137,18 @@ verified as well. Clearing and all remaining
 battle families still need one atomic installer before any candidate can be
 qualified.
 
+The separate `src/patcher/battle_profile_field_v2.py` successor shares private
+invocation receipt helpers without changing v1, its native dependency spans or
+the allocation contract. Nested failures return through each helper's own
+CALL frame before the outer draw reports ownership loss. The synthetic tests
+compare the two versions' pixels, coordinate results, callback order and outer
+ABI at every preset/profile and two image bases, and verify internal and
+external relocation operands. At 4K the shared version leaves 58,079 RX bytes
+for Complete HD/Modal Widgets and 77,359 for Classic/Framed. Private helper
+addresses are frame-dependent implementation details, not caller-selected
+admission authority. This successor remains uninstalled and does not discharge
+the native clipping, content/provider, quit or complete-family requirements.
+
 `tools/complete_hd_evidence.py::audit_hidden_soak_raw` replays the existing
 samples/log format and recomputes every supplied raw frame's hash and histogram,
 sample timing and process growth. It remains a diagnostic helper: its overall
