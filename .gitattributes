@@ -1013,3 +1013,5 @@
 /tools/test_hidden_soak_process_lease.py text eol=lf
 /src/patcher/battle_profile_field_v2.py text eol=lf
 /tools/test_battle_profile_field_v2.py text eol=lf
+/tools/hidden_soak_frame_ledger.py text eol=lf
+/tools/test_hidden_soak_frame_ledger.py text eol=lf

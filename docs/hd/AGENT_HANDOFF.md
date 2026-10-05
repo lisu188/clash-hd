@@ -150,6 +150,23 @@ Complete host cleanup still requires the existing no-breakaway job host's
 authenticated assignment, membership and drain receipts. This component
 registers no production evidence lane and makes no runtime or release claim.
 
+[`hidden_soak_frame_ledger.py`](../../tools/hidden_soak_frame_ledger.py)
+prepares full-frame retention through caller-supplied read and storage adapters.
+Its fixed map-idle schedule requires 241 periodic frames at 30-second intervals
+from zero through two hours, followed by a separate terminal frame. Each
+container retains original packed indexed8 bytes and typed read receipts;
+failed reads and partial writes stay failures. Replay requires independently
+retained run authority and collector bindings, checks every supplied byte, and
+establishes archive consistency only. It supplies no native or filesystem
+adapter. Coherent native capture, loaded candidate/probe identity, process
+health, job cleanup and producer provenance remain required. Pending original
+bytes after persistence failure remain in memory and are not durable evidence.
+This host-monotonic schedule does not prove two hours of running time; a future
+producer must measure running intervals and exclude capture pauses.
+The budget includes all frames, an atomic temporary file, scratch, metadata
+and external runtime assets, with the strict disk reserve checked before each
+write. No endurance, runtime, manual-input or promotion claim is established.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -166,6 +183,7 @@ python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_hidden_soak_process_lease.py
+python -B tools/test_hidden_soak_frame_ledger.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a

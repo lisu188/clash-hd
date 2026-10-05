@@ -173,6 +173,32 @@ no-breakaway job assignment, membership and drain receipts. The component
 keeps host cleanup, runtime, manual-input, release and promotion claims false;
 it does not fill or register any of the missing production verifiers.
 
+`tools/hidden_soak_frame_ledger.py` prepares the replacement producer's complete
+map-idle archive. Its fixed policy requires 241 periodic captures from zero
+through 7200 seconds and one separate terminal capture, with a two-second
+maximum lateness window. Source policy admits the nine presets and packed
+indexed8 frames only; a changed native header or pitch remains a failure.
+Typed read leases, complete raw bytes, native read results, partial failures
+and atomic storage receipts are retained without retries or replacement.
+Replay binds the external run authority and original collector output, checks
+every byte and rejects missing, reordered, shortened or substituted records.
+Passing report flags cannot replace these records.
+
+The source budget at 4K is 2,183,376,919 bytes plus independently supplied
+runtime assets, covering all raw frames, an atomic temporary file, 128 MiB
+scratch and 32 MiB metadata. The complete next payload must fit the remaining
+retention allowance, and the strict disk reserve plus remaining peak allowance
+must remain available. Failed persistence keeps partial files and original
+pending bytes in memory; those bytes still require safe durable retention by
+the outer host. The component provides no actual reader or filesystem adapter.
+Archive consistency does not establish native provenance, coherent rendering,
+loaded candidate/probe bytes, process health or no-breakaway job cleanup. All
+broader acceptance flags remain false, and no production lane is registered.
+The host-monotonic envelope is not measured process running time. A future
+producer must retain native pause/resume receipts and exclude paused or unknown
+intervals from the required two-hour running duration; the frozen archive
+schedule cannot supply that proof.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
