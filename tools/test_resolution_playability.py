@@ -1222,7 +1222,7 @@ class HiddenDiskReserveTests(unittest.TestCase):
                     tool.require_hidden_disk_reserve('checkout','output',phase='second')
                 self.assertEqual([call.args[0] for call in read.call_args_list],['checkout','output']*2)
 
-    def fixture(self,*,drop_at=None,failed_volume='output',remaining_headroom=False,projected_failure=False):
+    def fixture(self,*,drop_at=None,failed_volume='output',remaining_headroom=False,projected_failure=False,retain_raw=False):
         from types import SimpleNamespace
         temporary=tempfile.TemporaryDirectory(prefix='clash-hidden-disk-fixture-')
         self.addCleanup(temporary.cleanup)
@@ -1232,6 +1232,9 @@ class HiddenDiskReserveTests(unittest.TestCase):
         source_names=next(ast.literal_eval(node.value) for node in ast.walk(ast.parse(inspect.getsource(tool.run_hidden)))
             if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=='source_names'
                                                    for target in node.targets))
+        if retain_raw:
+            import ordinary_map_read_replay as raw
+            source_names+=tuple(name for name in raw.SOURCE_PATHS if name not in source_names)
         for name in (*source_names,'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp'):
             path=checkout/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'Artificial frozen source '+name.encode())
         manifest=root/'assets.json';manifest.write_text(json.dumps(dict(runtime=dict(empty_directories=[]))),encoding='utf-8')
@@ -1249,7 +1252,8 @@ class HiddenDiskReserveTests(unittest.TestCase):
         args=SimpleNamespace(profile='modalwidgets',resolution='1920x1080',mode='hidden-controlled',
             runtime=assets,out=allowed/'fresh-run',manifest=manifest,proxy=proxy,
             prepared_small_world_candidate=exe,prepared_matrix_candidate=None,prepared_build=None,
-            native_present_bounds=False,approval_text='Artificial orchestration fixture; no runtime approval claim')
+            native_present_bounds=False,retain_raw_observations=retain_raw,
+            approval_text='Artificial orchestration fixture; no runtime approval claim')
         baseline={original.name:dict(bytes=original.stat().st_size,sha256=tool.matrix.digest(original))}
         return SimpleNamespace(root=root,checkout=checkout,allowed=allowed,args=args,exe=exe,built=built,
             baseline=baseline,drop_at=drop_at,failed_volume=failed_volume,remaining_headroom=remaining_headroom,
@@ -1316,8 +1320,26 @@ class HiddenDiskReserveTests(unittest.TestCase):
             stack.enter_context(patch.object(tool.matrix.runtime,'render',return_value=[]))
             stack.enter_context(patch.object(tool.matrix.runtime,'verify_hd_sources'))
             stack.enter_context(patch.object(tool,'audit_prepared_small_world'))
+            if value.args.retain_raw_observations:
+                import ordinary_map_read_replay as raw
+                stack.enter_context(patch.object(raw,'ROOT',value.checkout))
+                stack.enter_context(patch.object(tool,'raw_observation_context',return_value={}))
+                stack.enter_context(patch.object(tool,'audit_raw_observation_context'))
             stack.enter_context(patch.object(tool.matrix.runtime,'ORIGINAL_SHA256',value.baseline['clash95.exe']['sha256']))
             return tool.run_hidden(value.args)
+
+    def test_opt_in_adds_exactly32mib_to_every_output_assets_compile_copy_launch_guard(self):
+        value=self.fixture(retain_raw=True)
+        report=self.run_fixture(value)
+        self.assertTrue(report['raw_observation_retention_requested'])
+        self.assertEqual(len(value.guard_calls),5)
+        self.assertTrue(all(row[2]['scratch_bytes']==tool.RAW_OBSERVATION_SCRATCH for row in value.guard_calls))
+        self.assertEqual(tool.RAW_OBSERVATION_SCRATCH,self.SCRATCH+32*1024**2)
+        value.host.assert_called_once()
+        low=self.fixture(retain_raw=True,drop_at='initial',projected_failure=True)
+        with self.assertRaisesRegex(ValueError,'before-output-directory: output disk reserve failed'):
+            self.run_fixture(low)
+        self.assertFalse(low.args.out.exists());low.host.assert_not_called()
 
     def assert_failed_checkpoint(self,value,report,phase,*,authentication,compile,copies):
         self.assertFalse(report['passed']);self.assertFalse(report['ordinary_controlled_input_passed'])
@@ -1410,7 +1432,7 @@ class MeasuredActionsTests(unittest.TestCase):
         self.events=[];self.observations=[];self.observation_error_at=None;self.release_error=None
         self.planner=planner
 
-    def run_actions(self):
+    def run_actions(self,*,retain_raw=False):
         import ordinary_map_observation as decoder
         original_revalidate=self.planner.revalidate_before_click
         original_click=self.peer.click
@@ -1444,13 +1466,70 @@ class MeasuredActionsTests(unittest.TestCase):
             self.events.append(('release',lease['lease_id']))
             if self.release_error:raise self.release_error
             return original_release(lease)
+        def raw_capture(read_exact,**kwargs):
+            self.raw_captures.append(deepcopy({key:value for key,value in kwargs.items() if key!='check_lease'}))
+            value=observe(read_exact,**{key:kwargs[key] for key in
+                ('candidate','identity','sequence','lease','check_lease','stack_indices')})
+            if getattr(self,'phase_change_at',None)==kwargs['sequence']:
+                self.host.data['capture_index']+=1
+                self.host.publish()
+            return dict(observation=value,raw_capture=dict(events=[]))
+        def retain(out,name,context,binding,report,**kwargs):
+            self.raw_retained.append(dict(name=name,binding=deepcopy(binding),arguments=deepcopy(kwargs)))
+            return dict(raw_replay_passed=True,passed=False)
         with ExitStack() as scope:
             scope.enter_context(patch.object(decoder,'observe',side_effect=observe))
             scope.enter_context(patch.object(self.planner,'revalidate_before_click',side_effect=revalidate))
             self.clicked=scope.enter_context(patch.object(self.peer,'click',side_effect=click))
             self.released=scope.enter_context(patch.object(self.peer,'release',side_effect=release))
             scope.enter_context(redirect_stdout(io.StringIO()))
-            tool.measured_actions(self.peer,unused_read,self.candidate,self.out,self.report)
+            if retain_raw:
+                import ordinary_map_read_replay as raw
+                self.raw_captures=[];self.raw_retained=[]
+                context=dict(candidate=deepcopy(self.candidate),canonical_probe_sha256='e'*64,
+                             source_hashes=raw.current_source_hashes(),candidate_sources={},artifacts={})
+                scope.enter_context(patch.object(raw,'capture_observation',side_effect=raw_capture))
+                scope.enter_context(patch.object(tool,'audit_raw_observation_context',
+                    side_effect=getattr(self,'raw_audit_error',None)))
+                scope.enter_context(patch.object(tool,'retain_raw_observation',side_effect=retain))
+                tool.measured_actions(self.peer,unused_read,self.candidate,self.out,self.report,raw_context=context)
+            else:tool.measured_actions(self.peer,unused_read,self.candidate,self.out,self.report)
+
+    def test_opt_in_keeps_same_actions_and_binds_all_five_held_observations(self):
+        self.run_actions(retain_raw=True)
+        self.assertTrue(self.report['ordinary_controlled_input_passed'])
+        self.assertEqual(len(self.raw_captures),5);self.assertEqual(len(self.raw_retained),5)
+        self.assertEqual([row['name'] for row in self.raw_retained],
+            ['map-before-plan','map-before-select','map-after-select','map-before-move','map-after-move'])
+        for captured,row in zip(self.raw_captures,self.raw_retained):
+            self.assertEqual(captured['phase'],row['binding']['phase'])
+            self.assertEqual(captured['lease'],row['binding']['lease'])
+            self.assertEqual(captured['identity'],self.initial['identity'])
+            self.assertEqual(captured['canonical_probe_sha256'],'e'*64)
+            self.assertNotIn('native_phase',row['arguments']['captured']['observation'])
+        self.assertEqual([row[3] for row in self.host.requests],['acquire','click','click','release'])
+
+    def test_opt_in_source_failure_retains_partial_before_any_click(self):
+        self.raw_audit_error=ValueError('Frozen source changed')
+        with self.assertRaisesRegex(ValueError,'Frozen source changed'):self.run_actions(retain_raw=True)
+        self.clicked.assert_not_called();self.released.assert_called_once()
+        self.assertFalse(self.report['ordinary_controlled_input_passed'])
+        self.assertEqual(self.raw_retained[0]['name'],'map-before-plan')
+        self.assertFalse(self.raw_retained[0]['arguments']['partial']['observation_complete'])
+
+    def test_opt_in_phase_change_retains_reads_as_partial_and_stops_selection(self):
+        self.phase_change_at=1
+        with self.assertRaisesRegex(ValueError,'Held native phase changed'):self.run_actions(retain_raw=True)
+        self.clicked.assert_not_called();self.released.assert_called_once()
+        self.assertIn('partial',self.raw_retained[0]['arguments'])
+
+    def test_opt_in_failed_successor_read_still_releases_only_current_lease(self):
+        self.observation_error_at=3
+        with self.assertRaisesRegex(Exception,'fixture read failed'):self.run_actions(retain_raw=True)
+        self.assertEqual(self.clicked.call_count,1)
+        self.assertEqual(self.raw_retained[-1]['name'],'map-after-select')
+        self.assertIn('partial',self.raw_retained[-1]['arguments'])
+        self.assertEqual(self.released.call_args.args[0]['lease_id'],self.raw_retained[-1]['binding']['lease']['lease_id'])
 
     def test_real_planner_transitions_commit_only_after_same_held_lease_revalidation(self):
         self.run_actions()
@@ -1631,6 +1710,188 @@ class MeasuredActionsTests(unittest.TestCase):
         candidate=HiddenAcceptanceTests.passing_report()
         candidate.update(mouse_poll_trace=measured,ordinary_controlled_input_passed=False)
         self.assertFalse(tool.hidden_success(candidate))
+
+
+class RawObservationRetentionTests(unittest.TestCase):
+    def setUp(self):
+        import ordinary_map_read_replay as raw
+        self.raw=raw
+        temporary=tempfile.TemporaryDirectory(prefix='clash-raw-retention-fixture-')
+        self.addCleanup(temporary.cleanup)
+        self.out=Path(temporary.name).resolve()
+        guard=patch.object(tool,'require_hidden_disk_reserve')
+        self.guard=guard.start();self.addCleanup(guard.stop)
+
+    def bundle(self):
+        from test_ordinary_map_input_plan import fixture
+        candidate,_=fixture()
+        case=tool.matrix_candidate_case(candidate['profile'],candidate['resolution'])
+        candidate['stage']=case['stage']
+        exe=self.out/'synthetic.exe';exe.write_bytes(b'Synthetic source fixture; never executable')
+        candidate['sha256']=tool.matrix.digest(exe)
+        probe=exe.with_suffix('.cdb');probe.write_bytes(b'Synthetic canonical probe; never executed\r\n')
+        sources={}
+        metadata=dict(case,candidate_sha256=candidate['sha256'],source_hashes=sources,
+            probe_sha256=tool.matrix.digest(probe))
+        manifest=exe.with_suffix('.candidate.json');manifest.write_text(json.dumps(metadata),encoding='utf-8')
+        built=dict(case,candidate_sha256=candidate['sha256'],prepared_matrix=dict(
+                schema=tool.PREPARED_MATRIX_SCHEMA,candidate_schema=case['schema'],
+                **{key:case[key] for key in ('profile','resolution','stage','recipe_revision')},
+                candidate_sha256=candidate['sha256'],source_sha256=sources,
+                candidate_manifest=dict(path=str(manifest),sha256=tool.matrix.digest(manifest)),
+                artifact_sha256={path.name:tool.matrix.digest(path) for path in (exe,manifest,probe)}))
+        return exe,built,metadata
+
+    def capture(self):
+        from test_ordinary_map_read_replay import captured
+        value=captured()[3]
+        context=dict(candidate=value['raw_capture']['binding']['candidate'],candidate_sources={},
+            canonical_probe_sha256=value['raw_capture']['binding']['canonical_probe_sha256'],
+            source_hashes=value['raw_capture']['binding']['source_hashes'],artifacts={})
+        return value,context,deepcopy(value['raw_capture']['binding'])
+
+    def test_probe_context_uses_actual_candidate_bundle_and_seven_loaded_source_hashes(self):
+        exe,built,_=self.bundle()
+        with patch.object(tool.matrix.runtime,'verify_hd_sources'):
+            context=tool.raw_observation_context(exe,built)
+        self.assertEqual(context['candidate']['sha256'],tool.matrix.digest(exe))
+        self.assertEqual(context['canonical_probe_sha256'],tool.matrix.digest(exe.with_suffix('.cdb')))
+        self.assertEqual(set(context['source_hashes']),set(self.raw.SOURCE_PATHS))
+        self.assertEqual(len(context['artifacts']),3)
+
+    def test_rehashed_wrong_probe_metadata_source_and_candidate_fail(self):
+        for mutation in ('probe','metadata','source','candidate'):
+            with self.subTest(mutation=mutation):
+                exe,built,metadata=self.bundle()
+                if mutation=='probe':exe.with_suffix('.cdb').write_bytes(b'Substituted probe\r\n')
+                elif mutation=='metadata':metadata['probe_sha256']='f'*64
+                elif mutation=='source':metadata['source_hashes']={'wrong-source':'f'*64}
+                else:exe.write_bytes(b'Substituted candidate')
+                if mutation in ('metadata','source'):
+                    path=exe.with_suffix('.candidate.json');path.write_text(json.dumps(metadata),encoding='utf-8')
+                    built['prepared_matrix']['candidate_manifest']['sha256']=tool.matrix.digest(path)
+                    built['prepared_matrix']['artifact_sha256'][path.name]=tool.matrix.digest(path)
+                with patch.object(tool.matrix.runtime,'verify_hd_sources'),self.assertRaises(ValueError):
+                    tool.raw_observation_context(exe,built)
+
+    def test_probe_artifacts_and_loaded_source_snapshot_are_rechecked(self):
+        exe,built,_=self.bundle()
+        with patch.object(tool.matrix.runtime,'verify_hd_sources'):
+            context=tool.raw_observation_context(exe,built)
+            exe.with_suffix('.cdb').write_bytes(b'Changed after initial source authentication')
+            with self.assertRaisesRegex(ValueError,'artifact changed'):tool.audit_raw_observation_context(context)
+            with patch.object(self.raw,'current_source_hashes',return_value={}):
+                with self.assertRaisesRegex(ValueError,'source snapshot differs'):tool.audit_raw_observation_context(context)
+        with patch.object(self.raw,'ROOT',self.out),self.assertRaisesRegex(ValueError,'calling checkout'):
+            tool.raw_observation_context(exe,built)
+
+    def test_atomic_complete_retention_keeps_undecorated_observation_and_independent_index(self):
+        value,context,binding=self.capture();report={}
+        row=tool.retain_raw_observation(self.out,'map-before-plan',context,binding,report,captured=value)
+        self.assertTrue(row['index_committed']);self.assertTrue(row['raw_replay_passed'])
+        self.assertFalse(row['passed']);self.assertTrue(all(row[key] is False for key in self.raw.FALSE_CLAIMS))
+        directory=Path(row['path'])
+        self.assertEqual(set(path.name for path in directory.iterdir()),
+                         {'raw.json','observation.json','replay.json','index.json'})
+        index=self.raw.decode_capture((directory/'index.json').read_bytes())
+        self.assertEqual(self.raw.digest(index),row['index_sha256'])
+        self.assertEqual(index['binding'],binding)
+        for name,artifact in index['artifacts'].items():
+            self.assertEqual(tool.matrix.digest(directory/name),artifact['sha256'])
+            self.assertEqual((directory/name).stat().st_size,artifact['bytes'])
+            self.assertEqual((directory/name).stat().st_nlink,1)
+        observation=self.raw.decode_capture((directory/'observation.json').read_bytes())
+        self.assertEqual(observation,value['observation']);self.assertNotIn('native_phase',observation)
+        self.assertEqual([call.kwargs['scratch_bytes'] for call in self.guard.call_args_list],
+                         [tool.RAW_OBSERVATION_SCRATCH]*5)
+        self.assertEqual(self.guard.call_args_list[0].kwargs['phase'],'before-raw-retention-directory')
+
+    def test_partial_retention_commits_failed_raw_reads_and_never_complete_schema(self):
+        value,context,binding=self.capture();report={}
+        partial=dict(schema=self.raw.PARTIAL_SCHEMA,binding=binding,
+            events=value['raw_capture']['events'][:-1],observation_complete=False,
+            **{key:False for key in self.raw.FALSE_CLAIMS})
+        row=tool.retain_raw_observation(self.out,'map-before-plan',context,binding,report,
+                                      partial=partial,error='Synthetic failed read')
+        self.assertTrue(row['index_committed']);self.assertFalse(row['observation_complete'])
+        self.assertFalse(row['raw_replay_passed'])
+        directory=Path(row['path']);self.assertFalse((directory/'observation.json').exists())
+        retained=self.raw.decode_capture((directory/'raw.json').read_bytes())
+        self.assertEqual(retained,partial)
+        replay=self.raw.decode_capture((directory/'replay.json').read_bytes())
+        self.assertEqual(replay['failures'],['Synthetic failed read'])
+        self.assertTrue(all(replay[key] is False for key in self.raw.FALSE_CLAIMS))
+
+    def test_tampered_complete_capture_is_retained_but_replay_cannot_pass(self):
+        value,context,binding=self.capture()
+        value['observation']['snapshot']['sequence']=True
+        row=tool.retain_raw_observation(self.out,'map-before-plan',context,binding,{},captured=value)
+        self.assertTrue(row['index_committed']);self.assertFalse(row['raw_replay_passed'])
+
+    def test_reserve_and_total_allowance_fail_before_retention_directory(self):
+        value,context,binding=self.capture()
+        with patch.object(tool,'require_hidden_disk_reserve',side_effect=ValueError('Synthetic reserve failure')):
+            with self.assertRaisesRegex(ValueError,'reserve failure'):
+                tool.retain_raw_observation(self.out,'map-before-plan',context,binding,{},captured=value)
+        self.assertFalse((self.out/'raw-observations').exists())
+        with self.assertRaisesRegex(ValueError,'32MiB allowance'):
+            tool.retain_raw_observation(self.out,'map-before-plan',context,binding,
+                {'raw_observation_bytes':tool.RAW_OBSERVATION_ALLOWANCE},captured=value)
+        self.assertFalse((self.out/'raw-observations').exists())
+
+    def test_write_reserve_failure_leaves_uncommitted_diagnostics_without_index(self):
+        value,context,binding=self.capture();report={}
+        with patch.object(tool,'require_hidden_disk_reserve',side_effect=[None,ValueError('Write reserve failed')]):
+            with self.assertRaisesRegex(ValueError,'Write reserve failed'):
+                tool.retain_raw_observation(self.out,'map-before-plan',context,binding,report,captured=value)
+        self.assertFalse(report['raw_observations'][0]['index_committed'])
+        self.assertFalse((Path(report['raw_observations'][0]['path'])/'index.json').exists())
+
+    def test_collisions_escape_reparse_and_interrupted_atomic_publish_are_rejected(self):
+        value,context,binding=self.capture();report={}
+        tool.retain_raw_observation(self.out,'map-before-plan',context,binding,report,captured=value)
+        before={path.name:path.read_bytes() for path in (self.out/'raw-observations/map-before-plan').iterdir()}
+        with self.assertRaises(FileExistsError):
+            tool.retain_raw_observation(self.out,'map-before-plan',context,binding,report,captured=value)
+        self.assertEqual(before,{path.name:path.read_bytes() for path in (self.out/'raw-observations/map-before-plan').iterdir()})
+        for location,name in ((tool.matrix.ROOT,'map-before-plan'),(self.out,'../escaping')):
+            with self.assertRaises(ValueError):
+                tool.retain_raw_observation(location,name,context,binding,{},captured=value)
+        with patch.object(tool.Path,'is_symlink',return_value=True),self.assertRaisesRegex(ValueError,'reparse'):
+            tool.retain_raw_observation(self.out,'map-before-select',context,binding,report,captured=value)
+        directory=self.out/'interrupted';directory.mkdir()
+        with patch.object(tool.os,'link',side_effect=OSError('Interrupted exclusive publication')):
+            with self.assertRaisesRegex(OSError,'Interrupted'):
+                tool._atomic_raw_bytes(directory,'index.json',b'{}')
+        self.assertFalse((directory/'index.json').exists())
+        self.assertEqual(len(list(directory.glob('.pending-*'))),1)
+
+    def test_hidden_only_cli_is_additive_and_dry_run_launches_nothing(self):
+        with patch.object(sys,'argv',['test','--retain-raw-observations','--prepared-small-world-candidate','not-executed.exe']), \
+                patch.object(tool,'run') as run,redirect_stdout(io.StringIO()):
+            self.assertEqual(tool.main(),0)
+        run.assert_not_called()
+        with patch.object(sys,'argv',['test','--retain-raw-observations','--mode','foreground-diagnostic']), \
+                redirect_stderr(io.StringIO()),self.assertRaises(SystemExit):tool.main()
+
+    def test_resealed_launcher_bundle_and_legacy_cli_are_rejected_only_when_opted_in(self):
+        exe,built,metadata=self.bundle()
+        provenance=built.pop('prepared_matrix');built['launcher_build']=provenance
+        exe.write_bytes(b'Consistently resealed substituted executable')
+        exe.with_suffix('.cdb').write_bytes(b'Consistently resealed substituted probe\r\n')
+        built['candidate_sha256']=tool.matrix.digest(exe)
+        metadata['candidate_sha256']=built['candidate_sha256']
+        metadata['probe_sha256']=tool.matrix.digest(exe.with_suffix('.cdb'))
+        manifest=exe.with_suffix('.candidate.json');manifest.write_text(json.dumps(metadata),encoding='utf-8')
+        provenance['candidate_manifest']['sha256']=tool.matrix.digest(manifest)
+        provenance['artifact_sha256']={path.name:tool.matrix.digest(path)
+                                      for path in (exe,manifest,exe.with_suffix('.cdb'))}
+        with self.assertRaisesRegex(ValueError,'independently reconstructed'):
+            tool.raw_observation_context(exe,built)
+        for flags in (['--retain-raw-observations'],['--retain-raw-observations','--prepared-build','receipt.json']):
+            with patch.object(sys,'argv',['test',*flags]),redirect_stderr(io.StringIO()), \
+                    patch.object(tool,'run') as run,self.assertRaises(SystemExit):tool.main()
+            run.assert_not_called()
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

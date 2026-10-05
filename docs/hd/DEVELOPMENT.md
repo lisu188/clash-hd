@@ -41,6 +41,9 @@ python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_complete_hd_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_ordinary_map_observation.py
+python -B tools/test_ordinary_map_read_replay.py
+python -B tools/test_resolution_playability.py
 ```
 
 Some older tests and guides were designed around archived runtime evidence.
@@ -65,6 +68,20 @@ Keep all of the following outside the checkout:
 Local runtime checks may record hashes and concise conclusions in working notes,
 but raw proprietary evidence must not be committed. Public CI must never fetch
 the original executable or runtime from another repository.
+
+The hidden input diagnostic's `--retain-raw-observations` option retains bounded
+memory-read records, undecorated decoded observations and their offline replay
+results outside the repository. It uses the same held native phase and input
+guards as the default diagnostic. This opt-in requires an independently
+reconstructed `--prepared-matrix-candidate` or
+`--prepared-small-world-candidate` bundle; legacy `--prepared-build` launcher
+receipts do not qualify. Each read is bound to the actual candidate,
+canonical probe, process identity, lease and frozen decoder sources; failed
+reads remain partial diagnostics. Opt-in retention adds 32 MiB to the existing
+128 MiB scratch allowance and does not waive the greater-than-10-percent free
+space requirement. Dry runs still perform no native execution. Recorded-byte
+replay can establish consistency, but it grants no live, manual, geometry,
+endurance or promotion acceptance.
 
 ## Generated reports
 

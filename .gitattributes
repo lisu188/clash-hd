@@ -998,3 +998,5 @@
 /src/patcher/framed_all_presets_candidate.py text eol=lf
 /tools/test_classic_all_presets_candidate.py text eol=lf
 /tools/test_framed_all_presets_candidate.py text eol=lf
+/tools/ordinary_map_read_replay.py text eol=lf
+/tools/test_ordinary_map_read_replay.py text eol=lf

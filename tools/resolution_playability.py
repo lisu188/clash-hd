@@ -14,6 +14,8 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import uuid
+from copy import deepcopy
 from unittest.mock import patch
 
 import launcher_resolution_matrix as matrix
@@ -717,7 +719,133 @@ def native_phase_source(width: int, height: int) -> str:
         startup.render_source(observation_source(matrix.runtime.HARNESS),width,height))))
 
 
-def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict) -> None:
+RAW_OBSERVATION_ALLOWANCE = 32 * 1024**2
+RAW_OBSERVATION_SCRATCH = (128 + 32) * 1024**2
+
+
+def raw_observation_context(exe: Path, built: dict) -> dict:
+    """Bind a canonical sidecar to the already authenticated candidate bundle."""
+    import ordinary_map_read_replay as raw
+    if 'launcher_build' in built or not any(key in built for key in ('prepared_matrix','prepared_small_world')):
+        raise ValueError('Raw observations require an independently reconstructed prepared matrix or small-world bundle')
+    root=matrix.ROOT.resolve()
+    if (raw.ROOT.resolve()!=root or Path(__file__).resolve()!=root/'tools/resolution_playability.py'):
+        raise ValueError('Raw observation helpers must come from the calling checkout')
+    candidate=candidate_context(built)
+    sources=deepcopy(candidate_sources(built))
+    matrix.runtime.verify_hd_sources({'source_hashes':sources},root)
+    provenance=built.get('prepared_small_world',built.get('prepared_matrix',built.get('launcher_build')))
+    paths=(exe,exe.with_suffix('.candidate.json'),exe.with_suffix('.cdb'))
+    if (type(provenance) is not dict or type(provenance.get('artifact_sha256')) is not dict
+            or set(provenance['artifact_sha256'])!={path.name for path in paths}
+            or provenance.get('candidate_manifest',{}).get('path')!=str(paths[1].resolve())):
+        raise ValueError('Raw observation requires the exact candidate bundle provenance')
+    snapshots={path:_prepared_file_snapshot(path) for path in paths}
+    artifacts={str(path.resolve()):dict(sha256=hashlib.sha256(data).hexdigest(),identity=identity)
+               for path,(data,identity) in snapshots.items()}
+    if (any(artifacts[str(path.resolve())]['sha256']!=provenance['artifact_sha256'][path.name] for path in paths)
+            or artifacts[str(exe.resolve())]['sha256']!=candidate['sha256']
+            or artifacts[str(paths[1].resolve())]['sha256']!=provenance['candidate_manifest'].get('sha256')):
+        raise ValueError('Raw observation candidate bundle differs from its authenticated provenance')
+    metadata=json.loads(snapshots[paths[1]][0].decode('utf-8'),object_pairs_hook=_matrix_unique_object)
+    probe_sha=artifacts[str(paths[2].resolve())]['sha256']
+    if (type(metadata) is not dict or metadata.get('candidate_sha256')!=candidate['sha256']
+            or any(type(metadata.get(name)) is not type(built[name]) or metadata.get(name)!=built[name]
+                   for name in ('stage','resolution','recipe_revision'))
+            or not raw.same(metadata.get('source_hashes'),sources) or metadata.get('probe_sha256')!=probe_sha
+            or ('probe' in provenance and (provenance['probe'].get('path')!=str(paths[2].resolve())
+                                          or provenance['probe'].get('sha256')!=probe_sha))):
+        raise ValueError('Raw observation canonical probe or metadata binding differs')
+    try:snapshots[paths[2]][0].decode('ascii')
+    except UnicodeError as error:raise ValueError('Raw observation canonical probe must be ASCII') from error
+    context=dict(candidate=candidate,canonical_probe_sha256=probe_sha,
+                 source_hashes=raw.current_source_hashes(),candidate_sources=sources,artifacts=artifacts)
+    audit_raw_observation_context(context)
+    return context
+
+
+def audit_raw_observation_context(context: dict) -> None:
+    import ordinary_map_read_replay as raw
+    if raw.ROOT.resolve()!=matrix.ROOT.resolve() or not raw.same(context['source_hashes'],raw.current_source_hashes()):
+        raise ValueError('Frozen raw observation source snapshot differs')
+    matrix.runtime.verify_hd_sources({'source_hashes':context['candidate_sources']},matrix.ROOT)
+    for name,expected in context['artifacts'].items():
+        data,identity=_prepared_file_snapshot(Path(name))
+        if not raw.same(identity,expected['identity']) or hashlib.sha256(data).hexdigest()!=expected['sha256']:
+            raise ValueError('Raw observation candidate/probe artifact changed: '+name)
+
+
+def _atomic_raw_bytes(directory: Path, name: str, data: bytes) -> None:
+    """Publish one immutable file exclusively; failed write remnants are retained."""
+    import ordinary_map_read_replay as raw
+    if type(data) is not bytes or not 0<len(data)<=raw.MAX_CAPTURE_BYTES or not re.fullmatch(r'[a-z-]+\.json',name):
+        raise ValueError('Bounded canonical raw artifact required')
+    directory=_matrix_plain_path(directory)
+    destination=directory/name
+    if destination.exists() or destination.is_symlink():raise ValueError('Raw artifact collision: '+str(destination))
+    require_hidden_disk_reserve(matrix.ROOT,directory,scratch_bytes=RAW_OBSERVATION_SCRATCH,
+                                phase='before-raw-retention-write')
+    temporary=directory/('.pending-'+uuid.uuid4().hex)
+    with temporary.open('xb') as stream:
+        stream.write(data);stream.flush();os.fsync(stream.fileno())
+    # link is an exclusive atomic publish on both supported source-test hosts.
+    # The successful temporary is then removed, leaving one retained file link.
+    os.link(temporary,destination,follow_symlinks=False)
+    temporary.unlink()
+    saved,identity=_prepared_file_snapshot(destination)
+    if saved!=data or destination.stat().st_nlink!=1:
+        raise ValueError('Raw artifact changed during retention')
+
+
+def retain_raw_observation(out: Path, name: str, context: dict, binding: dict,
+                           report: dict, *, captured=None, partial=None, error='') -> dict:
+    """Commit a separate index last; partial reads never become successful proof."""
+    import ordinary_map_read_replay as raw
+    if (captured is None)==(partial is None) or not re.fullmatch('map-(before-plan|(?:before|after)-(select|move))',name):
+        raise ValueError('Exact complete or partial raw observation required')
+    out=_matrix_plain_path(out)
+    if not out.is_dir() or out.is_relative_to(matrix.ROOT.resolve()) or matrix.ROOT.resolve().is_relative_to(out):
+        raise ValueError('Raw observation output must remain external to source control')
+    complete=captured is not None
+    raw_value=captured['raw_capture'] if complete else partial
+    files={'raw.json':raw.canonical_bytes(raw_value)}
+    hashes={name:hashlib.sha256(data).hexdigest() for name,data in files.items()}
+    if complete:
+        files['observation.json']=raw.canonical_bytes(captured['observation'])
+        hashes['observation.json']=hashlib.sha256(files['observation.json']).hexdigest()
+        replay=raw.replay_observation(raw.decode_capture(files['raw.json']),
+            raw.decode_capture(files['observation.json']),expected_binding=binding,
+            expected_capture_sha256=hashes['raw.json'],expected_observation_sha256=hashes['observation.json'])
+    else:
+        replay=dict(schema=raw.REPLAY_SCHEMA,passed=False,raw_replay_passed=False,
+                    failures=[error or 'Partial recorded observation'],**{key:False for key in raw.FALSE_CLAIMS})
+    files['replay.json']=raw.canonical_bytes(replay)
+    index=dict(schema='clash95_ordinary_map_raw_index_v1',name=name,binding=deepcopy(binding),
+        candidate_bundle=deepcopy(context),observation_complete=complete,
+        artifacts={key:dict(sha256=hashlib.sha256(data).hexdigest(),bytes=len(data)) for key,data in files.items()},
+        passed=False,**{key:False for key in raw.FALSE_CLAIMS})
+    files['index.json']=raw.canonical_bytes(index)
+    count=sum(len(data) for data in files.values())
+    if (any(len(data)>raw.MAX_CAPTURE_BYTES for data in files.values())
+            or report.get('raw_observation_bytes',0)+count>RAW_OBSERVATION_ALLOWANCE):
+        raise ValueError('Raw observation retention exceeds its 32MiB allowance')
+    require_hidden_disk_reserve(matrix.ROOT,out,scratch_bytes=RAW_OBSERVATION_SCRATCH,
+                                phase='before-raw-retention-directory')
+    root=out/'raw-observations'
+    rows=report.setdefault('raw_observations',[])
+    if not rows:root.mkdir(exist_ok=False)
+    root=_matrix_plain_path(root);directory=root/name;directory.mkdir(exist_ok=False)
+    row=dict(name=name,path=str(directory),index_committed=False,observation_complete=complete,
+             raw_replay_passed=False,passed=False,**{key:False for key in raw.FALSE_CLAIMS})
+    rows.append(row)
+    for filename,data in files.items():_atomic_raw_bytes(directory,filename,data)
+    row.update(index_committed=True,index_sha256=hashlib.sha256(files['index.json']).hexdigest(),
+               artifacts=index['artifacts'],raw_replay_passed=replay['raw_replay_passed'])
+    report['raw_observation_bytes']=report.get('raw_observation_bytes',0)+count
+    return row
+
+
+def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict, *, raw_context=None) -> None:
     """Read, revalidate and commit through the SAME held native input boundary."""
     import ordinary_map_observation as decoder
     import ordinary_map_input_plan as planner
@@ -727,8 +855,40 @@ def measured_actions(peer, read_exact, candidate: dict, out: Path, report: dict)
     def observe(name, indices=None):
         nonlocal sequence
         sequence+=1
-        value=decoder.observe(read_exact,candidate=candidate,identity=peer.identity,
-            sequence=sequence,lease=lease,check_lease=peer.check_lease,stack_indices=indices)
+        if raw_context is None:
+            value=decoder.observe(read_exact,candidate=candidate,identity=peer.identity,
+                sequence=sequence,lease=lease,check_lease=peer.check_lease,stack_indices=indices)
+        else:
+            import ordinary_map_read_replay as raw
+            phase=peer.ack()
+            binding=dict(schema=raw.BINDING_SCHEMA,candidate=deepcopy(candidate),identity=deepcopy(peer.identity),
+                sequence=sequence,lease=deepcopy(lease),phase=deepcopy(phase),
+                canonical_probe_sha256=raw_context['canonical_probe_sha256'],
+                source_hashes=deepcopy(raw_context['source_hashes']),
+                requested_stack_indices=list(range(decoder.STACK_COUNT)) if indices is None else sorted(indices))
+            captured=None
+            try:
+                if not raw.same(candidate,raw_context['candidate']):raise ValueError('Raw observation candidate context differs')
+                audit_raw_observation_context(raw_context)
+                raw.validate_binding(binding)
+                captured=raw.capture_observation(read_exact,candidate=candidate,identity=peer.identity,
+                    sequence=sequence,lease=lease,check_lease=peer.check_lease,stack_indices=indices,
+                    phase=phase,canonical_probe_sha256=raw_context['canonical_probe_sha256'],
+                    source_hashes=raw_context['source_hashes'])
+                if not raw.same(phase,peer.ack()):raise ValueError('Held native phase changed during raw observation')
+                audit_raw_observation_context(raw_context)
+            except Exception as error:
+                partial=getattr(error,'raw_diagnostics',None)
+                if partial is None:
+                    events=[] if captured is None else captured['raw_capture']['events']
+                    partial=dict(schema=raw.PARTIAL_SCHEMA,binding=deepcopy(binding),events=deepcopy(events),
+                                 observation_complete=False,**{key:False for key in raw.FALSE_CLAIMS})
+                retain_raw_observation(out,name,raw_context,binding,report,partial=partial,error=str(error))
+                raise
+            row=retain_raw_observation(out,name,raw_context,binding,report,captured=captured)
+            if not row['raw_replay_passed']:raise ValueError('Retained raw observation failed its independent replay')
+            peer.check_lease(lease)
+            value=captured['observation']
         value['native_phase']=peer.ack()
         destination=out/(name+'.json')
         destination.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
@@ -849,6 +1009,12 @@ def run_hidden(args) -> dict:
     from owned_hidden_process import OwnedHiddenProcess
     case=candidate_case(args)
     root=matrix.ROOT;reference=args.runtime.resolve();out=checked_directory(args.out)
+    retain_raw=getattr(args,'retain_raw_observations',False)
+    if type(retain_raw) is not bool:raise ValueError('Raw observation option must be boolean')
+    if retain_raw and not any(getattr(args,key,None) is not None for key in
+                              ('prepared_matrix_candidate','prepared_small_world_candidate')):
+        raise ValueError('Raw observations require an independently reconstructed prepared matrix or small-world bundle')
+    scratch_bytes=RAW_OBSERVATION_SCRATCH if retain_raw else 128*1024**2
     if os.name!='nt' or args.profile not in ('completehd','modalwidgets'):
         raise ValueError('Hidden native input requires Windows and a complete framed army profile')
     if args.native_present_bounds:
@@ -856,7 +1022,9 @@ def run_hidden(args) -> dict:
     if out.exists() or not out.is_relative_to(Path('C:/ClashTests').resolve()) or any(
             out.is_relative_to(p) or p.is_relative_to(out) for p in (root,reference)):
         raise ValueError('New external candidate output required')
-    require_hidden_disk_reserve(root,out.parent,phase='before-output-directory')
+    if retain_raw:
+        require_hidden_disk_reserve(root,out.parent,scratch_bytes=scratch_bytes,phase='before-output-directory')
+    else:require_hidden_disk_reserve(root,out.parent,phase='before-output-directory')
     out.mkdir(parents=True);capture=out/'capture';capture.mkdir()
     report=dict(schema=2,mode='hidden-controlled',case=case,approval_text=args.approval_text,
         actions=[],errors=[],ordinary_controlled_input_passed=False,native_input_passed=False,
@@ -871,6 +1039,11 @@ def run_hidden(args) -> dict:
         'tools/ordinary_map_pause_host.py',
         'tools/ordinary_map_pause_client.py','tools/ordinary_map_observation.py','tools/ordinary_map_input_plan.py',
         'src/launcher/resolutions.json')
+    if retain_raw:
+        import ordinary_map_read_replay as raw
+        if raw.ROOT.resolve()!=root.resolve():raise ValueError('Raw observer loaded from another checkout')
+        source_names+=tuple(name for name in raw.SOURCE_PATHS if name not in source_names)
+        report['raw_observation_retention_requested']=True
     report['source_hashes']={n:matrix.digest(root/n) for n in source_names}
     report['source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
     source_copy=out/'source'
@@ -878,13 +1051,13 @@ def run_hidden(args) -> dict:
         destination=source_copy/name;destination.parent.mkdir(parents=True,exist_ok=True)
         shutil.copy2(root/name,destination)
         if matrix.digest(destination)!=digest:raise ValueError('Source changed before freezing: '+name)
-    proc=retained=peer=None;baseline=manifest=built=exe=target=None
+    proc=retained=peer=None;baseline=manifest=built=exe=target=raw_context=None
     work=out/'work';logpath=capture/'debugger.log'
     try:
         manifest=json.loads(args.manifest.read_text(encoding='utf-8-sig'))
         baseline=owned.verify_assets(reference,manifest)
         runtime_bytes=sum(r['bytes'] for r in baseline.values())
-        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=scratch_bytes,
                                     phase='verified-runtime-assets')
         report['runtime_manifest_sha256']=matrix.digest(args.manifest)
         proxy=args.proxy.resolve()
@@ -903,14 +1076,15 @@ def run_hidden(args) -> dict:
             report['prepared_build_receipt_sha256']=matrix.digest(args.prepared_build)
         else:exe,built=matrix.stage_candidate(args.profile,args.resolution,reference,out)
         report.update(built=built,proxy_build=build,executed_stage=built['stage'],executed_revision=built['recipe_revision'])
+        if retain_raw:raw_context=raw_observation_context(exe,built)
         width,height=map(int,args.resolution.split('x'))
         source=native_phase_source(width,height)
         with patch.object(matrix.runtime,'HARNESS',source):
-            require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+            require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=scratch_bytes,
                                         phase='before-harness-compile')
             engine=matrix.runtime.compile_harness(out)
         report.update(engine_sha256=matrix.digest(engine),engine_source_sha256=matrix.digest(out/'real-exe-engine.cpp'))
-        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=128*1024**2,
+        require_hidden_disk_reserve(root,out,runtime_bytes=runtime_bytes,scratch_bytes=scratch_bytes,
                                     phase='before-runtime-copy')
         shutil.copytree(reference,work)
         if owned.verify_assets(work,manifest)!=baseline:
@@ -924,7 +1098,8 @@ def run_hidden(args) -> dict:
         shutil.copy2(exe,target);shutil.copy2(proxy,work/'ddraw.dll')
         control=out/'control';prepare_control(control)
         with logpath.open('w',encoding='utf-8') as log:
-            require_hidden_disk_reserve(root,out,scratch_bytes=128*1024**2,phase='before-owned-launch')
+            if retain_raw:audit_raw_observation_context(raw_context)
+            require_hidden_disk_reserve(root,out,scratch_bytes=scratch_bytes,phase='before-owned-launch')
             proc=OwnedHiddenProcess([str(engine),str(target),str(capture),'110','proxy',str(control),'native-phase-v1'],
                 cwd=work,env=os.environ,stdout=log)
             report['host']=dict(pid=proc.pid,creation_filetime=proc.creation_filetime,desktop=proc.desktop_name)
@@ -957,7 +1132,8 @@ def run_hidden(args) -> dict:
             report['startup_retired_before_actions']=True
             report['owner']=identity
             candidate=candidate_context(built)
-            measured_actions(peer,retained.read_exact,candidate,out,report)
+            if retain_raw:measured_actions(peer,retained.read_exact,candidate,out,report,raw_context=raw_context)
+            else:measured_actions(peer,retained.read_exact,candidate,out,report)
             proc.wait(timeout=130)
     except Exception as error:
         report['errors'].append(f'{type(error).__name__}: {error}')
@@ -998,6 +1174,7 @@ def run_hidden(args) -> dict:
                 matrix.runtime.verify_hd_sources({'source_hashes':candidate_sources(built)},root)
                 if 'prepared_matrix' in built:audit_prepared_matrix(exe,built)
                 if 'prepared_small_world' in built:audit_prepared_small_world(exe,built)
+                if retain_raw:audit_raw_observation_context(raw_context)
                 report['working_original_unchanged']=matrix.digest(work/'clash95.exe')==matrix.runtime.ORIGINAL_SHA256
             report['sources_unchanged']=report['source_hashes']=={n:matrix.digest(root/n) for n in source_names}
             if not report['sources_unchanged']:raise ValueError('Driver/controller source changed during run')
@@ -1023,7 +1200,13 @@ def main() -> int:
     for name in ('runtime','manifest','proxy','out'):parser.add_argument('--'+name,type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--approval-text')
     parser.add_argument('--native-present-bounds',action='store_true')
+    parser.add_argument('--retain-raw-observations',action='store_true',
+        help='Retain bounded canonical memory reads for offline replay; hidden-controlled with a reconstructed prepared matrix or small-world candidate only')
     args=parser.parse_args()
+    if args.retain_raw_observations and args.mode!='hidden-controlled':
+        parser.error('Raw observation retention requires hidden-controlled mode')
+    if args.retain_raw_observations and not (args.prepared_matrix_candidate or args.prepared_small_world_candidate):
+        parser.error('Raw observations require an independently reconstructed prepared matrix or small-world bundle')
     try:case=candidate_case(args)
     except ValueError as error:parser.error(str(error))
     if not args.execute:
