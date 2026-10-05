@@ -37,6 +37,10 @@ jobs:
           python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4
       - name: Verify all-preset constructor source and synthetic PE contracts
         run: python -B tools/test_complete_hd_all_presets_candidate.py
+      - name: Verify all-preset Modal Widgets reconstruction contracts
+        run: python -B tools/test_modal_widgets_all_presets_candidate.py
+      - name: Reject mismatched successor recipe authentication
+        run: python -B tools/test_resolution_release_matrix.py
       - name: Execute saved-camera adapters on synthetic x86 state
         run: python -B tools/test_framed_battle_saved_views.py --require-machine-tools
       - name: Reject incomplete and substituted raw soak diagnostics
@@ -49,7 +53,8 @@ jobs:
           from pathlib import Path
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
               output.write('## Resolution successor source contracts\n\n')
-              output.write('The constructor uses synthetic PE fixtures here. Its optional original-backed lane is separate local evidence.\n\n')
+              output.write('Both all-preset constructors use synthetic PE fixtures here. Their optional original-backed lanes are separate local evidence.\n\n')
+              output.write('Successor recipe authentication does not register a launcher recipe or establish runtime acceptance.\n\n')
               output.write('Saved-camera machine checks require Unicorn and execute synthetic x86 state. The original-byte case explicitly skips because proprietary originals are unavailable in CI.\n\n')
               output.write('The raw soak helper always keeps release acceptance false. Fourteen production lane verifiers and installed expanded battles remain outstanding.\n\n')
               output.write('No game, native debugger, compiler, capture, manual input or stable promotion occurs in this job.\n')

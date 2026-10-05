@@ -30,6 +30,35 @@ resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable
 identity and old bytes before applying changes.
 
+The all-preset source constructors are
+[`complete_hd_all_presets_candidate.py`](../../src/patcher/complete_hd_all_presets_candidate.py)
+and [`modal_widgets_all_presets_candidate.py`](../../src/patcher/modal_widgets_all_presets_candidate.py).
+The Modal Widgets successor carries the full owned slots, primary surface,
+text and widget chain across the nine canonical presets. Both use separate
+validation identities and retain the frozen recipes. They do not install the
+expanded-battle successor or change launcher defaults or stable status.
+
+The matrix can authenticate these fixed source recipes separately from the
+launcher-resolved recipes. Unadvertised presets, missing production verifiers
+and missing expanded-battle evidence remain failures. The complete target is
+all four profiles at all nine presets, with actual functional, composition,
+human-input, continuity and endurance evidence on each final candidate. See
+[the matrix contract](RESOLUTION_RELEASE_MATRIX.md) for the acceptance scope.
+
+Use the public boundary and cloud checks before focused source fixtures:
+
+```powershell
+python -B tools/check-public-boundary.py
+python -B tools/cloud_check.py --mode cloud
+python -B tools/test_modal_widgets_all_presets_candidate.py
+python -B tools/test_resolution_release_matrix.py
+```
+
+The optional original-backed constructor lane builds only in memory from a
+user-supplied local executable. It supplies no runtime, loader, screenshot,
+manual-input or promotion evidence. Keep every candidate bundle, runtime log
+and capture outside the repository and preserve the disk reserve before use.
+
 Historical runtime experiments, screenshots, raw debugger sessions, and
 workstation-specific evidence that formerly accompanied this project are not
 part of the public repository. Do not recreate them in public source control.

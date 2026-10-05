@@ -36,6 +36,9 @@ python -B tools/test_patch_resolution.py
 python -B tools/test_patch_definition_guard.py
 python -B tools/test_resolution_manifest_guard.py
 python -B tools/test_stable_stage_guard.py
+python -B tools/test_complete_hd_all_presets_candidate.py
+python -B tools/test_modal_widgets_all_presets_candidate.py
+python -B tools/test_resolution_release_matrix.py
 ```
 
 Some older tests and guides were designed around archived runtime evidence.

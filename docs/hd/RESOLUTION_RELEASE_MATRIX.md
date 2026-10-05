@@ -27,13 +27,22 @@ Wide Classic uses its actual resolved menu-widget recipe rather than borrowing
 the narrow Classic identity. A candidate or source change invalidates the
 matching acceptance evidence.
 
+The fixed source registry also admits `complete_hd_all_presets_v1` and
+`modal_widgets_all_presets_v1` for candidate reconstruction under their exact
+profile, preset, stage and repository source identity. This is explicitly
+reported as `unregistered_source_validation_recipe`; it does not substitute
+for the launcher-resolved recipe or advertise a missing preset. Legacy
+acceptance cannot qualify these successors, and the matrix remains failed
+without all applicable production evidence and a promotion decision.
+
 ## Current implementation limits
 
-This first checkpoint adds mandatory matrix inventory, exact candidate
-reconstruction, existing complete-HD release replay and refusal of unsupported
-acceptance. It does not install the expanded-battle successor, extend the
-integrated recipes to the four missing larger sizes, implement the fourteen
-missing runtime verifiers, or supply any fresh runtime evidence. Existing
+The matrix adds mandatory inventory, exact candidate reconstruction, existing
+complete-HD release replay and refusal of unsupported acceptance. The separate
+source successors cover the nine-preset Complete HD and Modal Widgets chains;
+they remain outside launcher registration. The matrix does not install the
+expanded-battle successor, implement the fourteen missing runtime verifiers,
+or supply fresh runtime evidence. Existing
 legacy acceptance cannot qualify the required expanded-battle release.
 
 The current catalog advertises 28 of the 36 preset combinations. Complete HD
@@ -48,10 +57,18 @@ whole-release pass or promotion is established by this checkpoint.
 nine-preset Complete HD constructor. It reconstructs exact frozen producer
 snapshots in a private namespace, verifies the final PE and declared relocation
 inventory, and replays original-to-final byte records. The old six-size recipe
-is unchanged. The new constructor remains outside the launcher and matrix recipe
-registry; its inherited initial-map probe uses preferred addresses and is not
+is unchanged. The new constructor remains outside the launcher registry; its
+inherited initial-map probe uses preferred addresses and is not
 the loader-rebased final verifier of the newer small-world chain. The Modal
-Widgets slot/primary/text/widget chain still needs a versioned successor.
+Widgets successor in `src/patcher/modal_widgets_all_presets_candidate.py`
+adds the complete owned slot/primary/text/widget chain under its own validation
+identity. It authenticates supplied predecessor contexts instead of recursively
+rebuilding the frozen six-size recipes, verifies each RX extension and inherited
+owned state, replays original-to-final edits and rebinds the canonical initial
+probe to the final image. Four RX layers leave fifteen PE sections and only one
+additional header slot. Expanded-battle RX/RW allocation needs a separate design.
+Constructor fixtures and source authentication establish no composition,
+input, runtime or promotion acceptance.
 
 `src/patcher/framed_battle_saved_views.py` supplies two uninstalled initial-camera
 adapters. With complete phase-2 ownership admission, right-start X is actual
