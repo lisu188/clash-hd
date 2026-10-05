@@ -51,6 +51,19 @@ all four profiles at all nine presets, with actual functional, composition,
 human-input, continuity and endurance evidence on each final candidate. See
 [the matrix contract](RESOLUTION_RELEASE_MATRIX.md) for the acceptance scope.
 
+[`ordinary_map_read_replay.py`](../../tools/ordinary_map_read_replay.py) can
+retain and replay every bounded ordinary-map read, including rereads and lease
+checkpoints. Its context must come from the owning authenticated runtime host;
+an artifact's own hashes and passing report flags cannot substitute. Successful
+offline replay establishes recorded-byte consistency only. It keeps live lease,
+native/manual input, full geometry, release and promotion claims false. Raw
+records and failed-read diagnostics belong outside source control.
+The hidden diagnostic can opt in with `--retain-raw-observations` only on an
+independently reconstructed `--prepared-matrix-candidate` or
+`--prepared-small-world-candidate` bundle. Legacy launcher hash receipts remain
+outside this raw-retention path. See [Development](DEVELOPMENT.md) for its disk
+allowance and evidence limits.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -60,6 +73,7 @@ python -B tools/test_classic_all_presets_candidate.py
 python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_ordinary_map_read_replay.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a

@@ -53,19 +53,32 @@ def unpack(fmt, data, offset=0):
     return struct.unpack_from('<'+fmt, data, offset)
 
 
+def _raw_event(sink, event):
+    """Opt-in immutable-read export; persistence and authentication stay external."""
+    if sink is not None:
+        try:
+            result = sink(deepcopy(event))
+            if iscoroutine(result):
+                result.close()
+            require(result is None, 'raw observation sink must synchronously return None')
+        except Exception as error:
+            raise ObservationError('raw observation sink failed') from error
+
+
 class _ReadSet:
     """Deduplicate contained reads; reject partial aliases and repeat all bytes."""
 
-    def __init__(self, read_exact):
+    def __init__(self, read_exact, raw_sink=None):
         require(callable(read_exact), 'read_exact must be callable')
         self.read_exact = read_exact
+        self.raw_sink = raw_sink
         self.regions = []
         self.addresses = []
         self.unique_bytes = 0
         self.calls = 0
         self.total_bytes = 0
 
-    def _call(self, address, size):
+    def _call(self, address, size, *, raw_phase='initial'):
         integer(address, 0x10000, planner.MAX_ADDRESS-1, 'read address')
         integer(size, 1, MAX_SINGLE_READ, 'read size')
         require(address+size <= planner.MAX_ADDRESS, 'read exceeds bounded user address space')
@@ -79,6 +92,8 @@ class _ReadSet:
             raise ObservationError(f'exact read failed at {address:08x}, size {size}') from error
         require(type(data) is bytes and len(data) == size,
                 f'exact immutable bytes required at {address:08x}, size {size}')
+        _raw_event(self.raw_sink, dict(kind='read', ordinal=self.calls,
+            phase=raw_phase, address=address, size=size, data=data))
         return data
 
     def take(self, address, size, purpose, *, anchor=False):
@@ -104,11 +119,11 @@ class _ReadSet:
         self.unique_bytes += size
         return data
 
-    def compare(self, *, anchors_only=False):
+    def compare(self, *, anchors_only=False, raw_phase='compare'):
         for region in self.regions:
             if anchors_only and not region['anchor']:
                 continue
-            if self._call(region['address'], len(region['data'])) != region['data']:
+            if self._call(region['address'], len(region['data']), raw_phase=raw_phase) != region['data']:
                 raise ObservationError('paused bytes changed: '+', '.join(sorted(region['purposes'])))
 
     def manifest(self):
@@ -177,7 +192,8 @@ def _decode_stack(index, raw):
                 slots=slots)
 
 
-def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, stack_indices=None):
+def observe(read_exact, *, candidate, identity, sequence, lease, check_lease,
+            stack_indices=None, raw_sink=None):
     """Decode strict planner state and a separate source-byte consistency receipt.
 
     stack_indices is None (all 500) or a nonempty list/tuple of unique native
@@ -187,10 +203,15 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
     check_lease must synchronously return None only while this lease is paused;
     it is checked before any reads, between passes, and after final comparison.
     No elapsed-time or process-authentication guarantee is provided here.
+    raw_sink is an optional synchronous callback receiving copies of the input
+    context, successful lease checks, every immutable read including rereads,
+    and final result digests. It performs no persistence here. The default
+    result, read calls, limits and lease checks are unchanged.
     """
     candidate, identity, lease = deepcopy(candidate), deepcopy(identity), deepcopy(lease)
     try:
         _contracts(candidate, identity, sequence, lease)
+        require(raw_sink is None or callable(raw_sink), 'raw_sink must be callable or None')
         if stack_indices is None:
             requested = list(range(STACK_COUNT))
         else:
@@ -199,8 +220,12 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             requested = [integer(i, 0, STACK_COUNT-1, 'stack index') for i in stack_indices]
             require(len(set(requested)) == len(requested), 'duplicate requested stack index')
             requested.sort()
+        _raw_event(raw_sink, dict(kind='context', candidate=candidate,
+            identity=identity, sequence=sequence, lease=lease,
+            requested_stack_indices=requested))
         _checked_lease(check_lease, lease)
-        reads = _ReadSet(read_exact)
+        _raw_event(raw_sink, dict(kind='lease', phase='before_initial', lease=lease))
+        reads = _ReadSet(read_exact, raw_sink)
         delta = identity['image_base']-PREFERRED_BASE
         def image(address, size, purpose, *, anchor=True):
             return reads.take(address+delta, size, purpose, anchor=anchor)
@@ -307,10 +332,12 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             snapshot['unit_profiles'].append(dict(type=unit_type, costs=list(costs)))
         planner.inspect(snapshot, candidate)
         _checked_lease(check_lease, lease)
-        reads.compare(anchors_only=True)
-        reads.compare()
-        reads.compare(anchors_only=True)
+        _raw_event(raw_sink, dict(kind='lease', phase='before_rereads', lease=lease))
+        reads.compare(anchors_only=True, raw_phase='anchor_first')
+        reads.compare(raw_phase='complete')
+        reads.compare(anchors_only=True, raw_phase='anchor_last')
         _checked_lease(check_lease, lease)
+        _raw_event(raw_sink, dict(kind='lease', phase='after_rereads', lease=lease))
         manifest = reads.manifest()
         receipt = dict(schema=RECEIPT_SCHEMA, lease=lease, lease_sha256=planner.digest(lease),
             candidate=deepcopy(candidate), observation_sha256=planner.digest(snapshot),
@@ -322,6 +349,9 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             empty_stack_indices=sorted(empty), measured_stack_indices=sorted(stacks),
             authentication_scope='candidate/process identity and live pause supplied by caller/host; dictionaries and digests do not authenticate them',
             proof_scope='consistent bounded supplied memory reads; no input, native callback, rendering or lifecycle proof')
+        if raw_sink is not None:
+            _raw_event(raw_sink, dict(kind='result', snapshot_sha256=planner.digest(snapshot),
+                receipt_sha256=planner.digest(receipt)))
         return dict(snapshot=snapshot, receipt=receipt)
     except ObservationError:
         raise

@@ -48,6 +48,7 @@ jobs:
           set -euo pipefail
           python -B tools/test_ordinary_map_input_plan.py -v
           python -B tools/test_ordinary_map_observation.py -v
+          python -B tools/test_ordinary_map_read_replay.py -v
           python -B tools/test_ordinary_map_pause_host.py -v
           python -B tools/test_ordinary_map_pause_client.py -v
           python -B tools/test_ordinary_map_pause_engine.py ReportTests -v
