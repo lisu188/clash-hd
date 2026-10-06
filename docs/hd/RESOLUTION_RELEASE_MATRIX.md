@@ -219,6 +219,31 @@ frame pixels, loaded bytes or full job cleanup. All broader endurance, runtime,
 manual-input, release and promotion claims remain false. No missing production
 lane is implemented or registered by this component.
 
+`tools/hidden_soak_loaded_image.py` prepares a source-owned comparison at the
+initial held loader checkpoint, before probe commands or code breakpoints.
+It privately reconstructs the four frozen all-preset parent recipes and their
+exact candidate, typed metadata, canonical probe and source inventory; Classic
+uses its actual narrow or wide recipe. Other successor/legacy recipes remain
+outside this admission path. Caller-selected ranges, exemptions and resealed
+report flags cannot substitute for this reconstruction.
+
+The comparison requires the PEB ImageBase DWORD, all canonical headers and all
+executable raw/zero extents. It validates complete HIGHLOW fields and applies
+the actual base delta without rewriting REL32 fields. Nonexecutable sections
+and alignment intervals are explicitly excluded; writable executable sections
+fail. Original bytes, partial counts, signed or unsigned HRESULTs, and all five
+ordered native query results before and after every read remain retained.
+Changed generations, selection, architecture, probe/breakpoint sequence or
+the independently bound 20-second held epoch fail.
+
+The strict preferred ImageBase value in mapped headers and executable zero
+tails remain policies awaiting native-loader verification. This component
+installs no native collector or filesystem adapter, executes no probe and
+does not prove readonly constants, runtime RW/IAT/provider state or genuine
+native issuance. Source comparison is separate from loaded-candidate,
+whole-image, runtime, manual-input, release and promotion proof; those claims
+remain false and no missing production verifier is registered.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
