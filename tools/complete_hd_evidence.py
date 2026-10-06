@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
+import math
 import re
 import sys
 from datetime import datetime, timezone
@@ -31,6 +32,7 @@ BASE_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
 SHA_RE = re.compile(r"[0-9a-fA-F]{64}\Z")
 RELEASE_SCHEMA = "complete_hd_release_manifest_v1"
 LANE_SCHEMA = "complete_hd_lane_evidence_v1"
+MAX_JSON_CONTAINER_DEPTH = 64
 RUNTIME_POLICY = "read-only candidate rebuild and recorded-evidence validation; no runtime, input, capture, or promotion writes"
 MANUAL_IDS = (
     "stable_menu_load", "stable_hd_map_input", "right_bottom_validation_input",
@@ -104,6 +106,47 @@ def _time(value: Any) -> datetime:
     return result
 
 
+def parse_evidence_json(data: bytes, label: str) -> Any:
+    """Require unique keys, finite numbers and bounded evidence containers."""
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"{label}: duplicate JSON key: {key}")
+            result[key] = value
+        return result
+
+    def finite_float(token: str) -> float:
+        value = float(token)
+        if not math.isfinite(value):
+            raise ValueError(f"{label}: non-finite JSON number")
+        return value
+
+    def invalid_constant(token: str) -> None:
+        raise ValueError(f"{label}: invalid JSON numeric constant: {token}")
+
+    try:
+        value = json.loads(data.decode("utf-8-sig"), object_pairs_hook=unique_object,
+                           parse_float=finite_float, parse_constant=invalid_constant)
+    except RecursionError as exc:
+        raise ValueError(f"{label}: JSON nesting exceeds parser capacity") from exc
+    # One iterator per container avoids recursion and a list of every sibling.
+    # Referenced documents have their own depth bound and iterative graph walk.
+    pending = [(iter((value,)), 0)]
+    while pending:
+        values, depth = pending[-1]
+        try:
+            item = next(values)
+        except StopIteration:
+            pending.pop()
+            continue
+        if isinstance(item, (dict, list)):
+            if depth >= MAX_JSON_CONTAINER_DEPTH:
+                raise ValueError(f"{label}: JSON container nesting exceeds {MAX_JSON_CONTAINER_DEPTH}")
+            pending.append((iter(item.values() if isinstance(item, dict) else item), depth + 1))
+    return value
+
+
 def read_reference(reference: Any, base: Path, *, json_object: bool = False) -> tuple[Path, Any]:
     ref = _object(reference, "artifact reference")
     if not _text(ref.get("path")) or not isinstance(ref.get("sha256"), str) or not SHA_RE.fullmatch(ref["sha256"]):
@@ -114,7 +157,7 @@ def read_reference(reference: Any, base: Path, *, json_object: bool = False) -> 
     if digest(data) != ref["sha256"].lower():
         raise ValueError(f"artifact SHA-256 mismatch: {path}")
     if json_object:
-        return path, _object(json.loads(data.decode("utf-8-sig")), str(path))
+        return path, _object(parse_evidence_json(data, str(path)), str(path))
     return path, data
 
 
@@ -604,20 +647,27 @@ def audit_hidden_soak_raw(samples: Any, log: Any, raw_frames: Any, identity: Any
 def verify_reference_graph(value: Any, base: Path, seen: set[tuple[Path, str]] | None = None) -> None:
     """Recheck pinned input bytes at completion, including nested proof/approval refs."""
     seen = set() if seen is None else seen
-    if isinstance(value, list):
-        for item in value:
-            verify_reference_graph(item, base, seen)
-    elif isinstance(value, dict):
-        if "path" in value and "sha256" in value:
-            path, data = read_reference(value, base)
-            key = (path, value["sha256"].lower())
-            if key not in seen:
-                seen.add(key)
-                if path.suffix.lower() == ".json":
-                    verify_reference_graph(json.loads(data.decode("utf-8-sig")), path.parent, seen)
-        else:
-            for item in value.values():
-                verify_reference_graph(item, base, seen)
+    pending = [(iter((value,)), base)]
+    while pending:
+        values, parent = pending[-1]
+        try:
+            item = next(values)
+        except StopIteration:
+            pending.pop()
+            continue
+        if isinstance(item, list):
+            pending.append((iter(item), parent))
+        elif isinstance(item, dict):
+            if "path" in item and "sha256" in item:
+                path, data = read_reference(item, parent)
+                key = (path, item["sha256"].lower())
+                if key not in seen:
+                    seen.add(key)
+                    if path.suffix.lower() == ".json":
+                        parsed = parse_evidence_json(data, str(path))
+                        pending.append((iter((parsed,)), path.parent))
+            else:
+                pending.append((iter(item.values()), parent))
 
 
 def _approval(report: dict[str, Any], report_path: Path, identity: dict[str, Any]) -> list[str]:
@@ -765,7 +815,7 @@ def evaluate_release_manifest(path: Path, *, candidate_manifest: Path | None = N
         path = path.resolve()
         raw = path.read_bytes()
         manifest_sha = digest(raw)
-        manifest = _object(json.loads(raw.decode("utf-8-sig")), "release manifest")
+        manifest = _object(parse_evidence_json(raw, "release manifest"), "release manifest")
         if manifest.get("schema") != RELEASE_SCHEMA:
             raise ValueError("unsupported complete-HD release manifest schema")
         context = candidate_context(_object(manifest.get("candidate"), "candidate"), path.parent,
