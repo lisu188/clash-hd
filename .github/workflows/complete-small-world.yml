@@ -67,7 +67,6 @@ jobs:
     timeout-minutes: 10
     env:
       CLASH_DEBUGGER_INTEGRATION: '1'
-      CLASH_PROBE_ENGINE_ARTIFACT_DIR: ${{ runner.temp }}/complete-small-world-engine-artifacts
       _NT_SYMBOL_PATH: '.'
       _NT_ALT_SYMBOL_PATH: ''
     steps:
@@ -90,6 +89,7 @@ jobs:
       - name: Execute the final verifier on paused marked synthetic PE32 fixtures
         shell: pwsh
         run: |
+          $env:CLASH_PROBE_ENGINE_ARTIFACT_DIR = Join-Path $env:RUNNER_TEMP 'complete-small-world-engine-artifacts'
           $env:CLASH_COMPLETE_SMALL_WORLD_ENGINE_REPORT = Join-Path $env:RUNNER_TEMP 'complete-small-world-engine-report.json'
           $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
           $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath

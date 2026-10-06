@@ -265,7 +265,15 @@ from an observed empty buffer. The 35-second case deadline and native byte and
 relocation comparisons remain unchanged. Fixed QPC/HRESULT boundaries locate
 the last completed operation, and missing boundaries or failed clock/flush calls
 fail the diagnostic. Logging failure cannot suppress the fallback termination
-attempt. Eight pending small-world case names cannot establish completion.
+attempt. Eight pending small-world or seven pending Castle case names cannot
+establish completion. All three inherited verifier workflows set their external
+artifact directory in the execution step; it is not a job-level runner context.
+
+PR #162 first exposed a Castle dependency failure before any native case ran,
+then two workflows failed validation without creating jobs. Their diagnostics
+remain retained outside the repository. The corrected source requires all five
+Castle test methods and all seven distinct terminal case receipts; changing the
+workflow does not turn either earlier failure into a pass.
 
 The retained PR #161 first-attempt timeout and its one unchanged successful rerun
 are historical synthetic diagnostics, not proof of the timeout cause or game

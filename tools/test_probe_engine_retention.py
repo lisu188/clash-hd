@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 from types import SimpleNamespace
@@ -11,6 +12,7 @@ from unittest.mock import patch
 
 import test_framed_loaded_probe_engine as engine
 import test_complete_small_world_probe_engine as small
+import test_ordinary_castle_entry_matrix_engine as castle
 
 
 def disk(_):
@@ -329,6 +331,98 @@ class RetentionTests(unittest.TestCase):
             self.assertIn(error.stdout, Fake.store.pending)
             self.assertIsNotNone(Fake.ledger.failure)
             Fake.doClassCleanups()
+
+
+class CastleReportTests(unittest.TestCase):
+    setUp = RetentionTests.setUp
+
+    def owner(self):
+        return SimpleNamespace(store=self.store, ledger=self.ledger, records=self.ledger.records,
+                               root=self.store.root, compiler_receipt={'status':'completed'})
+
+    def complete(self):
+        for label, accepted in castle.EXPECTED.items():
+            row = self.ledger.prepare(b'MZ explicit mock', b'mocked original\r\n', test='test_mocked_castle',
+                                      label=label, mode='file' if label=='fixed-file' else 'block')
+            log = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
+            if label == 'aslr':
+                log = log.replace('base=00400000','base=00500000')
+            log += 'OCEM_CONTRACT_PASS explicit_mock_only\n' if accepted else 'OCEM_INCOMPLETE\n'
+            self.ledger.outcome(row, returncode=0, stdout=log.encode(), stderr=b'')
+
+    def report(self):
+        destination = self.parent / ('castle-report-' + str(len(list(self.parent.glob('castle-report-*')))) + '.json')
+        with patch.dict(os.environ, RUNNER_TEMP=str(self.parent), CLASH_ORDINARY_ENTRY_ENGINE_REPORT=str(destination)):
+            castle.MatrixEngineTests.save_report.__func__(self.owner())
+        return json.loads(destination.read_bytes())
+
+    def test_seven_terminal_mocked_cases_publish_exact_raw_artifacts(self):
+        self.complete()
+        report = self.report()
+        self.assertTrue(report['completed'])
+        self.assertTrue(report['passed'])
+        self.assertEqual(report['expected_cases'],7)
+        self.assertEqual({row['case'] for row in report['cases']},set(castle.EXPECTED))
+        self.assertFalse(report['native_cleanup_verified'])
+        self.assertFalse(report['promotion_ready'])
+        for row in report['cases']:
+            raw = Path(row['stdout']['artifact']['path']).read_bytes()
+            self.assertEqual(raw.decode('utf-8'),row['log'])
+            self.assertEqual(Path(row['verify.cdb']['path']).read_bytes(),b'mocked original\r\n')
+
+    def test_seven_pending_labels_and_missing_case_cannot_complete(self):
+        self.ledger.records.extend(dict(case=label,log='',returncode=None,status='pending',
+                                       raw_retention_complete=False,phase_receipt_passed=False)
+                                   for label in castle.EXPECTED)
+        report = self.report()
+        self.assertFalse(report['completed'])
+        self.assertFalse(report['passed'])
+        self.ledger.records.pop()
+        self.assertFalse(self.report()['completed'])
+
+    def test_duplicate_failed_and_false_phase_claims_reject(self):
+        self.complete()
+        for kind in ('duplicate','failed','missing-phase'):
+            with self.subTest(kind=kind):
+                row = self.ledger.records[-1]
+                saved = dict(row)
+                if kind=='duplicate':
+                    row['case']=self.ledger.records[0]['case']
+                elif kind=='failed':
+                    row.update(status='failed',returncode=2)
+                else:
+                    row['log']=row['log'].replace('HARNESS_COMPLETE','missing original completion')
+                    row['phase_receipt_passed']=True
+                report = self.report()
+                self.assertFalse(report['completed'])
+                self.assertFalse(report['passed'])
+                row.clear();row.update(saved)
+
+    def test_first_failure_and_retention_debt_are_sticky_even_with_complete_cases(self):
+        self.complete()
+        self.ledger.fail('retained earlier source failure')
+        report = self.report()
+        self.assertFalse(report['completed'])
+        self.assertFalse(report['passed'])
+        self.assertEqual(report['first_failure'],'retained earlier source failure')
+        self.store.failed=True
+        report=self.report()
+        self.assertTrue(report['retention_debt'])
+        self.assertFalse(report['passed'])
+
+    def test_all_three_native_workflows_bind_artifacts_in_allowed_step_context(self):
+        for workflow,folder in (('framed-probe-engine.yml','framed-probe-engine-artifacts'),
+                                ('complete-small-world.yml','complete-small-world-engine-artifacts'),
+                                ('ordinary-castle-entry-matrix.yml','castle-matrix-engine-artifacts')):
+            with self.subTest(workflow=workflow):
+                raw=(engine.ROOT/'.github'/'workflows'/workflow).read_text(encoding='utf-8')
+                # GitHub permits runner at step env/run, not jobs.<id>.env.
+                for block in re.findall(r'^    env:\n((?:      [^\n]*\n)*)',raw,re.M):
+                    self.assertNotIn('runner.',block)
+                    self.assertNotIn('CLASH_PROBE_ENGINE_ARTIFACT_DIR',block)
+                assignment="$env:CLASH_PROBE_ENGINE_ARTIFACT_DIR = Join-Path $env:RUNNER_TEMP '"+folder+"'"
+                self.assertIn(assignment,raw)
+                self.assertLess(raw.index(assignment),raw.index('suite = unittest.defaultTestLoader.discover'))
 
 
 if __name__ == '__main__':

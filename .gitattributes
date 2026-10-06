@@ -1035,3 +1035,5 @@
 /tools/test_framed_loaded_probe_engine.py text eol=lf
 /tools/test_probe_engine_retention.py text eol=lf
 /.github/workflows/framed-probe-engine.yml text eol=lf
+/tools/test_ordinary_castle_entry_matrix_engine.py text eol=lf
+/.github/workflows/ordinary-castle-entry-matrix.yml text eol=lf

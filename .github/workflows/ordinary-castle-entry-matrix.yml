@@ -15,7 +15,7 @@ permissions:
   contents: read
 concurrency:
   group: ordinary-castle-matrix-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   engine:
     name: Castle matrix actual x86 debugger interpreter
@@ -44,6 +44,7 @@ jobs:
       - name: Execute the exported commands on marked synthetic PE32 fixtures
         shell: pwsh
         run: |
+          $env:CLASH_PROBE_ENGINE_ARTIFACT_DIR = Join-Path $env:RUNNER_TEMP 'castle-matrix-engine-artifacts'
           $env:CLASH_ORDINARY_ENTRY_ENGINE_REPORT = Join-Path $env:RUNNER_TEMP 'castle-matrix-engine-report.json'
           $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
           $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
@@ -67,13 +68,69 @@ jobs:
           "@ | Set-Content -Encoding ascii $batch
           & cmd.exe /d /c $batch
           if ($LASTEXITCODE -ne 0) { throw 'Debugger-engine integration tests failed.' }
+      - name: Require seven terminal retained synthetic receipts
+        shell: pwsh
+        run: |
+          $validation = Join-Path $env:RUNNER_TEMP 'validate-castle-matrix-report.py'
+          @'
+          import hashlib, json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools')
+          import test_framed_loaded_probe_engine as engine
+          import test_ordinary_castle_entry_matrix_engine as castle
+          report = json.loads((Path(os.environ['RUNNER_TEMP'])/'castle-matrix-engine-report.json').read_bytes())
+          assert report['schema'] == 'clash95_ordinary_entry_matrix_debugger_fixture_v1'
+          for field in ('fixture_only', 'completed', 'passed'):
+              assert report.get(field) is True, field
+          for field in ('game_runtime_executed', 'manual_input_proof', 'native_cleanup_verified', 'promotion_ready', 'retention_debt'):
+              assert report.get(field) is False, field
+          assert report.get('first_failure') is None and report['compiler']['status'] == 'completed'
+          for field, source in {'generator_sha256':'src/patcher/ordinary_castle_entry_matrix.py',
+                                'fixture_source_sha256':'tools/test_ordinary_castle_entry_matrix_engine.py',
+                                'harness_source_sha256':'tools/test_framed_loaded_probe_engine.py'}.items():
+              assert report[field] == hashlib.sha256(Path(source).read_bytes()).hexdigest()
+          root = Path(report['artifact_directory']).resolve()
+          allowed = (Path(os.environ['RUNNER_TEMP'])/'castle-matrix-engine-artifacts').resolve()
+          assert allowed in root.parents
+          cases = report['cases']
+          assert type(report['expected_cases']) is int and report['expected_cases'] == 7
+          assert engine.terminal_cases(cases, castle.EXPECTED)
+          for case in cases:
+              assert case['passed'] is True and engine.phase_receipt(case['log'])
+              assert case['expected_acceptance'] is castle.EXPECTED[case['case']]
+              assert case['observed_acceptance'] is case['expected_acceptance']
+              if not case['expected_acceptance']:
+                  assert case['observed_rejection'] is True
+              if case['case'] == 'aslr':
+                  assert case['actual_relocation_verified'] is True
+              raw_streams = []
+              for stream in ('stdout','stderr'):
+                  observed = case[stream]
+                  assert observed['available'] is True
+                  artifact = observed['artifact']; path = Path(artifact['path']).resolve()
+                  assert root in path.parents
+                  raw = path.read_bytes()
+                  assert len(raw) == artifact['bytes'] and hashlib.sha256(raw).hexdigest() == artifact['sha256']
+                  raw_streams.append(raw.decode('utf-8','replace'))
+              assert ''.join(raw_streams) == case['log']
+              for name, field in (('probe-fixture.exe','fixture_sha256'),('verify.cdb','script_sha256')):
+                  artifact = case[name]; path = Path(artifact['path']).resolve()
+                  assert root in path.parents
+                  raw = path.read_bytes()
+                  assert len(raw) == artifact['bytes'] and hashlib.sha256(raw).hexdigest() == artifact['sha256'] == case[field]
+          print('Seven source-bound retained synthetic castle receipts passed; no game entry proof.')
+          '@ | Set-Content -LiteralPath $validation -Encoding utf8
+          python -B $validation
+          if ($LASTEXITCODE -ne 0) { throw 'Castle synthetic receipt validation failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: castle-matrix-engine-test-report
-          path: ${{ runner.temp }}/castle-matrix-engine-report.json
+          path: |
+            ${{ runner.temp }}/castle-matrix-engine-report.json
+            ${{ runner.temp }}/castle-matrix-engine-artifacts
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error
 
   contracts:
     name: Castle matrix portable and CPU contracts (${{ matrix.os }})
@@ -94,6 +151,8 @@ jobs:
         run: python -m pip install --disable-pip-version-check unicorn==2.1.4
       - name: Verify portable byte and output contracts
         run: python -B tools/test_ordinary_castle_entry_matrix.py PortableTests -v
+      - name: Verify portable retention and castle report rejection
+        run: python -B tools/test_probe_engine_retention.py -v
       - name: Verify inherited HD fixture layout and exact parent replay
         run: python -B tools/test_ordinary_castle_entry_matrix_inherited.py PortableTests -v
       - name: Execute exact and matrix admission gates at both load bases
