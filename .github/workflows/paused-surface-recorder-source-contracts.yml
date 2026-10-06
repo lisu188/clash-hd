@@ -1,0 +1,100 @@
+name: Synthetic paused-surface recorder source contracts
+
+on:
+  pull_request:
+    paths:
+      - 'tools/complete_hd_paused_surface_recorder_v2.py'
+      - 'tools/test_complete_hd_paused_surface_recorder_v2.py'
+      - 'tools/paused_surface_triple_replay.py'
+      - 'tools/owned_hidden_process.py'
+      - 'tools/complete_hd_evidence.py'
+      - '.github/workflows/paused-surface-recorder-source-contracts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/complete_hd_paused_surface_recorder_v2.py'
+      - 'tools/test_complete_hd_paused_surface_recorder_v2.py'
+      - 'tools/paused_surface_triple_replay.py'
+      - 'tools/owned_hidden_process.py'
+      - 'tools/complete_hd_evidence.py'
+      - '.github/workflows/paused-surface-recorder-source-contracts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: synthetic-paused-recorder-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Synthetic recorder dispatch and retention (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require all thirty synthetic methods without skips
+        run: |
+          python -B - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import sys
+          import unittest
+          sys.path.insert(0, str(Path('tools').resolve()))
+          import test_complete_hd_paused_surface_recorder_v2 as fixture
+          paths = ('tools/complete_hd_paused_surface_recorder_v2.py',
+                   'tools/test_complete_hd_paused_surface_recorder_v2.py',
+                   'tools/paused_surface_triple_replay.py',
+                   'tools/test_paused_surface_triple_replay.py',
+                   'tools/owned_hidden_process.py', 'tools/complete_hd_evidence.py')
+          def closure():
+              return {path: hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in paths}
+          before = closure()
+          expected = {
+              'tools/complete_hd_paused_surface_recorder_v2.py': 'c56bea73672662cdcf235e3903ade7f8c0f00df556fda7fbce15a7d62f6a32b0',
+              'tools/test_complete_hd_paused_surface_recorder_v2.py': '1986a363665a74eba125d6df9cb961c909df5f97a6acb83eea7e81180fbc2469',
+              'tools/paused_surface_triple_replay.py': '60fbb1b8392b302b4366e0acaec7bd659705daf8c856df6a2818a5e5b0690dcb',
+          }
+          if any(before[path] != digest for path, digest in expected.items()):
+              raise ValueError('Reviewed recorder, fixture or frozen helper bytes changed')
+          print('source_closure_before ' + json.dumps(before, sort_keys=True), flush=True)
+          try:
+              loader = unittest.TestLoader()
+              suite = unittest.TestSuite(loader.loadTestsFromTestCase(cls) for cls in
+                                         (fixture.RecorderTests, fixture.BudgetPublicationTests))
+              result = unittest.TextTestRunner(verbosity=2).run(suite)
+          finally:
+              after = closure()
+              print('source_closure_after ' + json.dumps(after, sort_keys=True), flush=True)
+              if before != after:
+                  raise ValueError('Recorder source closure changed during fixtures')
+          print('synthetic_only=True native_owner_factory_available=False native_execution_available=False verifier_registered=False promotion_ready=False')
+          raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 30
+                           and not result.skipped and not result.expectedFailures else 1)
+          PY
+      - name: Record evidence limits
+        if: always()
+        run: |
+          python -B - <<'PY'
+          import os
+          from pathlib import Path
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
+              output.write('Fixed dispatch uses explicitly synthetic adapters and invented buffers in RAM. No native process owner, execution factory, game or capture is available.\n\n')
+              output.write('Thirty required methods cover 39 read roles, output/exception retention, malformed and partial packets, bounded manifests and tiny synthetic file publication. The capture budget includes 1,185 physical archive files.\n\n')
+              output.write('All fourteen authority flags remain false. Protocol consistency authenticates no candidate, source/probe binding, native execution, cleanup, geometry, runtime, input, endurance, release or promotion.\n\n')
+              output.write('The 14 missing production verifiers and all 36 new runtime acceptance combinations remain unfinished. This job executes no native API, debugger, compiler, Original, human input or live capture.\n')
+          PY

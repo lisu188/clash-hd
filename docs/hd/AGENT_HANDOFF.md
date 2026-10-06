@@ -304,6 +304,23 @@ leaving all 14 missing production verifiers, candidate/probe reconstruction,
 frame/footer/minimap/panel audits, runtime/input, endurance and promotion
 requirements unfinished. Raw journals and failed reads belong outside Git.
 
+[`complete_hd_paused_surface_recorder_v2.py`](../../tools/complete_hd_paused_surface_recorder_v2.py)
+prepares a fixed dispatcher for this journal using an explicitly synthetic
+adapter. The final recorder (`c56bea73...`) and fixture (`1986a363...`) passed
+all 30 source/RAM methods without skips on 2026-10-06 in 1.466 seconds;
+independent source review covered complete packet and exception retention.
+All 39 read roles across three cohorts retain original-shaped buffers before
+semantic checks, including failed or malformed outputs. The complete failed
+packet and exact exception object remain available without invoking supplied
+text methods. Full synthetic journals stay in RAM; bounded tiny-file fixtures
+exercise publication identity separately. Capture allowance includes the
+64-KiB manifest, retention sidecar and all 1,185 physical archive files.
+The prior 27-method receipt is a historical diagnostic for different bytes.
+Real owner and execution factories remain unavailable, the recorder is outside
+the production registry, and every authority flag remains false. It supplies
+no candidate/probe authentication, native process/stop provenance, actual
+frames, cleanup, runtime, input, endurance, release or promotion evidence.
+
 The ordinary-map pause client retains original acknowledgment read errors.
 While waiting for readiness, pause or resume, missing files and replacement
 permission errors may retry only within that request's original absolute
@@ -715,6 +732,7 @@ python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_paused_surface_triple_replay.py
+python -B tools/test_complete_hd_paused_surface_recorder_v2.py
 python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
