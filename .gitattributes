@@ -1061,3 +1061,6 @@
 /.github/workflows/framed-offline.yml text eol=lf
 /src/patcher/battle_profile_context_v2.py text eol=lf
 /tools/test_battle_profile_context_v2.py text eol=lf
+/src/patcher/battle_profile_lifecycle_v2.py text eol=lf
+/tools/test_battle_profile_lifecycle_v2.py text eol=lf
+/.github/workflows/battle-lifecycle-v2-contracts.yml text eol=lf

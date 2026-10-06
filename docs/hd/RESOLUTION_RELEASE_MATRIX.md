@@ -544,6 +544,18 @@ runtime acceptance. The frozen predecessors and protected default are retained.
 
 ## Required acceptance and next work
 
+The uninstalled `src/patcher/battle_profile_lifecycle_v2.py` re-emits the pinned
+lifecycle template for the new allocation context. Complete source/operand and
+native transfer inventories, full 128-byte record snapshots, protected RX/RW
+alias rejection and callback checks retain the frozen original's ABI and
+allocation-null fatal route. All new RW tail/provider bytes must remain zero;
+nonzero inherited modal tail is an explicitly unsupported admission case.
+This cannot establish dynamic native-field compatibility or transient-write
+prevention. The 456-byte helper stack and 4K component code bounds are not a
+completed full-chain budget. Synthetic callbacks and optional original-backed
+RAM reconstruction supply no installed battle, provider lifetime, native
+cleanup/healthy return, visual/input, endurance, release or promotion proof.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
