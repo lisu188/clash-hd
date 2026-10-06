@@ -1051,3 +1051,6 @@
 /src/patcher/battle_profile_primitive_request.py text eol=lf
 /tools/test_battle_profile_primitive_request.py text eol=lf
 /.github/workflows/battle-primitive-request-contracts.yml text eol=lf
+/src/patcher/battle_profile_line_replay.py text eol=lf
+/tools/test_battle_profile_line_replay.py text eol=lf
+/.github/workflows/battle-line-replay-contracts.yml text eol=lf

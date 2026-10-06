@@ -485,6 +485,26 @@ shutdown, healthy restoration and full battle integration remain unverified.
 Unknown control reaches exact UD2. Passing query/continuation fixtures establish
 no installed battle, runtime/input/composition, endurance, release or promotion.
 
+`src/patcher/battle_profile_line_replay.py` prepares two direct memory-line
+invocations from the versioned request producer. The original callback-free
+line/fill closure and memory vtable are authenticated against the original and
+rebuilt parent, including all 15 vtable HIGHLOW fields. Complete 8-byte and
+11-byte call/cleanup windows replace the overlapping planned post hooks; both
+genuine intrinsic call PCs remain separately bound. Clipped RET8 arguments are
+duplicated in the owning frame and original caller arguments remain unchanged.
+
+Both line paths require zero latched loss after full thread/control admission,
+before cached current-receipt reads. Native outputs and flags are saved before
+post-helper admission; unknown control or receipt loss stops at exact UD2.
+The public API captures its canonical issuer privately and checks the exact
+original before dependency reconstruction. Public helper aliases cannot select
+the implementation; canonical source is checked before and after emission.
+At 4K the unchanged reservation uses 106,941/126,920 bytes, leaving 24,131/4,152.
+Synthetic pixels and RET8 are modeled rather than original opcode execution.
+All installed-hook lists remain empty. This supplies no native rendering,
+RLE/provider ownership, complete battle, healthy map return, runtime/input,
+endurance, release or promotion proof.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
