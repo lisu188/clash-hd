@@ -492,8 +492,19 @@ original process issuance before checking later closes or reissued aliases.
 It keeps parsed identity separate from wire clock bytes. Unexpected collection
 exceptions remain source diagnostics and debt alongside later parser failures;
 only the exact expected outer failure with fresh exit and independent native
-failure packets can replay as a controlled negative. Full source checks do not
-accept the repaired chain; its separate hosted native attempt remains required.
+failure packets can replay as a controlled negative. Full source checks alone
+cannot accept the repaired chain.
+
+The seventh hosted attempt on the exact `f2db8a603af940100681e46974db4d32b282fbff`
+source head passes the expected synthetic success and all ten rejection cases;
+all 43 exact-head checks pass, and PR #172 is merged. The archive and all 66
+referenced original streams are independently authenticated in RAM. See
+`reports/joined-loader-v3-ci-seventh-fixture-20261006.json` for the source,
+artifact and narrow replay bindings. Modes 3, 5 and 9 retain partial/debt state;
+a passing rejection test does not prove cleanup. The live private issuance
+capabilities are not recoverable from an archive, so bounded offline checks do
+not replay the entire private session. All broader game/runtime, human-input,
+endurance, production-verifier and promotion claims remain unchanged and false.
 
 `src/patcher/battle_profile_primitive_request.py` recomposes the baseline 74
 continuation adapters and 13 primitive queries through one shared guarded
