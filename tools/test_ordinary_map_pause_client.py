@@ -141,6 +141,71 @@ class ClientTests(unittest.TestCase):
         self.assertIn('Read-lease release failed',raised.exception.__notes__[0])
         self.assertTrue(self.client._poisoned)
 
+    def test_native_owner_and_host_query_failures_are_retained_and_poison_session(self):
+        for operation in ('host_alive', 'check_owner'):
+            with self.subTest(operation=operation):
+                peer=self.host.client()
+                native=PermissionError(13, 'QueryFullProcessImageName failed')
+                native.winerror=5
+                calls=[]
+                def failed():
+                    calls.append(operation)
+                    raise native
+                setattr(peer,operation,failed)
+                original=(self.host.root/'ack.json').read_bytes()
+                with self.assertRaises(tool.LeaseError) as caught:peer.acquire()
+                failure=caught.exception
+                self.assertIs(failure.original_error,native)
+                self.assertIs(failure.__cause__,native)
+                self.assertEqual(failure.original_error.winerror,5)
+                self.assertIs(peer.native_failures[0],failure)
+                self.assertTrue(peer._poisoned)
+                self.assertIsNone(peer._active)
+                self.assertEqual(peer.sequence,0)
+                self.assertEqual(peer.receipts,[])
+                self.assertFalse((self.host.root/'request.txt').exists())
+                self.assertEqual((self.host.root/'ack.json').read_bytes(),original)
+                with self.assertRaisesRegex(tool.LeaseError,'cannot be reused'):peer.acquire()
+                self.assertEqual(calls,[operation])
+
+    def test_owner_query_failure_during_pause_wait_never_publishes_a_lease(self):
+        self.host.ignore=True
+        native=PermissionError(13,'target terminated during image-path query')
+        native.winerror=5
+        calls=[]
+        def observe():
+            calls.append(self.host.tick)
+            if self.host.tick>1000:raise native
+            return dict(self.host.identity)
+        self.client.check_owner=observe
+        with self.assertRaises(tool.LeaseError) as caught:self.client.acquire(timeout_ms=50)
+        self.assertIs(caught.exception.__cause__,native)
+        self.assertIs(self.client.native_failures[0].original_error,native)
+        self.assertEqual(self.client.sequence,1)
+        self.assertEqual(self.client.receipts,[])
+        self.assertIsNone(self.client._active)
+        self.assertTrue(self.client._poisoned)
+        request=(self.host.root/'request.txt').read_bytes()
+        with self.assertRaisesRegex(tool.LeaseError,'cannot be reused'):self.client.acquire()
+        self.assertEqual((self.host.root/'request.txt').read_bytes(),request)
+        self.assertEqual(calls[-1],1010)
+
+    def test_native_failure_revokes_active_lease_without_resume_and_preserves_primary_error(self):
+        native=PermissionError(13,'retained target identity unavailable')
+        def failed():raise native
+        with self.assertRaisesRegex(ValueError,'raw read failed') as caught:
+            with self.client.paused():
+                self.client.check_owner=failed
+                raise ValueError('raw read failed')
+        self.assertTrue(self.client._poisoned)
+        self.assertIsNone(self.client._active)
+        self.assertIsNone(self.client._active_sequence)
+        self.assertEqual(self.client.sequence,1)
+        self.assertEqual([row['status'] for row in self.client.receipts],['paused'])
+        self.assertIs(self.client.native_failures[0].original_error,native)
+        self.assertIn('Read-lease release failed',caught.exception.__notes__[0])
+        with self.assertRaisesRegex(tool.LeaseError,'cannot be reused'):self.client.live()
+
     def test_invalid_clock_deadline_rejects_pause_acknowledgment(self):
         original=self.host.publish
         def publish(status, paused):

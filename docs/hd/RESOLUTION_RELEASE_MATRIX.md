@@ -292,6 +292,26 @@ inside the historical held epoch. All broader loaded-candidate, endurance,
 runtime, manual-input, release and promotion claims remain false; no production
 lane is registered.
 
+`tools/hidden_soak_job_lease.py` prepares an ordered WIN64-only job transcript.
+It retains supplied native scalars and complete original buffers, including
+unused PID-buffer capacity. Suspended creation, no-breakaway limit readback,
+assignment and membership must precede resume. Retained process generations,
+startup/precleanup membership and accounting, bounded termination/drain, final
+empty queries after known waits, and all owned closes are required. Missing,
+duplicate or reordered operations, failed calls, unknown children and handle
+debt fail even when later receipts look successful. Existing cleanup booleans
+cannot supply these receipts.
+
+The 4 MiB transcript and its atomic temporary add 8 MiB to the other producer
+budgets. Source/native RAM, oversized originals and other costs remain additional.
+This installs no native adapter, and the unchanged host does not emit the
+future protocol. Oversized buffers/errors must be retained before constructing
+bounded records; a rejected constructor does not prove that retention. Supplied
+Python authority aliases do not establish genuine producer issuance. Startup
+and precleanup snapshots do not cover the per-frame or whole-run membership
+schedule. Native no-breakaway cleanup, endurance, runtime, manual-input, release
+and promotion remain unverified, and no production lane is registered.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

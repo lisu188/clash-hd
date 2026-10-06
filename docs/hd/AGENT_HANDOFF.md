@@ -223,6 +223,20 @@ clock and coherent-read provenance remain unfinished. Source replay, pending
 RAM and synthetic receipts cannot establish loaded-candidate, endurance,
 runtime, manual-input, release or promotion acceptance.
 
+[`hidden_soak_job_lease.py`](../../tools/hidden_soak_job_lease.py) prepares a
+WIN64-only transcript of supplied native job receipts. It requires suspended
+host creation, assignment and membership before resume; retained debugger and
+candidate generations; complete original limit, PID and accounting buffers;
+bounded termination/drain; and every owned handle close. Failed native calls,
+unknown children, missing operations and cleanup debt remain failures, including
+after a later successful retry. The complete original transcript is retained.
+Its serialized transcript and atomic temporary add 8 MiB to other budgets.
+The unchanged host does not emit this future protocol. Genuine native issuance,
+per-frame/whole-run membership, durable storage and full no-breakaway cleanup
+remain unfinished. The adapter must retain oversized originals before bounded
+record construction. Replay establishes supplied-receipt consistency only and
+keeps runtime, endurance, manual-input, release and promotion claims false.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -243,6 +257,7 @@ python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
 python -B tools/test_hidden_soak_loaded_image.py
 python -B tools/test_hidden_soak_loaded_read_session.py
+python -B tools/test_hidden_soak_job_lease.py
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 ```
 

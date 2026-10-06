@@ -84,6 +84,15 @@ space requirement. Dry runs still perform no native execution. Recorded-byte
 replay can establish consistency, but it grants no live, manual, geometry,
 endurance or promotion acceptance.
 
+The ordinary-map pause client treats an `OSError` from the owned host-liveness
+or retained-target identity query as a terminal lease failure. It revokes the
+active lease, prevents further reads or resume requests, and raises `LeaseError`
+with the complete original exception in `original_error` and `__cause__`.
+`native_failures` retains that same failure. A terminating process can make its
+image-path query fail before the host exit becomes observable; this does not
+authorize a retry or a successful cleanup claim. Owning host/job cleanup remains
+required separately.
+
 ## Generated reports
 
 Source-only tools may generate temporary JSON/Markdown reports. Redirect them to

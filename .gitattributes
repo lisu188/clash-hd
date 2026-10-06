@@ -1023,3 +1023,5 @@
 /tools/test_battle_profile_stack_lease.py text eol=lf
 /tools/hidden_soak_loaded_read_session.py text eol=lf
 /tools/test_hidden_soak_loaded_read_session.py text eol=lf
+/tools/hidden_soak_job_lease.py text eol=lf
+/tools/test_hidden_soak_job_lease.py text eol=lf
