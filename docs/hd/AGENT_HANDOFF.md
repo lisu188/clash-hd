@@ -251,8 +251,9 @@ callbacks and injects no input. Comparison takes place after termination, so it
 cannot establish comparison during the native hold, whole-candidate loaded proof or healthy
 runtime. Real instrumented ownership/job receipts, durable storage and integration
 remain unfinished. The shared journal plus its complete known failure tail and
-atomic allowance adds 35,717,123 bytes, excluding candidate/assets, compiler
-outputs, independent receipts and unknown output debt. Local source fixtures
+atomic metadata allowance adds 35,717,123 bytes. A second complete raw archive
+copy needs its own additional allowance. Candidate/assets, compiler outputs,
+independent receipts and unknown output debt are also excluded. Local source fixtures
 launch no processes; native CI success cannot grant endurance, manual-input,
 release or promotion acceptance.
 

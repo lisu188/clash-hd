@@ -323,9 +323,10 @@ Native callback strings, full-capacity buffers and the original initial-stop
 clock remain distinct from parser-derived values.
 
 The native batch writes one regular-file journal and includes a reserved complete
-failure tail. Its shared raw/metadata journal plus atomic allowance adds
-35,717,123 bytes; assets, compiler outputs, independent generation/job/clock
-receipts and unknown original-output debt are additional costs. The Windows CI
+failure tail. Its shared raw/metadata journal plus atomic metadata allowance adds
+35,717,123 bytes; a second complete raw-archive copy requires additional space.
+Assets, compiler outputs, independent generation/job/clock receipts and unknown
+original-output debt are additional costs. The Windows CI
 fixture launches only a marked synthetic executable, adopts its target handle
 while still live and checks actual original read bytes. It compares them after
 termination. Canonical comparison during the native hold, real instrumented
