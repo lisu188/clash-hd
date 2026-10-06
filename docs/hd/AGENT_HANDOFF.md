@@ -136,6 +136,16 @@ independently reconstructed `--prepared-matrix-candidate` or
 outside this raw-retention path. See [Development](DEVELOPMENT.md) for its disk
 allowance and evidence limits.
 
+The ordinary-map pause client retains original acknowledgment read errors.
+While waiting for readiness, pause or resume, missing files and replacement
+permission errors may retry only within that request's original absolute
+deadline, with retained-owner and host checks on every iteration. A late valid
+acknowledgment cannot publish a receipt. An acknowledgment read failure during
+an active paused interval immediately revokes its authority; it cannot retry or
+resume from a cached acknowledgment. Portable fixtures cover these paths.
+Synthetic CI failures remain historical diagnostics, separate from game input,
+runtime, endurance and promotion evidence.
+
 [`hidden_soak_process_lease.py`](../../tools/hidden_soak_process_lease.py)
 prepares bounded retained-handle cleanup for a future hidden-soak producer.
 The caller must independently authenticate its in-memory run authority;

@@ -1041,3 +1041,5 @@
 /tools/test_hidden_soak_loader_expected.py text eol=lf
 /src/patcher/battle_profile_continuation.py text eol=lf
 /tools/test_battle_profile_continuation.py text eol=lf
+/tools/ordinary_map_pause_client.py text eol=lf
+/tools/test_ordinary_map_pause_client.py text eol=lf

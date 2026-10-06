@@ -1,8 +1,10 @@
 """Portable protocol tests; fake host and synthetic identities, no process/input."""
+import errno
 import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 import ordinary_map_pause_client as tool
 
@@ -215,6 +217,164 @@ class ClientTests(unittest.TestCase):
                 p.write_text(json.dumps(d))
         self.host.publish=publish
         with self.assertRaisesRegex(tool.LeaseError,'exceeds'):self.client.acquire()
+
+    def test_ack_replacement_read_errors_retry_only_inside_original_wait(self):
+        native = [PermissionError(errno.EACCES, 'CRT replacement read denied'),
+                  FileNotFoundError(errno.ENOENT, 'replacement path absent')]
+        path = self.host.root/'ack.json'
+        before = path.read_bytes()
+        original = Path.read_text
+        observed = []
+        def read(current, *args, **kwargs):
+            if current == path and len(observed) < len(native):
+                observed.append(self.host.tick)
+                raise native[len(observed)-1]
+            return original(current, *args, **kwargs)
+        with mock.patch.object(Path, 'read_text', read):
+            lease = self.client.acquire(timeout_ms=50)
+        self.assertEqual(observed, [1000, 1010])
+        self.assertEqual(self.host.tick, 1020)
+        self.assertEqual(self.client.sequence, 1)
+        self.assertEqual([row['status'] for row in self.client.receipts], ['paused'])
+        self.assertEqual(len(self.client.ack_wait_failures), 2)
+        for failure, error in zip(self.client.ack_wait_failures, native):
+            self.assertIs(failure.original_error, error)
+            self.assertEqual(failure.operation, 'acknowledgment read')
+        self.assertIsNone(getattr(native[0], 'winerror', None))
+        self.assertNotEqual(path.read_bytes(), before)
+        self.client.check_lease(lease)
+        self.client.release(lease)
+
+    def test_permanent_ack_read_error_expires_without_reset_or_lease(self):
+        for code in (None, 5, 32):
+            with self.subTest(winerror=code):
+                self.host.tick=1000; self.host.seq=0; self.host.lease=''
+                self.host.publish('ready', False)
+                request=self.host.root/'request.txt'
+                if request.exists(): request.unlink()
+                peer=self.host.client()
+                native=PermissionError(errno.EACCES, 'ack remains unavailable')
+                if code is not None: native.winerror=code
+                ticks=[]
+                def read(*_args, **_kwargs):
+                    ticks.append(self.host.tick)
+                    raise native
+                with mock.patch.object(Path, 'read_text', read):
+                    with self.assertRaisesRegex(tool.LeaseError, 'Timed out') as caught:
+                        peer.acquire(timeout_ms=50)
+                self.assertEqual(ticks, [1000, 1010, 1020, 1030, 1040])
+                self.assertEqual(self.host.tick, 1050)
+                self.assertIs(caught.exception.original_error, native)
+                self.assertIs(caught.exception.__cause__, native)
+                self.assertEqual(len(peer.ack_wait_failures), 5)
+                self.assertTrue(all(row.original_error is native for row in peer.ack_wait_failures))
+                self.assertTrue(peer._poisoned)
+                self.assertIsNone(peer._active)
+                self.assertEqual(peer.receipts, [])
+                with self.assertRaisesRegex(tool.LeaseError, 'cannot be reused'): peer.acquire()
+
+    def test_other_ack_io_errors_fail_immediately_and_keep_original_exception(self):
+        native=PermissionError(errno.EACCES, 'unexpected native I/O result')
+        native.winerror=87
+        with mock.patch.object(Path, 'read_text', side_effect=native):
+            with self.assertRaises(tool.LeaseError) as caught:
+                self.client.acquire(timeout_ms=50)
+        self.assertIs(caught.exception.__cause__, native)
+        self.assertIs(caught.exception.original_error, native)
+        self.assertEqual(self.host.tick, 1000)
+        self.assertEqual(len(self.client.ack_wait_failures), 1)
+        self.assertTrue(self.client._poisoned)
+        self.assertIsNone(self.client._active)
+
+    def test_ack_retry_rechecks_owner_before_another_read(self):
+        native=PermissionError(errno.EACCES, 'replacement read denied')
+        original=Path.read_text
+        count=0
+        def read(path, *args, **kwargs):
+            nonlocal count
+            count+=1
+            if count==1: raise native
+            return original(path, *args, **kwargs)
+        def changed(seconds):
+            self.host.advance(seconds)
+            self.host.identity['creation_filetime']+=1
+        self.client.sleep=changed
+        with mock.patch.object(Path, 'read_text', read):
+            with self.assertRaisesRegex(tool.LeaseError, 'identity changed'):
+                self.client.acquire(timeout_ms=50)
+        self.assertEqual(count, 1)
+        self.assertEqual(self.host.tick, 1010)
+        self.assertIsNone(self.client._active)
+        self.assertEqual(self.client.receipts, [])
+        self.assertIs(self.client.ack_wait_failures[0].original_error, native)
+
+    def test_ack_retry_cannot_hide_a_later_invalid_acknowledgment(self):
+        native=PermissionError(errno.EACCES, 'replacement read denied')
+        count=0
+        original=self.client.ack
+        def read():
+            nonlocal count
+            count+=1
+            if count==1: raise native
+            data=original()
+            data['lease_id']='0'*32
+            return data
+        self.client.ack=read
+        with self.assertRaisesRegex(tool.LeaseError, 'differs from request'):
+            self.client.acquire(timeout_ms=50)
+        self.assertEqual(count, 2)
+        self.assertEqual(self.host.tick, 1010)
+        self.assertEqual(self.client.receipts, [])
+        self.assertIsNone(self.client._active)
+        self.assertTrue(self.client._poisoned)
+        self.assertIs(self.client.ack_wait_failures[0].original_error, native)
+
+    def test_owner_changed_during_valid_ack_read_cannot_publish_receipt(self):
+        original=self.client.ack
+        def read():
+            data=original()
+            self.host.identity['creation_filetime']+=1
+            return data
+        self.client.ack=read
+        with self.assertRaisesRegex(tool.LeaseError, 'identity changed'):
+            self.client.wait_ready()
+        self.assertEqual(self.client.receipts, [])
+        self.assertIsNone(self.client._active)
+
+    def test_active_ack_read_failure_revokes_authority_without_retry_or_resume(self):
+        lease=self.client.acquire()
+        tick=self.host.tick
+        before=(self.host.root/'ack.json').read_bytes()
+        native=PermissionError(errno.EACCES, 'active acknowledgment unavailable')
+        native.winerror=32
+        with mock.patch.object(Path, 'read_text', side_effect=native):
+            with self.assertRaises(tool.LeaseError) as caught: self.client.check_lease(lease)
+        self.assertIs(caught.exception.original_error, native)
+        self.assertIs(caught.exception.__cause__, native)
+        self.assertIs(self.client.native_failures[0], caught.exception)
+        self.assertEqual(self.client.ack_wait_failures, ())
+        self.assertEqual(self.host.tick, tick)
+        self.assertTrue(self.client._poisoned)
+        self.assertIsNone(self.client._active)
+        self.assertIsNone(self.client._active_sequence)
+        with self.assertRaisesRegex(tool.LeaseError, 'cannot be reused'): self.client.release(lease)
+        self.assertEqual(self.client.sequence, 1)
+        self.assertEqual((self.host.root/'ack.json').read_bytes(), before)
+
+    def test_valid_ack_returned_after_wait_deadline_cannot_authorize_pause(self):
+        self.host.seq=1; self.host.lease='1'*32
+        self.host.publish('paused', True)
+        original=self.client.ack
+        def late():
+            result=original()
+            self.host.tick+=50
+            return result
+        self.client.ack=late
+        with self.assertRaisesRegex(tool.LeaseError, 'Timed out'):
+            self.client._wait('paused', self.host.lease, 1, 50)
+        self.assertEqual(self.host.tick, 1050)
+        self.assertEqual(self.client.receipts, [])
+        self.assertIsNone(self.client._active)
 
 
 if __name__=='__main__':unittest.main(verbosity=2)
