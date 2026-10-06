@@ -1081,3 +1081,7 @@
 /tools/test_battle_profile_stack_lease_v2.py text eol=lf
 /.github/workflows/battle-stack-lease-v2-contracts.yml text eol=lf
 /reports/battle-stack-lease-v2-local-fixture-failure-20261006.json text eol=lf
+/src/patcher/battle_profile_content_v2.py text eol=lf
+/tools/test_battle_profile_content_v2.py text eol=lf
+/.github/workflows/battle-content-v2-contracts.yml text eol=lf
+/reports/battle-content-v2-local-fixture-failure-20261006.json text eol=lf

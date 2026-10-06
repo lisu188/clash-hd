@@ -164,6 +164,47 @@ The successor fixture checks ordinary sizes separately from the exact final
 invalid-instruction receipt. This historical failed batch is not a complete
 suite pass or runtime proof.
 
+[`battle_profile_content_v2.py`](../../src/patcher/battle_profile_content_v2.py)
+reconstructs the canonical fresh field and lease before emitting 28 body-site
+content reads. Its complete typed operand inventory and actual body/finish
+receipts record native 8-, 16- and 32-bit destinations; value preparation does
+not prove native instruction replacement. Full fixed records,
+zero tails, pointer/control bindings and independent descriptor shadows are
+checked around the modeled thread callback and before cached or payload reads.
+Every captured ancestry span rejects overlap with the complete RX, RW and
+separate modal allocations before its first read.
+
+The 784-byte helper owns 67 control shadows and six mutable-descriptor shadows.
+Its checked interval is `[EBP-44, EBP+824)`; this is a numeric source/model
+bound, not mapped/native or whole-chain capacity proof. Count remains admitted
+only through the source-owned ordinary draw ancestry. Outside neighbors return
+their native empty value without reading outside the bounded payload. Unknown
+private control corruption reaches an unsafe terminal, which establishes no
+healthy native unwind. Continuation/primitive/line successors, native ABI and
+receiver/argument validity, provider/RLE lifetime, clipping, atomic installation,
+quit and healthy map return remain unfinished. No hook, provider or candidate
+is installed; source and CPU results supply no runtime or promotion acceptance.
+
+The first full Content V2 batch retained 16 passes and one fixture failure:
+the invalid-index assertion compared signed Python EAX with its actual DWORD
+representation. Status two was preserved. The diagnostic remains in
+[`battle-content-v2-local-fixture-failure-20261006.json`](../../reports/battle-content-v2-local-fixture-failure-20261006.json).
+This historical failed batch establishes no complete suite pass. The frozen
+successor (`681fbf96...` producer, `cfd0ecf6...` fixture) passed all 17 source and
+synthetic CPU methods on 2026-10-06, without skips, in 1815.105 seconds. Its
+26-source closure stayed unchanged; 5653 modeled observations reached at most
+the checked 868-byte interval. These remain uninstalled source/model results,
+with no native capacity, runtime or promotion acceptance.
+
+The separate original-backed RAM method then failed its direct emission-object
+comparison. Private reconstruction creates distinct relocation dataclass types;
+the final fixture (`4ba3ae48...`) compares complete field/byte records instead.
+The corrected RAM method passed in 165.854 seconds, with its source closure and
+original bytes unchanged. Only this optional method changed; all seventeen
+default method ASTs remain identical to the passing source/model batch. The
+historical failure remains in the diagnostic. No candidate file or native
+runtime was produced by either RAM check.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -641,6 +682,7 @@ python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
 python -B tools/test_battle_profile_routing_v2.py
 python -B tools/test_battle_profile_field_v3.py --require-machine-tools
 python -B tools/test_battle_profile_stack_lease_v2.py --require-machine-tools
+python -B tools/test_battle_profile_content_v2.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
