@@ -49,6 +49,8 @@ jobs:
         run: python -B tools/test_resolution_recipe_authentication.py SourceTests
       - name: Verify profile-specific battle parent and allocation plans
         run: python -B tools/test_battle_profile_context.py
+      - name: Verify versioned battle allocations and complete file-offset relayout
+        run: python -B tools/test_battle_profile_context_v2.py
       - name: Execute uninstalled profile lifecycle on guarded synthetic x86
         run: python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
       - name: Verify uninstalled profile HUD routing and synthetic chrome pixels
@@ -69,6 +71,7 @@ jobs:
               output.write('Successor recipe authentication does not register a launcher recipe or establish runtime acceptance.\n\n')
               output.write('The two Complete HD matrix recipes privately reconstruct a pinned source graph. These source tests do not run the optional genuine-original memory lane or qualify runtime evidence.\n\n')
               output.write('Battle parent allocation plans install no hooks, code, state or relocations. Runtime ownership and complete battle routing remain separate requirements.\n\n')
+              output.write('The V2 allocation context reserves fresh RX/RW addresses and audits Modal header growth with exact file-offset edits. Its provider reservation is unpopulated and has no proven capacity or lifetime. The optional original-backed RAM lane is not run in CI.\n\n')
               output.write('Profile lifecycle CPU fixtures use explicit allocator/constructor/destructor/thread models. The emitted lifecycle remains uninstalled and cannot establish native lifetime, healthy map return or expanded-battle acceptance.\n\n')
               output.write('Profile routing compares synthetic pixel buffers and modeled thread callbacks. Its target hooks and chrome copies remain uninstalled; these buffers are not runtime captures or visible-composition proof.\n\n')
               output.write('Saved-camera machine checks require Unicorn and execute synthetic x86 state. The original-byte case explicitly skips because proprietary originals are unavailable in CI.\n\n')
