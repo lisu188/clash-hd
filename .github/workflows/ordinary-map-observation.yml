@@ -66,6 +66,7 @@ jobs:
           python -B tools/test_hidden_soak_process_lease.py
           python -B tools/test_hidden_soak_frame_ledger.py
           python -B tools/test_hidden_soak_running_time.py
+          python -B tools/test_hidden_soak_loaded_image.py
           python -B tools/test_resolution_playability.py -v
           python -B tools/test_menu_pulse_delivery.py -v
           python -B tools/test_runner_cursor_feedback.py -v

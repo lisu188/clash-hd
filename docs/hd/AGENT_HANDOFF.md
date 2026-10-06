@@ -181,6 +181,20 @@ and atomic temporary bytes to the frozen frame-ledger budget; native-host and
 other producer costs are additional. It installs no adapter or production
 evidence lane and keeps runtime, manual-input and promotion claims false.
 
+[`hidden_soak_loaded_image.py`](../../tools/hidden_soak_loaded_image.py)
+prepares an initial-loader byte comparison for the four frozen all-preset
+parent recipes, including Classic's distinct narrow and wide recipes. Public
+admission reconstructs the exact candidate, typed metadata, canonical probe
+and source closure privately; caller-selected spans or passing flags cannot
+supply them. Replay requires every original PEB ImageBase, header and
+executable-section read, complete HIGHLOW relocation fields and original
+before/after query results in the held pre-probe epoch. Failed HRESULTs and
+partial reads remain failures. Nonexecutable sections and alignment gaps are
+explicitly excluded. Native read issuance, actual loader/header behavior,
+runtime data and preferred/nonpreferred probe execution remain unverified.
+This component supplies no reader, run or production evidence lane and keeps
+loaded-candidate, whole-image, runtime, manual-input and promotion claims false.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -199,6 +213,7 @@ python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
+python -B tools/test_hidden_soak_loaded_image.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a
