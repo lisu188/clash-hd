@@ -385,6 +385,30 @@ establish no production producer provenance, full job/host cleanup, durable
 storage, loaded-candidate/probe, map-ready, runtime/endurance, human-input,
 release or promotion acceptance. No missing production verifier is registered.
 
+`src/patcher/battle_profile_primitive_request.py` recomposes the baseline 74
+continuation adapters and 13 primitive queries through one shared guarded
+authority. The new owning thunk is 116 bytes with a separate 64-byte live
+request; its 640-byte helper retains an 864-byte callback snapshot within a
+1712-byte maximum stack extent. V2 field/lease frames and the protected owner
+page stay unchanged. Original Tile/Unit/Tracking/Charge ancestry, whole argument
+windows and native partial-register/flag outcomes remain authenticated.
+
+Sprite requests preserve signed finite clips and the native all-minus-one
+sentinel, with distinct malformed/empty/prepared status. Line requests preserve
+native unsigned16 coordinates, Y-selected axis, plain inclusive and dashed
+exclusive endpoints and absolute dash phase. Queries check the exact current
+physical field receiver and reject literal primary state, but dereference no
+sprite or provider payload and draw no pixels. Request records expire at their
+own thunk RET; no arbitrary caller or previous frame padding supplies storage.
+
+At 4K the recomposed RX totals are 106,495 bytes for Classic/Framed and 126,474
+for Complete HD/Modal Widgets, leaving 24,577 and 4,598 bytes in the unchanged
+128 KiB reservation. All hooks remain absent. Whole pre/post callsite integration,
+native primitive replay, provider/allocation ownership, intracallback cancellation,
+fatal shutdown and healthy restoration remain unfinished. Unknown control still
+stops at exact UD2. Source/synthetic request acceptance is not installed expanded
+battle, runtime, input, endurance, release or promotion proof.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -416,6 +440,7 @@ python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 python -B tools/test_battle_profile_content.py --require-machine-tools
 python -B tools/test_battle_profile_continuation.py --require-machine-tools
+python -B tools/test_battle_profile_primitive_request.py --require-machine-tools
 ```
 
 The optional original-backed constructor lane builds only in memory from a
