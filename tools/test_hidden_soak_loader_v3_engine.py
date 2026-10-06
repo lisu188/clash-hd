@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import sys
 import unittest
@@ -97,6 +98,45 @@ def retain_case_failure(case, root, allowance):
 
 
 class EngineSourceTests(unittest.TestCase):
+    def test_private_desktop_uses_supported_restricted_sdk_rights_and_outer_user32(self):
+        rights="DESKTOP_CREATEWINDOW|DESKTOP_READOBJECTS|DESKTOP_WRITEOBJECTS|DESKTOP_ENUMERATE"
+        for mode in range(11):
+            with self.subTest(mode=mode):
+                text=source.render_outer_source(fixture_mode=mode).decode("ascii")
+                self.assertIn("constexpr DWORD desktop_access="+rights+";",text)
+                self.assertIn('static_assert(desktop_access==0xC3,"supported private desktop rights")',text)
+                self.assertIn("CreateDesktopW(desktop_name.c_str(),nullptr,nullptr,0,desktop_access,nullptr)",text)
+                self.assertIn('{"desired_access",n(desktop_access)}',text)
+                self.assertEqual(text.count('#pragma comment(lib,"user32.lib")'),1)
+                for forbidden in ("DESKTOP_ALL_ACCESS","DESKTOP_SWITCHDESKTOP","DESKTOP_HOOKCONTROL",
+                        "DESKTOP_JOURNALRECORD","DESKTOP_JOURNALPLAYBACK","SwitchDesktop(","SetThreadDesktop("):
+                    self.assertNotIn(forbidden,text)
+                self.assertLess(text.index('own(desktop,reinterpret_cast<HANDLE>(dh),"desktop")'),
+                    text.index('api("CreateDesktopW"'))
+        self.assertNotIn("user32.lib",source.OBSERVER_GATE_CPP)
+
+    def test_all_emitted_outer_api_and_operation_literals_are_in_replay_grammar(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        tree=ast.parse(Path(adapter.__file__).read_bytes())
+        parser=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_outer_protocol")
+        assignments={node.targets[0].id:node.value for node in parser.body if isinstance(node,ast.Assign) and
+            len(node.targets)==1 and isinstance(node.targets[0],ast.Name)}
+        names=set(ast.literal_eval(assignments["bool_names"])+ast.literal_eval(assignments["handle_names"])+
+            ast.literal_eval(assignments["source_names"].args[0].right))
+        allowed_operations=next(ast.literal_eval(node.comparators[0]) for node in ast.walk(parser)
+            if isinstance(node,ast.Compare) and isinstance(node.left,ast.Attribute) and
+            isinstance(node.left.value,ast.Name) and node.left.value.id=="row" and node.left.attr=="operation" and
+            len(node.ops)==1 and isinstance(node.ops[0],ast.In))
+        for mode in range(11):
+            with self.subTest(mode=mode):
+                text=source.render_outer_source(fixture_mode=mode).decode("ascii")
+                emitted_names=set(re.findall(r'\bapi\(\s*"([^"]+)"',text))
+                emitted_operations=set(re.findall(r'journal\.frame\(\s*"([^"]+)"',text))
+                self.assertIn("CreateDesktopW",emitted_names);self.assertIn("GetFileType",emitted_names)
+                self.assertIn("startup_info",emitted_operations)
+                self.assertEqual(emitted_names-names,set())
+                self.assertEqual(emitted_operations-set(allowed_operations),set())
+
     def test_each_native_opt_in_is_required_before_any_path_or_native_setup(self):
         import hidden_soak_loader_v3_adapter as adapter
         class UnusedPaths:

@@ -1,0 +1,137 @@
+{
+  "case_modes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "compiled_producer_verified": false,
+  "completed_case_count": 0,
+  "diagnosis": "Signature verification succeeded. The x64 outer compilation failed before process creation because DESKTOP_ALL_ACCESS is not a declared SDK identifier. No completed compiled producer or native composition is inferred.",
+  "disk_preflight": {
+    "fixed_allowance_bytes": 2648411304,
+    "free_bytes": 157817204736,
+    "total_bytes": 161059172352
+  },
+  "failed_cases": [
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 0,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 1,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 2,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 3,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 4,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 5,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 6,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 7,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 8,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 9,
+      "retained_original_count": 113
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 10,
+      "retained_original_count": 113
+    }
+  ],
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "34a03a6b96cb64cb9c466e8773b3d13aa44aec9e",
+  "job_conclusion": "failure",
+  "job_id": 112271919140,
+  "limitations": [
+    "Historical failure on the stated source head; successor repair and hosted rerun remain required.",
+    "Zero archive-copy debt does not establish independent storage durability.",
+    "Public synthetic Windows preparation cannot establish any game resolution acceptance."
+  ],
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 1281,
+    "expanded_bytes": 10141319,
+    "id": 11413343251,
+    "inspection": "Authenticated zip and original case records inspected in RAM; no extraction to disk",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37464472755/artifacts/11413343251",
+    "zip_bytes": 1092321,
+    "zip_sha256": "736c510a43bd8e8dc1b86ea5f1587f3b14f7341dbbb7da640055bafb211de01d"
+  },
+  "original_compiler_result": {
+    "case_mode": 0,
+    "error": "'DESKTOP_ALL_ACCESS': undeclared identifier",
+    "error_id": "C2065",
+    "line": 310,
+    "returncode": 2,
+    "source": "outer.cpp",
+    "stderr_bytes": 0,
+    "stream": "stdout",
+    "warnings": "C4127 constant-condition warnings retained as original diagnostics"
+  },
+  "original_error": "ValueError: original compiler failure retained",
+  "original_error_type": "NativeFailure",
+  "original_signature_command_result": {
+    "case_mode": 0,
+    "returncode": 0,
+    "stderr": "Original CLIXML module-initialization progress retained unchanged",
+    "stdout": "Valid|CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+  },
+  "probe_executed": false,
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/172",
+  "release_acceptance": false,
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_hosted_failure_v1",
+  "source_hashes": {
+    "tools/hidden_soak_loader_v3.py": "0194124fa2077bf87bf8537cf79f5a1c2035ffc68420c10394d0a0c80360b8b3",
+    "tools/hidden_soak_loader_v3_adapter.py": "8f96ead90bc6852ff0e689342bd3aba07b307a04e5f0a1b898b9489df3a166fb",
+    "tools/test_hidden_soak_loader_v3.py": "f7ee65499ca56befa7ba6e5d7597b2e6667bc327222ec2ac7c01aff9b66c397c",
+    "tools/test_hidden_soak_loader_v3_engine.py": "e629e3cb05ab2a645d67801c16dd23e786c696b05a3aad75d06692bc63eb8eea"
+  },
+  "storage_durability_verified": false,
+  "supporting_primary_source": "https://learn.microsoft.com/en-us/windows/win32/winstation/desktop-security-and-access-rights",
+  "workflow_run_id": 37464472755
+}

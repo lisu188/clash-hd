@@ -1342,7 +1342,7 @@ def _caller_protocol(frames,state):
 
 
 def _outer_protocol(frames,state,core,generator):
-    identities={}; artifacts={}; apis=[]; packet=None; channel=None;startup=None
+    identities={}; artifacts={}; apis=[]; packet=None; channel=None;startup=None;desktop=None
     previous=0
     bool_names=("WriteFile","FlushFileBuffers","GetFileInformationByHandle","GetFileSizeEx","ReadFile",
         "QueryFullProcessImageNameW","GetProcessTimes","GetExitCodeProcess","QueryPerformanceFrequency",
@@ -1377,6 +1377,15 @@ def _outer_protocol(frames,state,core,generator):
             _require(value["length_kind"] in ("original_native_count","source_capacity_no_native_count"),"outer original count policy differs")
             if name=="DeleteProcThreadAttributeList": _require(value["result"] is None,"void native result cannot be invented")
             else: _integer(value["result"],-2**31,2**64-1)
+            if name=="CreateDesktopW":
+                detail=_exact(value["detail"],("name","desired_access"),"original private desktop request")
+                _integer(detail["desired_access"])
+                _require(desktop is None and (value["role"],value["phase"])==("desktop","setup") and
+                    detail==dict(name="ClashLoaderV3_"+core["run_id"],desired_access=0xC3) and
+                    value["requested"]==value["returned"]==0 and not row.raw and
+                    value["length_kind"]=="source_capacity_no_native_count",
+                    "source-issued private desktop name or exact supported rights differ")
+                desktop=row
             good=True
             if name in bool_names: good=value["result"]!=0
             elif name in handle_names: good=value["result"]==value["handle"] and value["handle"] not in (0,2**64-1)
@@ -1472,6 +1481,7 @@ def _outer_protocol(frames,state,core,generator):
              and finish["scope"]=="V3_initial_loader_terminate_only","single typed original outer terminal required")
     if not finish["failed"] and not finish["debt"]:
         _require(not failures and not any(r.operation=="rejected" for r in frames),"later outer completion cannot erase failure")
+        _require(desktop is not None,"complete outer needs the original restricted private desktop request")
         expected_artifacts={"observer_file":state["observer_binary"],"candidate_file":state["candidate"],
             "request_file":state["facts"].request_bytes,"payload_file":state["facts"].expected_payload,
             "outer_file":state["outer_binary"]}

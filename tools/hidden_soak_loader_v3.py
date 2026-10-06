@@ -514,7 +514,8 @@ int wmain(int argc,wchar_t **argv){Owned desktop,job,host,thread,target,caller,s
         auto ci=process_identity(caller,caller_image,"startup",0,0,true);auto oi=process_identity(self,self_image,"startup",ci.pid,ci.creation,true);
         outer_creation=oi.creation;demand(ci.pid==get32(boot,16)&&ci.creation==get64(boot,20)&&oi.pid==get32(boot,28)&&oi.creation==get64(boot,32)&&oi.pid==GetCurrentProcessId()&&parent_of(oi.pid)==ci.pid,"source-issued distinct caller/outer generation differs");
         std::wstring desktop_name=L"ClashLoaderV3_";std::string run=hex(boot.data()+64,16);desktop_name.append(run.begin(),run.end());
-        b=tick();SetLastError(0);HDESK dh=CreateDesktopW(desktop_name.c_str(),nullptr,nullptr,0,DESKTOP_ALL_ACCESS,nullptr);e=GetLastError();if(dh)own(desktop,reinterpret_cast<HANDLE>(dh),"desktop");api("CreateDesktopW","desktop","setup",reinterpret_cast<HANDLE>(dh),bits(reinterpret_cast<HANDLE>(dh)),e,0,0,Bytes(),obj({{"name",quote(ascii(desktop_name))}}),b);demand(dh,"original private desktop denied");
+        constexpr DWORD desktop_access=DESKTOP_CREATEWINDOW|DESKTOP_READOBJECTS|DESKTOP_WRITEOBJECTS|DESKTOP_ENUMERATE;static_assert(desktop_access==0xC3,"supported private desktop rights");
+        b=tick();SetLastError(0);HDESK dh=CreateDesktopW(desktop_name.c_str(),nullptr,nullptr,0,desktop_access,nullptr);e=GetLastError();if(dh)own(desktop,reinterpret_cast<HANDLE>(dh),"desktop");api("CreateDesktopW","desktop","setup",reinterpret_cast<HANDLE>(dh),bits(reinterpret_cast<HANDLE>(dh)),e,0,0,Bytes(),obj({{"name",quote(ascii(desktop_name))},{"desired_access",n(desktop_access)}}),b);demand(dh,"original private desktop denied");
         b=tick();SetLastError(0);HANDLE jh=CreateJobObjectW(nullptr,nullptr);e=GetLastError();if(jh)own(job,jh,"job");api("CreateJobObjectW","job","setup",jh,bits(jh),e,0,0,Bytes(),"{}",b);demand(jh,"original job denied");
         JOBOBJECT_EXTENDED_LIMIT_INFORMATION li={};li.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;b=tick();SetLastError(0);BOOL jr=SetInformationJobObject(jh,JobObjectExtendedLimitInformation,&li,sizeof(li));e=GetLastError();api("SetInformationJobObject","job","setup",jh,jr,e,sizeof(li),sizeof(li),bytes(&li,sizeof(li)),"{}",b);demand(jr,"no-breakaway setup denied");limits(job,"setup");
         file_open(stdin_original,L"NUL","stdin_original",FILE_GENERIC_READ,OPEN_EXISTING);
@@ -640,6 +641,7 @@ OUTER_HELPERS = r'''
 #include <string>
 #include <vector>
 #pragma comment(lib,"bcrypt.lib")
+#pragma comment(lib,"user32.lib")
 static_assert(sizeof(void*)==8,"WIN64 outer controller required");
 static_assert(sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)==144,"fixed WIN64 limits");
 static_assert(sizeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION)==48,"fixed accounting");
