@@ -141,12 +141,14 @@ class SmallWorldEngineTests(unittest.TestCase):
                         actual_relocation_verified=relocated if label == 'aslr' else None,
                         added_helper_highlow_rvas=metadata['relocation_contract']['added_rvas'],
                         probe_required_chunks=facts['required_chunks'],
-                        passed=(label in EXPECTED and item['returncode'] == 0 and receipt
+                        passed=(label in EXPECTED and item.get('status') == 'completed'
+                                and item.get('raw_retention_complete') is True
+                                and engine.phase_receipt(log) and item['returncode'] == 0 and receipt
                                 and 'Syntax error' not in log and (label != 'aslr' or relocated)
                                 and (accepted if EXPECTED.get(label) else rejected)))
             cases.append(item)
-        completed = (len(cases) == len(EXPECTED)
-                     and {item['case'] for item in cases} == set(EXPECTED))
+        completed = (engine.terminal_cases(cases, EXPECTED)
+                     and cls.ledger.failure is None and not cls.store.failed)
         report = dict(schema='clash95_complete_small_world_debugger_fixture_v1',
                       generator_sha256=sha(Path(tool.__file__).read_bytes()),
                       fixture_source_sha256=sha(Path(__file__).read_bytes()),
@@ -156,8 +158,10 @@ class SmallWorldEngineTests(unittest.TestCase):
                       original_game_read=False, game_runtime_executed=False,
                       fixture_entry_executed=False, manual_input_proof=False, promotion_ready=False,
                       expected_cases=len(EXPECTED), completed=completed,
+                      first_failure=cls.ledger.failure, retention_debt=cls.store.failed,
+                      artifact_directory=str(cls.root), compiler=cls.compiler_receipt,
                       passed=completed and all(item['passed'] for item in cases), cases=cases)
-        Path(destination).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+        engine.publish_report(cls, destination, report)
 
     def accepted(self, log, marker):
         self.assertEqual(re.findall(r'^CSW_FINAL_OK[^\r\n]*', log, re.M), [marker], log)

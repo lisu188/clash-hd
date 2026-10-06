@@ -9,8 +9,8 @@ import shutil
 import struct
 import subprocess
 import sys
-import tempfile
 import unittest
+import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tools")]
@@ -20,6 +20,321 @@ import test_framed_loaded_probe as fixtures
 MAGIC = b"CLASH_HD_DEBUGGER_FIXTURE_V1"
 RESULT = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) result=(pass|fail)(?: chunks=([0-9]+))?$", re.MULTILINE)
 MISMATCH = re.compile(r"^BNDLOAD_MISMATCH chunk=([0-9]+)$", re.MULTILINE)
+
+# Synthetic CI diagnostics only. These bounds are storage allowances, not proof
+# of native cleanup, game execution, input or release acceptance.
+RETENTION_LIMIT = 512 * 1024 * 1024
+ATOMIC_LIMIT = 64 * 1024 * 1024
+CASE_LIMIT = 128
+PHASES = ("execute", "flush", "processor", "restore", "status", "ip", "compare", "end_session")
+PHASE = re.compile(r"^HARNESS_PHASE seq=(\d+) name=(\w+) edge=(begin|end) "
+                   r"tick=(-?\d+) qpc=(-?\d+) error=(\d+) hr=(-?\d+) value=(\d+)$", re.M)
+
+
+class RetentionError(RuntimeError):
+    """Keep the original unwritten bytes in RAM; never substitute an empty file."""
+    def __init__(self, message, original, *, partial_path=None):
+        super().__init__(message)
+        self.original = original
+        self.partial_path = partial_path
+
+
+def _plain_path(path):
+    path = Path(path)
+    if not path.is_absolute():
+        raise ValueError("retention path must be absolute")
+    for item in (path, *path.parents):
+        if item.exists() and (item.is_symlink() or getattr(item.stat(), "st_file_attributes", 0) & 0x400):
+            raise ValueError("retention path traverses a reparse point")
+    return path.resolve()
+
+
+def ci_artifact_parent(environment=os.environ):
+    if environment.get("GITHUB_ACTIONS") != "true" or environment.get("CLASH_DEBUGGER_INTEGRATION") != "1":
+        raise ValueError("native synthetic fixtures require explicit GitHub CI opt-in")
+    parent = _plain_path(environment["CLASH_PROBE_ENGINE_ARTIFACT_DIR"])
+    runner = _plain_path(environment["RUNNER_TEMP"])
+    if parent == runner or runner not in parent.parents or parent == ROOT or ROOT in parent.parents or parent in ROOT.parents:
+        raise ValueError("artifact directory must be an external RUNNER_TEMP child")
+    return parent
+
+
+class ArtifactStore:
+    """An owned, never automatically removed run directory and atomic byte sink.
+
+    Unknown subprocess output is retained in RAM before this bounded sink. An
+    oversized original or failed atomic write is retention debt and cannot pass.
+    Compiler-created files are accounted after compilation; this is not a native
+    disk quota or an assertion that a killed process was cleaned up.
+    """
+    def __init__(self, parent, *, disk_usage=shutil.disk_usage):
+        self.parent = _plain_path(parent)
+        self.disk_usage = disk_usage
+        self.retained = 0
+        self.artifacts = {}
+        self.failed = False
+        self.pending = []
+        self._reserve(b"")
+        self.root = self.parent / ("probe-engine-" + uuid.uuid4().hex)
+        self.root.mkdir(parents=True, exist_ok=False)
+
+    def _reserve(self, original, old_size=0):
+        usage = self.disk_usage(self.parent if self.parent.exists() else self.parent.parent)
+        if (len(original) > ATOMIC_LIMIT or self.retained - old_size + len(original) > RETENTION_LIMIT
+                or usage.free <= usage.total // 10 + RETENTION_LIMIT - self.retained + ATOMIC_LIMIT):
+            self.failed = True
+            self.pending.append(original)
+            raise RetentionError("strict disk reserve or retained-byte capacity failed", original)
+
+    def write(self, name, original):
+        if type(original) is not bytes:
+            raise TypeError("original artifact must be bytes")
+        target = self.root / name
+        if target.parent != self.root or not name or target.name != name:
+            raise ValueError("artifact name must be one owned path component")
+        old = self.artifacts.get(name)
+        if old and (not target.is_file() or probe._sha(target.read_bytes()) != old["sha256"]):
+            self.failed = True
+            self.pending.append(original)
+            raise RetentionError("previous retained artifact changed", original)
+        self._reserve(original, old["bytes"] if old else 0)
+        partial = self.root / (name + ".pending-" + uuid.uuid4().hex)
+        published = False
+        try:
+            with partial.open("xb") as stream:
+                if stream.write(original) != len(original):
+                    raise OSError("short atomic write")
+                stream.flush()
+                os.fsync(stream.fileno())
+            if partial.read_bytes() != original:
+                raise OSError("atomic readback differs from original bytes")
+            os.replace(partial, target)
+            published = True
+            if target.read_bytes() != original:
+                raise OSError("published readback differs from original bytes")
+        except BaseException as error:
+            self.failed = True
+            self.pending.append(original)
+            raise RetentionError(str(error), original, partial_path=str(target if published else partial)) from error
+        row = {"path": str(target), "bytes": len(original), "sha256": probe._sha(original)}
+        self.retained += len(original) - (old["bytes"] if old else 0)
+        self.artifacts[name] = row
+        return dict(row)
+
+    def json(self, name, value):
+        return self.write(name, (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+
+    def observation(self, name, original):
+        if original is None:
+            return {"available": False, "artifact": None}
+        return {"available": True, "artifact": self.write(name, original)}
+
+    def account_compiler_files(self):
+        for path in sorted(self.root.iterdir()):
+            if path.is_file() and path.name not in self.artifacts and not ".pending-" in path.name:
+                # Keep the existing original even when accounting fails.
+                original = path.read_bytes()
+                self._reserve(original)
+                self.artifacts[path.name] = {"path": str(path), "bytes": len(original), "sha256": probe._sha(original)}
+                self.retained += len(original)
+
+
+def phase_receipt(log):
+    """Recompute only synthetic diagnostic completeness from original output."""
+    rows = PHASE.findall(log)
+    expected = [(name, edge) for name in PHASES for edge in ("begin", "end")]
+    if len(rows) != len(expected) or len(re.findall(r"^HARNESS_PHASE\b[^\r\n]*", log, re.M)) != len(rows):
+        return False
+    previous = None
+    for index, (row, pair) in enumerate(zip(rows, expected), 1):
+        sequence, name, edge, tick, native, error, hr, value = row
+        tick = int(tick)
+        if (int(sequence) != index or (name, edge) != pair or not -(1 << 31) <= int(native) < (1 << 31)
+                or int(native) == 0 or not 0 <= int(error) < (1 << 32) or not 0 <= tick < (1 << 63)
+                or not 0 <= int(value) < (1 << 32)
+                or (previous is not None and tick < previous) or int(hr) != 0
+                or (name == "status" and edge == "end" and int(value) != 6)
+                or (name == "compare" and edge == "end" and int(value) != 1)):
+            return False
+        previous = tick
+    frequencies = re.findall(r"^HARNESS_CLOCK frequency=(-?\d+) native=(-?\d+) error=(\d+)$", log, re.M)
+    return (len(frequencies) == 1 and len(re.findall(r"^HARNESS_CLOCK\b[^\r\n]*", log, re.M)) == 1
+            and 0 < int(frequencies[0][0]) < (1 << 63)
+            and -(1 << 31) <= int(frequencies[0][1]) < (1 << 31) and int(frequencies[0][1]) != 0
+            and 0 <= int(frequencies[0][2]) < (1 << 32)
+            and re.findall(r"^HARNESS_END\b[^\r\n]*", log, re.M) == ["HARNESS_END hr=00000000 paused=1 same_ip=1 unchanged=1"]
+            and re.findall(r"^HARNESS_COMPLETE[^\r\n]*", log, re.M) == ["HARNESS_COMPLETE"]
+            and "HARNESS_ERROR" not in log)
+
+
+def terminal_cases(records, expected):
+    labels = [item.get("case") for item in records]
+    return (len(labels) == len(expected) and set(labels) == set(expected)
+            and all(item.get("status") == "completed" and type(item.get("returncode")) is int
+                    and item["returncode"] == 0 and item.get("phase_receipt_passed") is True
+                    and item.get("raw_retention_complete") is True for item in records))
+
+
+class CaseLedger:
+    def __init__(self, store, sources):
+        self.store = store
+        self.sources = {str(_plain_path(path)): Path(path).read_bytes() for path in sources}
+        self.records = []
+        self.original_observations = []
+        self.failure = None
+        self.source_rows = {path: store.write("source-%03d.bin" % index, raw)
+                            for index, (path, raw) in enumerate(sorted(self.sources.items()))}
+        self.persist()
+
+    def persist(self):
+        self.store.json("ledger.json", {"schema": "clash_synthetic_probe_diagnostics_v1",
+            "fixture_only": True, "game_runtime_executed": False, "native_cleanup_verified": False,
+            "manual_input_proof": False, "promotion_ready": False,
+            "first_failure": self.failure, "retention_debt": self.store.failed,
+            "sources": self.source_rows, "cases": self.records})
+
+    def check_sources(self):
+        try:
+            unchanged = all(Path(path).read_bytes() == raw for path, raw in self.sources.items())
+        except OSError:
+            unchanged = False
+        if not unchanged:
+            self.fail("source mutation before or after subprocess")
+            raise AssertionError(self.failure)
+
+    def fail(self, message):
+        if self.failure is None:
+            self.failure = message
+
+    def prepare(self, data, script, *, test, label, mode):
+        self.check_sources()
+        if (len(self.records) >= CASE_LIMIT or mode not in ("file", "block")
+                or any(item["test"] == test and item["case"] == label for item in self.records)):
+            self.fail("duplicate case identity or invalid bounded invocation")
+            self.persist()
+            raise AssertionError(self.failure)
+        ordinal = len(self.records) + 1
+        directory = self.store.root / ("case-%03d" % ordinal)
+        record = {"ordinal": ordinal, "test": test, "case": label, "mode": mode,
+                  "status": "pending", "returncode": None, "log": "",
+                  "fixture_sha256": probe._sha(data), "script_sha256": probe._sha(script),
+                  "raw_retention_complete": False, "phase_receipt_passed": False,
+                  "directory": str(directory)}
+        self.records.append(record)
+        self.persist()  # Pending is durable before any subprocess launch.
+        directory.mkdir()
+        for name, raw in (("probe-fixture.exe", data), ("verify.cdb", script)):
+            artifact = self.store.write("case-%03d-%s" % (ordinal, name), raw)
+            # Exact additional launch copy is accounted as another original.
+            launch = directory / name
+            self.store._reserve(raw)
+            try:
+                with launch.open("xb") as stream:
+                    if stream.write(raw) != len(raw):
+                        raise OSError("short launch-input write")
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                if launch.read_bytes() != raw:
+                    raise OSError("launch-input readback changed")
+            except BaseException as error:
+                self.fail("launch-input retention failed")
+                self.store.failed = True
+                self.store.pending.append(raw)
+                raise RetentionError(str(error), raw, partial_path=str(launch)) from error
+            self.store.retained += len(raw)
+            record[name] = artifact
+        self.store.json("case-%03d-pending.json" % ordinal, record)
+        self.persist()
+        return record
+
+    def before_launch(self, record):
+        self.check_sources()
+        directory = Path(record["directory"])
+        for name, field in (("probe-fixture.exe", "fixture_sha256"), ("verify.cdb", "script_sha256")):
+            if probe._sha((directory / name).read_bytes()) != record[field]:
+                self.fail("launch input substitution")
+                record["status"] = "failed"
+                self.persist()
+                raise AssertionError(self.failure)
+
+    def outcome(self, record, *, returncode=None, stdout=None, stderr=None, error=None):
+        if record["status"] != "pending":
+            self.fail("repeated terminal result cannot replace an earlier outcome")
+            self.persist()
+            raise AssertionError(self.failure)
+        prefix = "case-%03d" % record["ordinal"]
+        self.original_observations.append((record["ordinal"], stdout, stderr, error))
+        record["returncode"] = returncode
+        record["status"] = "failed"
+        if error is not None:
+            self.fail(type(error).__name__ + ": " + str(error))
+            record["error"] = {"type": type(error).__name__, "message": str(error),
+                               "timeout": getattr(error, "timeout", None), "command": getattr(error, "cmd", None)}
+        try:
+            record["stdout"] = self.store.observation(prefix + "-stdout.bin", stdout)
+            record["stderr"] = self.store.observation(prefix + "-stderr.bin", stderr)
+            record["raw_retention_complete"] = True
+            # Replacement decoding is diagnostic only. Original byte artifacts
+            # remain separate; None means unobserved, never an empty raw file.
+            record["log"] = (stdout or b"").decode("utf-8", "replace") + (stderr or b"").decode("utf-8", "replace")
+            record["phase_receipt_passed"] = phase_receipt(record["log"])
+            self.before_launch(record)  # These original inputs must also survive the subprocess.
+            if (error is None and type(returncode) is int and returncode == 0 and stdout is not None
+                    and stderr is not None and record["phase_receipt_passed"]):
+                record["status"] = "completed"
+            else:
+                self.fail("nonterminal, failed or incomplete synthetic invocation")
+        except BaseException:
+            self.fail("raw observation retention or source check failed")
+            raise
+        finally:
+            self.store.json(prefix + "-result.json", record)
+            self.persist()
+        return record["log"]
+
+
+def publish_report(owner, destination, report):
+    owner.ledger.persist()
+    row = owner.store.json("report.json", report)
+    if destination:
+        target = _plain_path(destination)
+        runner = _plain_path(os.environ["RUNNER_TEMP"])
+        if runner not in target.parents or ROOT in target.parents:
+            raise ValueError("report mirror must be an external RUNNER_TEMP child")
+        # The authoritative atomic report remains in the owned artifact tree.
+        # Account the mirror's bytes and retain the original on mirror failure.
+        raw = Path(row["path"]).read_bytes()
+        owner.store._reserve(raw)
+        partial = target.with_name(target.name + ".pending-" + uuid.uuid4().hex)
+        published = False
+        try:
+            if target.exists():
+                raise OSError("external report mirror already exists")
+            with partial.open("xb") as stream:
+                if stream.write(raw) != len(raw):
+                    raise OSError("short report mirror")
+                stream.flush()
+                os.fsync(stream.fileno())
+            if partial.read_bytes() != raw:
+                raise OSError("report mirror pending readback differs")
+            os.replace(partial, target)
+            published = True
+            if target.read_bytes() != raw:
+                raise OSError("report mirror readback differs")
+        except BaseException as error:
+            owner.store.failed = True
+            owner.store.pending.append(raw)
+            owner.ledger.fail("external report mirror failed")
+            report.update(first_failure=owner.ledger.failure, retention_debt=True)
+            if "completed" in report:
+                report.update(completed=False, passed=False)
+            try:
+                owner.ledger.persist()
+                owner.store.json("report.json", report)
+            except BaseException:
+                pass  # Original bytes and storage debt remain in RAM and the exception.
+            raise RetentionError(str(error), raw, partial_path=str(target if published else partial)) from error
+        owner.store.retained += len(raw)
 
 
 def executable_fixture(resolution: str = "1280x720", *, aslr: bool = False):
@@ -66,6 +381,21 @@ static void check(HRESULT hr, const char *operation) {
     }
 }
 
+static unsigned phase_sequence = 0;
+static void clock_origin() {
+    LARGE_INTEGER frequency = {}; SetLastError(0);
+    BOOL native = QueryPerformanceFrequency(&frequency); DWORD error = GetLastError();
+    printf("HARNESS_CLOCK frequency=%lld native=%ld error=%lu\n", frequency.QuadPart, native, error);
+    if (fflush(stdout) || !native || frequency.QuadPart <= 0) throw std::runtime_error("QPF or diagnostic flush failed");
+}
+static void phase(const char *name, const char *edge, HRESULT hr = S_OK, ULONG value = 0) {
+    LARGE_INTEGER tick = {}; SetLastError(0);
+    BOOL native = QueryPerformanceCounter(&tick); DWORD error = GetLastError();
+    printf("HARNESS_PHASE seq=%u name=%s edge=%s tick=%lld qpc=%ld error=%lu hr=%ld value=%lu\n",
+           ++phase_sequence, name, edge, tick.QuadPart, native, error, hr, value);
+    if (fflush(stdout) || !native || tick.QuadPart < 0) throw std::runtime_error("QPC or diagnostic flush failed");
+}
+
 struct CaptureOutput : IDebugOutputCallbacks {
     LONG references = 1;
     STDMETHOD(QueryInterface)(REFIID id, void **out) {
@@ -87,8 +417,19 @@ struct Session {
     IDebugSystemObjects *system = nullptr;
     IDebugRegisters *registers = nullptr;
     IDebugSymbols *symbols = nullptr;
+    bool ended = false;
     ~Session() {
-        if (client) { client->EndSession(DEBUG_END_ACTIVE_TERMINATE); client->SetOutputCallbacks(nullptr); }
+        if (client) {
+            if (!ended) {
+                try { phase("fallback_end", "begin"); }
+                catch (...) { fprintf(stderr, "HARNESS_ERROR fallback begin diagnostic failure\n"); }
+                // Diagnostic failures must never suppress the termination attempt.
+                HRESULT hr = client->EndSession(DEBUG_END_ACTIVE_TERMINATE);
+                try { phase("fallback_end", "end", hr); }
+                catch (...) { fprintf(stderr, "HARNESS_ERROR fallback end diagnostic failure\n"); }
+            }
+            client->SetOutputCallbacks(nullptr);
+        }
         if (symbols) symbols->Release();
         if (registers) registers->Release();
         if (system) system->Release();
@@ -114,6 +455,7 @@ int main(int argc, char **argv) {
     CaptureOutput output;
     Session session;
     try {
+        clock_origin();
         char system_dir[MAX_PATH], engine_path[MAX_PATH];
         if (!GetSystemDirectoryA(system_dir, MAX_PATH)) throw std::runtime_error("GetSystemDirectory");
         sprintf_s(engine_path, "%s\\dbgeng.dll", system_dir);
@@ -165,28 +507,52 @@ int main(int argc, char **argv) {
         }
         printf("HARNESS_BEGIN base=%08lx mode=%s\n", base, argv[2]); fflush(stdout);
         HRESULT executed;
+        phase("execute", "begin");
         if (std::string(argv[2]) == "block") {
             std::string command = std::string("$$><") + argv[1];
             executed = session.control->Execute(DEBUG_OUTCTL_THIS_CLIENT, command.c_str(), DEBUG_EXECUTE_NO_REPEAT);
         } else {
             executed = session.control->ExecuteCommandFile(DEBUG_OUTCTL_THIS_CLIENT, argv[1], DEBUG_EXECUTE_NO_REPEAT);
         }
-        session.client->FlushCallbacks();
+        phase("execute", "end", executed);
+        phase("flush", "begin");
+        HRESULT flushed = session.client->FlushCallbacks();
+        phase("flush", "end", flushed);
+        check(flushed, "FlushCallbacks");
         ULONG machine_after = 0;
-        check(session.control->GetEffectiveProcessorType(&machine_after), "GetEffectiveProcessorType");
+        phase("processor", "begin");
+        HRESULT machine_hr = session.control->GetEffectiveProcessorType(&machine_after);
+        phase("processor", "end", machine_hr, machine_after);
+        check(machine_hr, "GetEffectiveProcessorType");
         printf("HARNESS_CONTEXT before=%04lx after=%04lx\n", machine_before, machine_after);
-        check(session.control->SetEffectiveProcessorType(machine_before), "Restore debugger inspection context");
+        phase("restore", "begin");
+        HRESULT restored = session.control->SetEffectiveProcessorType(machine_before);
+        phase("restore", "end", restored);
+        check(restored, "Restore debugger inspection context");
         ULONG state = 0;
-        check(session.control->GetExecutionStatus(&state), "GetExecutionStatus");
-        check(session.registers->GetInstructionOffset(&ip_after), "GetInstructionOffset");
+        phase("status", "begin");
+        HRESULT state_hr = session.control->GetExecutionStatus(&state);
+        phase("status", "end", state_hr, state);
+        check(state_hr, "GetExecutionStatus");
+        phase("ip", "begin");
+        HRESULT ip_hr = session.registers->GetInstructionOffset(&ip_after);
+        phase("ip", "end", ip_hr);
+        check(ip_hr, "GetInstructionOffset");
         bool intact = true;
+        phase("compare", "begin");
         for (const auto &part : snapshots)
             intact = intact && session.read(base + part.first, static_cast<ULONG>(part.second.size())) == part.second;
+        phase("compare", "end", S_OK, intact ? 1 : 0);
         printf("HARNESS_END hr=%08lx paused=%d same_ip=%d unchanged=%d\n", executed,
                state == DEBUG_STATUS_BREAK, ip_before == ip_after, intact);
         fflush(stdout);
         if (state != DEBUG_STATUS_BREAK || ip_before != ip_after || !intact) return 3;
-        check(session.client->EndSession(DEBUG_END_ACTIVE_TERMINATE), "EndSession");
+        phase("end_session", "begin");
+        HRESULT ended_hr = session.client->EndSession(DEBUG_END_ACTIVE_TERMINATE);
+        phase("end_session", "end", ended_hr);
+        check(ended_hr, "EndSession");
+        session.ended = true;
+        printf("HARNESS_COMPLETE\n"); fflush(stdout);
         return 0;
     } catch (const std::exception &error) {
         fprintf(stderr, "HARNESS_ERROR %s\n", error.what()); return 2;
@@ -232,51 +598,110 @@ class ExecutableFixtureTests(unittest.TestCase):
 class DebuggerEngineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.temporary = tempfile.TemporaryDirectory(prefix="clash-probe-engine-")
-        cls.addClassCleanup(cls.temporary.cleanup)
-        cls.root = Path(cls.temporary.name)
+        cls.store = ArtifactStore(ci_artifact_parent())
+        cls.root = cls.store.root
+        sources = {Path(module.__file__).resolve() for module in tuple(sys.modules.values())
+                   if getattr(module, "__file__", None) and str(module.__file__).endswith(".py")
+                   and ROOT in Path(module.__file__).resolve().parents}
+        cls.ledger = CaseLedger(cls.store, sorted(sources))
+        cls.records = cls.ledger.records
+        cls.compiler_receipt = {"status": "pending"}
+        cls.addClassCleanup(cls.save_report)
+        cls.store.json("compiler.json", cls.compiler_receipt)
         compiler = shutil.which("cl.exe")
         if not compiler:
+            cls.ledger.fail("MSVC x86 environment is required")
+            cls.ledger.persist()
             raise AssertionError("MSVC x86 environment is required")
-        source = cls.root / "engine.cpp"
-        source.write_text(HARNESS, encoding="utf-8")
+        source = Path(cls.store.write("engine.cpp", HARNESS.encode("utf-8"))["path"])
         cls.runner = cls.root / "engine.exe"
-        result = subprocess.run([compiler, "/nologo", "/EHsc", "/W4", "/O2", "/MT", str(source),
-                                 "/Fe:" + str(cls.runner), "/Fo:" + str(cls.root / "engine.obj"),
-                                 "/link", "/MACHINE:X86"], cwd=cls.root, capture_output=True, text=True, timeout=60,
-                                creationflags=subprocess.CREATE_NO_WINDOW)
+        command = [compiler, "/nologo", "/EHsc", "/W4", "/O2", "/MT", str(source),
+                   "/Fe:" + str(cls.runner), "/Fo:" + str(cls.root / "engine.obj"), "/link", "/MACHINE:X86"]
+        cls.compiler_receipt.update(command=command, timeout=60,
+                                    source_sha256=probe._sha(source.read_bytes()), status="pending")
+        cls.store.json("compiler.json", cls.compiler_receipt)
+        cls.ledger.check_sources()
+        try:
+            result = subprocess.run(command, cwd=cls.root, capture_output=True, timeout=60,
+                                    creationflags=subprocess.CREATE_NO_WINDOW)
+        except BaseException as error:
+            cls.compiler_original_error = error
+            originals = (getattr(error, "stdout", None), getattr(error, "stderr", None))
+            cls.compiler_original_streams = originals
+            cls.compiler_receipt.update(status="failed", error_type=type(error).__name__, error=str(error),
+                stdout={"available": originals[0] is not None, "artifact": None},
+                stderr={"available": originals[1] is not None, "artifact": None}, raw_retention_complete=False)
+            cls.ledger.fail("compiler failed: " + type(error).__name__)
+            try:
+                cls.compiler_receipt["stdout"] = cls.store.observation("compiler-stdout.bin", originals[0])
+                cls.compiler_receipt["stderr"] = cls.store.observation("compiler-stderr.bin", originals[1])
+                cls.store.account_compiler_files()
+                cls.compiler_receipt["raw_retention_complete"] = True
+                cls.store.json("compiler.json", cls.compiler_receipt)
+                cls.ledger.persist()
+            except BaseException as retention_error:
+                cls.store.failed = True
+                cls.store.pending.extend(raw for raw in originals if raw is not None)
+                cls.compiler_receipt["raw_retention_complete"] = False
+                cls.compiler_receipt["retention_error"] = {"type": type(retention_error).__name__, "message": str(retention_error)}
+                raise retention_error from error
+            raise
+        cls.compiler_original_streams = (result.stdout, result.stderr)
+        cls.compiler_receipt.update(status="failed", returncode=result.returncode, raw_retention_complete=False)
+        try:
+            cls.compiler_receipt["stdout"] = cls.store.observation("compiler-stdout.bin", result.stdout)
+            cls.compiler_receipt["stderr"] = cls.store.observation("compiler-stderr.bin", result.stderr)
+            cls.store.account_compiler_files()
+            cls.ledger.check_sources()
+            cls.compiler_receipt.update(status="completed" if result.returncode == 0 else "failed", raw_retention_complete=True)
+            cls.store.json("compiler.json", cls.compiler_receipt)
+        except BaseException:
+            cls.compiler_receipt.update(status="failed", raw_retention_complete=False)
+            cls.store.failed = True
+            cls.store.pending.extend(raw for raw in cls.compiler_original_streams if raw is not None)
+            cls.ledger.fail("compiler result retention or source check failed")
+            raise
         if result.returncode:
-            raise AssertionError(result.stdout + result.stderr)
-        cls.records = []
-        cls.addClassCleanup(cls.save_report)
+            cls.ledger.fail("compiler nonzero exit")
+            cls.ledger.persist()
+            raise AssertionError((result.stdout + result.stderr).decode("utf-8", "replace"))
+        cls.runner_sha256 = probe._sha(cls.runner.read_bytes())
 
     @classmethod
     def save_report(cls):
         destination = os.environ.get("CLASH_DEBUGGER_REPORT")
-        if destination:
-            Path(destination).write_text(json.dumps({"schema": 1, "engine": "system x86 DbgEng",
-                "generator_sha256": probe._sha(Path(probe.__file__).read_bytes()),
-                "game_runtime_executed": False, "manual_input_proof": False,
-                "fixture_only": True, "cases": cls.records}, indent=2), encoding="utf-8")
+        report = {"schema": 1, "engine": "system x86 DbgEng",
+            "generator_sha256": probe._sha(Path(probe.__file__).read_bytes()),
+            "game_runtime_executed": False, "manual_input_proof": False,
+            "fixture_only": True, "first_failure": cls.ledger.failure,
+            "retention_debt": cls.store.failed, "artifact_directory": str(cls.root),
+            "compiler": cls.compiler_receipt, "cases": cls.records}
+        publish_report(cls, destination, report)
 
     def execute(self, data, script, *, mode="file", label="case"):
-        with tempfile.TemporaryDirectory(prefix="session-", dir=self.root) as temporary:
-            directory = Path(temporary)
-            (directory / "probe-fixture.exe").write_bytes(data)
-            (directory / "verify.cdb").write_text(script, encoding="ascii", newline="\n")
-            try:
-                result = subprocess.run([str(self.runner), "verify.cdb", mode], cwd=directory, capture_output=True,
-                                        text=True, errors="replace", timeout=35, creationflags=subprocess.CREATE_NO_WINDOW)
-            except subprocess.TimeoutExpired as exc:
-                raise AssertionError(f"Debugger fixture timeout: {label}; {exc.stdout!r}; {exc.stderr!r}") from exc
-            combined = result.stdout + result.stderr
-            self.records.append({"test": self._testMethodName, "case": label, "mode": mode,
-                                 "script_sha256": probe._sha(script.encode("ascii")), "fixture_sha256": probe._sha(data),
-                                 "returncode": result.returncode, "log": combined})
-            self.assertEqual(result.returncode, 0, combined)
-            self.assertRegex(combined, r"HARNESS_END hr=[0-9a-f]+ paused=1 same_ip=1 unchanged=1")
-            self.assertIn("HARNESS_BEGIN", combined)
-            return combined
+        record = self.ledger.prepare(data, script.encode("ascii"), test=self._testMethodName, label=label, mode=mode)
+        self.ledger.before_launch(record)
+        if probe._sha(self.runner.read_bytes()) != self.runner_sha256:
+            self.ledger.fail("compiled harness substitution")
+            self.ledger.persist()
+            raise AssertionError(self.ledger.failure)
+        record["runner_sha256"] = self.runner_sha256
+        record["command"] = [str(self.runner), "verify.cdb", mode]
+        record["timeout"] = 35
+        self.ledger.persist()
+        try:
+            result = subprocess.run(record["command"], cwd=record["directory"], capture_output=True,
+                                    timeout=35, creationflags=subprocess.CREATE_NO_WINDOW)
+        except BaseException as error:
+            self.ledger.outcome(record, stdout=getattr(error, "stdout", None),
+                                stderr=getattr(error, "stderr", None), error=error)
+            raise AssertionError(f"Debugger fixture failed: {label}; {error!r}") from error
+        combined = self.ledger.outcome(record, returncode=result.returncode, stdout=result.stdout, stderr=result.stderr)
+        self.assertEqual(result.returncode, 0, combined)
+        self.assertRegex(combined, r"HARNESS_END hr=[0-9a-f]+ paused=1 same_ip=1 unchanged=1")
+        self.assertIn("HARNESS_BEGIN", combined)
+        self.assertTrue(record["phase_receipt_passed"], combined)
+        return combined
 
     def assert_pass(self, log, facts):
         self.assertEqual(RESULT.findall(log), [(facts["contract_id"], facts["candidate_sha256"], "pass", str(facts["required_chunks"]))], log)

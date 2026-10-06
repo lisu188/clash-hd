@@ -5,6 +5,7 @@ on:
       - 'src/patcher/**'
       - 'tools/framed_loaded_probe.py'
       - 'tools/test_framed_loaded_probe*.py'
+      - 'tools/test_probe_engine_retention.py'
       - '.github/workflows/framed-probe-engine.yml'
   push:
     branches: [main]
@@ -12,12 +13,13 @@ on:
       - 'src/patcher/**'
       - 'tools/framed_loaded_probe.py'
       - 'tools/test_framed_loaded_probe*.py'
+      - 'tools/test_probe_engine_retention.py'
       - '.github/workflows/framed-probe-engine.yml'
 permissions:
   contents: read
 concurrency:
   group: bounded-probe-engine-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   engine:
     name: Actual x86 debugger command interpreter
@@ -25,6 +27,9 @@ jobs:
     timeout-minutes: 10
     env:
       CLASH_DEBUGGER_INTEGRATION: '1'
+      CLASH_PROBE_ENGINE_ARTIFACT_DIR: ${{ runner.temp }}/framed-probe-engine-artifacts
+      _NT_SYMBOL_PATH: '.'
+      _NT_ALT_SYMBOL_PATH: ''
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -43,6 +48,8 @@ jobs:
           }
           Get-Item $engine | Select-Object FullName, @{Name='Version';Expression={$_.VersionInfo.FileVersion}}
           Get-FileHash $engine -Algorithm SHA256
+      - name: Verify portable retention and failure diagnostics
+        run: python -B tools/test_probe_engine_retention.py -v
       - name: Execute the exported commands on marked synthetic PE32 fixtures
         shell: pwsh
         run: |
@@ -78,6 +85,8 @@ jobs:
         if: always()
         with:
           name: debugger-engine-test-report
-          path: ${{ runner.temp }}/debugger-engine-report.json
+          path: |
+            ${{ runner.temp }}/debugger-engine-report.json
+            ${{ runner.temp }}/framed-probe-engine-artifacts
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error

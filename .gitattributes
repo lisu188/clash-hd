@@ -1032,3 +1032,6 @@
 /tools/test_hidden_soak_loader_native.py text eol=lf
 /tools/test_hidden_soak_loader_native_engine.py text eol=lf
 /.github/workflows/hidden-soak-loader-native.yml text eol=lf
+/tools/test_framed_loaded_probe_engine.py text eol=lf
+/tools/test_probe_engine_retention.py text eol=lf
+/.github/workflows/framed-probe-engine.yml text eol=lf

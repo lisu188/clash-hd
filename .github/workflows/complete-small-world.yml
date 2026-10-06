@@ -7,6 +7,7 @@ on:
       - 'tools/build_complete_small_world_candidate.py'
       - 'tools/test_complete_small_world*.py'
       - 'tools/test_framed_loaded_probe_engine.py'
+      - 'tools/test_probe_engine_retention.py'
       - 'docs/hd/SMALL_WORLD_INPUT.md'
       - '.gitattributes'
       - '.github/workflows/complete-small-world.yml'
@@ -17,6 +18,7 @@ on:
       - 'tools/build_complete_small_world_candidate.py'
       - 'tools/test_complete_small_world*.py'
       - 'tools/test_framed_loaded_probe_engine.py'
+      - 'tools/test_probe_engine_retention.py'
       - 'docs/hd/SMALL_WORLD_INPUT.md'
       - '.gitattributes'
       - '.github/workflows/complete-small-world.yml'
@@ -26,7 +28,7 @@ permissions:
 
 concurrency:
   group: complete-small-world-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   contracts:
@@ -49,6 +51,8 @@ jobs:
           python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4 -r tools/requirements-framed-offline.txt
       - name: Execute portable and synthetic integrated contracts without skips
         run: python -B tools/test_complete_small_world_candidate.py --synthetic-only --require-machine-tools -v
+      - name: Verify portable retention and failure diagnostics
+        run: python -B tools/test_probe_engine_retention.py -v
       - name: Preserve predecessor byte and admission contracts
         shell: bash
         run: |
@@ -63,6 +67,7 @@ jobs:
     timeout-minutes: 10
     env:
       CLASH_DEBUGGER_INTEGRATION: '1'
+      CLASH_PROBE_ENGINE_ARTIFACT_DIR: ${{ runner.temp }}/complete-small-world-engine-artifacts
       _NT_SYMBOL_PATH: '.'
       _NT_ALT_SYMBOL_PATH: ''
     steps:
@@ -115,12 +120,20 @@ jobs:
           @'
           import hashlib, json, os, re
           from pathlib import Path
+          import sys
+          sys.path.insert(0, 'tools')
+          import test_framed_loaded_probe_engine as engine
           report = json.loads((Path(os.environ['RUNNER_TEMP'])/'complete-small-world-engine-report.json').read_text(encoding='utf-8'))
           assert report.get('schema') == 'clash95_complete_small_world_debugger_fixture_v1'
           for field in ('fixture_only', 'completed', 'passed'):
               assert report.get(field) is True, field
           for field in ('original_game_read', 'fixture_entry_executed', 'game_runtime_executed', 'manual_input_proof', 'promotion_ready'):
               assert report.get(field) is False, field
+          assert report.get('first_failure') is None and report.get('retention_debt') is False
+          assert report.get('compiler', {}).get('status') == 'completed'
+          artifact_root = Path(report['artifact_directory']).resolve()
+          allowed = (Path(os.environ['RUNNER_TEMP'])/'complete-small-world-engine-artifacts').resolve()
+          assert allowed in artifact_root.parents
           sources = {
               'generator_sha256': 'src/patcher/complete_small_world_candidate.py',
               'fixture_source_sha256': 'tools/test_complete_small_world_probe_engine.py',
@@ -137,6 +150,24 @@ jobs:
           for case in cases:
               accept = expected[case['case']]
               assert case.get('passed') is True and type(case.get('returncode')) is int and case['returncode'] == 0
+              assert case.get('status') == 'completed' and case.get('raw_retention_complete') is True
+              assert case.get('phase_receipt_passed') is True
+              assert engine.phase_receipt(case['log'])
+              original = []
+              for stream in ('stdout', 'stderr'):
+                  observation = case[stream]
+                  assert observation.get('available') is True
+                  artifact = observation['artifact']
+                  path = Path(artifact['path']).resolve()
+                  assert artifact_root in path.parents
+                  raw = path.read_bytes()
+                  assert len(raw) == artifact['bytes'] and hashlib.sha256(raw).hexdigest() == artifact['sha256']
+                  original.append(raw.decode('utf-8', 'replace'))
+              assert ''.join(original) == case['log']
+              for name, field in (('probe-fixture.exe', 'fixture_sha256'), ('verify.cdb', 'script_sha256')):
+                  artifact = case[name]
+                  raw = Path(artifact['path']).read_bytes()
+                  assert len(raw) == artifact['bytes'] and hashlib.sha256(raw).hexdigest() == artifact['sha256'] == case[field]
               assert case.get('expected_acceptance') is accept and case.get('observed_acceptance') is accept
               assert case.get('paused_unchanged_receipt') is True
               log, marker = case['log'], case['expected_final_marker']
@@ -159,6 +190,8 @@ jobs:
         if: always()
         with:
           name: complete-small-world-engine-report
-          path: ${{ runner.temp }}/complete-small-world-engine-report.json
+          path: |
+            ${{ runner.temp }}/complete-small-world-engine-report.json
+            ${{ runner.temp }}/complete-small-world-engine-artifacts
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error

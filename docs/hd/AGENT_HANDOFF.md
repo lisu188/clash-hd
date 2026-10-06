@@ -257,6 +257,23 @@ independent receipts and unknown output debt are also excluded. Local source fix
 launch no processes; native CI success cannot grant endurance, manual-input,
 release or promotion acceptance.
 
+The synthetic debugger interpreter fixtures retain each pending case, exact
+candidate and CRLF probe before launch under an explicit external CI artifact
+directory. Original compiler outputs, stdout/stderr bytes and partial timeout
+outputs remain separate from diagnostic text; unavailable output is distinct
+from an observed empty buffer. The 35-second case deadline and native byte and
+relocation comparisons remain unchanged. Fixed QPC/HRESULT boundaries locate
+the last completed operation, and missing boundaries or failed clock/flush calls
+fail the diagnostic. Logging failure cannot suppress the fallback termination
+attempt. Eight pending small-world case names cannot establish completion.
+
+The retained PR #161 first-attempt timeout and its one unchanged successful rerun
+are historical synthetic diagnostics, not proof of the timeout cause or game
+health. These fixtures reserve 512 MiB for retained outputs plus 64 MiB for an
+atomic write, above the strict free-space reserve; unknown oversized output
+remains retention debt. Upload after hard runner loss is not guaranteed.
+Production ownership, native cleanup and runtime acceptance remain separate.
+
 [`battle_profile_content.py`](../../src/patcher/battle_profile_content.py)
 prepares 28 fixed native body-site content reads around the authenticated stack
 lease. It checks current terrain occupancy, unit indices/types, owner bytes and
@@ -296,6 +313,8 @@ python -B tools/test_hidden_soak_loaded_read_session.py
 python -B tools/test_hidden_soak_job_lease.py
 python -B tools/test_hidden_soak_loader_native.py
 python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests
+python -B tools/test_probe_engine_retention.py
+python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 python -B tools/test_battle_profile_content.py --require-machine-tools
 ```
