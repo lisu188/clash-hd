@@ -1077,3 +1077,6 @@
 /.github/workflows/battle-routing-v2-contracts.yml text eol=lf
 /reports/joined-loader-v3-ci-sixth-failure-20261006.json text eol=lf
 /reports/joined-loader-v3-ci-seventh-fixture-20261006.json text eol=lf
+/src/patcher/battle_profile_stack_lease_v2.py text eol=lf
+/tools/test_battle_profile_stack_lease_v2.py text eol=lf
+/.github/workflows/battle-stack-lease-v2-contracts.yml text eol=lf

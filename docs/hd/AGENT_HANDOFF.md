@@ -136,6 +136,26 @@ pixels, callback/stack observations and optional original RAM reconstruction
 establish no native field, arena clipping, provider/RLE lifetime, full-chain
 capacity, installed hook/candidate or runtime acceptance.
 
+[`battle_profile_stack_lease_v2.py`](../../src/patcher/battle_profile_stack_lease_v2.py)
+re-emits the frozen stack-only lease after canonical field V3. Its complete
+typed operand inventory and actual field/lease post-CALL descriptors replace
+historical frame-offset assumptions. Full fixed/tail/pointer/control checks
+surround modeled callbacks; independent shadows reject paired descriptor and
+helper-copy changes before cached reads. Unknown private return/control
+corruption reaches an explicit unsafe terminal, which supplies no healthy
+unwind or native cancellation proof. Exact virgin denial remains distinct
+from owned/history loss and owned off-field denial.
+
+The lease, helper and field retain explicit 192-, 512- and 1280-byte frames.
+The helper's authored numeric interval is `[EBP-44, EBP+552)`; it establishes
+no mapped/native or complete-chain stack capacity. Seven native families use
+modeled callbacks, and genuine receiver/argument validity remains unproved.
+Field V3 does not consume latched lease loss, so next-Tile and intra-Tile
+cancellation remain unfinished. Content/continuation/primitive/line joins,
+provider/RLE ownership, clipping, atomic installation, quit and healthy map
+return are still required. No hook, provider or candidate is installed, and
+source or CPU results supply no runtime, release or stable-promotion acceptance.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -612,6 +632,7 @@ python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
 python -B tools/test_battle_profile_routing_v2.py
 python -B tools/test_battle_profile_field_v3.py --require-machine-tools
+python -B tools/test_battle_profile_stack_lease_v2.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

@@ -578,6 +578,17 @@ fresh field without versioned joins and rebuilt return descriptors. Native
 sprites/clips, provider/RLE ownership, cancellation/quit/healthy return, atomic
 installation and every runtime lane remain unfinished.
 
+The uninstalled `src/patcher/battle_profile_stack_lease_v2.py` joins the pinned
+stack-only template to fresh field V3 with complete typed transfers and actual
+field/lease post-CALL descriptors. Independent control/descriptor shadows and
+full fixed/tail/pointer checks reject modeled callback corruption before cached
+reads. Unknown private-control loss reaches an unsafe terminal, not a verified
+healthy unwind. Its 192-byte lease, 512-byte helper, 1280-byte field and numeric
+helper interval establish no native or complete-chain capacity. Field V3 does
+not consume latched lease loss; next-Tile/intra-Tile cancellation, native ABI,
+receiver/argument validity, provider/RLE lifetime and the remaining component
+joins stay unfinished. Nothing is installed and every runtime gate remains open.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
