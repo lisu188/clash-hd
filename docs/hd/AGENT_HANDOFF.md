@@ -464,7 +464,7 @@ whole-candidate, map-readiness, runtime, endurance, human-input, release or
 promotion acceptance. The frozen v2 remains reproducible; no missing production
 verifier is registered by v3.
 
-The five hosted attempts on 2026-10-06 remain historical diagnostics in
+The six hosted attempts on 2026-10-06 remain historical diagnostics in
 `reports/joined-loader-v3-ci-*-failure-20261006.json` and the first
 `reports/joined-loader-v3-ci-failure-20261006.json`. The fifth attempt completed
 all ten controlled-rejection replays, but its expected-success case failed the
@@ -478,6 +478,22 @@ SDK PID field, with architecture-specific layout assertions. V3 binding requires
 all six original bootstrap/request/payload hash receipts in order; the frozen
 V2 four-receipt interface stays unchanged. Source checks and replay of narrower
 original components establish no repaired native chain or game acceptance.
+The sixth attempt retained all eleven joins as failures. Three caller streams
+omit fresh exit-generation observations after the successful finish wait;
+the other eight reach a raw-core/decoded-core validation error. Its authenticated
+originals and all 66 exact retained stream copies are recorded separately in
+`reports/joined-loader-v3-ci-sixth-failure-20261006.json`. Missing exit cohorts
+and failed joins remain failures; source repairs require a new native attempt.
+The missing exit cohorts arise from scalar handle reuse: an earlier closed file
+handle is mistaken for a later newly created process. The successor must bind
+close/reissuance checks to the exact original process-handle issuance lifetime.
+The bounded source repair verifies earlier closed file generations and each
+original process issuance before checking later closes or reissued aliases.
+It keeps parsed identity separate from wire clock bytes. Unexpected collection
+exceptions remain source diagnostics and debt alongside later parser failures;
+only the exact expected outer failure with fresh exit and independent native
+failure packets can replay as a controlled negative. Full source checks do not
+accept the repaired chain; its separate hosted native attempt remains required.
 
 `src/patcher/battle_profile_primitive_request.py` recomposes the baseline 74
 continuation adapters and 13 primitive queries through one shared guarded

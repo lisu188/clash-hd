@@ -117,6 +117,18 @@ def retain_failure_originals(error, root, allowance, *, originals=None):
             rows.append(dict(role=role,original_available=False))
             debt.append(dict(role=role,error="Original pending byte buffer was unavailable",
                 unknown_or_partial_retention=True))
+    collection_error=observations("collection_error")
+    if isinstance(collection_error,BaseException):
+        try:
+            diagnostic=dict(type=type(collection_error).__qualname__,message=str(collection_error),
+                scope="source_collection_exception_only_not_native_API_packet")
+            available.append(("failure-collection_error",json.dumps(diagnostic,sort_keys=True,
+                separators=(",",":"),ensure_ascii=True,allow_nan=False).encode("ascii")))
+            debt.append(dict(role="collection_error",scope=diagnostic["scope"],error_type=diagnostic["type"],
+                error=diagnostic["message"],unknown_or_partial_retention=True))
+        except BaseException as failure:
+            debt.append(dict(role="collection_error",error_type=type(failure).__qualname__,error=str(failure),
+                unknown_or_partial_retention=True))
     if not available and not rows and not debt:
         debt.append(dict(role="failure_originals",error="No original streams/events/pending observations were available",
             unknown_or_partial_retention=True))
@@ -139,6 +151,10 @@ def retain_case_failure(case, root, allowance):
         cause=getattr(error,"cause",None) or error.__cause__
         if cause is not None:
             case["error"]["cause"]=dict(type=type(cause).__qualname__,message=str(cause))
+        collection_error=getattr(error,"collection_error",None)
+        if isinstance(collection_error,BaseException):
+            case["error"]["collection_error"]=dict(type=type(collection_error).__qualname__,message=str(collection_error),
+                scope="source_collection_exception_only_not_native_API_packet")
         try:case["failure_retention"]=retain_failure_originals(error,root,allowance,originals=context.get("originals"))
         except BaseException as retention_error:
             case["failure_retention"]=dict(originals=[],storage_durability_verified=False,debt=[dict(
@@ -148,6 +164,48 @@ def retain_case_failure(case, root, allowance):
 
 
 class EngineSourceTests(unittest.TestCase):
+    def test_actual_caller_core_and_collection_error_dispatch_are_bound_before_scoped_acceptance(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        text=Path(adapter.__file__).read_text(encoding="utf-8");tree=ast.parse(text)
+        functions={node.name:node for node in tree.body if isinstance(node,ast.FunctionDef)}
+        protocol=functions["_caller_protocol"]
+        self.assertFalse(any(isinstance(node,ast.Name) and node.id=="core" and isinstance(node.ctx,ast.Store)
+            for node in ast.walk(protocol)))
+        code=ast.get_source_segment(text,protocol)
+        self.assertIn('wire_core=state["core"]',code)
+        self.assertIn('_caller_generations(frames,core,state)',code)
+        joined=ast.get_source_segment(text,functions["_joined_protocol"])
+        self.assertLess(joined.index('core=generator.parse_core(state["core"])'),joined.index('_caller_protocol(caller,state,core)'))
+        self.assertLess(joined.index('_collection_failure(state["native_error"],caller,failures)'),joined.index('sticky=bool('))
+        factory=functions["_build_api"]
+        dispatch={node.name:ast.get_source_segment(text,node) for node in factory.body if isinstance(node,ast.FunctionDef)}
+        for name in ("collect","parse","replay"):
+            self.assertIn("collection_error=",dispatch[name])
+        self.assertIn('if error is not None and not isinstance(error,Exception):raise error',dispatch["collect"])
+
+    def test_collection_source_error_and_later_parser_error_keep_six_issued_streams_and_explicit_debt(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"observer",b"observer stderr",b"outer stderr",b"close")
+        collection=ValueError("caller retained handle closed before generation")
+        parser=ValueError("four ordered original caller generation boundaries required")
+        retained={};case={}
+        def keep(path,raw,allowance):
+            retained[path.name]=raw
+            return dict(path=str(path),sha256=sha(raw),bytes=len(raw))
+        with mock.patch(__name__+".retain_original",side_effect=keep),self.assertRaises(adapter.ArchiveError) as caught:
+            with retain_case_failure(case,Path("C:/fixture"),123) as context:
+                context["originals"]=originals
+                with adapter._joined_failure_context(originals,collection_error=collection):raise parser
+        self.assertIs(caught.exception.cause,parser);self.assertIs(caught.exception.collection_error,collection)
+        for row in fields(originals):self.assertEqual(retained["failure-"+row.name+".bin"],getattr(originals,row.name))
+        diagnostic=json.loads(retained["failure-collection_error.bin"])
+        self.assertEqual(diagnostic["message"],str(collection))
+        self.assertEqual(diagnostic["scope"],"source_collection_exception_only_not_native_API_packet")
+        self.assertEqual(case["error"]["cause"],dict(type="ValueError",message=str(parser)))
+        self.assertEqual(case["error"]["collection_error"],diagnostic)
+        self.assertEqual([row["role"] for row in case["failure_retention"]["debt"]],["collection_error"])
+        self.assertFalse(case["failure_retention"]["storage_durability_verified"])
+
     def test_all_actual_observer_transforms_bind_source_owned_model_core_and_fixed_grammar(self):
         import hidden_soak_loader_v3_adapter as adapter
         generator=adapter._generator_private(adapter._source_snapshot(adapter.GENERATOR))

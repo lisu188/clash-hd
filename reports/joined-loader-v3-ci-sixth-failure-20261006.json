@@ -1,0 +1,1916 @@
+{
+  "additional_caller_handle_reuse_diagnostic": {
+    "complete_join_or_fixture_acceptance": false,
+    "defect": "The live-cohort validator considers an earlier closed file handle with the same scalar to be the newly issued retained process handle. The file close predates the actual 24-byte CreateProcessW output. Validation aborts before fresh exit APIs; scalar handle reuse across separate original issuance lifetimes is not process substitution.",
+    "historical_source_head": "338e4f3c88bdf994de9273179f026475ce362229",
+    "original_receipts": [
+      {
+        "earlier_file_close_observation": {
+          "error": 0,
+          "handle": 624,
+          "name": "CloseHandle",
+          "result": 1,
+          "slot": 10
+        },
+        "earlier_file_close_sequence": 20,
+        "exit_generation_present": false,
+        "mode": 0,
+        "process_creation_flags": 134743044,
+        "process_creation_raw_bytes": 24,
+        "process_creation_result": 1,
+        "process_creation_sequence": 40,
+        "process_id": 6912,
+        "retained_outer_handle": 624,
+        "thread_id": 2232
+      },
+      {
+        "earlier_file_close_observation": {
+          "error": 0,
+          "handle": 760,
+          "name": "CloseHandle",
+          "result": 1,
+          "slot": 10
+        },
+        "earlier_file_close_sequence": 29,
+        "exit_generation_present": false,
+        "mode": 2,
+        "process_creation_flags": 134743044,
+        "process_creation_raw_bytes": 24,
+        "process_creation_result": 1,
+        "process_creation_sequence": 40,
+        "process_id": 3432,
+        "retained_outer_handle": 760,
+        "thread_id": 6192
+      },
+      {
+        "earlier_file_close_observation": {
+          "error": 0,
+          "handle": 928,
+          "name": "CloseHandle",
+          "result": 1,
+          "slot": 10
+        },
+        "earlier_file_close_sequence": 29,
+        "exit_generation_present": false,
+        "mode": 5,
+        "process_creation_flags": 134743044,
+        "process_creation_raw_bytes": 24,
+        "process_creation_result": 1,
+        "process_creation_sequence": 40,
+        "process_id": 2972,
+        "retained_outer_handle": 928,
+        "thread_id": 1800
+      }
+    ],
+    "originals_changed": false,
+    "proposed_source_requirement": "Bind each process cohort to its exact successful original OpenProcess/CreateProcessW issuance and reject close/reissuance after that issuance regardless of slot, while preserving earlier closed file generations. Keep four ordered boundaries and original exit API requirements.",
+    "scope": "Unchanged original caller journals for modes 0, 2 and 5; independently decoded in RAM"
+  },
+  "cases": [
+    {
+      "caller_finish_wait_and_cleanup": [
+        {
+          "observation": {
+            "error": 0,
+            "handle": 624,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 35000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 103
+        },
+        {
+          "observation": {
+            "error": 0,
+            "name": "TerminateJobObject",
+            "result": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 104
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 624,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 5000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 105
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 632,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 7
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 106
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 624,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 6
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 107
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 652,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 8
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 108
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 616,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 2
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 109
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 608,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 110
+        },
+        {
+          "observation": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "operation": "finish",
+          "raw_bytes": 0,
+          "sequence": 111
+        }
+      ],
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357698989649548,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 6912,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357698989649548,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 6912,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        }
+      ],
+      "completed": false,
+      "expected_success": true,
+      "fresh_exit_api_cohort_present": false,
+      "mode": 0,
+      "original_error": {
+        "cause": {
+          "message": "four ordered original caller generation boundaries required",
+          "type": "ValueError"
+        },
+        "message": "ValueError: four ordered original caller generation boundaries required",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "frame_count": 111
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 608,
+            "metadata_bytes": 233728,
+            "raw_bytes": 10585612,
+            "status": "complete"
+          },
+          "frame_count": 609
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 0,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 329
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1023432,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "cb9ca97a3d428a9b95699f05c0fa6bc081467ff66cbfce56b21fba188b460c58"
+          },
+          {
+            "bytes": 3179110,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "3fc369ce3516337dab5e343f7894ffee465f2238442fdfca298a43171c15799f"
+          },
+          {
+            "bytes": 10819551,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "48834786b90b9f1eaae3fc1b4cfcf796951e96aa5bd970bcb9edee0c5ae9a920"
+          },
+          {
+            "bytes": 157380,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "b6ddffcdeea07762c00ffedfd590e48fc9c896f8cd92381f7aba1c6d58c7e5f1"
+          },
+          {
+            "bytes": 268708,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "f64bcc6d24fedd853b74ba101f479140ced7528a4df39308e83cd8f64cfa0e77"
+          },
+          {
+            "bytes": 15616,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "d2e952b002952711905ba2a7d43d916a0682689de71830d86195e3f16595fb14"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699185210646,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 4508,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699185210646,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 4508,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699185210646,
+          "exit_code": 1,
+          "exit_time": 134357699216478325,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 4508,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 1,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 177,
+            "metadata_bytes": 55886,
+            "raw_bytes": 1414520,
+            "status": "failed"
+          },
+          "frame_count": 178
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 254
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "60897e9d6589a5b349a757eebe381fae332780f4b03f22266b6e893a81d3edfa"
+          },
+          {
+            "bytes": 2807050,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "4f14fa96c125de05eab67c3eebe07a313e0fa1c6798a3c96610e56cf8618f556"
+          },
+          {
+            "bytes": 1470613,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "e37722836a2355e9faf8d402f1e44649720697037e876a5c817fdc9bfccce416"
+          },
+          {
+            "bytes": 46182,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "46cfa4cc9d7a75f609bf7e2bd75086fa06b4ff39cc336689f99ae31d45e31122"
+          },
+          {
+            "bytes": 237443,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "ea918a39e2417945d32f218629beb22bf99644146c65bc26f1e5375a4bf1ff60"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "c3648f97f2f8ae96a3cdf73b3cab6d30fe87c940177a82ff2c494e2a77e8cb51"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_finish_wait_and_cleanup": [
+        {
+          "observation": {
+            "error": 0,
+            "handle": 760,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 35000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 103
+        },
+        {
+          "observation": {
+            "error": 0,
+            "name": "TerminateJobObject",
+            "result": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 104
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 760,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 5000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 105
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 772,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 7
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 106
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 760,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 6
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 107
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 788,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 8
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 108
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 660,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 2
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 109
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 612,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 110
+        },
+        {
+          "observation": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "operation": "finish",
+          "raw_bytes": 0,
+          "sequence": 111
+        }
+      ],
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699252744444,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 3432,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699252744444,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 3432,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "fresh_exit_api_cohort_present": false,
+      "mode": 2,
+      "original_error": {
+        "cause": {
+          "message": "four ordered original caller generation boundaries required",
+          "type": "ValueError"
+        },
+        "message": "ValueError: four ordered original caller generation boundaries required",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "frame_count": 111
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 179,
+            "metadata_bytes": 56243,
+            "raw_bytes": 1414520,
+            "status": "failed"
+          },
+          "frame_count": 180
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 254
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1023432,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "c9d4e604520f8a9fce2e1d832e5789a8ca9346c88c8f5cb30e2f8827f13608d5"
+          },
+          {
+            "bytes": 2807050,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "6cbb604a039e41696923c4a3f7bf6117c42b2213caa6486ad2c9ec6ff860bfc2"
+          },
+          {
+            "bytes": 1470970,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "5b06e0a51873967df8270459feecf87c50fc4076b702745d91bef71733abf0e3"
+          },
+          {
+            "bytes": 46698,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "606438e07c4bc8e69cfacb2862f8536a347cd4fd956bfff98a782a439a30d5b1"
+          },
+          {
+            "bytes": 237443,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "0ff6f4c1b47a59409bdc50c51a6d11d322554033efe630f04128d769374d45e8"
+          },
+          {
+            "bytes": 15616,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "781d9da0a6865ff51df0ac0b748e9d9d08def9c821dc836912f8cdcbb5d78a27"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699319098210,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 4556,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699319098210,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 4556,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699319098210,
+          "exit_code": 1,
+          "exit_time": 134357699349071314,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 4556,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 3,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": null,
+          "frame_count": 171
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 276
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "351372324bbeb6eeac8428064a39e102487ca1ec613b3cb6a3c696dd5377ea9b"
+          },
+          {
+            "bytes": 2882216,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "3451fba67c7d7f3afcc0f1b8a1c406d1f27e1bd3c0cc39080e4050b2da2c1eba"
+          },
+          {
+            "bytes": 1469060,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "f7cf409e6a384cfd2064c7ad95f2a3631cedbad4ac5d07e26850e048f79e5f22"
+          },
+          {
+            "bytes": 44376,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "b8901472b1617ccdab222d5caa91aec4934dda0e114237201ef5acc713043d08"
+          },
+          {
+            "bytes": 246573,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "3110578affd29adf4596bbcf4d90f12b8c0245967b58114b750395da1a2fdb92"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "bca9103f8898eb0e586c1db2d77c4f8b6ea5509aae223c66d5f952e7f950ff08"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699384801313,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 5424,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699384801313,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 5424,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699384801313,
+          "exit_code": 1,
+          "exit_time": 134357699416607533,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 5424,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 4,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 339,
+            "metadata_bytes": 121427,
+            "raw_bytes": 4747772,
+            "status": "failed"
+          },
+          "frame_count": 340
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 327
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "8b58683b8b731c7202bc547814339e289baf87905565d61b6edffe404cbc46c9"
+          },
+          {
+            "bytes": 3177009,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "750fe2bfc91f1b36e99da5011d60af4e7ab633f4a86b125d83d83999ddc227c3"
+          },
+          {
+            "bytes": 4869407,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "8f07de2e925092bbb4a68fc095806145071231cf33263465665d13ef6d34c7a6"
+          },
+          {
+            "bytes": 87978,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "7aec6fbba8cc81b83248470966db79bdb4110b2b25ef93d1dc088689261d0ca1"
+          },
+          {
+            "bytes": 267878,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "3c886e11ba3ae91ef21722c56c75053a0af96657b9d778784628bfe436da9773"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "43d0dce814209679543ae9ed955f50eab9ac1ce8b8ba61f497a432554bd06071"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_finish_wait_and_cleanup": [
+        {
+          "observation": {
+            "error": 0,
+            "handle": 928,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 35000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 103
+        },
+        {
+          "observation": {
+            "error": 0,
+            "name": "TerminateJobObject",
+            "result": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 104
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 928,
+            "name": "WaitForSingleObject",
+            "result": 0,
+            "role": "outer",
+            "slot": 6,
+            "timeout": 5000
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 105
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 932,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 7
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 106
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 928,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 6
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 107
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 912,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 8
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 108
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 784,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 2
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 109
+        },
+        {
+          "observation": {
+            "error": 0,
+            "handle": 720,
+            "name": "CloseHandle",
+            "result": 1,
+            "slot": 1
+          },
+          "operation": "api",
+          "raw_bytes": 0,
+          "sequence": 110
+        },
+        {
+          "observation": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "operation": "finish",
+          "raw_bytes": 0,
+          "sequence": 111
+        }
+      ],
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699452396930,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 2972,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699452396930,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 2972,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "fresh_exit_api_cohort_present": false,
+      "mode": 5,
+      "original_error": {
+        "cause": {
+          "message": "four ordered original caller generation boundaries required",
+          "type": "ValueError"
+        },
+        "message": "ValueError: four ordered original caller generation boundaries required",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 110,
+            "metadata_bytes": 42658,
+            "raw_bytes": 980417,
+            "status": "failed"
+          },
+          "frame_count": 111
+        },
+        "observer": {
+          "finish": null,
+          "frame_count": 171
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 324
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1023432,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "d219c147b49b1ed332c9f9ebe7051bbd582521719518c63f8c821803eef90471"
+          },
+          {
+            "bytes": 3174303,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "d630d18c46e6f641a13aaa6df3440de180de33727077ddc61a939c312bd0a52f"
+          },
+          {
+            "bytes": 1463998,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "d40c66703484056f65ec11b3775e9f2a4ed4b8e9ee797a05bbc197545b62715d"
+          },
+          {
+            "bytes": 44376,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "42ef1fbdafef5af24b8de2744fdc6c09d68856a24647e876c9ffa95583eeeccd"
+          },
+          {
+            "bytes": 266633,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "65d38f3e4fb233d27e1b37004287c27b280f70f09692ce4f14727a248ce83afe"
+          },
+          {
+            "bytes": 15616,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "9827a7b9c6719ec081f01bf7e47a1f5c3f25a0ee64e5a0c084b454af5c7729e4"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699517361297,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 948,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699517361297,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 948,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699517361297,
+          "exit_code": 1,
+          "exit_time": 134357699547340165,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 948,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 6,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44610,
+            "raw_bytes": 980452,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 185,
+            "metadata_bytes": 57583,
+            "raw_bytes": 1410020,
+            "status": "failed"
+          },
+          "frame_count": 186
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 327
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025419,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "dcb0a67d5204c3cbb6f73aec8823281e0eaf60ce0edb90ea5fbdec1672f35b17"
+          },
+          {
+            "bytes": 3175265,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "7156b2fe645910475430624927f9a645d9a39706680637f40d94dc0738116fa3"
+          },
+          {
+            "bytes": 1467810,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "c45254920b2f66663e8cdff441b89f34bd835de5911c5ae12fefd8b2059d6c7d"
+          },
+          {
+            "bytes": 48246,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "77aed4d7125c410fec3d31ecc012405805e9600886c29af17f2b9771f23b8065"
+          },
+          {
+            "bytes": 267878,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "ecb9f37b35edae16eebee021b1b0f8a2d0c909bcc270c6570a343bae93a30ee0"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "44b3f0266fdcdd54d3ebdc002231781aafb09c26bbfe7b3696b5fc27972f6463"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699582746752,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 4268,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699582746752,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 4268,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699582746752,
+          "exit_code": 1,
+          "exit_time": 134357699615215502,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 4268,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 7,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 185,
+            "metadata_bytes": 57648,
+            "raw_bytes": 1410020,
+            "status": "failed"
+          },
+          "frame_count": 186
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 327
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "31957e727fe2a5c527fc7ba36070e2c5a05e0ee9ffdc8af78e67c1192f04913e"
+          },
+          {
+            "bytes": 3175281,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "a4f7bea8005e381502fee440bd24fdf642f94e350ca73af90c65d6999aaa29df"
+          },
+          {
+            "bytes": 1467875,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "166697beeee5abaacbc7f66e2fdd435024d2a792011d347e0d1e26e773ff09f9"
+          },
+          {
+            "bytes": 48246,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "c8ff38b56480055a502cde075e808ac358109e5e97d76b4be0b5eec3e35f4ba6"
+          },
+          {
+            "bytes": 267878,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "bd06c3cfdccec68205d24c530c02d5ae8510f4d48f46d7f6a6fbb4b19c4c2f4f"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "bb5bbc58bc481192c074ee39974f1044822d9f5830e751b830d39380d20c0ac2"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699651047682,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 6444,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699651047682,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 6444,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699651047682,
+          "exit_code": 1,
+          "exit_time": 134357699880395406,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 6444,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 8,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 182,
+            "metadata_bytes": 57004,
+            "raw_bytes": 1409444,
+            "status": "failed"
+          },
+          "frame_count": 183
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 327
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "51bc8abae66f951932388b9141ab89e7115821c526ccbe71971c0931669cb2a0"
+          },
+          {
+            "bytes": 3175058,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "447622daa5314487e0e975485d0e312cf753b5827c36b214ca4e4d4002bc8127"
+          },
+          {
+            "bytes": 1466655,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "2045b6f7496f09c9a48e43d0239d0a5f340735fbf2012c0899c5a1b2ee2fa7ab"
+          },
+          {
+            "bytes": 47472,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "31d01c05be642381d16b3c19cb1e62dc8fd443e1d6c4ffa7f66027c1faa3670a"
+          },
+          {
+            "bytes": 267878,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "e538144c6c28a8503b59d30b97122aaf735a73672f42bca21a067406eb022455"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "502a9285cfdbd46dabb9bb84acb0035adeb013ef94e363fee75a20fd241c94c4"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699915967173,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 5552,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699915967173,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 5552,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699915967173,
+          "exit_code": 1,
+          "exit_time": 134357699944823678,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 5552,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 9,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44616,
+            "raw_bytes": 980453,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": null,
+          "frame_count": 0
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 232
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025426,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "55a41cc080d4697bb2aa3f2e5ce597f296fb2b0c69c71b527cb6f9930048a872"
+          },
+          {
+            "bytes": 2656989,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "00042e741be65105cd9c781c9e817d64ba9815e11c273a6096d3f6c7aeb62e46"
+          },
+          {
+            "bytes": 0,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 0,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 228313,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "0c143463dbb041bfe5465473e36d57b881d8651a777508311d0578f40a7759b6"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "bf4c1edcee637bd26c0b26a9c85d1341065b98158285b4068ff9c2b26ad15f74"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    },
+    {
+      "caller_generations": [
+        {
+          "creation": 134357698746671518,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 10,
+          "phase": "live",
+          "pid": 1516,
+          "role": "caller",
+          "sequence": 14,
+          "wait": 258
+        },
+        {
+          "creation": 134357699980816241,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 42,
+          "phase": "live",
+          "pid": 1804,
+          "role": "outer",
+          "sequence": 46,
+          "wait": 258
+        },
+        {
+          "creation": 134357699980816241,
+          "exit_code": 259,
+          "exit_time": 0,
+          "live_generation_sequence": 0,
+          "path_sequence": 59,
+          "phase": "live",
+          "pid": 1804,
+          "role": "outer",
+          "sequence": 63,
+          "wait": 258
+        },
+        {
+          "creation": 134357699980816241,
+          "exit_code": 1,
+          "exit_time": 134357700014016437,
+          "live_generation_sequence": 63,
+          "path_sequence": 59,
+          "phase": "exit",
+          "pid": 1804,
+          "role": "outer",
+          "sequence": 108,
+          "wait": 0
+        }
+      ],
+      "completed": false,
+      "expected_success": false,
+      "mode": 10,
+      "original_error": {
+        "cause": {
+          "message": "byte indices must be integers or slices, not str",
+          "type": "TypeError"
+        },
+        "message": "TypeError: byte indices must be integers or slices, not str",
+        "type": "ArchiveError"
+      },
+      "original_journals": {
+        "caller": {
+          "finish": {
+            "comparison_scope": "initial_loader_held_adoption_v3",
+            "frame_count": 115,
+            "metadata_bytes": 44649,
+            "raw_bytes": 980475,
+            "status": "failed"
+          },
+          "frame_count": 116
+        },
+        "observer": {
+          "finish": {
+            "comparison_scope": "immutable_scope_initial_hold",
+            "frame_count": 608,
+            "metadata_bytes": 233785,
+            "raw_bytes": 10543312,
+            "status": "complete"
+          },
+          "frame_count": 609
+        },
+        "outer": {
+          "finish": {
+            "debt": 0,
+            "failed": 1,
+            "scope": "V3_initial_loader_terminate_only"
+          },
+          "frame_count": 332
+        }
+      },
+      "retention": {
+        "independently_checked_originals": [
+          {
+            "bytes": 1025481,
+            "original_available": true,
+            "role": "failure-caller",
+            "sha256": "3b1c38161f47e6896c4bde1086d5d0d8bc01245201415ab38e450f0058521aa1"
+          },
+          {
+            "bytes": 3178060,
+            "original_available": true,
+            "role": "failure-outer",
+            "sha256": "3d53029b6d48f6d9f9cf1b17739ad8e1c3a22bae7077f3a5f8f731f00de67554"
+          },
+          {
+            "bytes": 10777308,
+            "original_available": true,
+            "role": "failure-observer",
+            "sha256": "861e73807dfdf108d7a4208d7b55a96c202b57d71aa0f0d6e5534dd7d1f32580"
+          },
+          {
+            "bytes": 157380,
+            "original_available": true,
+            "role": "failure-observer_stderr",
+            "sha256": "f89ade00fce94672f4316ecb0b8ad1e86ba72a92bf9fa3f731ade0450fecb261"
+          },
+          {
+            "bytes": 269953,
+            "original_available": true,
+            "role": "failure-outer_stderr",
+            "sha256": "063c7f5aade9a3776cfa79476176780fc723acd3fed471dafa964e8990b170a1"
+          },
+          {
+            "bytes": 16316,
+            "original_available": true,
+            "role": "failure-caller_close_receipt",
+            "sha256": "ce9af987ad65c4f79e2d0aa49d72e98a078cce44c2fe88f9b185cee60500a19e"
+          }
+        ],
+        "joined_streams_issued": true,
+        "recorded_copy_debt": [],
+        "storage_durability_verified": false
+      }
+    }
+  ],
+  "compiled_producer_verified": false,
+  "completed_case_count": 0,
+  "diagnosis": "All eleven joins failed. Modes 0, 2 and 5 lack the required original caller exit generation: the successful 35-second wait is followed directly by cleanup, without the fresh PID/time/wait/exit-code API cohort. The other modes retain all four generations but the validator indexes raw core bytes as a decoded dictionary. These source defects remain failures; native logs and exit requirements are not relaxed.",
+  "expected_success_mode_completed": false,
+  "fixture_duration_seconds": 126.35,
+  "fixture_errors": 11,
+  "fixture_failures": 1,
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "338e4f3c88bdf994de9273179f026475ce362229",
+  "job_conclusion": "failure",
+  "job_id": 112317300155,
+  "limitations": [
+    "Historical failure on its exact source head; no missing exit observation or failed join is relabeled as success.",
+    "Retained per-case original copy hashes and zero copy debt do not establish independent storage durability or host cleanup.",
+    "Outer/observer completion does not establish complete caller/outer/observer acceptance.",
+    "Public synthetic debugger preparation cannot accept any game resolution or replace missing production verifiers."
+  ],
+  "manual_input_verified": false,
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 269,
+    "expanded_bytes": 199245557,
+    "id": 11420595375,
+    "inspection": "Authenticated ZIP, exact historical source blobs, all 66 retained stream copies, canonical framing and original journal fields independently checked in bounded RAM; no filesystem extraction",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37477683481/artifacts/11420595375",
+    "zip_bytes": 21513009,
+    "zip_sha256": "fb40cd5fc74a22c3901b4b1a187631f5e60e2cf33e6dc0ef05f0e8a92905634c"
+  },
+  "passed": false,
+  "promotion_ready": false,
+  "pull_request": 172,
+  "release_acceptance": false,
+  "report_terminal_failure": {
+    "error": {
+      "message": "False is not true",
+      "type": "AssertionError"
+    },
+    "failure_retention": {
+      "debt": [
+        {
+          "error": "Joined streams were not issued or were unavailable at this failure boundary",
+          "role": "issued_joined_originals",
+          "scope": "not_issued_or_unavailable",
+          "unknown_or_partial_retention": true
+        }
+      ],
+      "joined_streams_issued": false,
+      "originals": [],
+      "storage_durability_verified": false
+    }
+  },
+  "run_id": 37477683481,
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_historical_ci_failure",
+  "source_hashes": {
+    "hidden_soak_loader_v3.py": "c9b6816d82ed608dc5f496d838be7288d47312eb9ef589c2bdf6cd9fd35a1a2f",
+    "hidden_soak_loader_v3_adapter.py": "f6bbb5688bdf70d9ec5974e543754c6d2fa96490355b3c7bfb3daf6220ebf5cd",
+    "test_hidden_soak_loader_v3.py": "c346dc8f5eee8f3ab931d7f796677297ba0ede38f63b69397b6fc5b4a6965f20",
+    "test_hidden_soak_loader_v3_engine.py": "ea1134d49bc468f507d5228b0c9944b4f47005970a33090c37fe18498a7ff700"
+  },
+  "stable": false
+}

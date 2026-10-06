@@ -301,7 +301,7 @@ class NativeFailure(RuntimeError):
 
 
 @contextmanager
-def _joined_failure_context(originals, frames=()):
+def _joined_failure_context(originals, frames=(), *, collection_error=None):
     """Preserve the issued whole streams and original cause after collection."""
     try:
         yield
@@ -312,13 +312,17 @@ def _joined_failure_context(originals, frames=()):
             try:
                 error.originals=originals
                 error.frames=frames
+                error.collection_error=collection_error
             except Exception:
                 pass
             raise
         if isinstance(error,ArchiveError) and error.originals is originals:
+            if collection_error is not None:error.collection_error=collection_error
             raise
-        raise ArchiveError(type(error).__name__+": "+str(error),originals.observer,frames,
-            originals=originals,cause=error) from error
+        retained=ArchiveError(type(error).__name__+": "+str(error),originals.observer,frames,
+            originals=originals,cause=error)
+        retained.collection_error=collection_error
+        raise retained from error
 
 
 def _replay_report(observed, fixture, generator_claims):
@@ -1175,16 +1179,17 @@ def _build_api(own_snapshot, generator_snapshot, *, backend=_NativeSession, _fix
                 session.caller_close_receipt)
         except BaseException as caught:
             raise NativeFailure(str(caught),events=session.events,pending=session.pending,cause=error or caught) from caught
-        with _joined_failure_context(originals):
+        with _joined_failure_context(originals,collection_error=error):
             guard();state["facts"].check_sources()
             state["originals"]=originals;state["native_error"]=error
             state["original_seal"]=_joined_seal(originals)
+            if error is not None and not isinstance(error,Exception):raise error
         return originals
     def parse(originals,cap):
         state,fixture=admit(cap,"launch")
         issued=state.get("originals")
         _require(type(issued) is JoinedOriginals,"native session has not issued original streams")
-        with _joined_failure_context(issued):
+        with _joined_failure_context(issued,collection_error=state["native_error"]):
             _require(type(originals) is JoinedOriginals and issued is originals,
                      "exact native-session issued original streams required")
             _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed")
@@ -1193,7 +1198,7 @@ def _build_api(own_snapshot, generator_snapshot, *, backend=_NativeSession, _fix
             return retain("parsed",dict(state,observed=observed,frames=rows),fixture)
     def replay(cap):
         state,fixture=admit(cap,"parsed");originals=state["originals"]
-        with _joined_failure_context(originals,state["frames"]):
+        with _joined_failure_context(originals,state["frames"],collection_error=state["native_error"]):
             _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed after parsing")
             observed,rows=_joined_protocol(originals,state,generator)
             _require(canonical(observed)==canonical(state["observed"]),"joined original replay changed")
@@ -1346,6 +1351,78 @@ def _capacity_groups(frames):
     return tuple(row for row in frames if row.sequence not in consumed),group
 
 
+def _caller_process_issuance(frames,row,first_query):
+    """Bind one process-handle lifetime; retain and verify earlier file reuse."""
+    value=row.data()["observation"];role=value["role"];handle=value["handle"]
+    name="OpenProcess" if role=="caller" else "CreateProcessW"
+    issued=[item for item in frames if item.operation=="api" and
+        item.data()["observation"].get("name")==name and item.data()["observation"].get("role")==role]
+    _require(len(issued)==1,"unique original caller process-handle issuance required")
+    issuing=issued[0];data=issuing.data()["observation"]
+    _io(issuing);_wire_scalars(data)
+    _require(issuing.sequence<first_query,"original caller process issuance must precede its first query")
+    if role=="caller":
+        _exact(data,("name","role","result","error","pid"),"original caller process issuance")
+        _require(not issuing.raw and data["result"]==handle and data["error"]==0 and data["pid"]==value["pid"],
+            "original caller opened handle/PID differs")
+    else:
+        _exact(data,("name","role","result","error","command","flags","inherit_handles"),"original outer process issuance")
+        _require(len(issuing.raw)==24 and data["result"]!=0 and data["error"]==0 and
+            data["flags"]==0x08080404 and data["inherit_handles"]==1 and type(data["command"]) is str and data["command"],
+            "whole original suspended outer process issuance required")
+        process,thread,pid,tid=struct.unpack("<QQII",issuing.raw)
+        _require(process==handle and pid==value["pid"] and thread not in (0,process) and tid>0,
+            "original outer PROCESS_INFORMATION handle/PID differs")
+    aliases=[item for item in frames if item.operation=="api" and
+        item.data()["observation"].get("name")=="CloseHandle" and item.data()["observation"].get("handle")==handle]
+    historical=[item for item in aliases if item.sequence<issuing.sequence]
+    verified_opens=set()
+    for closing in historical:
+        _require(closing.sequence>=6,"earlier reused handle lacks its complete file generation")
+        cohort=frames[closing.sequence-6:closing.sequence]
+        names=("CreateFileW","WriteFile","FlushFileBuffers","GetFileInformationByHandle","GetFinalPathNameByHandleW","CloseHandle")
+        _require(tuple(item.operation for item in cohort)==("api",)*6 and
+            tuple(item.data()["observation"].get("name") for item in cohort)==names,
+            "earlier reused handle file generation order differs")
+        for item in cohort:_io(item);_wire_scalars(item.data()["observation"])
+        opening,write,flush,info,path,close=(item.data()["observation"] for item in cohort)
+        _exact(opening,("name","slot","path","access","disposition","inherit","flags","result","error"),"earlier reused file open")
+        _exact(write,("name","role","result","error","requested","returned"),"earlier reused file write")
+        _exact(flush,("name","role","result","error"),"earlier reused file flush")
+        _exact(info,("name","slot","result","error"),"earlier reused file identity")
+        _exact(path,("name","slot","result","error"),"earlier reused file final path")
+        _exact(close,("name","slot","handle","result","error"),"earlier reused file close")
+        _require(opening["slot"]==close["slot"]==info["slot"]==path["slot"]==10 and
+            opening["result"]==close["handle"]==handle and opening["error"]==0 and
+            (opening["access"],opening["disposition"],opening["inherit"],opening["flags"])==(0x40000080,1,0,0x200000) and
+            type(opening["path"]) is str and PureWindowsPath(opening["path"]).is_absolute() and not cohort[0].raw,
+            "earlier reused handle is not a source-owned new file")
+        _require(write["role"] in ("candidate","outer_source") and flush["role"]==write["role"] and
+            all(item["result"]!=0 and item["error"]==0 for item in (write,flush,info,path,close)) and
+            write["requested"]==write["returned"]==len(cohort[1].raw)>0 and
+            not cohort[2].raw and not cohort[5].raw and len(cohort[3].raw)==52 and
+            not struct.unpack_from("<I",cohort[3].raw)[0]&0x400,
+            "earlier reused file write/flush/identity/close failed or incomplete")
+        size_high,size_low=struct.unpack_from("<II",cohort[3].raw,32)
+        _require((size_high<<32)|size_low==len(cohort[1].raw),"earlier reused file native size differs")
+        _integer(path["result"],1,32767);chars=path["result"]
+        _require(len(cohort[4].raw)==65536 and cohort[4].raw[chars*2:]==bytes(65536-chars*2),
+            "whole earlier reused file path capacity required")
+        final=cohort[4].raw[:chars*2].decode("utf-16le")
+        if final.startswith("\\\\?\\"):final=final[4:]
+        _require(final.lower()==opening["path"].lower(),"earlier reused file native path differs")
+        verified_opens.add(cohort[0].sequence)
+    for item in frames:
+        if item.operation!="api" or item is issuing:continue
+        data=item.data()["observation"];native=data.get("name")
+        issued_handle=(data.get("result")==handle if native in ("CreateFileW","OpenProcess","CreateJobObjectW") else
+            len(item.raw)==24 and handle in struct.unpack("<QQII",item.raw)[:2] if native=="CreateProcessW" else False)
+        if issued_handle:
+            _require(item.sequence<issuing.sequence and item.sequence in verified_opens,
+                "caller process handle reissued or earlier handle generation unverified")
+    return issuing,tuple(item for item in aliases if item.sequence>issuing.sequence)
+
+
 def _caller_generation_cohort(frames,row,*,require_close=True):
     """Replay a caller-owned retained handle from its full original API cohort."""
     value=_exact(row.data()["observation"],CALLER_GENERATION_FIELDS,"original caller generation")
@@ -1385,9 +1462,7 @@ def _caller_generation_cohort(frames,row,*,require_close=True):
     _require((original_times[0],original_times[1],wait.data()["observation"]["result"],struct.unpack("<I",exit.raw)[0])==
         (value["creation"],value["exit_time"],value["wait"],value["exit_code"]),
         "original caller generation differs from fresh native buffers")
-    close_rows=[item for item in frames if item.operation=="api" and
-        item.data()["observation"].get("name")=="CloseHandle" and
-        item.data()["observation"].get("handle")==value["handle"]]
+    issuing,close_rows=_caller_process_issuance(frames,row,start+1)
     _require(not any(item.sequence<row.sequence for item in close_rows),"caller retained handle closed before generation")
     if require_close:
         _require(len(close_rows)==1 and close_rows[0].sequence>row.sequence,"single future caller generation close required")
@@ -1487,6 +1562,7 @@ def _caller_generations(frames,core,state):
 
 def _caller_protocol(frames,state,core):
     expected=state["session"]
+    _require(type(core) is dict,"decoded source-issued caller core required")
     _require(frames and frames[-1].operation=="finish" and sum(r.operation=="finish" for r in frames)==1,
              "single terminal original caller receipt required")
     observations=[]
@@ -1525,8 +1601,8 @@ def _caller_protocol(frames,state,core):
         frames[index-2].raw==struct.pack("<q",value["frequency_hz"]) and frames[index-1].raw==struct.pack("<q",value["tick"]) and
         value["counter_return"]==observations[index-1]["result"]!=0 and value["counter_error"]==observations[index-1]["error"],
         "original paired clock native QPC/frequency receipts differ")
-    core=state["core"]
-    _require(struct.unpack_from("<3Q",core,40)==(value["frequency_hz"],value["tick"],value["before_ns"]),
+    wire_core=state["core"]
+    _require(struct.unpack_from("<3Q",wire_core,40)==(value["frequency_hz"],value["tick"],value["before_ns"]),
         "source core clock is not the original QPC/monotonic bracket")
     resumes=[i for i,(row,value) in enumerate(zip(frames,observations)) if row.operation=="api" and value.get("name")=="ResumeThread"]
     _require(len(resumes)==1 and observations[resumes[0]]["result"]==1,"original exactly-once outer resume required")
@@ -1543,6 +1619,19 @@ def _caller_protocol(frames,state,core):
         "both suspended issuance and pre-resume membership groups required")
     _caller_generations(frames,core,state)
     return result
+
+
+def _collection_failure(error,caller,failures):
+    """Only the fixed post-exit native-failure exception has a known join."""
+    if error is None:return
+    _require(type(error) is ValueError and error.args==("same retained outer ended with native failure",),
+        "unexpected original source collection failure remains diagnostic debt")
+    exits=[row for row in caller if row.operation=="generation" and
+        row.data()["observation"].get("role")=="outer" and row.data()["observation"].get("phase")=="exit"]
+    _require(len(exits)==1,"known collection failure needs one complete original outer exit cohort")
+    _caller_generation_cohort(caller,exits[0])
+    _require(exits[0].data()["observation"]["exit_code"] not in (0,259) and failures,
+        "known collection failure needs actual nonzero outer exit and independent original failure packets")
 
 
 def _outer_protocol(frames,state,core,generator):
@@ -2396,9 +2485,10 @@ def _joined_protocol(originals,state,generator):
                 "original caller footer reserve failed or differs")
         _observer_schemas(observer,v2,helpers)
         failures=_failure_kinds(observer,outer,v2=v2,generator=generator,core=core,state=state)
+        _collection_failure(state["native_error"],caller,failures)
         outer_observed=_outer_protocol(outer,state,core,generator) if complete["outer"] else None
         stderr_debt=any((_stderr(originals.outer_stderr,"outer",outer,core),_stderr(originals.observer_stderr,"observer",observer,core)))
-        sticky=bool(state["session"].failed or state["session"].debt or close["result"]==0 or
+        sticky=bool(state["session"].failed or state["session"].debt or state["native_error"] is not None or close["result"]==0 or
             any(r.operation in ("error","native_failure","rejected") for stream in rows for r in stream) or
             any(not value for value in complete.values()) or stderr_debt or
             (outer_observed is not None and outer_observed["failed"]) or

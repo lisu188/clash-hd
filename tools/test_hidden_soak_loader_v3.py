@@ -879,6 +879,133 @@ class CallerExitIdentityTests(unittest.TestCase):
         rows[index]=frame(operation or original.operation,dict(observation=value,prewrite_reserve={}),
             original.raw if raw is None else raw,sequence=original.sequence)
 
+    def insert(self,rows,index,records):
+        count=len(records);changed=[]
+        for number,old in enumerate(rows):
+            value=dict(old.data()["observation"])
+            for key in ("path_sequence","live_generation_sequence"):
+                if value.get(key,0)>=index+1:value[key]+=count
+            changed.append((old.operation,value,old.raw))
+        changed[index:index]=records
+        rows[:]=[frame(op,dict(observation=value,prewrite_reserve={}),raw,sequence=n+1)
+            for n,(op,value,raw) in enumerate(changed)]
+
+    def with_earlier_file_reuse(self):
+        rows,core,state=self.originals();path=r"C:\fixture\synthetic-loader.exe";raw=b"source-owned earlier file"
+        info=bytearray(52);struct.pack_into("<I",info,0,0x20);struct.pack_into("<II",info,32,0,len(raw))
+        native=("\\\\?\\"+path).encode("utf-16le")
+        records=[("api",dict(name="CreateFileW",slot=10,path=path,access=0x40000080,disposition=1,
+            inherit=0,flags=0x200000,result=700,error=0),b""),
+            ("api",dict(name="WriteFile",role="candidate",result=1,error=0,requested=len(raw),returned=len(raw)),raw),
+            ("api",dict(name="FlushFileBuffers",role="candidate",result=1,error=0),b""),
+            ("api",dict(name="GetFileInformationByHandle",slot=10,result=1,error=0),bytes(info)),
+            ("api",dict(name="GetFinalPathNameByHandleW",slot=10,result=len(path)+4,error=0),native+bytes(65536-len(native))),
+            ("api",dict(name="CloseHandle",slot=10,handle=700,result=1,error=0),b"")]
+        self.insert(rows,7,records)
+        return rows,core,state
+
+    def test_verified_earlier_file_handle_reuse_is_a_distinct_native_issuance_lifetime(self):
+        rows,core,state=self.with_earlier_file_reuse()
+        actual=adapter._caller_generations(rows,core,state)
+        self.assertEqual(actual["exit_code"],0)
+        self.assertEqual([row.sequence for row in rows if row.operation=="api" and
+            row.data()["observation"].get("name")=="CloseHandle" and row.data()["observation"].get("handle")==700],[13,34])
+        live=next(row for row in reversed(rows) if row.operation=="generation" and
+            row.data()["observation"].get("role")=="outer" and row.data()["observation"].get("phase")=="live")
+        # This is the actual pre-exit source dispatcher check, before fresh APIs.
+        adapter._caller_generation_cohort(rows[:27],live,require_close=False)
+
+    def test_prior_file_generation_must_be_whole_successful_and_path_bound(self):
+        for variant in ("open","write","flush","identity","reparse","path","close","slot","orphan"):
+            rows,core,state=self.with_earlier_file_reuse()
+            if variant=="open":self.replace(rows,7,result=701)
+            elif variant=="write":self.replace(rows,8,returned=1)
+            elif variant=="flush":self.replace(rows,9,result=0,error=6)
+            elif variant=="identity":self.replace(rows,10,raw=bytes(51))
+            elif variant=="reparse":self.replace(rows,10,raw=struct.pack("<I",0x400)+rows[10].raw[4:])
+            elif variant=="path":self.replace(rows,11,raw=bytes(65536))
+            elif variant=="close":self.replace(rows,12,result=0,error=6)
+            elif variant=="slot":self.replace(rows,12,slot=6)
+            else:self.replace(rows,7,operation="unavailable")
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._caller_generations(rows,core,state)
+
+    def test_post_issuance_alias_closes_and_reissued_process_handles_reject(self):
+        for variant in ("wrongslot_close","newfile","newprocess","duplicate_process","late_process","wrongslot_final"):
+            rows,core,state=self.with_earlier_file_reuse()
+            if variant=="wrongslot_final":self.replace(rows,33,slot=10)
+            else:
+                if variant=="wrongslot_close":value=dict(name="CloseHandle",slot=10,handle=700,result=1,error=0);raw=b""
+                elif variant=="newfile":value=dict(rows[7].data()["observation"]);raw=b""
+                elif variant=="newprocess":value=dict(name="OpenProcess",role="foreign",result=700,error=0,pid=999);raw=b""
+                else:value=dict(rows[13].data()["observation"]);raw=rows[13].raw
+                if variant=="late_process":self.replace(rows,13,operation="unavailable")
+                self.insert(rows,14 if variant!="late_process" else 15,[("api",value,raw)])
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._caller_generations(rows,core,state)
+
+    def protocol_originals(self):
+        rows,core,state=self.with_earlier_file_reuse()
+        state.update(outer_source=b"outer source model",observer_source=b"observer source model",observer_binary=b"observer binary model")
+        frequency,tick,before,after=1000,500,1000001,1000002
+        records=[("compiled",dict(role=role,source_sha256=adapter._sha(state[role+"_source"]),
+            binary_sha256=adapter._sha(state[role+"_binary"]),machine=machine),b"") for role,machine in
+            (("outer",0x8664),("observer",0x14c))]
+        records += [("api",dict(name="QueryPerformanceFrequency",result=1,error=0),struct.pack("<q",frequency)),
+            ("api",dict(name="QueryPerformanceCounter",result=1,error=0),struct.pack("<q",tick)),
+            ("clock_pair",dict(method="time.monotonic_ns",before_ns=before,after_ns=after,
+                frequency_hz=frequency,tick=tick,counter_return=1,counter_error=0),struct.pack("<2Q",before,after))]
+        self.insert(rows,0,records)
+        group=[]
+        for class_id,size,returned in ((9,144,144),(1,48,48),(3,520,16)):
+            raw=bytearray(size)
+            if class_id==9:struct.pack_into("<I",raw,16,0x2000)
+            elif class_id==1:struct.pack_into("<I",raw,40,1)
+            else:struct.pack_into("<IIQ",raw,0,1,1,701)
+            group.append(("api",dict(name="QueryInformationJobObject",class_id=class_id,job=900,
+                result=1,error=0,requested=size,returned=returned),bytes(raw)))
+        group.append(("api",dict(name="IsProcessInJob",job=900,process=700,result=1,error=0),struct.pack("<i",1)))
+        index=next(i for i,row in enumerate(rows) if row.data()["observation"].get("timeout")==35000)
+        self.insert(rows,index,group+group+[("api",dict(name="ResumeThread",role="outer",result=1,error=0),b"")])
+        reserve=dict(result=1,error=0,free=1000,total=1000,unused=1000,required_peak=100)
+        rows[:]=[frame(row.operation,dict(observation=row.data()["observation"],prewrite_reserve=reserve),
+            row.raw,sequence=row.sequence) for row in rows]
+        finish=dict(status="complete",frame_count=len(rows),raw_bytes=sum(len(row.raw) for row in rows),
+            metadata_bytes=8+sum(32+len(row.metadata) for row in rows),comparison_scope="initial_loader_held_adoption_v3")
+        rows.append(frame("finish",dict(observation=finish,prewrite_reserve=reserve),sequence=len(rows)+1))
+        wire=bytearray(64);struct.pack_into("<3Q",wire,40,frequency,tick,before)
+        state.update(core=bytes(wire),session=SimpleNamespace(paths=SimpleNamespace(approved_peak_bytes=100),
+            events=rows,failed=False,debt=False,outer=dict(pid=701)))
+        return rows,core,state
+
+    def test_actual_caller_protocol_preserves_decoded_core_through_raw_clock_join(self):
+        rows,core,state=self.protocol_originals();before=deepcopy(core)
+        with patch.object(adapter,"_caller_generations",wraps=adapter._caller_generations) as dispatch:
+            actual=adapter._caller_protocol(rows,state,core)
+        self.assertIs(dispatch.call_args.args[1],core)
+        self.assertEqual(core,before);self.assertEqual(actual["status"],"complete")
+        self.assertIsInstance(state["core"],bytes)
+        with self.assertRaisesRegex(ValueError,"decoded source-issued caller core required"):
+            adapter._caller_protocol(rows,state,state["core"])
+        wrong=deepcopy(core);wrong["outer_pid"]+=1
+        with self.assertRaises(ValueError):adapter._caller_protocol(rows,state,wrong)
+        state["core"]=bytes(64)
+        with self.assertRaisesRegex(ValueError,"source core clock"):
+            adapter._caller_protocol(rows,state,core)
+
+    def test_collection_error_must_join_exact_exit_and_independent_original_failure(self):
+        rows,core,state=self.originals();known=ValueError("same retained outer ended with native failure")
+        # A known error cannot turn a zero exit or absent failure packet into a negative-case pass.
+        with self.assertRaises(ValueError):adapter._collection_failure(known,rows,{"native_read_failure"})
+        self.replace(rows,24,raw=struct.pack("<I",1));self.replace(rows,25,exit_code=1)
+        adapter._caller_generations(rows,core,state)
+        adapter._collection_failure(known,rows,{"native_read_failure"})
+        for error in (ValueError("caller retained handle closed before generation"),TypeError(str(known)),
+            ValueError(str(known),"extra"),KeyboardInterrupt("original cancellation")):
+            with self.subTest(error=type(error).__name__),self.assertRaises(ValueError):
+                adapter._collection_failure(error,rows,{"native_read_failure"})
+        with self.assertRaises(ValueError):adapter._collection_failure(known,rows,set())
+        self.replace(rows,25,operation="unavailable")
+        with self.assertRaises(ValueError):adapter._collection_failure(known,rows,{"native_read_failure"})
+
     def test_four_boundaries_bind_full_live_paths_fresh_exit_and_original_process_handles(self):
         rows,core,state=self.originals();value=adapter._caller_generations(rows,core,state)
         self.assertEqual((value["pid"],value["creation"],value["exit_time"]),(701,1100,1300))
@@ -1180,6 +1307,20 @@ class ExitIdentityTests(unittest.TestCase):
 
 
 class ReplayFailureTests(unittest.TestCase):
+    def test_later_rejection_retains_original_collection_error_without_changing_parser_or_cancellation_cause(self):
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"observer",b"stderr")
+        collection=ValueError("caller retained handle closed before generation")
+        cause=ValueError("four ordered original caller generation boundaries required")
+        with self.assertRaises(adapter.ArchiveError) as caught:
+            with adapter._joined_failure_context(originals,collection_error=collection):raise cause
+        self.assertIs(caught.exception.cause,cause);self.assertIs(caught.exception.collection_error,collection)
+        self.assertIs(caught.exception.originals,originals)
+        for cancellation in (KeyboardInterrupt("original cancellation"),SystemExit(7)):
+            with self.subTest(kind=type(cancellation).__name__),self.assertRaises(type(cancellation)) as cancelled:
+                with adapter._joined_failure_context(originals,collection_error=collection):raise cancellation
+            self.assertIs(cancelled.exception,cancellation)
+            self.assertIs(cancelled.exception.collection_error,collection)
+
     def test_overlapping_false_inventories_preserve_scoped_observation_and_all_broader_false_claims(self):
         import hidden_soak_loader_v3 as source
         self.assertTrue(set(source.FALSE_CLAIMS)&set(adapter.FALSE_CLAIMS))
