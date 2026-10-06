@@ -41,6 +41,16 @@ debuggee for at most 20 seconds. It resumes only for the matching next request;
 expiry or protocol failure enters owned cleanup rather than preserving a usable
 stale lease.
 
+Acknowledgment replacement can make an individual file read fail. The client
+retains the original exception in `ack_wait_failures`; a missing file or
+permission/sharing error may retry only while awaiting a request, within its
+original deadline and with fresh owner and host checks. Permanent errors,
+unexpected I/O results, changed acknowledgments and late results fail. These
+retries never authorize a read. During an active paused interval, failure to
+read the current acknowledgment immediately revokes the lease, with the
+original exception retained in `native_failures`; no retry or cached receipt
+can authorize a resume or another memory read.
+
 This protocol has no cursor, input or game-state-write operation. Decoder
 relocation fixtures do not expand the inherited host's executable-authentication
 policy. The foreground input adapter and hidden-desktop input transport remain

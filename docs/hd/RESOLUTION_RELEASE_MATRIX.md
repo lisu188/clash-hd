@@ -404,6 +404,32 @@ the unchanged 128 KiB reservation. Source and synthetic x86 checks do not
 establish native rendering, expanded-battle acceptance, healthy return or
 promotion; all installation and broader acceptance claims remain false.
 
+`src/patcher/battle_profile_continuation.py` prepares 74 adapters and receipts
+around 72 planned native windows: 28 operand reads, 43 post-normal-return checks,
+Count entry and two field CALL receipts. Original full/subregister destinations,
+flags, CALL/RET ancestry, whole stolen instructions and relocation fields are
+authenticated before replay. Count's +2/+4/+6 early reads are checked before
+their native use. Thread callbacks retain a bounded complete pre-call control
+snapshot; lost control permits no cached payload read or replay. Validated
+rejection preserves incoming EAX, while unknown control reaches exact UD2 and
+remains unsuitable for installation.
+
+This component consumes 20,260 RX bytes for Classic/Framed and 20,319 for
+Complete HD/Modal Widgets. Chained 4K totals are 101,332 and 121,311, leaving
+29,740 and 9,761 bytes in the unchanged 128 KiB reservation. The source/synthetic
+suite covers all 36 geometries, two bases, scalar/subregister/flag replay,
+bounded arrays, post-return ownership loss, independently decoded relocations
+and stack canaries. A final exact six-byte CMP length fix left all emitted bytes
+and immutable receipts unchanged; actual Classic 1024x768 metadata changed only
+in its own source hash.
+
+All hooks remain absent. Non-draw Count callers, unit -1/type -1 predecessor
+invariants, provider/RLE cancellation, receiver/arguments, physical clipping,
+atomic integration and native restoration remain unverified. Header-overlap
+bytes at WORLD+821 must not be relabelled as a harmless sentinel unit. This
+preparation establishes no expanded-battle candidate, runtime/input/composition,
+endurance, healthy map return, release lane or promotion.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

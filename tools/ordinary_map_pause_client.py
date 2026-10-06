@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from copy import deepcopy
 import ctypes as C
 from ctypes import wintypes as W
+import errno
 import json
 import os
 from pathlib import Path
@@ -93,6 +94,7 @@ class PauseClient:
         self._poisoned = False
         self.receipts = []
         self.native_failures = ()
+        self.ack_wait_failures = ()
 
     def _native_observation(self, operation, observe):
         try:
@@ -142,17 +144,49 @@ class PauseClient:
 
     def _wait(self, status, lease_id, sequence, timeout_ms):
         end = self.clock_ms()+timeout_ms
+        last_read_failure = None
         while self.clock_ms()<end:
             self.live()
-            ack = self.ack()
+            try:
+                ack = self.ack()
+            except OSError as error:
+                # Windows CRT readers may report only EACCES while the host
+                # atomically replaces this file. Preserve that original error;
+                # it is never a pause acknowledgment or read authority. Retry
+                # only during this already-bounded wait, checking ownership on
+                # every iteration and keeping the original absolute deadline.
+                failure = LeaseError('Acknowledgment read failed: '+str(error),
+                                     operation='acknowledgment read', original_error=error)
+                self.ack_wait_failures += (failure,)
+                last_read_failure = failure
+                retryable = isinstance(error, FileNotFoundError) or (
+                    isinstance(error, PermissionError) and error.errno == errno.EACCES and
+                    getattr(error, 'winerror', None) in (None, 5, 32))
+                if not retryable:
+                    self._poisoned = True
+                    raise failure from error
+                ack = None
+            # File I/O can finish after the wait deadline. Even a valid late
+            # acknowledgment cannot authorize this request.
+            if self.clock_ms()>=end:
+                break
             if ack is not None:
                 require(ack['request_seq']<=sequence, 'Unexpected newer host request')
                 if ack['request_seq']==sequence:
                     require(ack['status']==status and ack['lease_id']==lease_id, 'Host acknowledgment differs from request')
+                    self.live()
+                    if self.clock_ms()>=end:
+                        break
                     self.receipts.append(deepcopy(ack))
                     return ack
             self.sleep(.01)
-        raise LeaseError('Timed out waiting for owned host acknowledgment')
+        failure = LeaseError('Timed out waiting for owned host acknowledgment',
+                             operation='acknowledgment wait',
+                             original_error=last_read_failure.original_error if last_read_failure else None)
+        if last_read_failure is not None:
+            self._poisoned = True
+            raise failure from last_read_failure.original_error
+        raise failure
 
     def wait_ready(self, timeout_ms=12000):
         require(self.sequence==0 and self._active is None, 'Readiness is only valid at session start')
@@ -193,7 +227,9 @@ class PauseClient:
     def check_lease(self, lease):
         self.live()
         require(self._active is not None and lease==self._active, 'Lease is inactive, changed or released')
-        ack=self.ack()
+        # An active read interval has no retry allowance: inability to observe
+        # its current acknowledgment immediately revokes the lease.
+        ack=self._native_observation('acknowledgment read', self.ack)
         require(ack is not None and ack['status']=='paused' and ack['paused'] and
                 ack['request_seq']==self._active_sequence and ack['lease_id']==lease['lease_id'],
                 'Host no longer holds this paused lease')
