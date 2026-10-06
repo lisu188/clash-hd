@@ -167,6 +167,20 @@ The budget includes all frames, an atomic temporary file, scratch, metadata
 and external runtime assets, with the strict disk reserve checked before each
 write. No endurance, runtime, manual-input or promotion claim is established.
 
+[`hidden_soak_running_time.py`](../../tools/hidden_soak_running_time.py)
+prepares a separate versioned transcript of supplied native QPC and debugger
+pause/resume receipts. It credits only acknowledged GO intervals before a
+break request, excludes command and held intervals, and debits each endpoint
+by one counter tick. All 242 independently bound capture epochs and the full
+two-hour running schedule are required; failed calls, missing transitions,
+changed generations and shortened schedules fail. Original signed or unsigned
+HRESULT values and QPC samples remain unchanged. This is receipt arithmetic,
+not measured native endurance: producer provenance, host-awake coverage and
+render/process health remain unverified. It adds 8 MiB for retained transcript
+and atomic temporary bytes to the frozen frame-ledger budget; native-host and
+other producer costs are additional. It installs no adapter or production
+evidence lane and keeps runtime, manual-input and promotion claims false.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -184,6 +198,7 @@ python -B tools/test_battle_profile_field_v2.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
 python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
+python -B tools/test_hidden_soak_running_time.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a
