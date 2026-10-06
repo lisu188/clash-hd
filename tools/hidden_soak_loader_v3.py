@@ -220,8 +220,11 @@ def _render_observer(facts, core, *, fixture_mode=0):
               values["run_id"], values["checkpoint_id"], values["epoch_id"]), "request/core native owner differs")
     _require(type(fixture_mode) is int and fixture_mode in range(11), "fixed synthetic cases only")
     source = facts.host_source.decode("ascii")
-    source = _replace(source, "#include <windows.h>", "#include <windows.h>\n#include <array>")
-    source = _replace(source, "struct Journal {", "static bool v3_reserve();\nstruct Journal {")
+    source = _replace(source, "#include <windows.h>", "#include <windows.h>\n#include <array>\n#include <cstddef>")
+    source = _replace(source, "struct Journal {", 'static_assert(sizeof(PROCESSENTRY32W)==556,"full original WIN32 Toolhelp row");\n'
+        'static_assert(offsetof(PROCESSENTRY32W,th32ProcessID)==8,"original WIN32 Toolhelp PID offset");\n'
+        'static_assert(offsetof(PROCESSENTRY32W,th32ParentProcessID)==24,"original WIN32 Toolhelp parent offset");\n'
+        "static bool v3_reserve();\nstruct Journal {")
     source = _replace(source, "void begin() { demand(GetFileType(output)", "void begin() { demand(v3_reserve(),\"strict reserve blocks observer magic\"); demand(GetFileType(output)")
     source = _replace(source, "        OriginalIo io={};", "        demand(v3_reserve(),\"strict reserve blocks original observer packet; pending originals/debt\");\n        OriginalIo io={};")
     source = _replace(source, "        DWORD footer_count=0;", "        demand(v3_reserve(),\"strict reserve blocks observer receipt tail; debt\");\n        DWORD footer_count=0;")
@@ -632,6 +635,7 @@ OUTER_HELPERS = r'''
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <cwctype>
@@ -646,6 +650,8 @@ static_assert(sizeof(void*)==8,"WIN64 outer controller required");
 static_assert(sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)==144,"fixed WIN64 limits");
 static_assert(sizeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION)==48,"fixed accounting");
 static_assert(sizeof(PROCESSENTRY32W)==568,"full original WIN64 Toolhelp row");
+static_assert(offsetof(PROCESSENTRY32W,th32ProcessID)==8,"original WIN64 Toolhelp PID offset");
+static_assert(offsetof(PROCESSENTRY32W,th32ParentProcessID)==32,"original WIN64 Toolhelp parent offset");
 using Bytes=std::vector<unsigned char>;
 static std::wstring root_value,archive_value;
 static const wchar_t *c_root=L".",*c_job_archive=L"";

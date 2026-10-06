@@ -189,6 +189,10 @@ class EngineSourceTests(unittest.TestCase):
                 self.assertIn("gate_complete",operations);self.assertIn("comparison_result",operations)
                 self.assertIn("read_virtual_capacity",operations)
                 self.assertNotIn("@",rendered)
+                self.assertIn('#include <cstddef>',rendered)
+                self.assertIn('static_assert(sizeof(PROCESSENTRY32W)==556,',rendered)
+                self.assertIn('static_assert(offsetof(PROCESSENTRY32W,th32ProcessID)==8,',rendered)
+                self.assertIn('static_assert(offsetof(PROCESSENTRY32W,th32ParentProcessID)==24,',rendered)
 
     def test_exit_identity_queries_retained_generation_with_explicit_live_path_reference(self):
         for mode in range(11):
@@ -205,6 +209,68 @@ class EngineSourceTests(unittest.TestCase):
                 self.assertLess(identity.index('"native liveness observation failed"'),
                     identity.index("x.identity_sequence=journal.sequence"))
                 self.assertIn('wait_owned(*process);try{process_identity(*process',text)
+
+    def test_caller_exit_dispatch_and_replay_require_original_live_reference_and_fresh_native_cohort(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        text=Path(adapter.__file__).read_text(encoding="utf-8");tree=ast.parse(text)
+        native=next(node for node in tree.body if isinstance(node,ast.ClassDef) and node.name=="_NativeSession")
+        methods={node.name:node for node in native.body if isinstance(node,ast.FunctionDef)}
+        query_calls=[node for node in ast.walk(methods["_generation"]) if isinstance(node,ast.Call) and
+            isinstance(node.func,ast.Attribute) and node.func.attr=="QueryFullProcessImageNameW"]
+        self.assertEqual(len(query_calls),1)
+        live_branches=[node for node in ast.walk(methods["_generation"]) if isinstance(node,ast.If) and
+            isinstance(node.test,ast.Name) and node.test.id=="live" and query_calls[0] in list(ast.walk(node))]
+        self.assertEqual(len(live_branches),1)
+        generation=ast.get_source_segment(text,methods["_generation"])
+        self.assertIn('_caller_generation_cohort(self.events,previous,require_close=False)',generation)
+        self.assertIn('previous["handle"]==h',generation)
+        self.assertIn('pid==previous["pid"] and times[0].value==previous["creation"]',generation)
+        self.assertIn('path_sequence=path_sequence,live_generation_sequence=reference',generation)
+        self.assertIn('requested=65536,returned=chars.value',generation)
+        self.assertIn('path_value=previous["path"];hash_value=previous["sha256"]',generation)
+        resume=ast.get_source_segment(text,methods["resume"])
+        self.assertIn('self._generation(6,"outer",live=False)',resume)
+        self.assertIn('handle=self.owned[6],result=wr,error=we,timeout=35000',resume)
+        cleanup=ast.get_source_segment(text,methods["cleanup"])
+        self.assertIn('handle=self.owned[6],result=r,error=e,timeout=5000',cleanup)
+        protocol=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_caller_protocol")
+        self.assertIn('_caller_generations(frames,core,state)',ast.get_source_segment(text,protocol))
+        joined=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_joined_protocol")
+        self.assertIn('_caller_protocol(caller,state,core)',ast.get_source_segment(text,joined))
+        self.assertEqual(set(adapter.CALLER_GENERATION_FIELDS),set(("role","slot","handle","phase","pid","creation",
+            "exit_time","wait","exit_code","path","sha256","path_scope","path_sequence","live_generation_sequence")))
+
+    def test_toolhelp_original_rows_have_separate_win32_and_win64_sdk_layout_assertions(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        for mode in range(11):
+            with self.subTest(mode=mode):
+                text=source.render_outer_source(fixture_mode=mode).decode("ascii")
+                self.assertIn('#include <cstddef>',text)
+                self.assertIn('static_assert(sizeof(PROCESSENTRY32W)==568,',text)
+                self.assertIn('static_assert(offsetof(PROCESSENTRY32W,th32ProcessID)==8,',text)
+                self.assertIn('static_assert(offsetof(PROCESSENTRY32W,th32ParentProcessID)==32,',text)
+        renderer=Path(source.__file__).read_text(encoding="utf-8")
+        self.assertIn('static_assert(sizeof(PROCESSENTRY32W)==556,',renderer)
+        self.assertIn('static_assert(offsetof(PROCESSENTRY32W,th32ParentProcessID)==24,',renderer)
+        tree=ast.parse(Path(adapter.__file__).read_text(encoding="utf-8"))
+        for name in ("_capacity_groups","_outer_ancestry"):
+            function=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name==name)
+            self.assertIn('result,error,size,usage,pid=struct.unpack_from("<iIIII"',ast.unparse(function).replace("'",'"').replace(' ',''))
+
+    def test_observer_binding_receipts_include_two_bootstrap_hashes_before_four_frozen_v2_inputs(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        native=source.OBSERVER_GATE_CPP
+        self.assertLess(native.index('v3_hash(j,Bytes(v3_boot.begin(),v3_boot.begin()+32768))'),
+            native.index('v3_hash(j,Bytes(v3_boot.begin(),v3_boot.end()-32))'))
+        text=Path(adapter.__file__).read_text(encoding="utf-8");tree=ast.parse(text)
+        binding=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_binding")
+        code=ast.get_source_segment(text,binding)
+        self.assertIn('buffers=(bootstrap[:32768],bootstrap[:-32],facts.request_bytes,facts.request_bytes[:-32],',code)
+        self.assertIn('facts.expected_payload,facts.expected_payload[:-32])',code)
+        self.assertIn('len(value["hash_receipts"])==6',code)
+        observer=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_observer_success")
+        self.assertIn('_binding(frames[index].data(),state["facts"],metadata,core,state["bootstrap"])',
+            ast.get_source_segment(text,observer))
 
     def test_actual_parse_replay_and_fixture_error_paths_bind_issued_originals(self):
         import hidden_soak_loader_v3_adapter as adapter

@@ -544,6 +544,29 @@ runtime acceptance. The frozen predecessors and protected default are retained.
 
 ## Required acceptance and next work
 
+The uninstalled `src/patcher/battle_profile_lifecycle_v2.py` re-emits the pinned
+lifecycle template for the new allocation context. Complete source/operand and
+native transfer inventories, full 128-byte record snapshots, protected RX/RW
+alias rejection and callback checks retain the frozen original's ABI and
+allocation-null fatal route. All new RW tail/provider bytes must remain zero;
+nonzero inherited modal tail is an explicitly unsupported admission case.
+This cannot establish dynamic native-field compatibility or transient-write
+prevention. The 456-byte helper stack and 4K component code bounds are not a
+completed full-chain budget. Synthetic callbacks and optional original-backed
+RAM reconstruction supply no installed battle, provider lifetime, native
+cleanup/healthy return, visual/input, endurance, release or promotion proof.
+
+The uninstalled `src/patcher/battle_profile_routing_v2.py` re-emits six routing
+entries after the fresh lifecycle, using complete new allocation spans and the
+separate inherited modal page. Full record/tail checks surround modeled thread
+callbacks. Exact virgin query denial and receipt loss remain separate, but
+neither authorizes a native target write; both initial adapters restore ABI and
+reach an explicit unsafe endpoint. This is no healthy fallback or production
+cancellation proof. Typed scalar/address/branch inventories and 1280-byte local
+frames supply component checks only. The remaining field/lease/content/primitive
+and line families still require a fresh canonical join and complete-chain
+capacity verification. Provider/RLE ownership and every runtime gate stay open.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle

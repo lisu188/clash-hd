@@ -73,6 +73,8 @@ FALSE_CLAIMS = {name: False for name in (
     "map_ready", "runtime_acceptance", "release_acceptance", "manual_input_verified", "promotion_ready", "stable")}
 IDENTITY_FIELDS=("role","phase","pid","creation","exit_time","wait","exit_code","path","sha256",
     "path_scope","path_sequence","live_identity_sequence","parent_pid","parent_creation","parent_scope")
+CALLER_GENERATION_FIELDS=("role","slot","handle","phase","pid","creation","exit_time","wait","exit_code",
+    "path","sha256","path_scope","path_sequence","live_generation_sequence")
 
 
 def _require(value, reason):
@@ -583,22 +585,45 @@ class _NativeSession:
         return struct.unpack_from("<I",info.raw,28)[0], (struct.unpack_from("<I",info.raw,44)[0]<<32)|struct.unpack_from("<I",info.raw,48)[0]
 
     def _generation(self, slot, role, *, live=True):
-        C=ctypes; h=self.owned[slot]; C.set_last_error(0); pid=self.kernel.GetProcessId(h); pe=C.get_last_error()
-        self._record("api",dict(name="GetProcessId",slot=slot,role=role,result=pid,error=pe))
-        path=C.create_unicode_buffer(32768); chars=C.c_uint32(32768); C.set_last_error(0)
-        pr=self.kernel.QueryFullProcessImageNameW(h,0,path,C.byref(chars)); pre=C.get_last_error()
-        self._record("api",dict(name="QueryFullProcessImageNameW",slot=slot,role=role,result=pr,error=pre,returned=chars.value),bytes(path))
+        C=ctypes; h=self.owned[slot]; phase="live" if live else "exit"
+        _require(h and (role,slot) in (("caller",2),("outer",6)),"retained caller generation role/handle required")
+        reference=0;previous=None
+        if not live:
+            originals=[row for row in self.events if row.operation=="generation" and
+                row.data()["observation"].get("phase")=="live" and
+                (row.data()["observation"].get("role"),row.data()["observation"].get("slot"))==(role,slot)]
+            _require(originals,"earlier original caller live generation required")
+            previous=originals[-1]
+            _caller_generation_cohort(self.events,previous,require_close=False)
+            previous=previous.data()["observation"]
+            _require(previous["handle"]==h,"retained caller generation handle changed")
+            reference=originals[-1].sequence;path_sequence=previous["path_sequence"]
+        C.set_last_error(0); pid=self.kernel.GetProcessId(h); pe=C.get_last_error()
+        identity=dict(slot=slot,role=role,handle=h,phase=phase)
+        self._record("api",dict(name="GetProcessId",**identity,result=pid,error=pe))
+        if live:
+            path=C.create_unicode_buffer(32768); chars=C.c_uint32(32768); C.set_last_error(0)
+            pr=self.kernel.QueryFullProcessImageNameW(h,0,path,C.byref(chars)); pre=C.get_last_error()
+            self._record("api",dict(name="QueryFullProcessImageNameW",**identity,result=pr,error=pre,
+                requested=65536,returned=chars.value),bytes(path))
+            path_sequence=self.events[-1].sequence
         times=[C.c_uint64() for _ in range(4)]; C.set_last_error(0)
         tr=self.kernel.GetProcessTimes(h,*(C.byref(v) for v in times)); te=C.get_last_error()
-        self._record("api",dict(name="GetProcessTimes",slot=slot,role=role,result=tr,error=te),struct.pack("<4Q",*(v.value for v in times)))
+        self._record("api",dict(name="GetProcessTimes",**identity,result=tr,error=te),struct.pack("<4Q",*(v.value for v in times)))
         C.set_last_error(0); wait=self.kernel.WaitForSingleObject(h,0); we=C.get_last_error()
-        self._record("api",dict(name="WaitForSingleObject",slot=slot,role=role,result=wait,error=we,timeout=0))
+        self._record("api",dict(name="WaitForSingleObject",**identity,result=wait,error=we,timeout=0))
         exit=C.c_uint32(); C.set_last_error(0); er=self.kernel.GetExitCodeProcess(h,C.byref(exit)); ee=C.get_last_error()
-        self._record("api",dict(name="GetExitCodeProcess",slot=slot,role=role,result=er,error=ee),struct.pack("<I",exit.value))
-        _require(pid and pr and 0<chars.value<32768 and tr and er and times[0].value,"original generation unavailable")
-        image=_plain_path(path[:chars.value]); raw=image.read_bytes()
-        data=dict(pid=pid,creation=times[0].value,path=str(image),sha256=_sha(raw),wait=wait,exit_code=exit.value,exit_time=times[1].value)
-        self._record("generation",dict(role=role,slot=slot,**data))
+        self._record("api",dict(name="GetExitCodeProcess",**identity,result=er,error=ee),struct.pack("<I",exit.value))
+        _require(pid and pe==0 and tr and te==0 and er and ee==0 and we==0 and times[0].value,"original generation unavailable")
+        if live:
+            _require(pr and pre==0 and 0<chars.value<32768,"whole original live generation path unavailable")
+            image=_plain_path(path[:chars.value]); path_value=str(image);hash_value=_sha(image.read_bytes())
+        else:
+            _require(pid==previous["pid"] and times[0].value==previous["creation"],"original retained caller exit generation differs")
+            path_value=previous["path"];hash_value=previous["sha256"]
+        data=dict(pid=pid,creation=times[0].value,path=path_value,sha256=hash_value,wait=wait,exit_code=exit.value,exit_time=times[1].value)
+        self._record("generation",dict(**identity,**data,path_scope="native_live_query" if live else "retained_live_generation",
+            path_sequence=path_sequence,live_generation_sequence=reference))
         _require((wait==258 and exit.value==259 and times[1].value==0) if live else
                  (wait==0 and exit.value!=259 and times[1].value>=times[0].value),"original retained process liveness/exit differs")
         return data
@@ -813,7 +838,7 @@ class _NativeSession:
             if not r: self.failed=True
         if self.owned[6]:
             C.set_last_error(0); r=self.kernel.WaitForSingleObject(self.owned[6],5000); e=C.get_last_error()
-            try: self._record("api",dict(name="WaitForSingleObject",role="outer",result=r,error=e,timeout=5000))
+            try: self._record("api",dict(name="WaitForSingleObject",role="outer",slot=6,handle=self.owned[6],result=r,error=e,timeout=5000))
             except BaseException: self.debt=self.failed=True
             if r!=0: self.failed=True
         for slot in (7,6,8,10,5,4,3,2,1): self.close_slot(slot)
@@ -824,7 +849,7 @@ class _NativeSession:
         self._record("api",dict(name="ResumeThread",role="outer",result=r,error=e))
         _require(r==1,"exactly once suspended outer resume required")
         C.set_last_error(0); wr=self.kernel.WaitForSingleObject(self.owned[6],35000); we=C.get_last_error()
-        self._record("api",dict(name="WaitForSingleObject",role="outer",result=wr,error=we,timeout=35000))
+        self._record("api",dict(name="WaitForSingleObject",role="outer",slot=6,handle=self.owned[6],result=wr,error=we,timeout=35000))
         _require(wr==0,"outer did not finish within fixed caller deadline")
         exit=self._generation(6,"outer",live=False)
         _require(exit["pid"]==self.outer["pid"] and exit["creation"]==self.outer["creation"] and exit["exit_code"]==0,
@@ -1306,8 +1331,8 @@ def _capacity_groups(frames):
             matches=[]
             for index in range(ancestor["cohort_rows"]):
                 block=parent.raw[index*564:(index+1)*564]
-                result,error,size,pid=struct.unpack_from("<iIII",block)
-                _require(result==1 and error==0 and size==556,"original queried parent row failed/short")
+                result,error,size,usage,pid=struct.unpack_from("<iIIII",block)
+                _require(result==1 and error==0 and size==556 and usage==0,"original queried parent row failed/short")
                 if pid==value["pid"]: matches.append((index,struct.unpack_from("<I",block,32)[0]))
             _require(matches==[(ancestor["cohort_rows"]-1,ancestor["parent_pid"])],
                      "original parent first-match query missing/duplicated/reordered")
@@ -1321,7 +1346,146 @@ def _capacity_groups(frames):
     return tuple(row for row in frames if row.sequence not in consumed),group
 
 
-def _caller_protocol(frames,state):
+def _caller_generation_cohort(frames,row,*,require_close=True):
+    """Replay a caller-owned retained handle from its full original API cohort."""
+    value=_exact(row.data()["observation"],CALLER_GENERATION_FIELDS,"original caller generation")
+    _wire_scalars(value)
+    _require(row.operation=="generation" and not row.raw and row.sequence<=len(frames) and
+        frames[row.sequence-1] is row,"original caller generation position/raw policy differs")
+    _require((value["role"],value["slot"]) in (("caller",2),("outer",6)) and value["phase"] in ("live","exit"),
+        "original caller generation role/slot/phase differs")
+    for name in ("handle","creation","exit_time","path_sequence","live_generation_sequence"):
+        _integer(value[name],0,2**64-1)
+    for name in ("pid","wait","exit_code"):_integer(value[name])
+    _require(value["handle"] not in (0,2**64-1) and value["pid"]>0 and value["creation"]>0 and
+        type(value["path"]) is str and value["path"] and type(value["sha256"]) is str and
+        re.fullmatch(r"[0-9a-f]{64}",value["sha256"]) is not None,"original caller generation scalars differ")
+    live=value["phase"]=="live"
+    names=("GetProcessId",)+(("QueryFullProcessImageNameW",) if live else ())+(
+        "GetProcessTimes","WaitForSingleObject","GetExitCodeProcess")
+    start=row.sequence-1-len(names);_require(start>=0,"original caller generation cohort missing")
+    cohort=frames[start:row.sequence-1]
+    for item,name in zip(cohort,names):
+        _io(item);data=item.data()["observation"]
+        fields=("name","role","slot","handle","phase","result","error")
+        _wire_scalars(data)
+        _exact(data,fields+(("requested","returned") if name=="QueryFullProcessImageNameW" else
+            ("timeout",) if name=="WaitForSingleObject" else ()),"original caller generation API")
+        _require(item.operation=="api" and data["name"]==name and
+            all(data[key]==value[key] for key in ("role","slot","handle","phase")),
+            "original caller generation API order/retained handle differs")
+        _integer(data["result"]);_integer(data["error"])
+        _require(data["error"]==0 and (data["result"]!=0 if name not in ("WaitForSingleObject",) else True),
+            "original caller generation native query failed")
+    pid,times,wait,exit=(cohort[0],cohort[-3],cohort[-2],cohort[-1])
+    _require(not pid.raw and pid.data()["observation"]["result"]==value["pid"] and
+        len(times.raw)==32 and not wait.raw and wait.data()["observation"]["timeout"]==0 and
+        len(exit.raw)==4,"whole original caller PID/times/wait/exit buffers required")
+    original_times=struct.unpack("<4Q",times.raw)
+    _require((original_times[0],original_times[1],wait.data()["observation"]["result"],struct.unpack("<I",exit.raw)[0])==
+        (value["creation"],value["exit_time"],value["wait"],value["exit_code"]),
+        "original caller generation differs from fresh native buffers")
+    close_rows=[item for item in frames if item.operation=="api" and
+        item.data()["observation"].get("name")=="CloseHandle" and
+        item.data()["observation"].get("handle")==value["handle"]]
+    _require(not any(item.sequence<row.sequence for item in close_rows),"caller retained handle closed before generation")
+    if require_close:
+        _require(len(close_rows)==1 and close_rows[0].sequence>row.sequence,"single future caller generation close required")
+        closing=close_rows[0];data=_exact(closing.data()["observation"],("name","slot","handle","result","error"),
+            "original caller generation close")
+        _wire_scalars(data)
+        _io(closing)
+        _require(data["slot"]==value["slot"] and type(data["result"]) is int and data["result"]!=0 and
+            data["error"]==0 and not closing.raw,"original caller retained handle close failed/differs")
+    if live:
+        path=cohort[1];data=path.data()["observation"]
+        _integer(data["returned"],1,32767)
+        _require(value["path_scope"]=="native_live_query" and value["live_generation_sequence"]==0 and
+            value["path_sequence"]==path.sequence and data["requested"]==len(path.raw)==65536 and
+            path.raw[:data["returned"]*2].decode("utf-16le")==value["path"] and
+            path.raw[data["returned"]*2:]==bytes(65536-data["returned"]*2) and
+            (value["wait"],value["exit_code"],value["exit_time"])==(258,259,0),
+            "whole original caller live path/liveness differs")
+    else:
+        _require(value["role"]=="outer" and value["path_scope"]=="retained_live_generation" and
+            value["wait"]==0 and value["exit_code"]!=259 and value["exit_time"]>=value["creation"],
+            "original caller fresh signaled exit observation differs")
+        previous=[item for item in frames[:start] if item.operation=="generation" and
+            item.data()["observation"].get("phase")=="live" and all(
+                item.data()["observation"].get(key)==value[key] for key in ("role","slot"))]
+        _require(previous and previous[-1].sequence==value["live_generation_sequence"],
+            "latest earlier original caller live generation reference required")
+        ancestor=previous[-1];_caller_generation_cohort(frames,ancestor,require_close=require_close)
+        original=ancestor.data()["observation"]
+        _require(all(value[key]==original[key] for key in ("handle","pid","creation","path","sha256","path_sequence")),
+            "retained original caller live path/handle/generation substituted")
+        _require(start>0,"original caller outer finish wait missing")
+        finish_wait=frames[start-1];data=_exact(finish_wait.data()["observation"],
+            ("name","role","slot","handle","result","error","timeout"),"original caller outer finish wait")
+        _wire_scalars(data)
+        _io(finish_wait)
+        _require(finish_wait.operation=="api" and data==dict(name="WaitForSingleObject",role="outer",slot=6,
+            handle=value["handle"],result=0,error=0,timeout=35000) and not finish_wait.raw,
+            "original exact retained outer 35-second finish wait failed/differs")
+        if require_close:
+            cleanup=[item for item in frames[row.sequence:close_rows[0].sequence-1] if item.operation=="api" and
+                item.data()["observation"].get("name")=="WaitForSingleObject" and
+                item.data()["observation"].get("timeout")==5000]
+            _require(len(cleanup)==1,"single original caller cleanup wait required")
+            data=_exact(cleanup[0].data()["observation"],("name","role","slot","handle","result","error","timeout"),
+                "original caller outer cleanup wait")
+            _wire_scalars(data)
+            _io(cleanup[0])
+            _require(data==dict(name="WaitForSingleObject",role="outer",slot=6,handle=value["handle"],result=0,error=0,timeout=5000)
+                and not cleanup[0].raw,"original caller retained outer five-second cleanup wait failed/differs")
+        _require(not any(item.operation=="api" and item.data()["observation"].get("name")=="QueryFullProcessImageNameW"
+            and item.data()["observation"].get("role")==value["role"] and
+            item.data()["observation"].get("phase")=="exit" for item in frames),
+            "post-exit caller path query cannot replace retained live path scope")
+    return tuple(cohort)
+
+
+def _caller_generations(frames,core,state):
+    rows=[row for row in frames if row.operation=="generation"]
+    _require(tuple((row.data()["observation"].get("role"),row.data()["observation"].get("phase")) for row in rows)==
+        (("caller","live"),("outer","live"),("outer","live"),("outer","exit")),
+        "four ordered original caller generation boundaries required")
+    for row in rows:
+        _caller_generation_cohort(frames,row)
+        value=row.data()["observation"];role=value["role"]
+        _require((value["pid"],value["creation"],value["path"].lower(),value["sha256"])==
+            (core[role+"_pid"],core[role+"_creation"],core["paths"][role].lower(),core["hashes"][role]),
+            "source-bound caller generation path/hash/PID/creation differs")
+        _require(value["handle"]==rows[0 if role=="caller" else 1].data()["observation"]["handle"],
+            "caller generation retained handle changed")
+    _require(_sha(state["outer_binary"])==core["hashes"]["outer"],"caller generation outer source hash differs")
+    opened=[row for row in frames if row.operation=="api" and
+        row.data()["observation"].get("name")=="OpenProcess" and row.data()["observation"].get("role")=="caller"]
+    created=[row for row in frames if row.operation=="api" and
+        row.data()["observation"].get("name")=="CreateProcessW" and row.data()["observation"].get("role")=="outer"]
+    _require(len(opened)==len(created)==1,"original caller open and suspended outer creation required")
+    opening=_exact(opened[0].data()["observation"],("name","role","result","error","pid"),"original caller handle open")
+    creation=_exact(created[0].data()["observation"],("name","role","result","error","command","flags","inherit_handles"),
+        "original suspended outer creation")
+    _wire_scalars(opening);_wire_scalars(creation)
+    _require(opened[0].sequence<rows[0].sequence and not opened[0].raw and opening==dict(name="OpenProcess",role="caller",
+        result=rows[0].data()["observation"]["handle"],error=0,pid=core["caller_pid"]),
+        "caller generation is not the original opened process handle")
+    _require(created[0].sequence<rows[1].sequence and len(created[0].raw)==24 and creation["result"]!=0 and
+        creation["error"]==0 and creation["flags"]==0x08080404 and creation["inherit_handles"]==1 and
+        creation["command"]==subprocess.list2cmdline([core["paths"]["outer"],core["paths"]["bootstrap"]]),
+        "caller generation lacks the original suspended outer creation command/ABI")
+    process,thread,pid,tid=struct.unpack("<QQII",created[0].raw)
+    _require(process==rows[1].data()["observation"]["handle"] and thread and pid==core["outer_pid"] and tid,
+        "caller generation is not the original created outer handle/PID")
+    for row in frames:
+        data=row.data()["observation"]
+        if row.operation=="api" and data.get("name")=="IsProcessInJob":
+            _require(data.get("process")==process,"caller adoption readback used another outer handle")
+    return rows[-1].data()["observation"]
+
+
+def _caller_protocol(frames,state,core):
     expected=state["session"]
     _require(frames and frames[-1].operation=="finish" and sum(r.operation=="finish" for r in frames)==1,
              "single terminal original caller receipt required")
@@ -1377,6 +1541,7 @@ def _caller_protocol(frames,state):
         ("QueryInformationJobObject",)*3+("IsProcessInJob",),"source job readbacks must immediately precede outer resume")
     _require(sum(row.operation=="api" and value.get("name")=="IsProcessInJob" for row,value in zip(frames,observations))==2,
         "both suspended issuance and pre-resume membership groups required")
+    _caller_generations(frames,core,state)
     return result
 
 
@@ -1755,8 +1920,8 @@ def _outer_ancestry(observed):
         row=matches[0];found=[]
         _require(len(row.raw)%576==0 and 1<=len(row.raw)//576<=4096,"whole original parent cohort required")
         for offset in range(0,len(row.raw),576):
-            result,error,size,pid=struct.unpack_from("<iIII",row.raw,offset)
-            _require(size==568 and (result==1 and error==0 if offset+576<len(row.raw) else result==0 and error==18),
+            result,error,size,usage,pid=struct.unpack_from("<iIIII",row.raw,offset)
+            _require(size==568 and usage==0 and (result==1 and error==0 if offset+576<len(row.raw) else result==0 and error==18),
                      "original full parent cohort terminal/row failed")
             if result and pid==value["pid"]:found.append(struct.unpack_from("<I",row.raw,offset+40)[0])
         _require(found==[parent["pid"]],"raw original parent PID missing/duplicated/substituted")
@@ -1804,7 +1969,7 @@ def _gate_pair(challenge,adoption,core,generator):
     return before,after
 
 
-def _binding(value,facts,metadata,core):
+def _binding(value,facts,metadata,core,bootstrap):
     predecessor=facts.predecessor_facts
     size=struct.unpack_from("<I",facts.expected_payload,12)[0]
     expected=dict(request_sha256=_sha(facts.request_bytes),expected_payload_sha256=_sha(facts.expected_payload),
@@ -1814,8 +1979,12 @@ def _binding(value,facts,metadata,core):
         payload_path_utf16le=(core["paths"]["payload"]+"\0").encode("utf-16le").hex())
     _require(all(type(value[name]) is type(wanted) and value[name]==wanted for name,wanted in expected.items()),
              "original immutable payload/request/path binding differs")
-    buffers=(facts.request_bytes,facts.request_bytes[:-32],facts.expected_payload,facts.expected_payload[:-32])
-    _require(type(value["hash_receipts"]) is list and len(value["hash_receipts"])==4,"four original hash operations required")
+    _require(type(bootstrap) is bytes and len(bootstrap)==32864 and
+        bootstrap[-32:]==bytes.fromhex(_sha(bootstrap[:-32])),"whole source-issued bootstrap checksum differs")
+    buffers=(bootstrap[:32768],bootstrap[:-32],facts.request_bytes,facts.request_bytes[:-32],
+        facts.expected_payload,facts.expected_payload[:-32])
+    _require(type(value["hash_receipts"]) is list and len(value["hash_receipts"])==6,
+        "six ordered original bootstrap/request/payload hash operations required")
     for receipt,raw in zip(value["hash_receipts"],buffers):
         _exact(receipt,("input_bytes","open_status","hash_status","close_status","digest_hex"),"original input hash")
         _require(type(receipt["input_bytes"]) is int and receipt["input_bytes"]==len(raw) and receipt["digest_hex"]==_sha(raw),
@@ -1858,7 +2027,7 @@ def _observer_success(original_frames,state,core,generator,v2,helpers,outer):
         _hash_gate(row,raw)
     _require(tuple(r.operation for r in frames[index:index+4])==("expected_binding","invocation","comparison_begin","origin"),
              "original observer input/startup order differs")
-    _binding(frames[index].data(),state["facts"],metadata,core)
+    _binding(frames[index].data(),state["facts"],metadata,core,state["bootstrap"])
     count=len(state["facts"].predecessor_facts.descriptors)+1
     _require(frames[index+2].data()==dict(expected_payload_sha256=_sha(state["facts"].expected_payload),read_count=count,
         scope=v2.IMMUTABLE_SCOPE),"original comparison begin inventory differs")
@@ -2204,7 +2373,7 @@ def _joined_protocol(originals,state,generator):
             rows.append(tuple(frames))
         caller,outer,observer=rows
         _require(complete["caller"],"caller original terminal/closure stream missing")
-        _caller_protocol(caller,state)
+        _caller_protocol(caller,state,core)
         _require(type(originals.caller_close_receipt) is bytes and len(originals.caller_close_receipt)<=CALLER_CLOSE_ORIGINAL_BYTES,
             "complete original caller close exceeds its explicit retention allowance")
         close=_json(originals.caller_close_receipt)

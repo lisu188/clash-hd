@@ -355,7 +355,7 @@ class CapacityTests(unittest.TestCase):
             capacity.update(handle=number+7,times_hex=struct.pack("<4Q",number+1000,0,77,88).hex())
             full=bytes.fromhex(original["image_path_utf16le"])+bytes(65536-12)
             rows.append(("generation_capacity",capacity,full))
-            native=bytearray(564);struct.pack_into("<iIII",native,0,1,0,556,number+100)
+            native=bytearray(564);struct.pack_into("<iIIII",native,0,1,0,556,0,number+100)
             struct.pack_into("<I",native,32,number+90)
             parent=dict(handle=number+7,snapshot_handle=99,snapshot_error=0,parent_pid=number+90,
                 parent_return=1,parent_error=0,parent_times_return=1,parent_times_error=0,
@@ -387,6 +387,17 @@ class CapacityTests(unittest.TestCase):
         with self.assertRaises(ValueError):adapter._capacity_groups(self.parse(rows[:-1]))
         wrong=deepcopy(rows);wrong[1][1]["cohort_rows"]=2;wrong[1]=(wrong[1][0],wrong[1][1],wrong[1][2]*2)
         with self.assertRaises(ValueError):adapter._capacity_groups(self.parse(wrong))
+
+    def test_win32_sdk_pid_field_usage_decoy_truncation_and_native_errors_reject(self):
+        for variant in ("usage_decoy","wrong_pid","truncated","native_error","terminal_row"):
+            rows=self.cohort();native=bytearray(rows[1][2])
+            if variant=="usage_decoy":struct.pack_into("<II",native,12,101,0)
+            elif variant=="wrong_pid":struct.pack_into("<I",native,16,777)
+            elif variant=="truncated":native.pop()
+            elif variant=="native_error":struct.pack_into("<I",native,4,31)
+            else:struct.pack_into("<iI",native,0,0,18)
+            rows[1]=(rows[1][0],rows[1][1],bytes(native))
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._capacity_groups(self.parse(rows))
 
 
 class FailureTests(unittest.TestCase):
@@ -770,6 +781,206 @@ class InheritanceJoinTests(unittest.TestCase):
         self.assertEqual(parsed["startup_info"].raw,startup.raw);self.assertEqual(parsed["failures"],[])
 
 
+class BindingReceiptTests(unittest.TestCase):
+    """Source-owned buffer models exercise the exact V3 hash receipt inventory."""
+    def binding(self):
+        bootstrap=b"source-owned bootstrap model"+bytes(32832-len(b"source-owned bootstrap model"))
+        bootstrap+=bytes.fromhex(adapter._sha(bootstrap))
+        payload=bytearray(128);struct.pack_into("<I",payload,12,48);payload[48:96]=bytes(range(48))
+        facts=SimpleNamespace(request_bytes=bytes(range(256))+bytes(64),expected_payload=bytes(payload),
+            predecessor_facts=SimpleNamespace(descriptors=(1,2),fixups=(3,)))
+        core=dict(paths=dict(request=r"C:\fixture\request.bin",payload=r"C:\fixture\expected.bin"))
+        buffers=(bootstrap[:32768],bootstrap[:-32],facts.request_bytes,facts.request_bytes[:-32],
+            facts.expected_payload,facts.expected_payload[:-32])
+        value=dict(request_sha256=adapter._sha(facts.request_bytes),expected_payload_sha256=adapter._sha(facts.expected_payload),
+            metadata_hex=facts.expected_payload[48:96].hex(),payload_bytes=128,chunk_count=2,highlow_count=1,
+            request_path_utf16le=(core["paths"]["request"]+"\0").encode("utf-16le").hex(),
+            payload_path_utf16le=(core["paths"]["payload"]+"\0").encode("utf-16le").hex(),
+            hash_receipts=[dict(input_bytes=len(raw),open_status=0,hash_status=0,close_status=0,digest_hex=adapter._sha(raw))
+                for raw in buffers])
+        return value,facts,core,bootstrap
+
+    def test_exact_six_original_hashes_bind_two_bootstrap_and_four_input_buffers(self):
+        value,facts,core,bootstrap=self.binding();adapter._binding(value,facts,{},core,bootstrap)
+        self.assertEqual([row["input_bytes"] for row in value["hash_receipts"]],[32768,32832,320,288,128,96])
+
+    def test_missing_extra_reordered_wrong_digest_size_native_failure_or_invented_receipt_rejects(self):
+        for variant in ("missing","extra","reordered","digest","size","open","hash","close","boolean","unknown_field"):
+            value,facts,core,bootstrap=self.binding();receipts=value["hash_receipts"]
+            if variant=="missing":receipts.pop(0)
+            elif variant=="extra":receipts.append(dict(receipts[0]))
+            elif variant=="reordered":receipts[0],receipts[1]=receipts[1],receipts[0]
+            elif variant=="digest":receipts[0]["digest_hex"]="f"*64
+            elif variant=="size":receipts[1]["input_bytes"]-=1
+            elif variant in ("open","hash","close"):receipts[0][variant+"_status"]=-1
+            elif variant=="boolean":receipts[0]["hash_status"]=False
+            else:receipts[0]["invented_pass"]=True
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._binding(value,facts,{},core,bootstrap)
+
+    def test_changed_bootstrap_request_payload_or_unsealed_bootstrap_rejects(self):
+        for variant in ("bootstrap","request","payload","trailer","short"):
+            value,facts,core,bootstrap=self.binding()
+            if variant=="bootstrap":
+                bootstrap=b"changed"+bootstrap[7:-32];bootstrap+=bytes.fromhex(adapter._sha(bootstrap))
+            elif variant=="request":facts.request_bytes=b"changed"+facts.request_bytes[7:]
+            elif variant=="payload":facts.expected_payload=facts.expected_payload[:-1]+b"Z"
+            elif variant=="trailer":bootstrap=bootstrap[:-1]+bytes([bootstrap[-1]^1])
+            else:bootstrap=bootstrap[:-1]
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._binding(value,facts,{},core,bootstrap)
+
+
+class CallerExitIdentityTests(unittest.TestCase):
+    """Explicit original-packet models; no native or filesystem observations."""
+    def originals(self):
+        rows=[];paths=dict(caller=r"C:\fixture\python.exe",outer=r"C:\fixture\outer.exe",
+            bootstrap=r"C:\fixture\bootstrap.bin")
+        binaries=dict(caller=b"source-owned caller model",outer=b"source-owned outer model")
+        pids=dict(caller=601,outer=701);creations=dict(caller=1000,outer=1100);handles=dict(caller=600,outer=700)
+        live={}
+        def add(operation,value,raw=b""):
+            rows.append(frame(operation,dict(observation=value,prewrite_reserve={}),raw,sequence=len(rows)+1))
+            return rows[-1].sequence
+        def api(name,role,phase,result,raw=b"",**fields):
+            return add("api",dict(name=name,role=role,slot=2 if role=="caller" else 6,
+                handle=handles[role],phase=phase,result=result,error=0,**fields),raw)
+        def generation(role,phase):
+            exited=phase=="exit";api("GetProcessId",role,phase,pids[role])
+            if exited:reference,path_sequence=live[role]
+            else:
+                raw=paths[role].encode("utf-16le")
+                path_sequence=api("QueryFullProcessImageNameW",role,phase,1,raw+bytes(65536-len(raw)),
+                    requested=65536,returned=len(paths[role]));reference=0
+            api("GetProcessTimes",role,phase,1,struct.pack("<4Q",creations[role],1300 if exited else 0,77,88))
+            api("WaitForSingleObject",role,phase,0 if exited else 258,timeout=0)
+            api("GetExitCodeProcess",role,phase,1,struct.pack("<I",0 if exited else 259))
+            add("generation",dict(role=role,slot=2 if role=="caller" else 6,handle=handles[role],phase=phase,
+                pid=pids[role],creation=creations[role],exit_time=1300 if exited else 0,wait=0 if exited else 258,
+                exit_code=0 if exited else 259,path=paths[role],sha256=adapter._sha(binaries[role]),
+                path_scope="retained_live_generation" if exited else "native_live_query",path_sequence=path_sequence,
+                live_generation_sequence=reference))
+            if not exited:live[role]=(rows[-1].sequence,path_sequence)
+        add("api",dict(name="OpenProcess",role="caller",result=600,error=0,pid=601))
+        generation("caller","live")
+        add("api",dict(name="CreateProcessW",role="outer",result=1,error=0,
+            command=adapter.subprocess.list2cmdline([paths["outer"],paths["bootstrap"]]),flags=0x08080404,inherit_handles=1),
+            struct.pack("<QQII",700,800,701,801))
+        generation("outer","live");generation("outer","live")
+        add("api",dict(name="WaitForSingleObject",role="outer",slot=6,handle=700,result=0,error=0,timeout=35000))
+        generation("outer","exit")
+        add("api",dict(name="WaitForSingleObject",role="outer",slot=6,handle=700,result=0,error=0,timeout=5000))
+        add("api",dict(name="CloseHandle",slot=6,handle=700,result=1,error=0))
+        add("api",dict(name="CloseHandle",slot=2,handle=600,result=1,error=0))
+        core=dict(paths=paths,hashes={role:adapter._sha(raw) for role,raw in binaries.items()},
+            caller_pid=601,caller_creation=1000,outer_pid=701,outer_creation=1100)
+        return rows,core,dict(outer_binary=binaries["outer"])
+
+    def replace(self,rows,index,*,raw=None,operation=None,**fields):
+        original=rows[index];value=dict(original.data()["observation"],**fields)
+        rows[index]=frame(operation or original.operation,dict(observation=value,prewrite_reserve={}),
+            original.raw if raw is None else raw,sequence=original.sequence)
+
+    def test_four_boundaries_bind_full_live_paths_fresh_exit_and_original_process_handles(self):
+        rows,core,state=self.originals();value=adapter._caller_generations(rows,core,state)
+        self.assertEqual((value["pid"],value["creation"],value["exit_time"]),(701,1100,1300))
+        self.assertEqual((value["path_sequence"],value["live_generation_sequence"]),(16,20))
+        cohort=adapter._caller_generation_cohort(rows,rows[25])
+        self.assertEqual(tuple(row.data()["observation"]["name"] for row in cohort),
+            ("GetProcessId","GetProcessTimes","WaitForSingleObject","GetExitCodeProcess"))
+
+    def test_missing_stale_foreign_live_reference_path_hash_or_generation_rejects(self):
+        for variant in ("missing","stale","foreign","path_reference","path","hash","pid","creation","handle","scope"):
+            rows,core,state=self.originals()
+            if variant=="missing":self.replace(rows,19,operation="unavailable")
+            elif variant=="stale":self.replace(rows,25,live_generation_sequence=14)
+            elif variant=="foreign":self.replace(rows,25,live_generation_sequence=7)
+            elif variant=="path_reference":self.replace(rows,25,path_sequence=10)
+            elif variant=="path":self.replace(rows,25,path=r"C:\fixture\foreign.exe")
+            elif variant=="hash":self.replace(rows,25,sha256="f"*64)
+            elif variant=="pid":
+                self.replace(rows,21,result=702);self.replace(rows,25,pid=702)
+            elif variant=="creation":
+                self.replace(rows,22,raw=struct.pack("<4Q",1101,1300,77,88));self.replace(rows,25,creation=1101)
+            elif variant=="handle":
+                for index in (14,15,16,17,18,19):self.replace(rows,index,handle=702)
+            else:self.replace(rows,25,path_scope="native_live_query")
+            with self.subTest(variant=variant),self.assertRaises(ValueError):
+                adapter._caller_generation_cohort(rows,rows[25])
+
+    def test_full_raw_buffers_successful_queries_and_genuine_exit_are_required(self):
+        variants=((15,dict(raw=bytes(65535))),(15,dict(requested=65535)),(15,dict(returned=0)),
+            (15,dict(result=0,error=31)),(21,dict(raw=b"unexpected")),(22,dict(raw=bytes(31))),
+            (22,dict(result=0,error=6)),(23,dict(raw=b"unexpected")),(23,dict(result=258)),
+            (24,dict(raw=bytes(3))),(24,dict(result=0,error=6)),(23,dict(result=False)))
+        for index,fields in variants:
+            rows,core,state=self.originals();self.replace(rows,index,**fields)
+            with self.subTest(index=index,fields=fields),self.assertRaises(ValueError):
+                adapter._caller_generation_cohort(rows,rows[25])
+        for exit_time in (0,1099):
+            rows,core,state=self.originals();self.replace(rows,22,raw=struct.pack("<4Q",1100,exit_time,77,88))
+            self.replace(rows,25,exit_time=exit_time)
+            with self.subTest(exit_time=exit_time),self.assertRaises(ValueError):
+                adapter._caller_generation_cohort(rows,rows[25])
+        rows,core,state=self.originals();self.replace(rows,24,raw=struct.pack("<I",259));self.replace(rows,25,exit_code=259)
+        with self.assertRaises(ValueError):adapter._caller_generation_cohort(rows,rows[25])
+
+    def test_original_waits_single_future_close_and_no_postexit_path_query_are_required(self):
+        for index,fields in ((20,dict(result=258)),(20,dict(timeout=35001)),(20,dict(handle=701)),
+            (26,dict(result=258)),(26,dict(timeout=5001)),(27,dict(result=0,error=6)),(27,dict(handle=701))):
+            rows,core,state=self.originals();self.replace(rows,index,**fields)
+            with self.subTest(index=index,fields=fields),self.assertRaises(ValueError):
+                adapter._caller_generation_cohort(rows,rows[25])
+        for variant in ("early","duplicate","missing","postexit_path"):
+            rows,core,state=self.originals()
+            if variant=="early":self.replace(rows,20,operation="api",name="CloseHandle",slot=6,handle=700)
+            elif variant=="duplicate":rows.append(frame("api",rows[27].data(),sequence=len(rows)+1))
+            elif variant=="missing":self.replace(rows,27,operation="unavailable")
+            else:rows.append(frame("api",dict(observation=dict(rows[15].data()["observation"],phase="exit",result=0,error=31),
+                prewrite_reserve={}),bytes(65536),sequence=len(rows)+1))
+            with self.subTest(variant=variant),self.assertRaises(ValueError):
+                adapter._caller_generation_cohort(rows,rows[25])
+
+    def test_source_path_hash_core_generation_open_and_creation_cannot_be_substituted(self):
+        for variant in ("source","path","core_pid","core_creation","opened","created","flags","command"):
+            rows,core,state=self.originals()
+            if variant=="source":state["outer_binary"]+=b"changed"
+            elif variant=="path":core["paths"]["outer"]=r"C:\fixture\changed.exe"
+            elif variant=="core_pid":core["outer_pid"]+=1
+            elif variant=="core_creation":core["outer_creation"]+=1
+            elif variant=="opened":self.replace(rows,0,result=601)
+            elif variant=="created":self.replace(rows,7,raw=struct.pack("<QQII",702,800,701,801))
+            elif variant=="flags":self.replace(rows,7,flags=0x08080000)
+            else:self.replace(rows,7,command="foreign command")
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._caller_generations(rows,core,state)
+
+    def test_actual_exit_dispatch_queries_four_fresh_apis_and_retains_live_original_reference(self):
+        rows,core,fixture=self.originals();state=adapter._NativeSession.__new__(adapter._NativeSession)
+        state.events=rows[:21];state.owned=[0]*32;state.owned[6]=700
+        state._record=lambda operation,value,raw=b"":state.events.append(frame(operation,
+            dict(observation=value,prewrite_reserve={}),raw,sequence=len(state.events)+1))
+        C=adapter.ctypes;calls=[]
+        def times(handle,*outputs):
+            calls.append(("GetProcessTimes",handle))
+            for output,value in zip(outputs,(1100,1300,77,88)):C.cast(output,C.POINTER(C.c_uint64)).contents.value=value
+            return 1
+        def exit_code(handle,output):
+            calls.append(("GetExitCodeProcess",handle));C.cast(output,C.POINTER(C.c_uint32)).contents.value=0;return 1
+        state.kernel=SimpleNamespace(GetProcessId=lambda handle:calls.append(("GetProcessId",handle)) or 701,
+            GetProcessTimes=times,WaitForSingleObject=lambda handle,timeout:calls.append(("WaitForSingleObject",handle,timeout)) or 0,
+            GetExitCodeProcess=exit_code,QueryFullProcessImageNameW=lambda *args:self.fail("post-exit path query executed"))
+        with patch.object(C,"set_last_error",lambda value:None,create=True),\
+             patch.object(C,"get_last_error",lambda:0,create=True),\
+             patch.object(Path,"read_bytes",side_effect=AssertionError("post-exit file read executed")):
+            actual=state._generation(6,"outer",live=False)
+        self.assertEqual([row[0] for row in calls],["GetProcessId","GetProcessTimes","WaitForSingleObject","GetExitCodeProcess"])
+        self.assertEqual(actual["path"],core["paths"]["outer"])
+        self.assertEqual(state.events[-1].data()["observation"]["live_generation_sequence"],20)
+        self.assertEqual(state.events[-1].data()["observation"]["path_scope"],"retained_live_generation")
+        adapter._caller_generation_cohort(state.events,state.events[-1],require_close=False)
+        state.owned[6]=701;calls.clear()
+        with self.assertRaises(ValueError):state._generation(6,"outer",live=False)
+        self.assertEqual(calls,[])
+
+
 class ExitIdentityTests(unittest.TestCase):
     """Source-owned original-packet models, never native identity proof."""
     def originals(self):
@@ -850,8 +1061,8 @@ class ExitIdentityTests(unittest.TestCase):
             rows.append(frame("identity",data,sequence=len(rows)+1))
             if not exited:live[role]=(rows[-1].sequence,path_sequence)
         def parent(role,parent_role):
-            raw=bytearray(1152);struct.pack_into("<iIII",raw,0,1,0,568,pids[role])
-            struct.pack_into("<I",raw,40,pids[parent_role]);struct.pack_into("<iIII",raw,576,0,18,568,0)
+            raw=bytearray(1152);struct.pack_into("<iIIII",raw,0,1,0,568,0,pids[role])
+            struct.pack_into("<I",raw,40,pids[parent_role]);struct.pack_into("<iIIII",raw,576,0,18,568,0,0)
             api("Process32FirstW/Process32NextW","snapshot","parent",0,bytes(raw),dict(pid=pids[role]))
         identity("caller","startup");identity("outer","startup");parent("outer","caller")
         api("CreateProcessW","observer","launch",1)
@@ -873,6 +1084,20 @@ class ExitIdentityTests(unittest.TestCase):
         adapter._outer_identities(observed,core,state)
         self.assertEqual(len(observed["identities"]),9)
         self.assertEqual(sum(r.data()["name"]=="Process32FirstW/Process32NextW" for r in observed["apis"]),3)
+
+    def test_win64_sdk_pid_field_usage_decoy_duplicate_truncation_and_terminal_errors_reject(self):
+        for variant in ("usage_decoy","wrong_pid","duplicate_pid","truncated","native_error","terminal_error"):
+            observed,core,state=self.complete_originals()
+            index=next(i for i,row in enumerate(observed["apis"]) if row.data()["name"]=="Process32FirstW/Process32NextW")
+            row=observed["apis"][index];native=bytearray(row.raw)
+            if variant=="usage_decoy":struct.pack_into("<II",native,12,row.data()["detail"]["pid"],0)
+            elif variant=="wrong_pid":struct.pack_into("<I",native,16,777)
+            elif variant=="duplicate_pid":native[:0]=native[:576]
+            elif variant=="truncated":native.pop()
+            elif variant=="native_error":struct.pack_into("<I",native,4,31)
+            else:struct.pack_into("<I",native,len(native)-576+4,31)
+            observed["apis"][index]=frame("api",row.data(),bytes(native),sequence=row.sequence)
+            with self.subTest(variant=variant),self.assertRaises(ValueError):adapter._outer_ancestry(observed)
 
     def test_complete_identity_source_hash_path_parent_generation_or_exit_omission_rejects(self):
         for variant in ("observer_source","candidate_source","core_path","parent","core_generation","missing_exit"):

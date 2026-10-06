@@ -85,6 +85,38 @@ they establish no native lifetime or healthy map-return proof. Drawing, input,
 camera, animation, dialogs/results and all quit paths still need atomic
 integration before an expanded-battle candidate can be installed.
 
+[`battle_profile_lifecycle_v2.py`](../../src/patcher/battle_profile_lifecycle_v2.py)
+privately reconstructs the versioned allocation context and re-emits the frozen
+lifecycle at fresh RX/RW addresses. The bounded source transformation and
+complete operand inventory retain original native callback targets and planned
+whole-byte hook checks. The first 128-byte owned and inherited records are
+compared completely; all remaining new RW bytes must stay zero because no
+provider records exist. Nonzero inherited modal tail is explicitly unsupported
+by this restrictive admission, and does not prove native dynamic-field lifetime.
+Checks run after each modeled callback before following cached headers. The
+component's maximum added helper stack is 456 bytes; its 4K code occupies 27,252
+bytes for Classic/Framed or 45,962 for Complete HD/Modal Widgets. Those are
+component bounds, not complete-chain capacity. Synthetic fixtures cover all 36
+geometries at two image bases, including actual outer-adapter stack and null
+failure routes with modeled callbacks. The optional original-backed lane
+reconstructs only in RAM. No hook, section, provider or candidate is installed;
+native lifetime, full battle integration and all runtime acceptance remain open.
+
+[`battle_profile_routing_v2.py`](../../src/patcher/battle_profile_routing_v2.py)
+re-emits the frozen routing after the privately authenticated fresh lifecycle.
+It protects the complete new RX/RW spans and the separate inherited modal page,
+checks full 128-byte records and exact-zero tails before cached accesses, and
+rechecks after modeled thread callbacks. Query status zero requires exact virgin
+records without a callback; owned/history/callback loss returns status two.
+Neither status authorizes a native target write: both initial adapters restore
+the incoming ABI and reach an explicit unsafe endpoint. That endpoint establishes
+no production cancellation, healthy fallback or map restoration. Six routing
+entries retain 1280-byte local frames with a complete typed operand inventory;
+nested source allowances are not a full-chain or native capacity proof. Public
+fixtures use modeled callbacks and synthetic pixel buffers, with the original
+RAM lane separately opt-in. No hook, provider or candidate is installed. Frozen
+predecessors, all runtime gates and the protected default remain unchanged.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -432,6 +464,21 @@ whole-candidate, map-readiness, runtime, endurance, human-input, release or
 promotion acceptance. The frozen v2 remains reproducible; no missing production
 verifier is registered by v3.
 
+The five hosted attempts on 2026-10-06 remain historical diagnostics in
+`reports/joined-loader-v3-ci-*-failure-20261006.json` and the first
+`reports/joined-loader-v3-ci-failure-20261006.json`. The fifth attempt completed
+all ten controlled-rejection replays, but its expected-success case failed the
+caller's post-exit image-path query with native error 31. The outer and observer
+completed narrower work; the full fixture did not complete. Retained original
+copies and empty copy debt establish no independent storage durability or game
+acceptance. The bounded successor binds caller exit observations to the latest
+successful whole live path on the same retained handle, with fresh PID/times/
+wait/exit observations and ordered close. WIN32/WIN64 Toolhelp decoders use the
+SDK PID field, with architecture-specific layout assertions. V3 binding requires
+all six original bootstrap/request/payload hash receipts in order; the frozen
+V2 four-receipt interface stays unchanged. Source checks and replay of narrower
+original components establish no repaired native chain or game acceptance.
+
 `src/patcher/battle_profile_primitive_request.py` recomposes the baseline 74
 continuation adapters and 13 primitive queries through one shared guarded
 authority. The new owning thunk is 116 bytes with a separate 64-byte live
@@ -516,6 +563,8 @@ python -B tools/test_resolution_recipe_authentication.py SourceTests
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_context_v2.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
+python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
+python -B tools/test_battle_profile_routing_v2.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

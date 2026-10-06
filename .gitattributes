@@ -1066,3 +1066,9 @@
 /tools/test_hidden_soak_loader_v3.py text eol=lf
 /tools/test_hidden_soak_loader_v3_engine.py text eol=lf
 /.github/workflows/hidden-soak-loader-v3.yml text eol=lf
+/src/patcher/battle_profile_lifecycle_v2.py text eol=lf
+/tools/test_battle_profile_lifecycle_v2.py text eol=lf
+/.github/workflows/battle-lifecycle-v2-contracts.yml text eol=lf
+/src/patcher/battle_profile_routing_v2.py text eol=lf
+/tools/test_battle_profile_routing_v2.py text eol=lf
+/.github/workflows/battle-routing-v2-contracts.yml text eol=lf

@@ -1,0 +1,361 @@
+{
+  "additional_expected_binding_parser_diagnostic": {
+    "complete_join_or_fixture_acceptance": false,
+    "defect": "The V3 observer records two native gate hashes before the frozen request/payload hashes. Its original vector has six operations, while the V3 binding parser requires four. Exact ordered six are required; neither clearing receipts nor ignoring extras is acceptable.",
+    "historical_source_head": "3742d8ddb7d39844747aa22f5c50dc49411ff927",
+    "original_input_roles": [
+      "bootstrap_core",
+      "bootstrap_checksum_prefix",
+      "request",
+      "request_checksum_prefix",
+      "expected_payload",
+      "expected_payload_checksum_prefix"
+    ],
+    "original_ordered_hash_receipts": [
+      {
+        "close_status": 0,
+        "digest_hex": "6ad4623670e660dfe529dbf192a6f241220547a4315afb71f1f93e3201b39e7c",
+        "hash_status": 0,
+        "input_bytes": 32768,
+        "open_status": 0
+      },
+      {
+        "close_status": 0,
+        "digest_hex": "5b95b999f26e2c967a101de2f2743dd8f2e4fd1f318cc8ee90d9122ed30e4428",
+        "hash_status": 0,
+        "input_bytes": 32832,
+        "open_status": 0
+      },
+      {
+        "close_status": 0,
+        "digest_hex": "598226f59a3df65cd5ded819b6d6d713fa75bcf0e41c448406024e16a9a2360c",
+        "hash_status": 0,
+        "input_bytes": 320,
+        "open_status": 0
+      },
+      {
+        "close_status": 0,
+        "digest_hex": "e59b89b492643dff079bddf6d956576bc5e4a6a917a8d2d0d8a252be9f65426b",
+        "hash_status": 0,
+        "input_bytes": 288,
+        "open_status": 0
+      },
+      {
+        "close_status": 0,
+        "digest_hex": "fbbd18c85abf7a1a85a3017a3475d8c074483025254ce4218b2e3a7a2b2143ec",
+        "hash_status": 0,
+        "input_bytes": 9013,
+        "open_status": 0
+      },
+      {
+        "close_status": 0,
+        "digest_hex": "ac8d6135a7203370cfee7640e72a4e591f7318244e299798d51bdfc81dc8bbdb",
+        "hash_status": 0,
+        "input_bytes": 8981,
+        "open_status": 0
+      }
+    ],
+    "originals_changed": false,
+    "parser_error": "four original hash operations required",
+    "proposed_source_requirement": "Bind both bootstrap input buffers plus the four unchanged request/payload buffers to every original size/digest/native status in exact order. Freeze the V2 four-operation interface.",
+    "scope": "unchanged original observer expected_binding sequence26 and exact original bootstrap/request/expected files, independently inspected in bounded RAM"
+  },
+  "additional_observer_capacity_parser_diagnostic": {
+    "all_cohorts_have_no_wrong_usage_as_pid_matches": true,
+    "all_cohorts_have_one_correct_pid_last_match": true,
+    "complete_join_or_fixture_acceptance": false,
+    "complete_original_cohorts_checked": 75,
+    "defect": "V3 full-capacity decoder also reads cntUsage as PID, while frozen typed native helper accesses the SDK th32ProcessID member. The first-match query must retain a genuine final matching PID rather than accept a wrong-field fixture.",
+    "first_three_cohorts": [
+      {
+        "capacity_sequence": 112,
+        "entry_bytes": 556,
+        "first_match": {
+          "cnt_usage": 0,
+          "parent_pid": 8176,
+          "pid": 7808,
+          "row_ordinal": 134
+        },
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 564,
+        "parent_pid_offset_in_entry": 24,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 7808,
+        "row_count": 135,
+        "sequence": 113
+      },
+      {
+        "capacity_sequence": 114,
+        "entry_bytes": 556,
+        "first_match": {
+          "cnt_usage": 0,
+          "parent_pid": 7808,
+          "pid": 6096,
+          "row_ordinal": 136
+        },
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 564,
+        "parent_pid_offset_in_entry": 24,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 6096,
+        "row_count": 137,
+        "sequence": 115
+      },
+      {
+        "capacity_sequence": 116,
+        "entry_bytes": 556,
+        "first_match": {
+          "cnt_usage": 0,
+          "parent_pid": 6096,
+          "pid": 7932,
+          "row_ordinal": 138
+        },
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 564,
+        "parent_pid_offset_in_entry": 24,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 7932,
+        "row_count": 139,
+        "sequence": 117
+      }
+    ],
+    "historical_source_head": "3742d8ddb7d39844747aa22f5c50dc49411ff927",
+    "originals_changed": false,
+    "parser_error": "original parent first-match query missing/duplicated/reordered",
+    "proposed_source_requirement": "V3 transformed x86 SDK sizeof556/PIDoffsetof8/PPIDoffsetof24 assertions, correct raw PID decoder and independent ABI fixture; frozen V2 remains unchanged.",
+    "scope": "unchanged original case-zero WIN32 Toolhelp first-match capacity cohorts, independently decoded in bounded RAM"
+  },
+  "additional_source_parser_diagnostic": {
+    "cohorts": [
+      {
+        "correct_pid_matches": [
+          {
+            "cnt_usage": 0,
+            "parent_pid": 8176,
+            "pid": 7808,
+            "row_ordinal": 134
+          }
+        ],
+        "entry_bytes": 568,
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 576,
+        "parent_pid_offset_in_entry": 32,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 7808,
+        "row_count": 137,
+        "sequence": 140,
+        "terminal_error": 18,
+        "terminal_result": 0
+      },
+      {
+        "correct_pid_matches": [
+          {
+            "cnt_usage": 0,
+            "parent_pid": 7808,
+            "pid": 6096,
+            "row_ordinal": 136
+          }
+        ],
+        "entry_bytes": 568,
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 576,
+        "parent_pid_offset_in_entry": 32,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 6096,
+        "row_count": 138,
+        "sequence": 207,
+        "terminal_error": 18,
+        "terminal_result": 0
+      },
+      {
+        "correct_pid_matches": [
+          {
+            "cnt_usage": 0,
+            "parent_pid": 6096,
+            "pid": 7932,
+            "row_ordinal": 138
+          }
+        ],
+        "entry_bytes": 568,
+        "old_wrong_usage_as_pid_matches": [],
+        "packet_entry_bytes": 576,
+        "parent_pid_offset_in_entry": 32,
+        "pid_offset_in_entry": 8,
+        "requested_pid": 7932,
+        "row_count": 141,
+        "sequence": 238,
+        "terminal_error": 18,
+        "terminal_result": 0
+      }
+    ],
+    "complete_join_or_fixture_acceptance": false,
+    "defect": "Old source unpacks the fourth packet DWORD as PID; that DWORD is PROCESSENTRY32W.cntUsage. PID is the fifth packet DWORD after the result/error prefix. Earlier modeled fixture repeated the wrong layout.",
+    "historical_source_head": "3742d8ddb7d39844747aa22f5c50dc49411ff927",
+    "originals_changed": false,
+    "parser_error": "raw original parent PID missing/duplicated/substituted",
+    "proposed_source_requirement": "Exact WIN64 SDK sizeof568/PIDoffsetof8/PPIDoffsetof32 assertions, full raw cohorts and corrected independent ABI fixture; no native-failure or missing-parent relaxation.",
+    "scope": "three unchanged original case-zero WIN64 Toolhelp ancestry cohorts; independent bounded RAM decode after caller diagnosis"
+  },
+  "case_zero_originals": {
+    "caller_finish_status": "failed",
+    "caller_frame_count": 116,
+    "observer_finish": {
+      "comparison_scope": "immutable_scope_initial_hold",
+      "frame_count": 608,
+      "metadata_bytes": 233583,
+      "raw_bytes": 10881712,
+      "status": "complete"
+    },
+    "observer_frame_count": 609,
+    "outer_finish": {
+      "debt": 0,
+      "failed": 0,
+      "scope": "V3_initial_loader_terminate_only"
+    },
+    "outer_frame_count": 329
+  },
+  "compiled_producer_verified": false,
+  "completed_case_count": 10,
+  "completed_controlled_failure_modes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "diagnosis": "The outer exit-identity repair and false-claim report repair reached original native execution. Ten controlled-failure cases replayed as incomplete scoped composition, while case 0 failed because the caller still queried the image path after its owned outer process exited. Native error 31 remains failed. Ten controlled-failure cases are no successful composition or game acceptance.",
+  "expected_success_mode_completed": false,
+  "failure_retention": {
+    "independently_checked_originals": [
+      {
+        "bytes": 1089149,
+        "original_available": true,
+        "role": "failure-caller",
+        "sha256": "db5c789e5ddbc0685a6f761f9f84667b8e8bad5fda7c7a08fb83cc38d7c16946"
+      },
+      {
+        "bytes": 3191206,
+        "original_available": true,
+        "role": "failure-outer",
+        "sha256": "9eeddb26dc90c7954ce3e33b14d4cb1c923a5743a6a393dc6a94832537d23e59"
+      },
+      {
+        "bytes": 11115506,
+        "original_available": true,
+        "role": "failure-observer",
+        "sha256": "57601f2f0e7306f52c404a89cf6be41de51e6280ba82ddbdb27e189ae6019d8c"
+      },
+      {
+        "bytes": 157380,
+        "original_available": true,
+        "role": "failure-observer_stderr",
+        "sha256": "c8cf7d72d51ab37742f3259bc007b4f72599926a65140a94215940e5dd73a769"
+      },
+      {
+        "bytes": 268708,
+        "original_available": true,
+        "role": "failure-outer_stderr",
+        "sha256": "7efcd149eb3a38e1f8251c3f311bb6a9f2b28fb6754d7b9d9fa7a5b82fe4501d"
+      },
+      {
+        "bytes": 16316,
+        "original_available": true,
+        "role": "failure-caller_close_receipt",
+        "sha256": "7009516b8530d70c673df676123d3ef6940dc80d651fa614b2eab523bd84d4ba"
+      }
+    ],
+    "joined_streams_issued": true,
+    "recorded_copy_debt": [],
+    "storage_durability_verified": false
+  },
+  "fixture_duration_seconds": 104.912,
+  "fixture_errors": 1,
+  "fixture_failures": 1,
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "3742d8ddb7d39844747aa22f5c50dc49411ff927",
+  "job_conclusion": "failure",
+  "job_id": 112295546122,
+  "limitations": [
+    "Historical failure on its exact source head; no original failure is relabeled as successful.",
+    "Observer/outer completion and controlled-failure replay are narrower than complete caller/outer/observer acceptance.",
+    "Original retained copies and empty copy debt do not establish independent storage durability.",
+    "Public synthetic debugger preparation cannot accept any game resolution or replace missing production verifiers."
+  ],
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 219,
+    "expanded_bytes": 131774532,
+    "id": 11416578981,
+    "inspection": "Authenticated ZIP and bounded original case journals/source hashes inspected in RAM; no filesystem extraction",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37471404511/artifacts/11416578981",
+    "zip_bytes": 15875118,
+    "zip_sha256": "fe92e8c7d81adcd2ff6638d70eed7f0b3e767c8a2134c442bbf42f5e28ad5b02"
+  },
+  "original_native_failure": {
+    "api": "QueryFullProcessImageNameW",
+    "capacity_bytes": 65536,
+    "cleanup_wait_sequence": 110,
+    "cleanup_wait_timeout_ms": 5000,
+    "close_handle_sequence": 112,
+    "creation_filetime": 134357672593452763,
+    "error": 31,
+    "exit_code_sequence": 108,
+    "exit_filetime": 134357672706603289,
+    "exit_pid_sequence": 104,
+    "exit_times_sequence": 106,
+    "exit_wait_sequence": 107,
+    "live_generation_sequences": [
+      46,
+      63
+    ],
+    "live_path_sequences": [
+      42,
+      59
+    ],
+    "original_buffer_all_zero": true,
+    "outer_launch_wait_sequence": 103,
+    "outer_launch_wait_timeout_ms": 35000,
+    "pid": 7808,
+    "result": 0,
+    "retained_handle": 532,
+    "retained_slot": 6,
+    "scope": "case 0 caller exit only",
+    "sequence": 105
+  },
+  "original_parse_error": {
+    "cause": {
+      "message": "failed or truncated join lacks an independently matching complete original failure packet",
+      "type": "ValueError"
+    },
+    "message": "ValueError: failed or truncated join lacks an independently matching complete original failure packet",
+    "type": "ArchiveError"
+  },
+  "probe_executed": false,
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/172",
+  "release_acceptance": false,
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_hosted_failure_v1",
+  "source_hashes": {
+    "hidden_soak_loader_v3.py": "67a33c7c47acfff7d10eef4bd195d22b612ab928ddb2c07177e5562c75eae432",
+    "hidden_soak_loader_v3_adapter.py": "a2724105ef287f669043d4cb9a5404c8a2391838c519205dd14e48f6d536f7e0",
+    "test_hidden_soak_loader_v3.py": "ef121d5ba8f3323affef47e766ccd224cf9fc0ad9495654e4006b038a246352f",
+    "test_hidden_soak_loader_v3_engine.py": "dbd4813ac2d60dab35355ce37f37494e9a3cec734b0be2b3425512cc586717a5"
+  },
+  "storage_durability_verified": false,
+  "supporting_primary_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/procthread/terminating-a-process",
+    "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes",
+    "https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/ns-tlhelp32-processentry32w"
+  ],
+  "workflow_run_id": 37471404511
+}
