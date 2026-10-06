@@ -1,0 +1,233 @@
+{
+  "case_modes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "compiled_producer_verified": false,
+  "completed_case_count": 0,
+  "diagnosis": "Compilation reached native execution. Case 0 retained complete original streams and observer immutable comparison/terminate completion, but outer cleanup queried executable paths after termination and received native error 31. Its overall join failed. Cases 1 through 10 then exposed duplicate passed keys in report construction; no case completed the required fixture.",
+  "failed_cases": [
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 0,
+      "observer_frame_count": 609,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 333
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 1,
+      "observer_frame_count": 178,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 255
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 2,
+      "observer_frame_count": 180,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 255
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 3,
+      "observer_frame_count": 171,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 277
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 4,
+      "observer_frame_count": 340,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 329
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 5,
+      "observer_frame_count": 171,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 326
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 6,
+      "observer_frame_count": 186,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 329
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 7,
+      "observer_frame_count": 186,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 329
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 8,
+      "observer_frame_count": 183,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 329
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 9,
+      "observer_frame_count": 0,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 232
+    },
+    {
+      "caller_frame_count": 116,
+      "fixture_failure_retention_debt_recorded": 0,
+      "fixture_failure_retention_originals_recorded": 0,
+      "mode": 10,
+      "observer_frame_count": 609,
+      "outer_finish_debt": 0,
+      "outer_finish_failed": 1,
+      "outer_frame_count": 334
+    }
+  ],
+  "first_original_reserve": {
+    "error": 0,
+    "free_bytes": 236049432576,
+    "required_peak_bytes": 2648411304,
+    "result": 1,
+    "scope": "case 0 first retained per-write reserve; separate from workflow preflight",
+    "total_bytes": 236205371392
+  },
+  "fixture_duration_seconds": 94.818,
+  "fixture_errors": 11,
+  "fixture_failures": 1,
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "6c12525fe254dd6c7ec1c16c23007bfc731aac46",
+  "job_conclusion": "failure",
+  "job_id": 112279703217,
+  "limitations": [
+    "Historical failure on the stated exact source head; original native failures remain failures.",
+    "Observer comparison completion is narrower than complete caller/outer/observer acceptance.",
+    "No source CI or public synthetic preparation can establish any game resolution acceptance.",
+    "Missing or unterminated originals remain strict rejection/debt; no failure packet is invented."
+  ],
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "observer_terminal_observations": {
+    "complete_modes": [
+      0,
+      10
+    ],
+    "failed_finish_modes": [
+      1,
+      2,
+      4,
+      6,
+      7,
+      8
+    ],
+    "genuine_zero_byte_original_modes": [
+      9
+    ],
+    "unterminated_gate_wait_modes": [
+      3,
+      5
+    ]
+  },
+  "original_artifact": {
+    "entry_count": 203,
+    "expanded_bytes": 117699781,
+    "id": 11414912325,
+    "inspection": "Authenticated zip, original case streams and source hashes inspected in bounded RAM; no filesystem extraction",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37466781229/artifacts/11414912325",
+    "zip_bytes": 15089515,
+    "zip_sha256": "7cc1d66e779f156bb14a9dbcc477acfd70d32e019226fc1bfacb9c1285d5323f"
+  },
+  "original_native_failure": {
+    "api": "QueryFullProcessImageNameW",
+    "error": 31,
+    "frame_sequences": [
+      288,
+      296
+    ],
+    "immutable_comparisons_observed": 4,
+    "observer_exit_code": 0,
+    "observer_finish_status": "complete",
+    "original_buffers_all_zero": true,
+    "original_capacity_bytes_each": 65536,
+    "overall_join_complete": false,
+    "result": 0,
+    "scope": "case 0 outer cleanup only"
+  },
+  "original_parse_error": {
+    "message": "ValueError: failed or truncated join lacks an independently matching complete original failure packet",
+    "scope": "case 0",
+    "type": "ArchiveError"
+  },
+  "original_report_error": {
+    "file": "tools/hidden_soak_loader_v3_adapter.py",
+    "line": 1136,
+    "message": "dict() got multiple values for keyword argument 'passed'",
+    "scope": "cases 1 through 10 replay report construction",
+    "type": "TypeError"
+  },
+  "probe_executed": false,
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/172",
+  "release_acceptance": false,
+  "retention_record_defect": "All eleven fixture failure_retention records reported empty originals and empty debt. The authenticated ZIP retains actual raw files. Empty lists do not prove successful copies, completeness or independent durability.",
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_hosted_failure_v1",
+  "source_hashes": {
+    "tools/hidden_soak_loader_v3.py": "261db6061300da509c82cdb48b44dd2fd09719e38c6299bd4579eb78340b594c",
+    "tools/hidden_soak_loader_v3_adapter.py": "4f402f9e7a9bd0032479707b7160c72a66db198385e785e5a0349c253091cdc2",
+    "tools/test_hidden_soak_loader_v3.py": "2e720806c8cddedbd114e8ada31453f85628bee17a67b91163614b651d87cd98",
+    "tools/test_hidden_soak_loader_v3_engine.py": "870b602d795f0ddabe37dfde8fa199c515a5d0168450d23c1357e343673f9b8f"
+  },
+  "storage_durability_verified": false,
+  "supporting_primary_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/procthread/terminating-a-process",
+    "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes"
+  ],
+  "workflow_run_id": 37466781229
+}

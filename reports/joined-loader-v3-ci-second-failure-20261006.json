@@ -1,0 +1,127 @@
+{
+  "case_modes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "compiled_producer_verified": false,
+  "completed_case_count": 0,
+  "diagnosis": "The encoded command was accepted, but the Windows PowerShell security module could not load. Inference: inherited PowerShell 7 module paths match the documented PS7-to-Python-to-Windows-PowerShell autoload failure. No trust decision or compiler success is inferred.",
+  "disk_preflight": {
+    "fixed_allowance_bytes": 2648411304,
+    "free_bytes": 157817212928,
+    "total_bytes": 161059172352
+  },
+  "failed_cases": [
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 0,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 1,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 2,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 3,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 4,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 5,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 6,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 7,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 8,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 9,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 10,
+      "retained_original_count": 82
+    }
+  ],
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "29623348d68e80d316d0b177827fb09dfccc8e37",
+  "job_conclusion": "failure",
+  "job_id": 112268859810,
+  "limitations": [
+    "Historical failure on the stated source head; successor repair and hosted rerun remain required.",
+    "Zero archive-copy debt does not establish independent storage durability.",
+    "Public synthetic Windows preparation cannot establish any game resolution acceptance."
+  ],
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 929,
+    "expanded_bytes": 6572515,
+    "id": 11414176499,
+    "inspection": "Authenticated zip and original case records inspected in RAM; no extraction to disk",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37463560105/artifacts/11414176499",
+    "zip_bytes": 416758,
+    "zip_sha256": "e8388ec91a36d525bea00e7a6b163832962eb94b4975f3f518490ed97e587198"
+  },
+  "original_error": "ValueError: original compiler Authenticode publisher/trust observation failed",
+  "original_error_type": "NativeFailure",
+  "original_signature_command_result": {
+    "returncode": 1,
+    "stderr_encoding": "Original CLIXML retained unchanged in uploaded artifact",
+    "stderr_message": "Get-AuthenticodeSignature was found in Microsoft.PowerShell.Security, but the module could not be loaded; subsequent null Status invocation failed.",
+    "stderr_parser_id": "CouldNotAutoloadMatchingModule",
+    "stdout_bytes": 0
+  },
+  "probe_executed": false,
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/172",
+  "release_acceptance": false,
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_hosted_failure_v1",
+  "source_hashes": {
+    "tools/hidden_soak_loader_v3.py": "0194124fa2077bf87bf8537cf79f5a1c2035ffc68420c10394d0a0c80360b8b3",
+    "tools/hidden_soak_loader_v3_adapter.py": "476fdd35d0058a52d8a22720811c33a4988a69c7f66903a36fcbd60af79b8abc",
+    "tools/test_hidden_soak_loader_v3.py": "62faea96e165bd2b218165cf2cbb9df88c743f220846c964695ba490bdd23b03",
+    "tools/test_hidden_soak_loader_v3_engine.py": "e629e3cb05ab2a645d67801c16dd23e786c696b05a3aad75d06692bc63eb8eea"
+  },
+  "storage_durability_verified": false,
+  "supporting_primary_source": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6",
+  "workflow_run_id": 37463560105
+}

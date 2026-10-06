@@ -1,0 +1,125 @@
+{
+  "case_modes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "compiled_producer_verified": false,
+  "completed_case_count": 0,
+  "diagnosis": "Windows PowerShell -Command parsed the separately appended compiler path as script text; the signature query did not complete. No trust decision or compiler success is inferred.",
+  "disk_preflight": {
+    "fixed_allowance_bytes": 2648411304,
+    "free_bytes": 157817241600,
+    "total_bytes": 161059172352
+  },
+  "failed_cases": [
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 0,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 1,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 2,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 3,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 4,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 5,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 6,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 7,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 8,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 9,
+      "retained_original_count": 82
+    },
+    {
+      "archive_copy_debt_count": 0,
+      "mode": 10,
+      "retained_original_count": 82
+    }
+  ],
+  "fixture_test_count": 1,
+  "game_executed": false,
+  "head_revision": "6a322ae6bd063686250041fade1c7f407d06b44e",
+  "job_conclusion": "failure",
+  "job_id": 112265278556,
+  "limitations": [
+    "Historical failure on the stated source head; successor repair and hosted rerun remain required.",
+    "Zero archive-copy debt does not establish independent storage durability.",
+    "Public synthetic Windows preparation cannot establish any game resolution acceptance."
+  ],
+  "native_engine_fixture_completed": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 929,
+    "expanded_bytes": 6532684,
+    "id": 11413360349,
+    "inspection": "Authenticated zip and original case records inspected in RAM; no extraction to disk",
+    "retention_days": 90,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37462493618/artifacts/11413360349",
+    "zip_bytes": 402569,
+    "zip_sha256": "76c0380326bb3872cd85f54a8b6123b84c8d1290d2388f2ffe0a485e4de4ae21"
+  },
+  "original_error": "ValueError: original compiler Authenticode publisher/trust observation failed",
+  "original_error_type": "NativeFailure",
+  "original_signature_command_result": {
+    "returncode": 1,
+    "stderr_message": "Unexpected token 'C:\\Program' in expression or statement.",
+    "stderr_parser_id": "UnexpectedToken",
+    "stdout_bytes": 0
+  },
+  "probe_executed": false,
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/172",
+  "release_acceptance": false,
+  "runtime_acceptance": false,
+  "schema": "joined_loader_v3_hosted_failure_v1",
+  "source_hashes": {
+    "tools/hidden_soak_loader_v3.py": "0194124fa2077bf87bf8537cf79f5a1c2035ffc68420c10394d0a0c80360b8b3",
+    "tools/hidden_soak_loader_v3_adapter.py": "bbb0e31268612af42a4025125eb94ffc97154f76bd2251d1b36b711e89e8fe00",
+    "tools/test_hidden_soak_loader_v3.py": "7d102266dbc304df9da393405c5ea4e321731a7d3fd9ab9db44740fcfa823b29",
+    "tools/test_hidden_soak_loader_v3_engine.py": "e629e3cb05ab2a645d67801c16dd23e786c696b05a3aad75d06692bc63eb8eea"
+  },
+  "storage_durability_verified": false,
+  "workflow_run_id": 37462493618
+}
