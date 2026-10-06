@@ -238,6 +238,89 @@ class RetentionTests(unittest.TestCase):
         self.assertEqual(set(small.EXPECTED), {'fixed-file', 'fixed-block', 'aslr', 'corrupt-absolute',
                                             'corrupt-highbit', 'missing', 'reordered', 'unreadable'})
 
+    def test_watchdog_samples_only_self_and_preserves_original_native_scalars(self):
+        source = engine.HARNESS
+        sample = source.split('static void watchdog_sample(', 1)[1].split('static unsigned __stdcall watchdog_worker', 1)[0]
+        self.assertIn('HANDLE self = GetCurrentProcess();', sample)
+        self.assertIn('GetProcessTimes(self, &creation, &exit, &kernel, &user)', sample)
+        self.assertIn('GetProcessIoCounters(self, &io)', sample)
+        self.assertIn('QueryPerformanceCounter(&tick); DWORD qpc_error = GetLastError();', sample)
+        self.assertIn('DWORD cpu_error = GetLastError();', sample)
+        self.assertIn('DWORD io_error = GetLastError();', sample)
+        self.assertIn('InterlockedCompareExchange64(&callback_count, 0, 0)', sample)
+        self.assertIn('InterlockedCompareExchange64(&callback_input_bytes, 0, 0)', sample)
+        for field in ('qpc_native', 'qpc_error', 'cpu_native', 'cpu_error', 'io_native', 'io_error',
+                      'creation', 'exit', 'kernel', 'user', 'read_operations', 'write_operations',
+                      'other_operations', 'read_bytes', 'write_bytes', 'other_bytes',
+                      'callback_count', 'callback_input_bytes', 'active_before', 'active_after'):
+            self.assertIn(field + '=', sample)
+        self.assertIn('fprintf(stderr,', sample)
+        self.assertNotIn('stdout', sample)
+        for forbidden in ('session.', 'control->', 'client->', 'memory->', 'registers->', 'symbols->',
+                          'OpenProcess(', 'ReadProcessMemory(', 'ReadVirtual(', 'Execute(', 'ExecuteCommandFile('):
+            self.assertNotIn(forbidden, sample)
+        self.assertIn('__declspec(align(8)) static volatile LONG64 callback_count', source)
+        self.assertIn('__declspec(align(8)) static volatile LONG64 callback_input_bytes', source)
+        self.assertIn('InterlockedIncrement64(&callback_count);', source)
+        self.assertIn('InterlockedAdd64(&callback_input_bytes, static_cast<LONG64>(strlen(text)));', source)
+        self.assertIn('fputs(text, stdout); fflush(stdout); return S_OK;', source)
+
+    def test_watchdog_owned_schedule_join_and_close_cannot_replace_verification(self):
+        source = engine.HARNESS
+        worker = source.split('static unsigned __stdcall watchdog_worker(', 1)[1].split('struct ExecuteWatchdog {', 1)[0]
+        self.assertIn('const DWORD delays[] = {5000, 5000, 10000, 10000};', worker)
+        self.assertIn('WaitForSingleObject(state->stop_event, delay)', worker)
+        self.assertIn('InterlockedCompareExchange(&state->stop_requested, 0, 0)', worker)
+        self.assertIn('_beginthreadex(nullptr, 0, watchdog_worker, state, 0, nullptr)', source)
+        self.assertIn('static unsigned __stdcall watchdog_worker', source)
+        self.assertIn('doserrno_result=%d doserrno=%lu', source)
+        owner = source.split('struct ExecuteWatchdog {', 1)[1].split('struct Session {', 1)[0]
+        stop = owner.split('    void stop() {', 1)[1].split('    ~ExecuteWatchdog()', 1)[0]
+        ordering = [stop.index(value) for value in ('InterlockedExchange(&state->stop_requested, 1)',
+                    'SetEvent(state->stop_event)', 'WaitForSingleObject(thread, INFINITE)',
+                    'if (joined != WAIT_OBJECT_0)', 'CloseHandle(thread)', 'CloseHandle(state->stop_event)',
+                    'delete state')]
+        self.assertEqual(ordering, sorted(ordering))
+        self.assertIn('state = nullptr; thread = nullptr;', stop)
+        self.assertIn('throw std::runtime_error("Watchdog join failed; unproven ownership retained")', stop)
+        self.assertIn('ExecuteWatchdog(const ExecuteWatchdog &) = delete;', owner)
+        self.assertIn('try { stop(); }', owner)
+        invocation = source.split('        phase("execute", "begin");', 1)[1].split('        phase("flush", "begin");', 1)[0]
+        self.assertLess(invocation.index('watchdog.mark_active();'), invocation.index('session.control->Execute('))
+        self.assertLess(invocation.index('watchdog.mark_returned();'), invocation.index('phase("execute", "end", executed)'))
+        self.assertLess(invocation.index('phase("execute", "end", executed)'), invocation.index('watchdog.stop();'))
+        self.assertEqual(invocation.count('session.control->Execute('), 1)
+        self.assertEqual(invocation.count('session.control->ExecuteCommandFile('), 1)
+        self.assertIn('std::string("$$><") + argv[1]', invocation)
+        self.assertNotIn('CSW_', owner)
+
+    def test_watchdog_unavailable_and_measured_zero_stderr_remain_original(self):
+        stdout = diagnostic_log().encode()
+        prefix = b'HARNESS_EXECUTE_WAIT scheduled_seconds=5 active_before=1 active_after=1 '
+        unavailable = prefix + b'qpc_native=0 qpc_error=31 tick=0 cpu_native=0 cpu_error=5 kernel=0 user=0 io_native=0 io_error=5 read_bytes=0 callback_count=0 callback_input_bytes=0\r\n'
+        measured = prefix + b'qpc_native=1 qpc_error=0 tick=100 cpu_native=1 cpu_error=0 kernel=0 user=0 io_native=1 io_error=0 read_bytes=0 callback_count=0 callback_input_bytes=0\r\n'
+        for label, original in (('unavailable', unavailable), ('measured-zero', measured)):
+            row = self.prepare(label)
+            self.ledger.outcome(row, returncode=0, stdout=stdout, stderr=original)
+            self.assertEqual(Path(row['stdout']['artifact']['path']).read_bytes(), stdout)
+            self.assertEqual(Path(row['stderr']['artifact']['path']).read_bytes(), original)
+            self.assertEqual(row['log'], stdout.decode() + original.decode())
+            self.assertTrue(row['phase_receipt_passed'])
+        self.assertNotEqual(unavailable, measured)
+
+    def test_watchdog_progress_cannot_qualify_timeout_or_missing_execute_end(self):
+        prefix = b'HARNESS_CLOCK frequency=10000000 native=1 error=0\nHARNESS_BEGIN base=00400000 mode=block\nHARNESS_PHASE seq=1 name=execute edge=begin tick=100 qpc=1 error=0 hr=0 value=0\n'
+        progress = b'HARNESS_EXECUTE_WAIT scheduled_seconds=30 active_before=1 active_after=1 qpc_native=1 qpc_error=0 tick=300000100 cpu_native=1 cpu_error=0 kernel=0 user=200000000 io_native=1 io_error=0 read_bytes=14457121 callback_count=0 callback_input_bytes=0\r\n'
+        row = self.prepare('watchdog-timeout')
+        error = subprocess.TimeoutExpired(['engine.exe', 'verify.cdb', 'block'], 35, output=prefix, stderr=progress)
+        self.ledger.outcome(row, stdout=error.stdout, stderr=error.stderr, error=error)
+        self.assertEqual(row['status'], 'failed')
+        self.assertEqual(row['error']['timeout'], 35)
+        self.assertFalse(row['phase_receipt_passed'])
+        self.assertFalse(engine.terminal_cases([row], ['watchdog-timeout']))
+        self.assertEqual(Path(row['stdout']['artifact']['path']).read_bytes(), prefix)
+        self.assertEqual(Path(row['stderr']['artifact']['path']).read_bytes(), progress)
+
     def test_fallback_diagnostic_exception_cannot_skip_termination_call(self):
         self.assertIn('try { phase("fallback_end", "begin"); }\n'
                       '                catch (...) { fprintf(stderr, "HARNESS_ERROR fallback begin diagnostic failure\\n"); }\n'

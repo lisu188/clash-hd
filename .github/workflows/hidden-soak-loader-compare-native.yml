@@ -1,0 +1,174 @@
+name: Held loader comparison source contracts
+
+on:
+  pull_request:
+    paths:
+      - 'tools/**'
+      - 'src/patcher/**'
+      - '.github/workflows/hidden-soak-loader-compare-native.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/**'
+      - 'src/patcher/**'
+      - '.github/workflows/hidden-soak-loader-compare-native.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hidden-soak-loader-compare-native-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Held comparison original archive mocks (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned portable fixture dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
+      - name: Check original supplied receipts without native execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B tools/test_hidden_soak_loader_compare_native.py -v
+          python -B tools/test_hidden_soak_loader_compare_native_engine.py EngineSourceTests -v
+
+  engine:
+    name: Held immutable comparison on a synthetic x86 process
+    runs-on: windows-2022
+    timeout-minutes: 10
+    env:
+      CLASH_LOADER_COMPARE_ENGINE_INTEGRATION: '1'
+      _NT_SYMBOL_PATH: '.'
+      _NT_ALT_SYMBOL_PATH: ''
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned shared fixture dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
+      - name: Verify the Microsoft system x86 debugger engine
+        shell: pwsh
+        run: |
+          $engine = Join-Path $env:WINDIR 'SysWOW64\dbgeng.dll'
+          if (-not (Test-Path -LiteralPath $engine)) { throw 'System x86 debugger engine is required.' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $engine
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Microsoft') {
+            throw 'System debugger engine signature did not verify as Microsoft.'
+          }
+          Get-Item -LiteralPath $engine | Select-Object FullName, @{Name='Version';Expression={$_.VersionInfo.FileVersion}}
+          Get-FileHash -LiteralPath $engine -Algorithm SHA256
+      - name: Require the genuine synthetic held comparison without skips
+        shell: pwsh
+        run: |
+          $artifactRoot = Join-Path $env:RUNNER_TEMP 'loader-compare-native-artifacts'
+          New-Item -ItemType Directory -Path $artifactRoot -ErrorAction Stop | Out-Null
+          $env:CLASH_LOADER_COMPARE_ARTIFACT_DIR = $artifactRoot
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'MSVC x86 tools are required.' }
+          $devcmd = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'
+          $entry = Join-Path $env:RUNNER_TEMP 'run-loader-compare-native-tests.py'
+          @'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          import unittest
+
+          sys.path.insert(0, str(Path('tools').resolve()))
+          import hidden_soak_loader_compare_native as native
+          import hidden_soak_loader_compare_native_adapter as adapter
+          suite = unittest.defaultTestLoader.loadTestsFromName('test_hidden_soak_loader_compare_native_engine.NativeEngineTests')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          root = Path(os.environ['CLASH_LOADER_COMPARE_ARTIFACT_DIR']).resolve()
+          reports = list(root.glob('loader-compare-native-*/engine-report.json'))
+          valid = len(reports) == 1
+          if valid:
+              report = json.loads(reports[0].read_text(encoding='ascii'))
+              observations = [row for row in report['cases'] if 'original_archive_path' in row]
+              compilers = [row for row in report['cases'] if 'original_compiler_returncode' in row]
+              valid = (
+                  report['schema'] == 'synthetic_loader_compare_native_engine_v2'
+                  and report['fixture_only'] is True
+                  and report['native_engine_fixture_completed'] is True
+                  and report['producer_source_sha256'] == hashlib.sha256(Path(native.__file__).read_bytes()).hexdigest()
+                  and report['expected_issuer_source_sha256'] == hashlib.sha256(Path(native.ROOT / native.EXPECTED).read_bytes()).hexdigest()
+                  and all(report[name] is False for name in native.FALSE_CLAIMS)
+                  and len(observations) == 1
+                  and len(compilers) == 1
+                  and compilers[0]['original_compiler_returncode'] == 0
+              )
+              if valid:
+                  observed = observations[0]
+                  archive = Path(observed['original_archive_path']).resolve()
+                  if not archive.is_relative_to(root):
+                      raise ValueError('Original archive escapes fixture artifact parent')
+                  raw = archive.read_bytes()
+                  replay = observed['source_comparison_report']
+                  directory = reports[0].parent
+                  compiler = compilers[0]
+                  retained = {
+                      'host.cpp': observed['generated_source_sha256'],
+                      'host.exe': observed['compiled_host_sha256'],
+                      'request.bin': compiler['request_sha256'],
+                      'expected.bin': replay['expected_payload_sha256'],
+                      'synthetic-loader.exe': replay['candidate_sha256'],
+                  }
+                  original_files_match = True
+                  for filename, expected_sha in retained.items():
+                      path = (directory / filename).resolve()
+                      if not path.is_relative_to(root):
+                          raise ValueError('Retained original artifact escapes fixture parent')
+                      original_files_match &= hashlib.sha256(path.read_bytes()).hexdigest() == expected_sha
+                  valid = (
+                      original_files_match
+                      and compiler['generated_source_sha256'] == observed['generated_source_sha256']
+                      and compiler['expected_payload_sha256'] == replay['expected_payload_sha256']
+                      and hashlib.sha256(raw).hexdigest() == observed['original_archive_sha256'] == replay['archive_sha256']
+                      and len(raw) == replay['archive_bytes']
+                      and observed['synthetic_native_immutable_comparison_replayed'] is True
+                      and replay['schema'] == 'loader_compare_replay_v2'
+                      and replay['fixture_only'] is True
+                      and replay['supplied_receipt_math_only'] is True
+                      and replay['immutable_comparison_replay_passed'] is True
+                      and all(replay[name] is False for name in adapter.FALSE_CLAIMS)
+                      and all(observed[name] is False for name in ('storage_durability_verified', 'native_job_cleanup_verified', 'host_cleanup_complete'))
+                  )
+          sys.exit(0 if result.wasSuccessful() and result.testsRun == 1 and not result.skipped and valid else 1)
+          '@ | Set-Content -Encoding utf8 $entry
+          $batch = Join-Path $env:RUNNER_TEMP 'run-loader-compare-native-tests.cmd'
+          @"
+          @echo off
+          call "$devcmd" -arch=x86 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          python -B "$entry"
+          exit /b %errorlevel%
+          "@ | Set-Content -Encoding ascii $batch
+          & cmd.exe /d /c $batch
+          if ($LASTEXITCODE -ne 0) { throw 'Synthetic held comparison failed or was skipped; preserve original archives and diagnostics.' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: original-held-loader-comparison-fixture
+          path: ${{ runner.temp }}/loader-compare-native-artifacts/
+          retention-days: 7
+          if-no-files-found: error

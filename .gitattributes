@@ -1043,3 +1043,8 @@
 /tools/test_battle_profile_continuation.py text eol=lf
 /tools/ordinary_map_pause_client.py text eol=lf
 /tools/test_ordinary_map_pause_client.py text eol=lf
+/tools/hidden_soak_loader_compare_native.py text eol=lf
+/tools/hidden_soak_loader_compare_native_adapter.py text eol=lf
+/tools/test_hidden_soak_loader_compare_native.py text eol=lf
+/tools/test_hidden_soak_loader_compare_native_engine.py text eol=lf
+/.github/workflows/hidden-soak-loader-compare-native.yml text eol=lf
