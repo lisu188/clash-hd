@@ -1039,3 +1039,5 @@
 /.github/workflows/ordinary-castle-entry-matrix.yml text eol=lf
 /tools/hidden_soak_loader_expected.py text eol=lf
 /tools/test_hidden_soak_loader_expected.py text eol=lf
+/src/patcher/battle_profile_continuation.py text eol=lf
+/tools/test_battle_profile_continuation.py text eol=lf

@@ -329,6 +329,25 @@ Complete HD/Modal Widgets at 4K. Count-entry reads, native continuation and
 provider cancellation, clipping and atomic installation remain unfinished.
 Synthetic body CALLs and in-memory reconstruction supply no runtime acceptance.
 
+[`battle_profile_continuation.py`](../../src/patcher/battle_profile_continuation.py)
+prepares the next uninstalled component: 28 original operand adapters, Count's
+three early reads, 43 post-normal-return checks and two loss-aware field CALL
+receipts. It restores the original full/subregister destinations and flags,
+replays authenticated whole instructions and records all absolute relocations.
+Complete pre-callback control snapshots prevent cached payload reads after
+ownership loss; callback rejection preserves the captured incoming EAX. Unknown
+control reaches an explicit UD2 endpoint and remains an installation gap.
+
+At 4K it uses 20,260 continuation bytes for Classic/Framed and 20,319 for
+Complete HD/Modal Widgets, leaving 29,740 and 9,761 bytes respectively in the
+unchanged 128 KiB RX reservation. The final six-byte owner-CMP parser correction
+changed no emitted bytes, relocation or immutable receipts across all 36 models.
+Count's other callers and the native unit -1/type -1 predecessor paths are not
+silently admitted: WORLD+821 overlaps header fields and is not a proven empty
+unit record. Provider/RLE cancellation, receiver and argument validity, arena
+clipping, full installation and healthy native return remain unfinished. No
+hooks or expanded-battle candidates are installed by this preparation.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -357,6 +376,7 @@ python -B tools/test_probe_engine_retention.py
 python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 python -B tools/test_battle_profile_content.py --require-machine-tools
+python -B tools/test_battle_profile_continuation.py --require-machine-tools
 ```
 
 The optional original-backed constructor lane builds only in memory from a
