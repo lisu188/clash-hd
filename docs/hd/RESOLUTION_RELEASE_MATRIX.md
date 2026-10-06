@@ -60,6 +60,15 @@ The existing release evaluator implements two of sixteen production lane
 verifiers; the remaining fourteen still fail explicitly. No new stable status,
 whole-release pass or promotion is established by this checkpoint.
 
+The current runtime adapter accepts only the legacy Complete HD/1920x1080
+identity, and every expanded-battle cell still fails explicitly. The launcher
+validator and manifest guard also retain exclusive historical status rules;
+they do not yet replay acceptance and promotion for additional stable entries.
+Completing the missing lanes alone cannot make the matrix pass. Versioned
+profile/recipe replay and an explicit promotion decision bound to each accepted
+candidate are also required, while preserving the frozen Classic fallback and
+its default selection.
+
 ## Subsequent source preparation
 
 `src/patcher/classic_all_presets_candidate.py` preserves the narrow scalar
@@ -588,6 +597,16 @@ helper interval establish no native or complete-chain capacity. Field V3 does
 not consume latched lease loss; next-Tile/intra-Tile cancellation, native ABI,
 receiver/argument validity, provider/RLE lifetime and the remaining component
 joins stay unfinished. Nothing is installed and every runtime gate remains open.
+
+The uninstalled `src/patcher/battle_profile_content_v2.py` reconstructs fresh
+field/lease parents and derives 28 body/finish receipts from actual emitted
+instructions. Complete typed operands, protected ancestry spans and independent
+control/descriptor shadows constrain reads around modeled callbacks. Its
+784-byte helper and 868-byte checked numeric interval establish no mapped/native
+or complete-chain capacity. Bounded content values and ordinary Count ancestry
+remain separate from native ABI, receiver/argument and provider/RLE validity,
+continuation/primitive/line integration, clipping, healthy return and atomic
+installation. No candidate is installed and every runtime gate remains open.
 
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and

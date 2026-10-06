@@ -1,0 +1,168 @@
+{
+  "schema": "battle_content_v2_source_fixture_diagnostic_v1",
+  "recorded_at": "2026-10-06",
+  "evidence_class": "source_and_synthetic_cpu_fixture_failure",
+  "passed": false,
+  "producer": {
+    "path": "src/patcher/battle_profile_content_v2.py",
+    "sha256": "681fbf96f79e9c1fa9c64ab70f27057ade97bc4a109f79562c65a383067372c6"
+  },
+  "fixture": {
+    "path": "tools/test_battle_profile_content_v2.py",
+    "sha256": "1048ebab43bdab95d738627a7818a45e67f2b4e293999c0db0f76a200618d3e3"
+  },
+  "suite": {
+    "prototype_source_methods": 6,
+    "source_methods": 4,
+    "cpu_methods": 7,
+    "tests_run": 17,
+    "passed_methods": 16,
+    "failures": 1,
+    "errors": 0,
+    "skips": 0,
+    "elapsed_seconds": 1618.717,
+    "wrapper_elapsed_seconds": 1619.198,
+    "exit_code": 1,
+    "passed": false,
+    "original_backed_lane_included": false
+  },
+  "failure": {
+    "method": "CPUTests.test_small_arena_edges_payload_bounds_type_owner_coordinate_and_empty_values",
+    "fixture_line": 604,
+    "index": -1,
+    "native_site_va": 4391604,
+    "native_instruction_hex": "0fbf840154030000",
+    "family": "tile",
+    "operation": "type",
+    "actual_eax": 4294967265,
+    "expected_python_eax": -31,
+    "actual_status": 2,
+    "expected_status": 2,
+    "diagnosis": "The expected incoming EAX was an unnormalized Python integer. The observed DWORD equals the expected value modulo 2^32. Correcting the representation does not change the required fault status, invalid-index coverage or zero-payload-read checks."
+  },
+  "completed_scope": {
+    "all_36_profile_presets_at_two_bases_and_two_draw_modes": true,
+    "modeled_body_calls_in_matrix": 4032,
+    "matrix_method_elapsed_seconds": 1170.274,
+    "dynamic_header_payload_tail_observer_method_elapsed_seconds": 23.53,
+    "helper_control_private_return_method_elapsed_seconds": 5.301,
+    "instruction_length_terminal_method_elapsed_seconds": 4.679,
+    "ancestry_count_canary_thread_method_elapsed_seconds": 3.539,
+    "failed_small_arena_method_elapsed_seconds": 64.481,
+    "thread_fixed_pointer_tail_paired_descriptor_method_elapsed_seconds": 63.385,
+    "source_closure_before_after_identical": true,
+    "source_closure_entries": 26
+  },
+  "source_model_measurements": {
+    "stack_observations": 5357,
+    "maximum_native_site_sp_to_low_point_bytes": 868,
+    "checked_helper_interval_bytes": 868,
+    "peak_working_set_bytes": 277196800,
+    "native_stack_capacity_verified": false,
+    "whole_chain_capacity_verified": false
+  },
+  "fixture_successor_review": {
+    "producer_sha256_unchanged": "681fbf96f79e9c1fa9c64ab70f27057ade97bc4a109f79562c65a383067372c6",
+    "fixture_sha256": "cfd0ecf6bb755c0a2329249aa1851c2a3e419e626b092ea31903a30b2983aba4",
+    "repair": "Compare the incoming EAX expectation as an unsigned DWORD in the invalid-index assertion; status two, invalid-index coverage and zero-payload-read checks are unchanged.",
+    "inverse_restores_failed_fixture_hash": true,
+    "changed_ast_methods": [
+      "CPUTests.test_small_arena_edges_payload_bounds_type_owner_coordinate_and_empty_values"
+    ],
+    "focused_method_result": {
+      "passed": true,
+      "tests_run": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "elapsed_seconds": 179.924,
+      "exit_code": 0,
+      "source_closure_before_after_identical": true,
+      "source_closure_entries": 26,
+      "modeled_stack_observations": 480,
+      "modeled_maximum_helper_interval_bytes": 868
+    },
+    "final_seventeen_method_successor_result": {
+      "evidence_class": "uninstalled_source_and_synthetic_cpu_fixture",
+      "passed": true,
+      "tests_run": 17,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "elapsed_seconds": 1815.105,
+      "wrapper_elapsed_seconds": 1815.573,
+      "exit_code": 0,
+      "source_closure_before_after_identical": true,
+      "source_closure_entries": 26,
+      "modeled_stack_observations": 5653,
+      "modeled_maximum_helper_interval_bytes": 868,
+      "checked_helper_interval_bytes": 868,
+      "observed_peak_working_set_bytes": 277540864,
+      "original_backed_lane_included": false,
+      "native_stack_capacity_verified": false,
+      "whole_chain_capacity_verified": false,
+      "runtime_executed": false,
+      "promotion_proof": false
+    },
+    "native_runtime_executed": false,
+    "promotion_proof": false
+  },
+  "optional_original_ram_failure": {
+    "producer_sha256": "681fbf96f79e9c1fa9c64ab70f27057ade97bc4a109f79562c65a383067372c6",
+    "fixture_sha256": "cfd0ecf6bb755c0a2329249aa1851c2a3e419e626b092ea31903a30b2983aba4",
+    "method": "OriginalTests.test_optional_original_native_operands_relayout_and_source_capture_in_ram",
+    "fixture_line": 758,
+    "assertion": "self.assertEqual(repeated.emission,result.emission)",
+    "tests_run": 1,
+    "passed": false,
+    "failures": 1,
+    "errors": 0,
+    "skips": 0,
+    "elapsed_seconds": 167.350,
+    "exit_code": 1,
+    "source_closure_before_after_identical": true,
+    "source_closure_entries": 26,
+    "diagnosis": "Independent private parent graphs construct distinct relocation dataclass types, whose direct equality also checks class identity. A synthetic demonstration reproduces equal fields and bytes comparing unequal. The original-backed result still needs complete field/byte comparison before a successor pass can be claimed.",
+    "fixture_successor_review": {
+      "fixture_sha256": "4ba3ae488509da4600cb3e94fab3523f1684beffed0bfc07797dca828b6e242f",
+      "repair": "Compare all nine emission fields, including all four relocation fields and every body receipt. Assert exact dataclass field inventories; retain metadata, original-byte, operand, relocation and public-alias checks.",
+      "changed_ast_methods": [
+        "OriginalTests.test_optional_original_native_operands_relayout_and_source_capture_in_ram"
+      ],
+      "default_seventeen_method_asts_unchanged": true,
+      "original_ram_successor_result": {
+        "evidence_class": "original_backed_ram_reconstruction_only",
+        "passed": true,
+        "tests_run": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "elapsed_seconds": 165.854,
+        "exit_code": 0,
+        "source_closure_before_after_identical": true,
+        "source_closure_entries": 26,
+        "original_bytes_unchanged": true,
+        "candidate_written": false,
+        "native_runtime_executed": false,
+        "promotion_proof": false
+      }
+    },
+    "candidate_written": false,
+    "native_runtime_executed": false,
+    "promotion_proof": false
+  },
+  "artifact_limits": [
+    "This small source diagnostic records a failed local fixture; it is not a raw native or game artifact.",
+    "Passing individual source/model methods do not erase the failed suite or implement a production verifier.",
+    "The observed modeled stack depth does not establish native mapping, ABI or whole-chain capacity.",
+    "Keep this failed receipt after any repair. Successor results must identify their actual producer and fixture hashes."
+  ],
+  "installed": false,
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "native_callback_abi_verified": false,
+  "healthy_return_verified": false,
+  "release_accepted": false,
+  "promotion_ready": false,
+  "stable_promoted": false
+}
