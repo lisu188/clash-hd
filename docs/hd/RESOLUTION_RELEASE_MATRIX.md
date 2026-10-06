@@ -199,6 +199,26 @@ producer must retain native pause/resume receipts and exclude paused or unknown
 intervals from the required two-hour running duration; the frozen archive
 schedule cannot supply that proof.
 
+`tools/hidden_soak_running_time.py` adds a separate v2 receipt-arithmetic
+contract without changing the frozen frame ledger. Its independently retained
+QPC epoch, source pins, process generations, readiness artifact and 242 capture
+bindings constrain the complete pause/resume sequence. Only acknowledged GO
+intervals ending before a break request contribute; command windows, held
+reads and unknown transitions do not. Each interval loses one QPC tick at each
+endpoint. Periodic captures follow the fixed 30-second running-time schedule
+through 7200 seconds, with a distinct terminal pause, bounded held/read windows
+and no retiming of original samples. Native HRESULT failures remain raw in
+their original signed or unsigned form and cannot count as successful calls.
+
+The transcript allowance adds 8 MiB to the frame-ledger peak budget for one
+4 MiB retained transcript and one atomic temporary. Native-host/source/RAM and
+other producer receipts need their own additional allowances. Replaying these
+supplied receipts establishes arithmetic consistency only; it does not prove
+native issuance, host-awake or asynchronous-event coverage, CPU/render health,
+frame pixels, loaded bytes or full job cleanup. All broader endurance, runtime,
+manual-input, release and promotion claims remain false. No missing production
+lane is implemented or registered by this component.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
