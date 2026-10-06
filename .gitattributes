@@ -1048,3 +1048,6 @@
 /tools/test_hidden_soak_loader_compare_native.py text eol=lf
 /tools/test_hidden_soak_loader_compare_native_engine.py text eol=lf
 /.github/workflows/hidden-soak-loader-compare-native.yml text eol=lf
+/src/patcher/battle_profile_primitive_request.py text eol=lf
+/tools/test_battle_profile_primitive_request.py text eol=lf
+/.github/workflows/battle-primitive-request-contracts.yml text eol=lf

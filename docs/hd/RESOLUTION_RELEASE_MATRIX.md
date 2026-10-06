@@ -460,6 +460,31 @@ storage, loaded-candidate/probe, runtime/endurance, manual-input, release or
 promotion proof. All broader flags remain false and no production verifier is
 registered. The fourteen missing production verifiers remain unfinished.
 
+`src/patcher/battle_profile_primitive_request.py` adds a versioned shared-guard
+recomposition of all 74 baseline adapters plus 13 uninstalled primitive queries.
+Exact native argument windows and HIGHLOW inventories authenticate Tile, Unit,
+Tracking and Charge ancestry. A new 116-byte owning thunk retains its 64-byte
+request separately from native arguments; the 640-byte helper preserves a full
+864-byte callback snapshot within a 1712-byte maximum stack extent. V2 field,
+lease and owner-page sizes remain unchanged.
+
+The query layer preserves original register/stack arguments and flags while
+returning status in EDX. Finite signed sprite clips and all-minus-one native
+clips remain distinct; malformed and empty intersections cannot become prepared
+draws. Native unsigned16 line coordinates, Y-only axis selection, inclusive plain
+and exclusive dashed endpoints and absolute dash phase are preserved. Exact
+current physical-field receiver checks reject primary state, but provide no
+sprite/payload/allocation provenance and perform no primitive replay or pixels.
+
+At 4K the recomposed RX totals are 106,495/126,474 bytes with 492/493 relocation
+receipts, leaving 24,577/4,598 bytes in the unchanged 128 KiB reservation. Original
+three-byte indirect primitive calls differ from proposed five-byte query calls;
+whole pre/post windows must be installed atomically by a future reviewed recipe.
+All hooks remain absent. Provider lifetime, intracallback cancellation, fatal
+shutdown, healthy restoration and full battle integration remain unverified.
+Unknown control reaches exact UD2. Passing query/continuation fixtures establish
+no installed battle, runtime/input/composition, endurance, release or promotion.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
