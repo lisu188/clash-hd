@@ -1057,3 +1057,5 @@
 /tools/resolution_recipe_authentication.py text eol=lf
 /tools/test_resolution_recipe_authentication.py text eol=lf
 /tools/test_battle_profile_native_line_original.py text eol=lf
+/tools/test_current_evidence_refresh_collection.py text eol=lf
+/.github/workflows/framed-offline.yml text eol=lf
