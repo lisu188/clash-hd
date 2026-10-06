@@ -252,6 +252,17 @@ class PolicyTests(unittest.TestCase):
 
 
 class AuthenticodeCommandTests(unittest.TestCase):
+    def test_child_environment_removes_every_module_path_case_without_parent_mutation(self):
+        parent=dict(PSModulePath="PS7 upper",psmodulepath="PS7 lower",PsModulePath="PS7 mixed",
+            PATH="compiler path",SystemRoot=r"C:\Windows",OTHER_VALUE="retained parent value")
+        before=dict(parent)
+        child=adapter._authenticode_environment(parent)
+        self.assertEqual(child,dict(PATH="compiler path",SystemRoot=r"C:\Windows",OTHER_VALUE="retained parent value"))
+        self.assertEqual(parent,before);self.assertIsNot(child,parent)
+        child["PATH"]="child-only replacement"
+        self.assertEqual(parent,before)
+        self.assertEqual(adapter._authenticode_environment({}),{})
+
     def test_space_and_apostrophe_paths_are_one_encoded_literal_not_extra_arguments(self):
         shell=r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
         compilers=(r"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\bin\Hostx64\x64\cl.exe",
@@ -296,20 +307,26 @@ class AuthenticodeCommandTests(unittest.TestCase):
     def test_compile_dispatches_encoded_signature_command_before_any_source_write(self):
         class OriginalPath(PureWindowsPath):
             def read_bytes(self):return b"whole modeled compiler PE"
-        session=adapter._NativeSession.__new__(adapter._NativeSession);commands=[]
+        session=adapter._NativeSession.__new__(adapter._NativeSession);commands=[];environments=[]
         system=r"C:\Windows\System32"
         def directory(buffer,capacity):buffer.value=system;return len(system)
         session.kernel=SimpleNamespace(GetSystemDirectoryW=directory)
         session._record=lambda *args,**kwargs:None
         failure=SimpleNamespace(returncode=1,stdout=b"",stderr=b"Unexpected token 'C:\\Program' in expression or statement.")
-        session._run=lambda command:commands.append(command) or failure
+        def run(command,*,environment):
+            commands.append(command);environments.append(environment);return failure
+        session._run=run
         session.write_new=lambda *args:(_ for _ in ()).throw(AssertionError("Rejected compiler must not write or compile source"))
         compiler=r"C:\Program Files\Microsoft Visual Studio\VC\Tools\MSVC\bin\Hostx64\x64\cl.exe"
         with patch.object(adapter,"_plain_path",side_effect=lambda value:OriginalPath(str(value))),\
              patch.object(adapter,"_stamp",return_value=(1,2,3)),patch.object(adapter,"_pe_machine",return_value=(0x8664,0x20b)),\
-             patch.object(adapter.ctypes,"set_last_error",create=True),patch.object(adapter.ctypes,"get_last_error",return_value=0,create=True):
+             patch.object(adapter.ctypes,"set_last_error",create=True),patch.object(adapter.ctypes,"get_last_error",return_value=0,create=True),\
+             patch.dict(adapter.os.environ,dict(PSModulePath="inherited incompatible PS7 module path",PATH="parent value"),clear=True):
+            parent=dict(adapter.os.environ)
             with self.assertRaisesRegex(ValueError,"original compiler Authenticode publisher/trust observation failed"):
                 session.compile("outer_source","outer",compiler,b"modeled source",machine=0x8664)
+            self.assertEqual(dict(adapter.os.environ),parent)
+            self.assertEqual(environments,[{key:value for key,value in parent.items() if key.upper()!="PSMODULEPATH"}])
         self.assertEqual(len(commands),1)
         self.assertEqual(commands[0][3],"-EncodedCommand");self.assertEqual(len(commands[0]),5)
         decoded=base64.b64decode(commands[0][4],validate=True).decode("utf-16le")

@@ -336,6 +336,15 @@ def _require_authenticode_original(result):
         "original compiler Authenticode publisher/trust observation failed")
 
 
+def _authenticode_environment(environment):
+    """Let Windows PowerShell construct its own module paths for this child.
+
+    A Python child of PowerShell 7 otherwise forwards incompatible PS7 module
+    paths. Copy the parent environment without changing it or recording it.
+    """
+    return {key:value for key,value in environment.items() if key.upper()!="PSMODULEPATH"}
+
+
 def _pe_machine(raw):
     _require(type(raw) is bytes and len(raw) >= 64 and raw[:2] == b"MZ", "complete compiled PE required")
     at = struct.unpack_from("<I", raw, 60)[0]
@@ -626,7 +635,8 @@ class _NativeSession:
         self._record("api",dict(name="GetSystemDirectoryW",result=chars,error=error),bytes(directory))
         _require(0<chars<32768,"original system tool path unavailable")
         powershell=_plain_path(Path(directory[:chars])/"WindowsPowerShell/v1.0/powershell.exe")
-        verified=self._run(_authenticode_command(str(powershell),str(compiler)))
+        verified=self._run(_authenticode_command(str(powershell),str(compiler)),
+            environment=_authenticode_environment(os.environ))
         _require_authenticode_original(verified)
         self.write_new(source_name,raw)
         env_path=_plain_path(self.paths.environment_x64 if machine==0x8664 else self.paths.environment_x86)
