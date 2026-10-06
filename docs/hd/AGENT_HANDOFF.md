@@ -237,6 +237,25 @@ remain unfinished. The adapter must retain oversized originals before bounded
 record construction. Replay establishes supplied-receipt consistency only and
 keeps runtime, endurance, manual-input, release and promotion claims false.
 
+[`hidden_soak_loader_native.py`](../../tools/hidden_soak_loader_native.py) prepares
+a fixed x86 initial-loader read batch from privately reconstructed candidate
+contracts. Its opaque request identities bind the exact source closure and read
+inventory. The paired archive adapter retains original native callback, query,
+QPC, generation and full-capacity read buffers, including failed and truncated
+archives, before checking their supplied receipts. A separate Windows CI fixture
+uses only a marked synthetic executable and requires actual initial-event reads
+and independent target-handle adoption while that target still exists.
+
+This preparatory batch executes no canonical probe, issues no GO, forces no game
+callbacks and injects no input. Comparison takes place after termination, so it
+cannot establish comparison during the native hold, whole-candidate loaded proof or healthy
+runtime. Real instrumented ownership/job receipts, durable storage and integration
+remain unfinished. The shared journal plus its complete known failure tail and
+atomic allowance adds 35,717,123 bytes, excluding candidate/assets, compiler
+outputs, independent receipts and unknown output debt. Local source fixtures
+launch no processes; native CI success cannot grant endurance, manual-input,
+release or promotion acceptance.
+
 [`battle_profile_content.py`](../../src/patcher/battle_profile_content.py)
 prepares 28 fixed native body-site content reads around the authenticated stack
 lease. It checks current terrain occupancy, unit indices/types, owner bytes and
@@ -274,6 +293,8 @@ python -B tools/test_hidden_soak_running_time.py
 python -B tools/test_hidden_soak_loaded_image.py
 python -B tools/test_hidden_soak_loaded_read_session.py
 python -B tools/test_hidden_soak_job_lease.py
+python -B tools/test_hidden_soak_loader_native.py
+python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 python -B tools/test_battle_profile_content.py --require-machine-tools
 ```

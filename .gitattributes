@@ -1027,3 +1027,8 @@
 /tools/test_hidden_soak_job_lease.py text eol=lf
 /src/patcher/battle_profile_content.py text eol=lf
 /tools/test_battle_profile_content.py text eol=lf
+/tools/hidden_soak_loader_native.py text eol=lf
+/tools/hidden_soak_loader_native_adapter.py text eol=lf
+/tools/test_hidden_soak_loader_native.py text eol=lf
+/tools/test_hidden_soak_loader_native_engine.py text eol=lf
+/.github/workflows/hidden-soak-loader-native.yml text eol=lf
