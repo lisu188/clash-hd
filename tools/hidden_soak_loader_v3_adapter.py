@@ -8,6 +8,7 @@ storage, loaded-module, release, or promotion acceptance.
 from __future__ import annotations
 
 import ast
+import base64
 import builtins
 from dataclasses import fields, is_dataclass
 from dataclasses import dataclass
@@ -15,7 +16,7 @@ import ctypes
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import shutil
 import struct
@@ -308,6 +309,33 @@ def _plain_path(value, *, directory=False):
     return path
 
 
+def _authenticode_command(powershell, compiler):
+    """Encode one complete command; never append a path as command text.
+
+    The owning caller verifies these actual file paths first. Single-quoted
+    PowerShell literals preserve spaces and metacharacters; doubled quotes
+    preserve apostrophes without permitting interpolation or a new command.
+    """
+    for value,name in ((powershell,"powershell.exe"),(compiler,"cl.exe")):
+        _require(type(value) is str and value.isascii() and not any(ord(char)<32 for char in value),
+            "one literal ASCII native tool path required")
+        path=PureWindowsPath(value)
+        _require(path.is_absolute() and len(path.drive)==2 and path.drive[0].isalpha() and path.drive[1]==":" and
+            path.name.lower()==name,"verified absolute local compiler/system tool path required")
+    literal="'"+compiler.replace("'","''")+"'"
+    script="$s=Get-AuthenticodeSignature -LiteralPath "+literal+"; [Console]::Write($s.Status.ToString()+'|'+$s.SignerCertificate.Subject)"
+    encoded=base64.b64encode(script.encode("utf-16le")).decode("ascii")
+    return [powershell,"-NoProfile","-NonInteractive","-EncodedCommand",encoded]
+
+
+def _require_authenticode_original(result):
+    """Preserve strict original status/publisher checks and all raw output."""
+    _require(type(result.returncode) is int and type(result.stdout) is type(result.stderr) is bytes,
+        "whole original signature exit and byte streams required")
+    _require(result.returncode==0 and result.stdout.startswith(b"Valid|") and b"Microsoft Corporation" in result.stdout,
+        "original compiler Authenticode publisher/trust observation failed")
+
+
 def _pe_machine(raw):
     _require(type(raw) is bytes and len(raw) >= 64 and raw[:2] == b"MZ", "complete compiled PE required")
     at = struct.unpack_from("<I", raw, 60)[0]
@@ -598,10 +626,8 @@ class _NativeSession:
         self._record("api",dict(name="GetSystemDirectoryW",result=chars,error=error),bytes(directory))
         _require(0<chars<32768,"original system tool path unavailable")
         powershell=_plain_path(Path(directory[:chars])/"WindowsPowerShell/v1.0/powershell.exe")
-        script="$s=Get-AuthenticodeSignature -LiteralPath $args[0]; [Console]::Write($s.Status.ToString()+'|'+$s.SignerCertificate.Subject)"
-        verified=self._run([str(powershell),"-NoProfile","-NonInteractive","-Command",script,str(compiler)])
-        _require(verified.returncode==0 and verified.stdout.startswith(b"Valid|") and b"Microsoft Corporation" in verified.stdout,
-                 "original compiler Authenticode publisher/trust observation failed")
+        verified=self._run(_authenticode_command(str(powershell),str(compiler)))
+        _require_authenticode_original(verified)
         self.write_new(source_name,raw)
         env_path=_plain_path(self.paths.environment_x64 if machine==0x8664 else self.paths.environment_x86)
         environment_raw=env_path.read_bytes(); environment_stamp=_stamp(env_path)

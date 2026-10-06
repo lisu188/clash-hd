@@ -1,10 +1,12 @@
 """Portable V3 receipt/capability tests; no compiler or native adapter calls."""
 from __future__ import annotations
 
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
+import base64
 from copy import deepcopy
 from types import SimpleNamespace
 import struct
+import re
 import sys
 import unittest
 from unittest.mock import patch
@@ -247,6 +249,72 @@ class PolicyTests(unittest.TestCase):
         session.finish_and_close()
         self.assertEqual(calls,["cleanup","finish",("close",0)])
         self.assertTrue(session.debt)
+
+
+class AuthenticodeCommandTests(unittest.TestCase):
+    def test_space_and_apostrophe_paths_are_one_encoded_literal_not_extra_arguments(self):
+        shell=r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        compilers=(r"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\bin\Hostx64\x64\cl.exe",
+            r"D:\Toolchain O'Brien\Dollar$() Backtick` Semi; Pipe| Amp&\cl.exe")
+        for compiler in compilers:
+            with self.subTest(compiler=compiler):
+                command=adapter._authenticode_command(shell,compiler)
+                self.assertEqual(command[:4],[shell,"-NoProfile","-NonInteractive","-EncodedCommand"])
+                self.assertEqual(len(command),5)
+                script=base64.b64decode(command[4],validate=True).decode("utf-16le")
+                match=re.fullmatch(r"\$s=Get-AuthenticodeSignature -LiteralPath '((?:[^']|'')*)'; \[Console\]::Write\(\$s.Status.ToString\(\)\+'\|'\+\$s.SignerCertificate.Subject\)",script)
+                self.assertIsNotNone(match)
+                self.assertEqual(match.group(1).replace("''","'"),compiler)
+                self.assertNotIn("$args[0]",script)
+                self.assertNotIn("-Command",command)
+                self.assertEqual(script.encode("utf-16le"),base64.b64decode(command[4],validate=True))
+
+    def test_relative_foreign_tool_or_control_character_paths_reject(self):
+        shell=r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        compiler=r"C:\Program Files\MSVC\cl.exe"
+        for value in (r"cl.exe",r"C:cl.exe",r"\\remote\share\cl.exe",r"C:\tools\cmd.exe",
+                      compiler+"\n",compiler+"\0",compiler.replace("MSVC","M\u00e1SVC"),True):
+            with self.subTest(compiler=value),self.assertRaises(ValueError):adapter._authenticode_command(shell,value)
+        for value in (r"powershell.exe",r"C:\tools\cmd.exe",shell+"\r",None):
+            with self.subTest(shell=value),self.assertRaises(ValueError):adapter._authenticode_command(value,compiler)
+
+    def test_native_signature_failures_reject_without_mutating_original_streams(self):
+        valid=b"Valid|CN=Microsoft Corporation, O=Microsoft Corporation, C=US"
+        good=SimpleNamespace(returncode=0,stdout=valid,stderr=b"original warning")
+        adapter._require_authenticode_original(good)
+        for code,stdout,stderr in ((1,b"",b"Unexpected token 'C:\\Program' in expression or statement."),
+            (1,valid,b"original failure"),(0,b"NotSigned|Microsoft Corporation",b""),
+            (0,b"HashMismatch|Microsoft Corporation",b""),(0,b"UnknownError|Microsoft Corporation",b""),
+            (0,b"Valid|CN=Other Publisher",b""),(0,b"NotValid|Microsoft Corporation",b""),
+            (False,valid,b""),(0,"Valid|Microsoft Corporation",b""),(0,valid,None)):
+            original=SimpleNamespace(returncode=code,stdout=stdout,stderr=stderr)
+            with self.subTest(code=code,stdout=stdout),self.assertRaises(ValueError):
+                adapter._require_authenticode_original(original)
+            self.assertIs(original.stdout,stdout);self.assertIs(original.stderr,stderr)
+            self.assertIs(original.returncode,code)
+
+    def test_compile_dispatches_encoded_signature_command_before_any_source_write(self):
+        class OriginalPath(PureWindowsPath):
+            def read_bytes(self):return b"whole modeled compiler PE"
+        session=adapter._NativeSession.__new__(adapter._NativeSession);commands=[]
+        system=r"C:\Windows\System32"
+        def directory(buffer,capacity):buffer.value=system;return len(system)
+        session.kernel=SimpleNamespace(GetSystemDirectoryW=directory)
+        session._record=lambda *args,**kwargs:None
+        failure=SimpleNamespace(returncode=1,stdout=b"",stderr=b"Unexpected token 'C:\\Program' in expression or statement.")
+        session._run=lambda command:commands.append(command) or failure
+        session.write_new=lambda *args:(_ for _ in ()).throw(AssertionError("Rejected compiler must not write or compile source"))
+        compiler=r"C:\Program Files\Microsoft Visual Studio\VC\Tools\MSVC\bin\Hostx64\x64\cl.exe"
+        with patch.object(adapter,"_plain_path",side_effect=lambda value:OriginalPath(str(value))),\
+             patch.object(adapter,"_stamp",return_value=(1,2,3)),patch.object(adapter,"_pe_machine",return_value=(0x8664,0x20b)),\
+             patch.object(adapter.ctypes,"set_last_error",create=True),patch.object(adapter.ctypes,"get_last_error",return_value=0,create=True):
+            with self.assertRaisesRegex(ValueError,"original compiler Authenticode publisher/trust observation failed"):
+                session.compile("outer_source","outer",compiler,b"modeled source",machine=0x8664)
+        self.assertEqual(len(commands),1)
+        self.assertEqual(commands[0][3],"-EncodedCommand");self.assertEqual(len(commands[0]),5)
+        decoded=base64.b64decode(commands[0][4],validate=True).decode("utf-16le")
+        self.assertIn("-LiteralPath '"+compiler+"';",decoded)
+        self.assertEqual(failure.stdout,b"")
 
 
 def frame(operation,data,raw=b"",sequence=1):
