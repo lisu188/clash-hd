@@ -430,6 +430,36 @@ bytes at WORLD+821 must not be relabelled as a harmless sentinel unit. This
 preparation establishes no expanded-battle candidate, runtime/input/composition,
 endurance, healthy map return, release lane or promotion.
 
+`tools/hidden_soak_loader_compare_native.py` and its separate private adapter
+prepare a v2 command-free immutable comparison from the authenticated expected
+payload. Preparation and replay share one private capability registry; public
+inspectors, cross-registry requests with identical JSON and clones cannot admit
+a request. The generated x86 batch retains complete requested read capacity
+before interpreting original HRESULT/count results, then compares every selected
+byte at the actual PEB base. Canonical preferred header ImageBase, raw/zero
+executable extents and complete HIGHLOW relocation policy remain explicit;
+readonly/RW/IAT/provider regions and alignment gaps remain excluded.
+
+The sole 20-second anchor is the earliest initial loader callback. All byte
+comparisons and the actual counter after EndSession must fit that original
+epoch. Later execution-status queries, waits, process times and closes remain
+outside its attested duration. No loader hold proves map readiness or the
+required process running time. Original journal write/flush results remain
+retained, but a footer cannot attest its own append/flush recursively. Initial
+magic-write failures retain original bytes and separate sticky output debt.
+
+The exact known peak is 112,870,182 bytes including request and expected-payload
+atomic temporaries, a failure-capable journal and a separate complete archive
+copy. Compiler/source/object/binary outputs, candidate/assets, RAM, independent
+generation/job receipts and unknown native output debt require extra allowance.
+The Windows CI fixture adds 256 MiB for fixture compiler/report/source outputs,
+requires the strict free-space reserve and runs only a marked public synthetic
+executable. Supplied receipt replay and this scoped fixture do not establish
+production native provenance/read coherence, full job/host cleanup, durable
+storage, loaded-candidate/probe, runtime/endurance, manual-input, release or
+promotion proof. All broader flags remain false and no production verifier is
+registered. The fourteen missing production verifiers remain unfinished.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

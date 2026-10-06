@@ -358,6 +358,33 @@ unit record. Provider/RLE cancellation, receiver and argument validity, arena
 clipping, full installation and healthy native return remain unfinished. No
 hooks or expanded-battle candidates are installed by this preparation.
 
+The separate `tools/hidden_soak_loader_compare_native.py` and
+`tools/hidden_soak_loader_compare_native_adapter.py` v2 preparation compares the
+immutable expected payload inside the original command-free loader hold. Its
+shared private issuer registry rejects public inspectors, identical-binding
+requests from other registries and reconstructed clones. Full requested native
+read capacity and original HRESULT/count receipts precede each comparison.
+Canonical headers, executable raw/zero extents and complete HIGHLOW fields are
+checked at the separately read actual PEB base. Other image regions remain
+excluded, and the preferred header ImageBase policy awaits native verification.
+
+The earliest initial debugger callback supplies the sole 20-second epoch.
+Comparison and the actual post-EndSession counter must fit that epoch; later
+execution-status queries, waits, process times and closes do not acquire a new
+deadline or complete lifecycle proof. Each journal frame retains original
+WriteFile/FlushFileBuffers receipts. A footer cannot recursively attest its own
+append/flush, and failed initial magic writes retain explicit output debt.
+
+The known peak allowance is 112,870,182 bytes including request/payload atomic
+temporaries, the failure-capable journal and a separate complete archive copy.
+Compiler/source/object/binary outputs, candidate/assets, RAM, independent job
+and generation receipts, and unknown native output debt require extra space.
+The Windows CI fixture adds 256 MiB for its own compiler/report/source costs and
+runs only a marked synthetic executable. Portable replay and that scoped fixture
+establish no production producer provenance, full job/host cleanup, durable
+storage, loaded-candidate/probe, map-ready, runtime/endurance, human-input,
+release or promotion acceptance. No missing production verifier is registered.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -382,6 +409,8 @@ python -B tools/test_hidden_soak_job_lease.py
 python -B tools/test_hidden_soak_loader_native.py
 python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests
 python -B tools/test_hidden_soak_loader_expected.py
+python -B tools/test_hidden_soak_loader_compare_native.py
+python -B tools/test_hidden_soak_loader_compare_native_engine.py EngineSourceTests
 python -B tools/test_probe_engine_retention.py
 python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
