@@ -387,18 +387,27 @@ class NativeLineEndingTests(unittest.TestCase):
     @staticmethod
     def assertions():
         class Comparisons(unittest.TestCase):
+            assert_bound_records = engine.DebuggerEngineTests.assert_bound_records
             assert_pass = engine.DebuggerEngineTests.assert_pass
             assert_rejected = engine.DebuggerEngineTests.assert_rejected
         return Comparisons()
 
-    def test_result_and_mismatch_receipts_accept_only_exact_lf_crlf_or_mixed_lines(self):
-        facts = dict(contract_id='a' * 64, candidate_sha256='b' * 64, required_chunks=3)
+    @staticmethod
+    def rendered_identity():
+        data, report, scalar = engine.executable_fixture('1366x768')
+        script, facts = engine.fixtures.render(data, report, scalar)
+        header = next(line[len('.echo '):] for line in script.splitlines()
+                      if line.startswith('.echo BNDLOAD contract='))
         result = 'BNDLOAD contract=' + facts['contract_id'] + ' candidate=' + facts['candidate_sha256']
-        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
-        expected = [(facts['contract_id'], facts['candidate_sha256'], 'pass', '3')]
+        return facts, header, result
+
+    def test_result_and_mismatch_receipts_accept_only_exact_lf_crlf_or_mixed_lines(self):
+        facts, header, result = self.rendered_identity()
+        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n' + header + '\n'
+        expected = [(facts['contract_id'], facts['candidate_sha256'], 'pass', str(facts['required_chunks']))]
         for mode in ('lf', 'crlf', 'mixed'):
             with self.subTest(mode=mode):
-                passed = self.endings(prefix + result + ' result=pass chunks=3\n', mode)
+                passed = self.endings(prefix + result + ' result=pass chunks=' + str(facts['required_chunks']) + '\n', mode)
                 self.assertEqual(engine.RESULT.findall(passed), expected)
                 self.assertions().assert_pass(passed, facts)
                 failed = self.endings(prefix + 'BNDLOAD_MISMATCH chunk=2\n' + result + ' result=fail\n', mode)
@@ -406,15 +415,14 @@ class NativeLineEndingTests(unittest.TestCase):
                 self.assertions().assert_rejected(failed)
 
     def test_duplicate_malformed_or_wrong_result_fields_and_mismatches_cannot_pass(self):
-        facts = dict(contract_id='a' * 64, candidate_sha256='b' * 64, required_chunks=3)
-        result = 'BNDLOAD contract=' + facts['contract_id'] + ' candidate=' + facts['candidate_sha256']
-        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
-        valid = result + ' result=pass chunks=3\r\n'
+        facts, header, result = self.rendered_identity()
+        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n' + header + '\r\n'
+        valid = result + ' result=pass chunks=' + str(facts['required_chunks']) + '\r\n'
         variants = (prefix + valid + valid, prefix + valid + 'BNDLOAD malformed\r\n',
                     prefix + valid[:-2] + '\r\r\n', prefix + valid[:-2] + '\r',
-                    prefix + valid.replace('chunks=3', 'chunks=2'),
-                    prefix + valid.replace('a' * 64, 'c' * 64),
-                    prefix + valid.replace('b' * 64, 'd' * 64),
+                    prefix + valid.replace('chunks=' + str(facts['required_chunks']), 'chunks=0'),
+                    prefix + valid.replace(facts['contract_id'], 'c' * 64),
+                    prefix + valid.replace(facts['candidate_sha256'], 'd' * 64),
                     prefix + valid + 'BNDLOAD_MISMATCH chunk=2\r\n',
                     prefix + valid + 'BNDLOAD_MISMATCH malformed\r\n')
         for changed in variants:
@@ -427,6 +435,30 @@ class NativeLineEndingTests(unittest.TestCase):
                 self.assertions().assert_rejected(changed)
         for terminator in ('\r\r\n', '\r'):
             self.assertEqual(engine.MISMATCH.findall('BNDLOAD_MISMATCH chunk=2' + terminator), [])
+
+    def test_rendered_header_is_required_unique_ordered_and_bound_to_stage_resolution_and_ids(self):
+        facts, header, result = self.rendered_identity()
+        suffix = result + ' result=pass chunks=' + str(facts['required_chunks']) + '\r\n'
+        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
+        valid = prefix + header + '\r\n' + suffix
+        self.assertions().assert_pass(valid, facts)
+        variants = (prefix + suffix, valid + header + '\r\n', prefix + suffix + header + '\r\n',
+                    valid.replace(header, header.replace(facts['stage'], 'foreign-stage')),
+                    valid.replace(header, header.replace('resolution=1366x768', 'resolution=1280x720')),
+                    valid.replace(header, header.replace('resolution=1366x768', 'resolution=01366x768')),
+                    valid.replace(header, header.replace(facts['contract_id'], 'e' * 64)),
+                    valid.replace(header, header.replace(facts['candidate_sha256'], 'f' * 64)),
+                    prefix + header + '\r\r\n' + suffix, valid + 'BNDLOAD unexpected\r\n')
+        for changed in variants:
+            with self.subTest(changed=changed), self.assertRaises((AssertionError, ValueError)):
+                self.assertions().assert_pass(changed, facts)
+        # Intentional parser/read failures can omit the result, but the emitted
+        # canonical identity header is still required and retained.
+        self.assertions().assert_rejected(prefix + header + '\r\nSyntax error\r\n', syntax_valid=False)
+        for changed in (prefix, prefix + header + '\r\n' + header + '\r\n',
+                        prefix + header.replace(facts['stage'], 'foreign-stage') + '\r\n'):
+            with self.subTest(rejected=changed), self.assertRaises((AssertionError, ValueError)):
+                self.assertions().assert_rejected(changed, syntax_valid=False)
 
 
 class CastleReportTests(unittest.TestCase):
