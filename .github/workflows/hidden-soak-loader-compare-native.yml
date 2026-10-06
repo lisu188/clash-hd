@@ -105,6 +105,7 @@ jobs:
           if valid:
               report = json.loads(reports[0].read_text(encoding='ascii'))
               observations = [row for row in report['cases'] if 'original_archive_path' in row]
+              compilers = [row for row in report['cases'] if 'original_compiler_returncode' in row]
               valid = (
                   report['schema'] == 'synthetic_loader_compare_native_engine_v2'
                   and report['fixture_only'] is True
@@ -113,14 +114,35 @@ jobs:
                   and report['expected_issuer_source_sha256'] == hashlib.sha256(Path(native.ROOT / native.EXPECTED).read_bytes()).hexdigest()
                   and all(report[name] is False for name in native.FALSE_CLAIMS)
                   and len(observations) == 1
+                  and len(compilers) == 1
+                  and compilers[0]['original_compiler_returncode'] == 0
               )
               if valid:
                   observed = observations[0]
                   archive = Path(observed['original_archive_path']).resolve()
+                  if not archive.is_relative_to(root):
+                      raise ValueError('Original archive escapes fixture artifact parent')
                   raw = archive.read_bytes()
                   replay = observed['source_comparison_report']
+                  directory = reports[0].parent
+                  compiler = compilers[0]
+                  retained = {
+                      'host.cpp': observed['generated_source_sha256'],
+                      'host.exe': observed['compiled_host_sha256'],
+                      'request.bin': compiler['request_sha256'],
+                      'expected.bin': replay['expected_payload_sha256'],
+                      'synthetic-loader.exe': replay['candidate_sha256'],
+                  }
+                  original_files_match = True
+                  for filename, expected_sha in retained.items():
+                      path = (directory / filename).resolve()
+                      if not path.is_relative_to(root):
+                          raise ValueError('Retained original artifact escapes fixture parent')
+                      original_files_match &= hashlib.sha256(path.read_bytes()).hexdigest() == expected_sha
                   valid = (
-                      archive.is_relative_to(root)
+                      original_files_match
+                      and compiler['generated_source_sha256'] == observed['generated_source_sha256']
+                      and compiler['expected_payload_sha256'] == replay['expected_payload_sha256']
                       and hashlib.sha256(raw).hexdigest() == observed['original_archive_sha256'] == replay['archive_sha256']
                       and len(raw) == replay['archive_bytes']
                       and observed['synthetic_native_immutable_comparison_replayed'] is True
