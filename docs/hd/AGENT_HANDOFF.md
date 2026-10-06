@@ -156,6 +156,14 @@ provider/RLE ownership, clipping, atomic installation, quit and healthy map
 return are still required. No hook, provider or candidate is installed, and
 source or CPU results supply no runtime, release or stable-promotion acceptance.
 
+The first full lease V2 source/CPU batch retained 16 passes and one fixture
+error at the intentional terminal UD2. Its bounded instruction-size harness
+used an invalid size sentinel; the diagnostic remains in
+[`battle-stack-lease-v2-local-fixture-failure-20261006.json`](../../reports/battle-stack-lease-v2-local-fixture-failure-20261006.json).
+The successor fixture checks ordinary sizes separately from the exact final
+invalid-instruction receipt. This historical failed batch is not a complete
+suite pass or runtime proof.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,

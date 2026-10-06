@@ -563,20 +563,49 @@ class CPUTests(unittest.TestCase):
             self.assertEqual(m.outer_callbacks,['thread'])
 
     def test_independent_native_instruction_lengths_cover_two_bases(self):
+        def observe(raw,start):
+            u,r=self.tools;cpu=u.Uc(u.UC_ARCH_X86,u.UC_MODE_32);page=start&~4095
+            cpu.mem_map(page,(start+len(raw)-page+4095)&~4095);cpu.mem_write(start,bytes(raw))
+            lengths=[];traps=[]
+            def skip(machine,address,size,data):
+                offset=address-start
+                self.assertGreaterEqual(offset,0);self.assertLess(offset,len(raw))
+                if bytes(machine.mem_read(address,min(2,len(raw)-offset)))==b'\x0f\x0b':
+                    self.assertEqual(offset,len(raw)-2,'only the authored terminal UD2 is admitted')
+                    # Unicorn reports an invalid-instruction sentinel as this
+                    # code-hook size. It is never a real instruction length.
+                    return
+                self.assertTrue(1<=size<=15,'ordinary Unicorn instruction size is invalid')
+                self.assertLessEqual(offset+size,len(raw))
+                lengths.append((offset,size));machine.reg_write(r.UC_X86_REG_EIP,address+size)
+            def invalid(machine,data):
+                address=machine.reg_read(r.UC_X86_REG_EIP);offset=address-start
+                self.assertEqual(offset,len(raw)-2,'unexpected invalid instruction offset')
+                original=bytes(machine.mem_read(address,2))
+                self.assertEqual(original,b'\x0f\x0b','unexpected invalid instruction bytes')
+                traps.append((offset,original));machine.emu_stop();return True
+            cpu.hook_add(u.UC_HOOK_CODE,skip);cpu.hook_add(u.UC_HOOK_INSN_INVALID,invalid)
+            cpu.emu_start(start,start+len(raw),count=len(raw))
+            self.assertEqual(traps,[(len(raw)-2,b'\x0f\x0b')])
+            self.assertEqual(cpu.reg_read(r.UC_X86_REG_EIP),start+len(raw)-2)
+            return lengths,traps
+        # The old fixture advanced EIP by Unicorn's bogus UD2 size and fetched
+        # unmapped memory. Neither another invalid opcode nor an earlier trap
+        # can be turned into an accepted terminal closure by this repair.
+        for malformed in (b'\x0f\xff',b'\x0f\x0b\xb8\x01\x00\x00\x00'):
+            with self.assertRaises(AssertionError):observe(malformed,0x100000)
         for profile in context.PROFILES:
             layout,_,_,parent,out=emit(profile,'3840x2160')
             expected=decode(out.code,address_values(out,layout))
+            self.assertEqual(out.code[expected[-1][0]:expected[-1][1]],b'\x0f\x0b')
             for delta in (0,0x100000):
-                u,r=self.tools;cpu=u.Uc(u.UC_ARCH_X86,u.UC_MODE_32);raw=bytearray(out.code)
+                raw=bytearray(out.code)
                 for row in out.relocations:
                     if row.kind=='abs32':struct.pack_into('<I',raw,row.offset,row.target+delta)
-                start=out.base_va+delta;page=start&~4095;cpu.mem_map(page,(start+len(raw)-page+4095)&~4095)
-                cpu.mem_write(start,bytes(raw));lengths=[]
-                def skip(machine,address,size,data):
-                    lengths.append((address-start,size));machine.reg_write(r.UC_X86_REG_EIP,address+size)
-                cpu.hook_add(u.UC_HOOK_CODE,skip);cpu.emu_start(start,start+len(raw),count=len(raw))
-                self.assertEqual(lengths,[(at,end-at) for at,end,*_ in expected])
-                self.assertEqual(sum(size for _,size in lengths),len(raw))
+                lengths,traps=observe(raw,out.base_va+delta)
+                self.assertEqual(lengths,[(at,end-at) for at,end,*_ in expected[:-1]])
+                self.assertEqual(traps,[(expected[-1][0],b'\x0f\x0b')])
+                self.assertEqual(sum(size for _,size in lengths)+len(traps[0][1]),len(raw))
 
     def test_actual_helper_stack_low_point_includes_field_tail_scan_and_private_returns(self):
         for path in ('tile','unit','adjacent','tracking_tile','charge_unit','sprite_tracking_adjacent','line'):

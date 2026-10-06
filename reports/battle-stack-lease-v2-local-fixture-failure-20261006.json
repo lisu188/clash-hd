@@ -1,0 +1,87 @@
+{
+  "schema": "battle_stack_lease_v2_source_fixture_diagnostic_v1",
+  "recorded_at": "2026-10-06",
+  "evidence_class": "source_and_synthetic_cpu_fixture_failure",
+  "passed": false,
+  "review_head": "e70afed9b040cc20d703c5f8fa21be80211ae732",
+  "producer": {
+    "path": "src/patcher/battle_profile_stack_lease_v2.py",
+    "sha256": "f24b7c1cb0756ce1bdcbb1e4f5a24cd2fb139aacb6feb627cad8a7e636408d19"
+  },
+  "fixture": {
+    "path": "tools/test_battle_profile_stack_lease_v2.py",
+    "sha256": "a783ef5be009b990d9da79d4b0ad166ea91b83c4e5523e39ed46d56a6e9c98b7"
+  },
+  "suite": {
+    "source_methods": 5,
+    "cpu_methods": 12,
+    "tests_run": 17,
+    "passed_methods": 16,
+    "failures": 0,
+    "errors": 1,
+    "skips": 0,
+    "elapsed_seconds": 1080.745,
+    "exit_code": 1,
+    "passed": false,
+    "original_backed_lane_included": false
+  },
+  "error": {
+    "method": "CPUTests.test_independent_native_instruction_lengths_cover_two_bases",
+    "fixture_line": 577,
+    "exception": "unicorn.UcError",
+    "code": "UC_ERR_FETCH_UNMAPPED",
+    "diagnostic_profile": "classic",
+    "diagnostic_resolution": "3840x2160",
+    "decoded_instruction_sites_observed": 3190,
+    "final_instruction_offset": 17130,
+    "final_instruction_hex": "0f0b",
+    "final_instruction": "UD2",
+    "code_hook_size_sentinel": 4059165169,
+    "resulting_unmapped_eip": 32710011,
+    "diagnosis": "The straight-line instruction-size fixture used the invalid-instruction sentinel as a byte length. Earlier observed instruction boundaries matched; the intentional final unsafe endpoint did not provide a valid code-hook size. This diagnostic does not affirm a repaired fixture or a complete suite pass."
+  },
+  "other_completed_scope": {
+    "all_36_profiles_and_presets_at_two_bases_and_two_draw_modes": true,
+    "geometry_cases": 144,
+    "seven_native_families_use_models": true,
+    "source_and_remaining_cpu_methods_passed": true
+  },
+  "separate_original_ram_lane": {
+    "tests_run": 1,
+    "elapsed_seconds": 78.814,
+    "exit_code": 0,
+    "skips": 0,
+    "original_sha256_before_and_after": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "writes_original_or_candidate": false,
+    "launches_native_or_game_process": false
+  },
+  "fixture_successor_review": {
+    "sha256": "d87bfba633789609be12b0c1e7f542c16d115dc544fb00edd6a1555d8d7b3124",
+    "producer_changed": false,
+    "ast_change_confined_to_failed_method": true,
+    "focused_tests_run": 1,
+    "focused_elapsed_seconds": 21.962,
+    "focused_exit_code": 0,
+    "focused_skips": 0,
+    "ordinary_sizes_and_boundaries_retained": true,
+    "terminal_ud2_invalid_receipt_is_separate": true,
+    "other_invalid_opcode_and_nonterminal_ud2_reject": true,
+    "final_seventeen_method_successor_result": "pending"
+  },
+  "artifact_limits": [
+    "This small source diagnostic records the failed local fixture and bounded follow-up observation; it is not a raw native or game evidence artifact.",
+    "Passing partial source/model observations do not erase the failed suite or establish a production evidence lane.",
+    "No report field substitutes for the fixed production verifier, exact candidate evidence or explicit promotion decision.",
+    "Keep this failure after any later fixture repair; successor results must identify their actual source and fixture hashes."
+  ],
+  "installed": false,
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "native_callback_abi_verified": false,
+  "next_Tile_cancellation": false,
+  "whole_chain_capacity_verified": false,
+  "healthy_return_verified": false,
+  "release_accepted": false,
+  "promotion_ready": false,
+  "stable_promoted": false
+}
