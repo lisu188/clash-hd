@@ -221,7 +221,10 @@ class ClientTests(unittest.TestCase):
     def test_ack_replacement_read_errors_retry_only_inside_original_wait(self):
         native = [PermissionError(errno.EACCES, 'CRT replacement read denied'),
                   FileNotFoundError(errno.ENOENT, 'replacement path absent')]
-        path = self.host.root/'ack.json'
+        # Windows runner TEMP can use an 8.3 spelling; the production client
+        # canonicalizes it. Intercept the actual owned path, not its alias.
+        path = self.client.directory/'ack.json'
+        self.assertEqual(path.parent, self.host.root.resolve())
         before = path.read_bytes()
         original = Path.read_text
         observed = []
