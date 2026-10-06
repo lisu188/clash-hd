@@ -1037,3 +1037,5 @@
 /.github/workflows/framed-probe-engine.yml text eol=lf
 /tools/test_ordinary_castle_entry_matrix_engine.py text eol=lf
 /.github/workflows/ordinary-castle-entry-matrix.yml text eol=lf
+/tools/hidden_soak_loader_expected.py text eol=lf
+/tools/test_hidden_soak_loader_expected.py text eol=lf

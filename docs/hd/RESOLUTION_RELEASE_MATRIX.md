@@ -334,6 +334,28 @@ generation/job ownership, durable raw storage and whole-candidate/probe/runtime
 acceptance remain false. No production lane or stable status is registered by
 this source preparation or its synthetic native CI fixture.
 
+`tools/hidden_soak_loader_expected.py` prepares the exact source-owned immutable
+image payload after private original/candidate/recipe/probe reconstruction.
+Narrow and wide Classic retain distinct parents. Opaque live capabilities reject
+clones, changed sources and substituted public aliases; fresh replay rejects even
+consistently resealed candidate/probe replacements. Complete original payload
+bytes remain retained in RAM, and source loss after modeling publishes no chunks.
+
+The CLHDLE1 stream has a 48-byte prefix, at most 65,536 metadata bytes, 511
+32-byte chunk descriptors, 65,536 four-byte HIGHLOW locations, 16 MiB minus four
+raw bytes and a 32-byte SHA trailer, with no padding. Its exact maximum is
+17,121,324 bytes. Expected payload and atomic temporary plus the existing native
+journal and separate full raw-archive copy require 96,239,710 bytes of known
+allowance. Assets/compiler/RAM/independent receipts and unknown output debt are
+additional. This is a cost bound, not filesystem storage or budget approval.
+
+Modeled rebasing applies complete selected HIGHLOW DWORDs modulo 32 bits. The
+preferred header ImageBase stays unchanged, and actual PEB.ImageBaseAddress must
+be read separately. Nonexecutable data, provider/RW/IAT regions and alignment
+gaps remain outside the checked scope. No native adapter, comparison during the
+hold, whole-image/probe, ownership/cleanup, runtime/endurance, manual-input,
+release lane or promotion is established by these source fixtures.
+
 The inherited synthetic verifier harness now retains pending and terminal cases
 outside the repository before its unchanged 35-second process invocation. Exact
 source, compiler, candidate, CRLF probe and original output bytes accompany a

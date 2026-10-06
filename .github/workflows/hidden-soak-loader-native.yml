@@ -45,6 +45,7 @@ jobs:
           set -euo pipefail
           python -B tools/test_hidden_soak_loader_native.py -v
           python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests -v
+          python -B tools/test_hidden_soak_loader_expected.py
 
   engine:
     name: Original loader reads on a synthetic x86 process
