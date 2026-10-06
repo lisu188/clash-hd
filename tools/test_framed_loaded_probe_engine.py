@@ -370,7 +370,11 @@ HARNESS = r'''
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <dbgeng.h>
+#include <process.h>
+#include <cerrno>
+#include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iterator>
@@ -400,6 +404,10 @@ static void phase(const char *name, const char *edge, HRESULT hr = S_OK, ULONG v
     if (fflush(stdout) || !native || tick.QuadPart < 0) throw std::runtime_error("QPC or diagnostic flush failed");
 }
 
+// Separate atomic observations of callback input, not translated stdout bytes.
+__declspec(align(8)) static volatile LONG64 callback_count = 0;
+__declspec(align(8)) static volatile LONG64 callback_input_bytes = 0;
+
 struct CaptureOutput : IDebugOutputCallbacks {
     LONG references = 1;
     STDMETHOD(QueryInterface)(REFIID id, void **out) {
@@ -410,7 +418,140 @@ struct CaptureOutput : IDebugOutputCallbacks {
     }
     STDMETHOD_(ULONG, AddRef)() { return InterlockedIncrement(&references); }
     STDMETHOD_(ULONG, Release)() { return InterlockedDecrement(&references); }
-    STDMETHOD(Output)(ULONG, PCSTR text) { fputs(text, stdout); fflush(stdout); return S_OK; }
+    STDMETHOD(Output)(ULONG, PCSTR text) {
+        InterlockedIncrement64(&callback_count);
+        InterlockedAdd64(&callback_input_bytes, static_cast<LONG64>(strlen(text)));
+        fputs(text, stdout); fflush(stdout); return S_OK;
+    }
+};
+
+struct ExecuteWatchdogState {
+    HANDLE stop_event = nullptr;
+    volatile LONG active = 0, stop_requested = 0, failed = 0;
+};
+
+static void watchdog_operation(ExecuteWatchdogState *state, const char *name,
+                               unsigned long long native, DWORD error) {
+    if (fprintf(stderr, "HARNESS_WATCHDOG op=%s native=%llu error=%lu\n", name, native, error) < 0
+            || fflush(stderr)) InterlockedExchange(&state->failed, 1);
+}
+
+static unsigned long long filetime_scalar(const FILETIME &value) {
+    return (static_cast<unsigned long long>(value.dwHighDateTime) << 32) | value.dwLowDateTime;
+}
+
+static void watchdog_sample(ExecuteWatchdogState *state, unsigned scheduled_seconds,
+                            bool wait_available, DWORD wait_result, DWORD wait_error) {
+    LONG active_before = InterlockedCompareExchange(&state->active, 0, 0);
+    LARGE_INTEGER tick = {};
+    FILETIME creation = {}, exit = {}, kernel = {}, user = {};
+    IO_COUNTERS io = {};
+    SetLastError(0); BOOL qpc = QueryPerformanceCounter(&tick); DWORD qpc_error = GetLastError();
+    HANDLE self = GetCurrentProcess();
+    SetLastError(0); BOOL cpu = GetProcessTimes(self, &creation, &exit, &kernel, &user);
+    DWORD cpu_error = GetLastError();
+    SetLastError(0); BOOL counters = GetProcessIoCounters(self, &io); DWORD io_error = GetLastError();
+    LONG64 calls = InterlockedCompareExchange64(&callback_count, 0, 0);
+    LONG64 bytes = InterlockedCompareExchange64(&callback_input_bytes, 0, 0);
+    LONG active_after = InterlockedCompareExchange(&state->active, 0, 0);
+    // Preserve native results/errors before any interpretation. Initialized
+    // zero output from a failed API is unavailable, never measured zero.
+    // The live process exit FILETIME is undefined even when CPU query succeeds.
+    if (fprintf(stderr,
+            "HARNESS_EXECUTE_WAIT scheduled_seconds=%u active_before=%ld active_after=%ld "
+            "wait_available=%u wait_result=%lu wait_error=%lu "
+            "qpc_native=%ld qpc_error=%lu tick=%lld cpu_native=%ld cpu_error=%lu "
+            "creation=%llu exit=%llu kernel=%llu user=%llu io_native=%ld io_error=%lu "
+            "read_operations=%llu write_operations=%llu other_operations=%llu "
+            "read_bytes=%llu write_bytes=%llu other_bytes=%llu "
+            "callback_count=%lld callback_input_bytes=%lld\n",
+            scheduled_seconds, active_before, active_after, wait_available ? 1u : 0u, wait_result, wait_error,
+            qpc, qpc_error, tick.QuadPart, cpu, cpu_error,
+            filetime_scalar(creation), filetime_scalar(exit), filetime_scalar(kernel), filetime_scalar(user),
+            counters, io_error, io.ReadOperationCount, io.WriteOperationCount, io.OtherOperationCount,
+            io.ReadTransferCount, io.WriteTransferCount, io.OtherTransferCount, calls, bytes) < 0
+            || fflush(stderr)) InterlockedExchange(&state->failed, 1);
+}
+
+static unsigned __stdcall watchdog_worker(void *raw) {
+    auto *state = static_cast<ExecuteWatchdogState *>(raw);
+    const DWORD delays[] = {5000, 5000, 10000, 10000}; // 5, 10, 20, 30 seconds.
+    unsigned scheduled_seconds = 0;
+    for (DWORD delay : delays) {
+        SetLastError(0); DWORD result = WaitForSingleObject(state->stop_event, delay);
+        DWORD error = GetLastError();
+        if (result == WAIT_OBJECT_0) return 0;
+        if (result != WAIT_TIMEOUT) {
+            InterlockedExchange(&state->failed, 1);
+            watchdog_operation(state, "wait_sample", result, error); return 1;
+        }
+        if (InterlockedCompareExchange(&state->stop_requested, 0, 0)
+                || !InterlockedCompareExchange(&state->active, 0, 0)) return 0;
+        scheduled_seconds += delay / 1000;
+        watchdog_sample(state, scheduled_seconds, true, result, error);
+    }
+    return 0;
+}
+
+struct ExecuteWatchdog {
+    ExecuteWatchdogState *state = new ExecuteWatchdogState;
+    HANDLE thread = nullptr;
+    ExecuteWatchdog(const ExecuteWatchdog &) = delete;
+    ExecuteWatchdog &operator=(const ExecuteWatchdog &) = delete;
+    ExecuteWatchdog() {
+        SetLastError(0); state->stop_event = CreateEventA(nullptr, TRUE, FALSE, nullptr);
+        DWORD event_error = GetLastError();
+        watchdog_operation(state, "create_event", reinterpret_cast<uintptr_t>(state->stop_event), event_error);
+        if (!state->stop_event) { delete state; state = nullptr; throw std::runtime_error("Watchdog event creation failed"); }
+        watchdog_sample(state, 0, false, 0, 0);
+        // CRT output in the sampler requires the CRT-owned thread lifetime.
+        errno = 0; _set_doserrno(0); SetLastError(0);
+        uintptr_t native_thread = _beginthreadex(nullptr, 0, watchdog_worker, state, 0, nullptr);
+        DWORD thread_error = GetLastError(); int thread_errno = errno;
+        unsigned long thread_doserrno = 0; errno_t doserrno_result = _get_doserrno(&thread_doserrno);
+        thread = reinterpret_cast<HANDLE>(native_thread);
+        if (fprintf(stderr, "HARNESS_WATCHDOG op=create_thread native=%llu error=%lu errno=%d "
+                    "doserrno_result=%d doserrno=%lu\n",
+                    static_cast<unsigned long long>(native_thread), thread_error, thread_errno,
+                    doserrno_result, thread_doserrno) < 0 || fflush(stderr)) InterlockedExchange(&state->failed, 1);
+        if (!thread) {
+            SetLastError(0); BOOL closed = CloseHandle(state->stop_event); DWORD error = GetLastError();
+            watchdog_operation(state, "close_event_after_create_failure", closed, error);
+            delete state; state = nullptr; throw std::runtime_error("Watchdog thread creation failed");
+        }
+    }
+    void mark_active() { InterlockedExchange(&state->active, 1); }
+    void mark_returned() { InterlockedExchange(&state->active, 0); }
+    void stop() {
+        if (!state) return;
+        InterlockedExchange(&state->active, 0);
+        InterlockedExchange(&state->stop_requested, 1);
+        SetLastError(0); BOOL signaled = SetEvent(state->stop_event); DWORD signal_error = GetLastError();
+        watchdog_operation(state, "signal_stop", signaled, signal_error);
+        if (!signaled) InterlockedExchange(&state->failed, 1);
+        // Only this self-process sampler is joined. The external case deadline
+        // remains 35 seconds; no debugger/target call or retry occurs here.
+        SetLastError(0); DWORD joined = WaitForSingleObject(thread, INFINITE); DWORD join_error = GetLastError();
+        watchdog_operation(state, "join", joined, join_error);
+        if (joined != WAIT_OBJECT_0) {
+            // Unknown termination cannot authorize closing its event or deleting
+            // state. Retain them for process lifetime; never leave a worker
+            // pointing at an unwound stack or a released callback object.
+            state = nullptr; thread = nullptr;
+            throw std::runtime_error("Watchdog join failed; unproven ownership retained");
+        }
+        SetLastError(0); BOOL thread_closed = CloseHandle(thread); DWORD thread_close_error = GetLastError();
+        thread = nullptr; watchdog_operation(state, "close_thread", thread_closed, thread_close_error);
+        SetLastError(0); BOOL event_closed = CloseHandle(state->stop_event); DWORD event_close_error = GetLastError();
+        state->stop_event = nullptr; watchdog_operation(state, "close_event", event_closed, event_close_error);
+        bool failed = InterlockedCompareExchange(&state->failed, 0, 0) || !thread_closed || !event_closed;
+        delete state; state = nullptr;
+        if (failed) throw std::runtime_error("Watchdog diagnostics or owned cleanup failed");
+    }
+    ~ExecuteWatchdog() {
+        try { stop(); }
+        catch (...) { fprintf(stderr, "HARNESS_ERROR watchdog stop failure\n"); fflush(stderr); }
+    }
 };
 
 struct Session {
@@ -512,13 +653,19 @@ int main(int argc, char **argv) {
         printf("HARNESS_BEGIN base=%08lx mode=%s\n", base, argv[2]); fflush(stdout);
         HRESULT executed;
         phase("execute", "begin");
-        if (std::string(argv[2]) == "block") {
-            std::string command = std::string("$$><") + argv[1];
-            executed = session.control->Execute(DEBUG_OUTCTL_THIS_CLIENT, command.c_str(), DEBUG_EXECUTE_NO_REPEAT);
-        } else {
-            executed = session.control->ExecuteCommandFile(DEBUG_OUTCTL_THIS_CLIENT, argv[1], DEBUG_EXECUTE_NO_REPEAT);
+        {
+            ExecuteWatchdog watchdog;
+            watchdog.mark_active();
+            if (std::string(argv[2]) == "block") {
+                std::string command = std::string("$$><") + argv[1];
+                executed = session.control->Execute(DEBUG_OUTCTL_THIS_CLIENT, command.c_str(), DEBUG_EXECUTE_NO_REPEAT);
+            } else {
+                executed = session.control->ExecuteCommandFile(DEBUG_OUTCTL_THIS_CLIENT, argv[1], DEBUG_EXECUTE_NO_REPEAT);
+            }
+            watchdog.mark_returned();
+            phase("execute", "end", executed);
+            watchdog.stop();
         }
-        phase("execute", "end", executed);
         phase("flush", "begin");
         HRESULT flushed = session.client->FlushCallbacks();
         phase("flush", "end", flushed);
