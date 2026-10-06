@@ -60,6 +60,20 @@ active relocation inventory. It installs no battle code. Dynamic state lifetime,
 loader behavior, animation/dialog/exit routing and runtime acceptance remain
 separate unfinished requirements.
 
+[`battle_profile_context_v2.py`](../../src/patcher/battle_profile_context_v2.py)
+is the versioned allocation successor for future complete re-emission. It
+privately reconstructs the frozen parents and reserves 256 KiB of fresh RX and
+64 KiB of fresh RW space for every profile and preset. The first RW page
+protects a future 128-byte battle record; the remaining 60 KiB is an unpopulated
+provider reservation with no proven record schema, capacity or lifetime.
+Modal Widgets grows `SizeOfHeaders` from `0x400` to `0x800` in memory. An exact
+old/new file-offset inventory covers section storage and supported COFF, line,
+security and debug fields; unknown resources fail closed. Loaded RVAs and
+HIGHLOW operands remain fixed. No new section, code, state, provider, candidate
+file or hook is installed. Historical emitters must be re-emitted and fully
+relocated for these new addresses before a complete installer can use them.
+The original context and protected default remain unchanged.
+
 [`battle_profile_lifecycle.py`](../../src/patcher/battle_profile_lifecycle.py)
 emits an uninstalled lifecycle component from independently authenticated
 profile parents. It stages a private native-size backing, checks the complete
@@ -474,6 +488,7 @@ python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
 python -B tools/test_resolution_recipe_authentication.py SourceTests
 python -B tools/test_battle_profile_context.py
+python -B tools/test_battle_profile_context_v2.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools

@@ -1059,3 +1059,5 @@
 /tools/test_battle_profile_native_line_original.py text eol=lf
 /tools/test_current_evidence_refresh_collection.py text eol=lf
 /.github/workflows/framed-offline.yml text eol=lf
+/src/patcher/battle_profile_context_v2.py text eol=lf
+/tools/test_battle_profile_context_v2.py text eol=lf

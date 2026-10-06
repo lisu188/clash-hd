@@ -526,6 +526,22 @@ reports `original_opcode_cpu_verified=False`. It reads no original in that mode,
 writes no game artifact and launches no native process. Original-backed CPU
 results remain a separate local evidence class, not a matrix runtime lane.
 
+`src/patcher/battle_profile_context_v2.py` supplies a separate allocation
+successor for the remaining battle families. It reconstructs the frozen parent
+and plans fresh 256 KiB RX plus 64 KiB RW reservations at all 36 combinations.
+Its first RW page protects a future 128-byte record; the remaining 60 KiB is an
+unpopulated provider reservation with no proven schema, capacity or lifetime.
+Modal header growth to `0x800` retains loaded RVAs and HIGHLOW operands while
+recording every supported file-offset edit with old-byte verification. Unknown
+auxiliary, overlapping or overlay resources reject. The context emits only
+the in-memory parent relayout: no new section, battle code, state, providers,
+hooks or saved candidate. Every future emitter needs complete re-emission and
+relocation for these new addresses. The parent probe belongs to the unchanged
+parent and supplies no proof for a future battle candidate. Nine portable
+fixtures cover the geometry, schema, ownership and rejection contracts; the
+optional genuine-original RAM lane remains separate from public CI and all
+runtime acceptance. The frozen predecessors and protected default are retained.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
