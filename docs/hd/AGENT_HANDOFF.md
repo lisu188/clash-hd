@@ -117,6 +117,25 @@ fixtures use modeled callbacks and synthetic pixel buffers, with the original
 RAM lane separately opt-in. No hook, provider or candidate is installed. Frozen
 predecessors, all runtime gates and the protected default remain unchanged.
 
+[`battle_profile_field_v3.py`](../../src/patcher/battle_profile_field_v3.py)
+re-emits the pinned terrain function after fresh routing. It preserves six
+queries/draw entries, the explicit 1280-byte frame and independently derived
+post-Tile return receipts. Fixed records, globals, cached-pointer bindings,
+caller-frame controls and zero tails are checked before the ownership callback
+and again before cached objects are read. Modeled receipt loss stops subsequent
+Tiles and unauthorized restoration. Query rejection remains `FFFFFFFF`; exact
+virgin draw denial remains zero; ownership/history/receipt loss remains two.
+These outcomes establish no interruption inside native Tile or healthy return.
+
+The independent operand inventory covers absolute values, scalars and all
+CALL/Jcc/JMP transfers. The complete RX/RW and inherited modal spans stay
+protected, with no provider records or padding borrowing. Frozen lease/content/
+continuation/primitive/line families still need successors for this fresh plan,
+its complete branch inventory and actual post-Tile descriptors. Modeled Tile
+pixels, callback/stack observations and optional original RAM reconstruction
+establish no native field, arena clipping, provider/RLE lifetime, full-chain
+capacity, installed hook/candidate or runtime acceptance.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -524,6 +543,7 @@ python -B tools/test_battle_profile_context_v2.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
 python -B tools/test_battle_profile_routing_v2.py
+python -B tools/test_battle_profile_field_v3.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

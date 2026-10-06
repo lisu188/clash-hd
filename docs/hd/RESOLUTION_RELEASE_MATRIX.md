@@ -567,6 +567,17 @@ frames supply component checks only. The remaining field/lease/content/primitive
 and line families still require a fresh canonical join and complete-chain
 capacity verification. Provider/RLE ownership and every runtime gate stay open.
 
+The uninstalled `src/patcher/battle_profile_field_v3.py` re-emits terrain after
+fresh routing, with full typed transfers and actual post-Tile return receipts.
+Fixed/global/pointer/control/tail checks precede callback and cached reads;
+modeled loss stops later Tiles without unauthorized target restoration. Query
+failure and draw denial/loss keep their separate return conventions. The
+explicit 1280-byte frame and observed component extents establish no native or
+complete-chain capacity. Remaining frozen families cannot authenticate this
+fresh field without versioned joins and rebuilt return descriptors. Native
+sprites/clips, provider/RLE ownership, cancellation/quit/healthy return, atomic
+installation and every runtime lane remain unfinished.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
