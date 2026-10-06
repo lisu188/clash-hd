@@ -406,6 +406,32 @@ establish no production producer provenance, full job/host cleanup, durable
 storage, loaded-candidate/probe, map-ready, runtime/endurance, human-input,
 release or promotion acceptance. No missing production verifier is registered.
 
+`tools/hidden_soak_loader_v3.py` and its separate private adapter prepare a
+versioned, terminate-only composition of the caller, suspended outer process
+and x86 observer. The caller assigns the retained outer to a kill-on-close job
+and reads back its membership before resuming it. At the initial debug event,
+the observer requests adoption of the actual held target; the outer checks its
+generation, ancestry and job membership before returning the bound adoption.
+Full original PEB/header/executable reads follow that exchange. The earliest
+callback's 20-second hold and the outer's 35-second launch deadline remain
+unchanged; comparison and the actual post-EndSession counter must fit the hold.
+The seven inherited observer handles have explicit restricted rights and
+independent challenge/adoption read cursors. Failed native buffers and original
+I/O errors remain diagnostics rather than successful cleanup or storage proof.
+
+The separate hosted Windows fixture compiles public synthetic programs and
+requires both explicit V3 engine opt-ins. It joins original caller, outer and
+observer artifacts for eleven ordered success/rejection cases. Portable
+fixtures run without compiling or launching a native process. The fixed known
+preparation/retention allowance is 2,648,411,304 bytes, including a mandatory
+512 MiB build allowance, plus independently declared runtime assets and any
+unknown output debt. Every write still requires more than ten percent free
+space after the pending allowance. This source composition installs no game
+hook, runs no probe, sends no input and establishes no loaded-producer,
+whole-candidate, map-readiness, runtime, endurance, human-input, release or
+promotion acceptance. The frozen v2 remains reproducible; no missing production
+verifier is registered by v3.
+
 `src/patcher/battle_profile_primitive_request.py` recomposes the baseline 74
 continuation adapters and 13 primitive queries through one shared guarded
 authority. The new owning thunk is 116 bytes with a separate 64-byte live
@@ -505,6 +531,8 @@ python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests
 python -B tools/test_hidden_soak_loader_expected.py
 python -B tools/test_hidden_soak_loader_compare_native.py
 python -B tools/test_hidden_soak_loader_compare_native_engine.py EngineSourceTests
+python -B tools/test_hidden_soak_loader_v3.py
+python -B tools/test_hidden_soak_loader_v3_engine.py EngineSourceTests
 python -B tools/test_probe_engine_retention.py
 python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools

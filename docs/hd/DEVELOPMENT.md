@@ -95,6 +95,26 @@ required separately.
 
 ## Generated reports
 
+The joined initial-loader v3 workflow has separate portable and hosted Windows
+synthetic lanes. The portable commands are safe source checks:
+
+```powershell
+python -B tools/test_hidden_soak_loader_v3.py
+python -B tools/test_hidden_soak_loader_v3_engine.py EngineSourceTests
+```
+
+The hosted native lane requires `GITHUB_ACTIONS=true`, both
+`CLASH_LOADER_V3_ENGINE_TEST=1` and `CLASH_LOADER_V3_ENGINE_INTEGRATION=1`, an
+external artifact parent and separate x64/x86 compiler environments. It records
+only allowlisted toolchain environment variables and preserves original
+success/failure artifacts outside the checkout. One native fixture must complete
+all eleven joined cases without skips. It uses marked public synthetic
+executables, terminates at the initial loader hold and never runs the game or
+probe. Native fixture completion supplies no resolution runtime, manual-input,
+endurance, release or promotion acceptance. Its preflight and per-write reserve
+must pass before producing compiler or diagnostic artifacts; local disk limits
+remain in force.
+
 Source-only tools may generate temporary JSON/Markdown reports. Redirect them to
 a task-local temporary directory when possible. Runtime/capture reports belong
 outside the repository.
