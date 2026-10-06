@@ -25,7 +25,10 @@ TOKEN = re.compile(r'[0-9a-f]{32}')
 
 
 class LeaseError(RuntimeError):
-    pass
+    def __init__(self, message, *, operation=None, original_error=None):
+        super().__init__(message)
+        self.operation = operation
+        self.original_error = original_error
 
 
 def require(condition, message):
@@ -89,11 +92,29 @@ class PauseClient:
         self._active_sequence = None
         self._poisoned = False
         self.receipts = []
+        self.native_failures = ()
+
+    def _native_observation(self, operation, observe):
+        try:
+            return observe()
+        except OSError as error:
+            # A failed retained-handle query cannot authorize another read or
+            # resume. Keep its complete original exception, including WinError,
+            # as both a retained receipt and the raised lease error's cause.
+            self._poisoned = True
+            self._active = None
+            self._active_sequence = None
+            failure = LeaseError('Owned ' + operation + ' query failed: ' + str(error),
+                                 operation=operation, original_error=error)
+            self.native_failures += (failure,)
+            raise failure from error
 
     def live(self):
         require(not self._poisoned, 'Failed control session cannot be reused')
-        require(self.host_alive() is True, 'Owned observation host exited')
-        require(self.check_owner() == self.identity, 'Retained target identity changed')
+        require(self._native_observation('host liveness', self.host_alive) is True,
+                'Owned observation host exited')
+        require(self._native_observation('retained target identity', self.check_owner) == self.identity,
+                'Retained target identity changed')
         require(checked_directory(self.directory)==self.directory, 'Control directory changed')
 
     def ack(self):
