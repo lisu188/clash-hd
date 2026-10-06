@@ -312,6 +312,28 @@ and precleanup snapshots do not cover the per-frame or whole-run membership
 schedule. Native no-breakaway cleanup, endurance, runtime, manual-input, release
 and promotion remain unverified, and no production lane is registered.
 
+`src/patcher/battle_profile_content.py` prepares 28 fixed operand helpers from
+the authenticated stack-lease chain. Exact whole original/parent instructions,
+native CALL/RET ancestry and neighbor tables are authenticated independently.
+Fixed owner/global receipts, owning thread and bounded stack/control checks
+precede the complete current field receipt and any terrain/unit payload read.
+Native Tile coordinates must match its actual source-owned field invocation.
+The original signed empty sentinel, valid unit/type limits, unsigned owner-byte
+domain and actual-arena coordinate bounds remain distinct from malformed data.
+Out-of-arena neighbors read no occupancy, unit, type, owner or neighbor payload.
+
+The helper returns its value in EAX and denied/valid/fault status in EDX, preserving
+other registers, flags and stack balance. This is a preparatory ABI: future
+adapters must restore each original full or partial MOV/MOVSX destination and
+handle failure before native continuation. No instruction replay, hooks, owner
+writes, clipping, provider validation or cancellation are installed. Count's
+earlier input-record reads and non-draw callers remain outside this family.
+The emitted component uses 15,967 RX bytes for Classic/Framed and 16,026 for
+Complete HD/Modal Widgets. At 4K, 50,001 and 30,086 bytes remain respectively in
+the unchanged 128 KiB reservation. Source and synthetic x86 checks do not
+establish native rendering, expanded-battle acceptance, healthy return or
+promotion; all installation and broader acceptance claims remain false.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

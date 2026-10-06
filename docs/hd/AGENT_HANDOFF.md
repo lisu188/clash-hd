@@ -237,6 +237,22 @@ remain unfinished. The adapter must retain oversized originals before bounded
 record construction. Replay establishes supplied-receipt consistency only and
 keeps runtime, endurance, manual-input, release and promotion claims false.
 
+[`battle_profile_content.py`](../../src/patcher/battle_profile_content.py)
+prepares 28 fixed native body-site content reads around the authenticated stack
+lease. It checks current terrain occupancy, unit indices/types, owner bytes and
+unit coordinates after fixed owner, thread, stack and complete current field
+receipts. Outside neighbors return the native empty sentinel without reading
+occupancy or unit payload; malformed data returns a distinct failure. Coordinates
+must fit the actual current arena, and owner bytes retain their full byte domain.
+The value/status ABI preserves the other registers and flags but differs from
+the original full or partial MOV destinations. Future adapters must handle failure
+and restore those destinations before continuation; these helpers replay no
+native instruction and install no hooks. Shared checks keep the same owner page
+and RX reservation, leaving 50,001 bytes for Classic/Framed and 30,086 for
+Complete HD/Modal Widgets at 4K. Count-entry reads, native continuation and
+provider cancellation, clipping and atomic installation remain unfinished.
+Synthetic body CALLs and in-memory reconstruction supply no runtime acceptance.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -259,6 +275,7 @@ python -B tools/test_hidden_soak_loaded_image.py
 python -B tools/test_hidden_soak_loaded_read_session.py
 python -B tools/test_hidden_soak_job_lease.py
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
+python -B tools/test_battle_profile_content.py --require-machine-tools
 ```
 
 The optional original-backed constructor lane builds only in memory from a
