@@ -43,6 +43,10 @@ jobs:
           python -B tools/test_resolution_manifest_guard.py
       - name: Test the evidence runner
         run: python tools/test_run_framed_offline_tests.py -v
+      - name: Keep failed refresh inputs and completed results without running the aggregate
+        run: |
+          python -B tools/test_current_evidence_refresh_collection.py
+          python -B tools/test_current_evidence_refresh.py
       - name: Check source pins and run framed fixtures
         run: python tools/run_framed_offline_tests.py --report-json "$RUNNER_TEMP/framed-offline.json"
       - name: Summarize coverage boundaries

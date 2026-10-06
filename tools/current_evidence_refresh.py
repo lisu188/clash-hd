@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -7798,186 +7799,233 @@ def build_framed_offline_refresh() -> dict[str, Any]:
 
 
 def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
+    # A missing local artifact must not discard already completed checks or
+    # prevent independent checks from reporting their own evidence failures.
+    collection_errors: dict[str, list[dict[str, Any]]] = {}
+    attempts: dict[str, int] = {}
+
+    def collect(name: str, builder: Any, *builder_args: Any) -> dict[str, Any]:
+        attempts[name] = attempts.get(name, 0) + 1
+        try:
+            check = builder(*builder_args)
+            if not isinstance(check, dict) or type(check.get("passed")) is not bool:
+                raise TypeError("builder must return a check dictionary with a boolean passed field")
+            if check.get("summary") is not None and not isinstance(check["summary"], dict):
+                raise TypeError("builder summary must be a dictionary or None")
+            if check.get("failures") is not None and (
+                not isinstance(check["failures"], list)
+                or any(not isinstance(failure, str) for failure in check["failures"])
+            ):
+                raise TypeError("builder failures must be a list of strings or None")
+            # All records must be writable in the final aggregate. Validate
+            # without changing or filling in the builder's returned evidence.
+            json.dumps(check, ensure_ascii=False)
+        except Exception as exc:
+            original_traceback = "".join(traceback.format_exception(exc, limit=-8))
+            diagnostic = {
+                "check_key": name,
+                "builder": getattr(builder, "__name__", type(builder).__name__),
+                "attempt": attempts[name],
+                "exception_type": type(exc).__name__,
+                "exception_message": str(exc),
+                "traceback": original_traceback[-16384:],
+                "traceback_truncated": len(original_traceback) > 16384,
+            }
+            collection_errors.setdefault(name, []).append(diagnostic)
+            check = {"passed": False, "summary": {"collection_error": True}, "failures": []}
+        if name in collection_errors:
+            # Two existing checks are evaluated again later. A later success
+            # must not erase an earlier collection exception, including for
+            # dependent guards that inspect this live checks dictionary.
+            check = {**check, "passed": False, "collection_errors": list(collection_errors[name])}
+            failures = list(check.get("failures") or [])
+            for diagnostic in collection_errors[name]:
+                failure = (
+                    f"collection attempt {diagnostic['attempt']} raised "
+                    f"{diagnostic['exception_type']}: {diagnostic['exception_message']}"
+                )
+                if failure not in failures:
+                    failures.append(failure)
+            check["failures"] = failures
+        return check
+
     checks = {
-        "framed_offline_fixtures": build_framed_offline_refresh(),
-        "hd_map_smoke": build_hd_map_smoke(args),
-        "hd_layout_summary": build_hd_layout_summary(args),
-        "hd_layout_summary_tests": build_hd_layout_summary_tests(args),
-        "hd_layout_visible_summary": build_hd_layout_visible_summary(args),
-        "hd_layout_visible_summary_tests": build_hd_layout_visible_summary_tests(args),
-        "no_popup_map_evidence": build_no_popup_map_evidence(args),
-        "no_popup_map_evidence_tests": build_no_popup_map_evidence_tests(args),
-        "patch_manifest_compare": build_patch_compare(args),
-        "barracks_success_branch": build_barracks_success(args),
-        "right_bottom_ui_probe": build_right_bottom_ui(args),
-        "right_bottom_owner_route": build_right_bottom_owner_route(args),
-        "right_bottom_compose_probe": build_right_bottom_compose_probe(args),
-        "right_bottom_compose_patch": build_right_bottom_compose_patch(args),
-        "right_bottom_compose_fullstart_route": build_right_bottom_compose_fullstart_route(args),
-        "right_bottom_compose_normal_gate": build_right_bottom_compose_normal_gate(args),
-        "right_bottom_compose_ui_probe": build_right_bottom_compose_ui_probe(args),
-        "right_bottom_grid_hit": build_right_bottom_grid_hit(args),
-        "right_bottom_grid_hit_probe_guard": build_right_bottom_grid_hit_probe_guard(args),
-        "right_bottom_natural_route_guard": build_right_bottom_natural_route_guard(args),
-        "castle_save_owner_flag_scan": build_castle_save_owner_flag_scan(args),
-        "right_bottom_natural_route_candidate_matrix": build_right_bottom_natural_route_candidate_matrix(args),
-        "load_slot_route_limit_guard": build_load_slot_route_limit_guard(args),
-        "right_bottom_slot_fixture_plan": build_right_bottom_slot_fixture_plan(args),
-        "right_bottom_slot_fixture_script_guard": build_right_bottom_slot_fixture_script_guard(args),
-        "right_bottom_slot_fixture_runtime_plan": build_right_bottom_slot_fixture_runtime_plan(args),
-        "load_slot_timeout_phase": build_load_slot_timeout_phase(args),
-        "load_slot_entry_gap": build_load_slot_entry_gap(args),
-        "load_slot_transition_probe_guard": build_load_slot_transition_probe_guard(args),
-        "load_slot_transition_run_plan": build_load_slot_transition_run_plan(args),
-        "load_slot_transition_geometry_guard": build_load_slot_transition_geometry_guard(args),
-        "load_slot_transition_probe_preview": build_load_slot_transition_probe_preview(args),
-        "right_bottom_owner_flag_inventory": build_right_bottom_owner_flag_inventory(args),
-        "right_bottom_route_timing_guard": build_right_bottom_route_timing_guard(args),
+        "framed_offline_fixtures": collect("framed_offline_fixtures", build_framed_offline_refresh),
+        "hd_map_smoke": collect("hd_map_smoke", build_hd_map_smoke, args),
+        "hd_layout_summary": collect("hd_layout_summary", build_hd_layout_summary, args),
+        "hd_layout_summary_tests": collect("hd_layout_summary_tests", build_hd_layout_summary_tests, args),
+        "hd_layout_visible_summary": collect("hd_layout_visible_summary", build_hd_layout_visible_summary, args),
+        "hd_layout_visible_summary_tests": collect("hd_layout_visible_summary_tests", build_hd_layout_visible_summary_tests, args),
+        "no_popup_map_evidence": collect("no_popup_map_evidence", build_no_popup_map_evidence, args),
+        "no_popup_map_evidence_tests": collect("no_popup_map_evidence_tests", build_no_popup_map_evidence_tests, args),
+        "patch_manifest_compare": collect("patch_manifest_compare", build_patch_compare, args),
+        "barracks_success_branch": collect("barracks_success_branch", build_barracks_success, args),
+        "right_bottom_ui_probe": collect("right_bottom_ui_probe", build_right_bottom_ui, args),
+        "right_bottom_owner_route": collect("right_bottom_owner_route", build_right_bottom_owner_route, args),
+        "right_bottom_compose_probe": collect("right_bottom_compose_probe", build_right_bottom_compose_probe, args),
+        "right_bottom_compose_patch": collect("right_bottom_compose_patch", build_right_bottom_compose_patch, args),
+        "right_bottom_compose_fullstart_route": collect("right_bottom_compose_fullstart_route", build_right_bottom_compose_fullstart_route, args),
+        "right_bottom_compose_normal_gate": collect("right_bottom_compose_normal_gate", build_right_bottom_compose_normal_gate, args),
+        "right_bottom_compose_ui_probe": collect("right_bottom_compose_ui_probe", build_right_bottom_compose_ui_probe, args),
+        "right_bottom_grid_hit": collect("right_bottom_grid_hit", build_right_bottom_grid_hit, args),
+        "right_bottom_grid_hit_probe_guard": collect("right_bottom_grid_hit_probe_guard", build_right_bottom_grid_hit_probe_guard, args),
+        "right_bottom_natural_route_guard": collect("right_bottom_natural_route_guard", build_right_bottom_natural_route_guard, args),
+        "castle_save_owner_flag_scan": collect("castle_save_owner_flag_scan", build_castle_save_owner_flag_scan, args),
+        "right_bottom_natural_route_candidate_matrix": collect("right_bottom_natural_route_candidate_matrix", build_right_bottom_natural_route_candidate_matrix, args),
+        "load_slot_route_limit_guard": collect("load_slot_route_limit_guard", build_load_slot_route_limit_guard, args),
+        "right_bottom_slot_fixture_plan": collect("right_bottom_slot_fixture_plan", build_right_bottom_slot_fixture_plan, args),
+        "right_bottom_slot_fixture_script_guard": collect("right_bottom_slot_fixture_script_guard", build_right_bottom_slot_fixture_script_guard, args),
+        "right_bottom_slot_fixture_runtime_plan": collect("right_bottom_slot_fixture_runtime_plan", build_right_bottom_slot_fixture_runtime_plan, args),
+        "load_slot_timeout_phase": collect("load_slot_timeout_phase", build_load_slot_timeout_phase, args),
+        "load_slot_entry_gap": collect("load_slot_entry_gap", build_load_slot_entry_gap, args),
+        "load_slot_transition_probe_guard": collect("load_slot_transition_probe_guard", build_load_slot_transition_probe_guard, args),
+        "load_slot_transition_run_plan": collect("load_slot_transition_run_plan", build_load_slot_transition_run_plan, args),
+        "load_slot_transition_geometry_guard": collect("load_slot_transition_geometry_guard", build_load_slot_transition_geometry_guard, args),
+        "load_slot_transition_probe_preview": collect("load_slot_transition_probe_preview", build_load_slot_transition_probe_preview, args),
+        "right_bottom_owner_flag_inventory": collect("right_bottom_owner_flag_inventory", build_right_bottom_owner_flag_inventory, args),
+        "right_bottom_route_timing_guard": collect("right_bottom_route_timing_guard", build_right_bottom_route_timing_guard, args),
     }
-    checks["right_bottom_compose_promotion_decision"] = build_right_bottom_compose_decision(
-        args,
-        checks,
-    )
-    checks["right_bottom_compose_evidence"] = build_right_bottom_compose_matrix(args, checks)
-    checks["right_bottom_blocker_triage"] = build_right_bottom_blocker_triage(args)
-    checks["right_bottom_visual_artifact_guard"] = build_right_bottom_visual_artifact_guard(args)
-    checks["first_mission_visual_audit"] = build_first_mission_visual_audit(args)
-    checks["right_bottom_compose_promotion_decision_tests"] = build_right_bottom_compose_decision_tests(args)
-    checks["right_bottom_compose_evidence_matrix_tests"] = build_right_bottom_compose_matrix_tests(args)
-    checks["right_bottom_blocker_triage_tests"] = build_right_bottom_blocker_triage_tests(args)
-    checks["right_bottom_visual_artifact_guard_tests"] = build_right_bottom_visual_artifact_guard_tests(args)
-    checks["first_mission_visual_audit_tests"] = build_first_mission_visual_audit_tests(args)
-    checks["border_frame_restore_check"] = build_border_frame_restore_check(args)
-    checks["border_frame_restore_check_tests"] = build_border_frame_restore_check_tests(args)
-    checks["right_bottom_grid_hit_summary_tests"] = build_right_bottom_grid_hit_tests(args)
-    checks["right_bottom_grid_hit_probe_guard_tests"] = build_right_bottom_grid_hit_probe_guard_tests(args)
-    checks["right_bottom_natural_route_guard_tests"] = build_right_bottom_natural_route_guard_tests(args)
+    checks["right_bottom_compose_promotion_decision"] = collect("right_bottom_compose_promotion_decision", build_right_bottom_compose_decision, args, checks)
+    checks["right_bottom_compose_evidence"] = collect("right_bottom_compose_evidence", build_right_bottom_compose_matrix, args, checks)
+    checks["right_bottom_blocker_triage"] = collect("right_bottom_blocker_triage", build_right_bottom_blocker_triage, args)
+    checks["right_bottom_visual_artifact_guard"] = collect("right_bottom_visual_artifact_guard", build_right_bottom_visual_artifact_guard, args)
+    checks["first_mission_visual_audit"] = collect("first_mission_visual_audit", build_first_mission_visual_audit, args)
+    checks["right_bottom_compose_promotion_decision_tests"] = collect("right_bottom_compose_promotion_decision_tests", build_right_bottom_compose_decision_tests, args)
+    checks["right_bottom_compose_evidence_matrix_tests"] = collect("right_bottom_compose_evidence_matrix_tests", build_right_bottom_compose_matrix_tests, args)
+    checks["right_bottom_blocker_triage_tests"] = collect("right_bottom_blocker_triage_tests", build_right_bottom_blocker_triage_tests, args)
+    checks["right_bottom_visual_artifact_guard_tests"] = collect("right_bottom_visual_artifact_guard_tests", build_right_bottom_visual_artifact_guard_tests, args)
+    checks["first_mission_visual_audit_tests"] = collect("first_mission_visual_audit_tests", build_first_mission_visual_audit_tests, args)
+    checks["border_frame_restore_check"] = collect("border_frame_restore_check", build_border_frame_restore_check, args)
+    checks["border_frame_restore_check_tests"] = collect("border_frame_restore_check_tests", build_border_frame_restore_check_tests, args)
+    checks["right_bottom_grid_hit_summary_tests"] = collect("right_bottom_grid_hit_summary_tests", build_right_bottom_grid_hit_tests, args)
+    checks["right_bottom_grid_hit_probe_guard_tests"] = collect("right_bottom_grid_hit_probe_guard_tests", build_right_bottom_grid_hit_probe_guard_tests, args)
+    checks["right_bottom_natural_route_guard_tests"] = collect("right_bottom_natural_route_guard_tests", build_right_bottom_natural_route_guard_tests, args)
     checks["right_bottom_natural_route_candidate_matrix_tests"] = (
-        build_right_bottom_natural_route_candidate_matrix_tests(args)
+        collect("right_bottom_natural_route_candidate_matrix_tests", build_right_bottom_natural_route_candidate_matrix_tests, args)
     )
     checks["right_bottom_natural_slot2_summary_tests"] = (
-        build_right_bottom_natural_slot2_summary_tests(args)
+        collect("right_bottom_natural_slot2_summary_tests", build_right_bottom_natural_slot2_summary_tests, args)
     )
-    checks["right_bottom_slot_fixture_plan_tests"] = build_right_bottom_slot_fixture_plan_tests(args)
-    checks["right_bottom_slot_fixture_script_guard_tests"] = build_right_bottom_slot_fixture_script_guard_tests(args)
-    checks["right_bottom_slot_fixture_runtime_plan_tests"] = build_right_bottom_slot_fixture_runtime_plan_tests(args)
+    checks["right_bottom_slot_fixture_plan_tests"] = collect("right_bottom_slot_fixture_plan_tests", build_right_bottom_slot_fixture_plan_tests, args)
+    checks["right_bottom_slot_fixture_script_guard_tests"] = collect("right_bottom_slot_fixture_script_guard_tests", build_right_bottom_slot_fixture_script_guard_tests, args)
+    checks["right_bottom_slot_fixture_runtime_plan_tests"] = collect("right_bottom_slot_fixture_runtime_plan_tests", build_right_bottom_slot_fixture_runtime_plan_tests, args)
     checks["right_bottom_slot_fixture_result_summary_tests"] = (
-        build_right_bottom_slot_fixture_result_summary_tests(args)
+        collect("right_bottom_slot_fixture_result_summary_tests", build_right_bottom_slot_fixture_result_summary_tests, args)
     )
-    checks["load_slot_route_limit_guard_tests"] = build_load_slot_route_limit_guard_tests(args)
-    checks["load_slot_timeout_phase_tests"] = build_load_slot_timeout_phase_tests(args)
-    checks["load_slot_entry_gap_tests"] = build_load_slot_entry_gap_tests(args)
-    checks["load_slot_transition_probe_guard_tests"] = build_load_slot_transition_probe_guard_tests(args)
-    checks["load_slot_transition_run_plan_tests"] = build_load_slot_transition_run_plan_tests(args)
-    checks["load_slot_transition_geometry_guard_tests"] = build_load_slot_transition_geometry_guard_tests(args)
-    checks["load_slot_transition_probe_preview_tests"] = build_load_slot_transition_probe_preview_tests(args)
-    checks["load_slot_transition_summary_tests"] = build_load_slot_transition_summary_tests(args)
-    checks["load_slot_transition_readiness"] = build_load_slot_transition_readiness(args)
-    checks["load_slot_transition_readiness_tests"] = build_load_slot_transition_readiness_tests(args)
-    checks["right_bottom_owner_flag_static_guard"] = build_right_bottom_owner_flag_static_guard(args)
-    checks["right_bottom_owner_flag_static_guard_tests"] = build_right_bottom_owner_flag_static_guard_tests(args)
-    checks["right_bottom_owner_flag_inventory_tests"] = build_right_bottom_owner_flag_inventory_tests(args)
-    checks["right_bottom_route_timing_guard_tests"] = build_right_bottom_route_timing_guard_tests(args)
-    checks["castle_overview_evidence"] = build_castle_matrix(args)
-    checks["castle_owner_records_summary_tests"] = build_castle_owner_records_tests(args)
-    checks["castle_save_owner_flag_scan_tests"] = build_castle_save_owner_flag_scan_tests(args)
-    checks["castle_overview_evidence_matrix_tests"] = build_castle_matrix_tests(args)
-    checks["castle_overview_gate_tests"] = build_castle_gate_tests(args)
-    checks["castle_overview_hitbox_summary_tests"] = build_castle_hitbox_summary_tests(args)
-    checks["castle_overview_hitmap_summary_tests"] = build_castle_hitmap_summary_tests(args)
-    checks["castle_overview_multihit_summary_tests"] = build_castle_multihit_summary_tests(args)
-    checks["castle_overview_promotion_decision"] = build_castle_decision(args)
-    checks["castle_overview_promotion_decision_tests"] = build_castle_decision_tests(args)
-    checks["castle_overview_baseline_recheck"] = build_castle_baseline_recheck(args)
-    checks["castle_overview_baseline_recheck_tests"] = build_castle_baseline_recheck_tests(args)
-    checks["castle_overview_probe_guard"] = build_castle_probe_guard(args)
-    checks["castle_overview_probe_guard_tests"] = build_castle_probe_guard_tests(args)
-    checks["battle_ui_summary_tests"] = build_battle_ui_summary_tests(args)
-    checks["battle_ui_gate_tests"] = build_battle_ui_gate_tests(args)
-    checks["battle_visible_input_summary"] = build_battle_visible_input_summary(args)
-    checks["battle_visible_input_summary_tests"] = build_battle_visible_input_summary_tests(args)
-    checks["battle_ui_evidence_matrix"] = build_battle_ui_evidence_matrix(args)
-    checks["battle_ui_evidence_matrix_tests"] = build_battle_ui_evidence_matrix_tests(args)
-    checks["battle_visible_harness_guard"] = build_battle_visible_harness_guard(args)
-    checks["battle_visible_harness_guard_tests"] = build_battle_visible_harness_guard_tests(args)
-    checks["patch_definition_guard"] = build_patch_definition_guard(args)
-    checks["patch_definition_guard_tests"] = build_patch_definition_tests(args)
-    checks["stable_stage_guard"] = build_stable_stage_guard(args)
-    checks["stable_stage_guard_tests"] = build_stable_stage_guard_tests(args)
-    checks["exe_artifact_guard"] = build_exe_artifact_guard(args)
-    checks["surface_dump_policy_guard"] = build_surface_dump_policy_guard(args)
-    checks["visible_runtime_launcher_guard"] = build_visible_runtime_launcher_guard(args)
-    checks["visible_runtime_launcher_guard_tests"] = build_visible_runtime_launcher_guard_tests(args)
-    checks["python_runtime_safety_guard"] = build_python_runtime_safety_guard(args)
-    checks["python_runtime_safety_guard_tests"] = build_python_runtime_safety_tests(args)
-    checks["no_visible_runtime_guard"] = build_no_visible_runtime_guard(args, checks)
-    checks["no_visible_runtime_guard_tests"] = build_no_visible_runtime_guard_tests(args)
-    checks["process_hygiene_guard"] = build_process_hygiene_guard(args)
-    checks["process_hygiene_guard_tests"] = build_process_hygiene_guard_tests(args)
-    checks["patch_resolution_tests"] = build_patch_resolution_tests(args)
-    checks["launcher_policy_guard"] = build_launcher_policy_guard(args)
-    checks["launcher_policy_guard_tests"] = build_launcher_policy_guard_tests(args)
-    checks["launcher_core_tests"] = build_launcher_core_tests(args)
-    checks["resolution_manifest_guard"] = build_resolution_manifest_guard(args)
-    checks["resolution_manifest_guard_tests"] = build_resolution_manifest_guard_tests(args)
-    checks["no_popup_guard_tests"] = build_no_popup_guard_tests(args)
-    checks["manual_directinput_checklist"] = build_manual_directinput_checklist(args)
-    checks["manual_directinput_checklist_tests"] = build_manual_directinput_checklist_tests(args)
-    checks["hd_layout_promotion_decision"] = build_hd_layout_promotion_decision(args)
-    checks["hd_layout_promotion_decision_tests"] = build_hd_layout_promotion_decision_tests(args)
-    checks["manual_directinput_proof_template"] = build_manual_directinput_proof_template(args)
-    checks["manual_directinput_proof_template_tests"] = build_manual_directinput_proof_template_tests(args)
-    checks["manual_directinput_run_plan"] = build_manual_directinput_run_plan(args)
-    checks["manual_directinput_run_plan_tests"] = build_manual_directinput_run_plan_tests(args)
-    checks["promotion_override_manifest"] = build_promotion_override_manifest(args)
-    checks["promotion_override_manifest_tests"] = build_promotion_override_manifest_tests(args)
-    checks["promotion_override_guard"] = build_promotion_override_guard(args)
-    checks["promotion_override_guard_tests"] = build_promotion_override_guard_tests(args)
-    checks["handoff_freshness_guard"] = build_handoff_freshness_guard(args)
-    checks["handoff_freshness_guard_tests"] = build_handoff_freshness_guard_tests(args)
-    checks["current_completion_summary_tests"] = build_current_completion_summary_tests(args)
-    checks["current_completion_summary"] = build_current_completion_summary(args, checks)
-    checks["hd_soak_harness_guard"] = build_hd_soak_harness_guard(args)
-    checks["hd_soak_harness_guard_tests"] = build_hd_soak_harness_guard_tests(args)
-    checks["hd_soak_execution_boundary"] = build_hd_soak_execution_boundary(args)
-    checks["hd_soak_execution_boundary_tests"] = build_hd_soak_execution_boundary_tests(args)
-    checks["hd_soak_report_guard"] = build_hd_soak_report_guard(args)
-    checks["hd_soak_report_guard_tests"] = build_hd_soak_report_guard_tests(args)
-    checks["hidden_soak_report_assembler_tests"] = build_hidden_soak_report_assembler_tests(args)
-    checks["hd_soak_failure_triage"] = build_hd_soak_failure_triage(args)
-    checks["hd_soak_failure_triage_tests"] = build_hd_soak_failure_triage_tests(args)
-    checks["hd_soak_short_artifact_manifest"] = build_hd_soak_short_artifact_manifest(args)
-    checks["hd_soak_short_artifact_manifest_tests"] = build_hd_soak_short_artifact_manifest_tests(args)
-    checks["hd_soak_short_validation_refresh"] = build_hd_soak_short_validation_refresh(args)
-    checks["hd_soak_short_validation_refresh_tests"] = build_hd_soak_short_validation_refresh_tests(args)
-    checks["hd_soak_short_step_status"] = build_hd_soak_short_step_status(args)
-    checks["hd_soak_short_step_status_tests"] = build_hd_soak_short_step_status_tests(args)
-    checks["hd_soak_dry_run_plan"] = build_hd_soak_dry_run_plan(args)
-    checks["hd_soak_dry_run_plan_tests"] = build_hd_soak_dry_run_plan_tests(args)
-    checks["hd_soak_intro_skip_rerun_readiness"] = build_hd_soak_intro_skip_rerun_readiness(args)
-    checks["hd_soak_intro_skip_rerun_readiness_tests"] = build_hd_soak_intro_skip_rerun_readiness_tests(args)
-    checks["hd_continuity_status"] = build_hd_continuity_status(args)
-    checks["hd_continuity_status_tests"] = build_hd_continuity_status_tests(args)
-    checks["hd_soak_long_report_guard"] = build_hd_soak_long_report_guard(args)
-    checks["hd_soak_long_report_guard_tests"] = build_hd_soak_long_report_guard_tests(args)
-    checks["hd_endurance_release_checklist"] = build_hd_endurance_release_checklist(args)
-    checks["hd_endurance_release_checklist_tests"] = build_hd_endurance_release_checklist_tests(args)
-    checks["hd_soak_route_coverage"] = build_hd_soak_route_coverage(args)
-    checks["hd_soak_route_coverage_tests"] = build_hd_soak_route_coverage_tests(args)
-    checks["hd_endurance_next_actions"] = build_hd_endurance_next_actions(args)
-    checks["hd_endurance_next_actions_tests"] = build_hd_endurance_next_actions_tests(args)
-    checks["hd_soak_short_tier_ladder"] = build_hd_soak_short_tier_ladder(args)
-    checks["hd_soak_short_tier_ladder_tests"] = build_hd_soak_short_tier_ladder_tests(args)
-    checks["hd_soak_approval_preflight"] = build_hd_soak_approval_preflight(args)
-    checks["hd_soak_approval_preflight_tests"] = build_hd_soak_approval_preflight_tests(args)
-    checks["capture_corpus_index"] = build_capture_corpus_index(args)
-    checks["capture_corpus_index_tests"] = build_capture_corpus_index_tests(args)
-    checks["no_popup_boundary_guard"] = build_no_popup_boundary_guard(args, checks)
-    checks["docs_consistency_guard"] = build_docs_consistency_guard(args, checks)
-    checks["docs_consistency_guard_tests"] = build_docs_consistency_tests(args)
-    checks["no_popup_boundary_guard"] = build_no_popup_boundary_guard(args, checks)
-    checks["evidence_index_check"] = build_evidence_index_check(args)
-    checks["current_completion_summary"] = build_current_completion_summary(args, checks)
+    checks["load_slot_route_limit_guard_tests"] = collect("load_slot_route_limit_guard_tests", build_load_slot_route_limit_guard_tests, args)
+    checks["load_slot_timeout_phase_tests"] = collect("load_slot_timeout_phase_tests", build_load_slot_timeout_phase_tests, args)
+    checks["load_slot_entry_gap_tests"] = collect("load_slot_entry_gap_tests", build_load_slot_entry_gap_tests, args)
+    checks["load_slot_transition_probe_guard_tests"] = collect("load_slot_transition_probe_guard_tests", build_load_slot_transition_probe_guard_tests, args)
+    checks["load_slot_transition_run_plan_tests"] = collect("load_slot_transition_run_plan_tests", build_load_slot_transition_run_plan_tests, args)
+    checks["load_slot_transition_geometry_guard_tests"] = collect("load_slot_transition_geometry_guard_tests", build_load_slot_transition_geometry_guard_tests, args)
+    checks["load_slot_transition_probe_preview_tests"] = collect("load_slot_transition_probe_preview_tests", build_load_slot_transition_probe_preview_tests, args)
+    checks["load_slot_transition_summary_tests"] = collect("load_slot_transition_summary_tests", build_load_slot_transition_summary_tests, args)
+    checks["load_slot_transition_readiness"] = collect("load_slot_transition_readiness", build_load_slot_transition_readiness, args)
+    checks["load_slot_transition_readiness_tests"] = collect("load_slot_transition_readiness_tests", build_load_slot_transition_readiness_tests, args)
+    checks["right_bottom_owner_flag_static_guard"] = collect("right_bottom_owner_flag_static_guard", build_right_bottom_owner_flag_static_guard, args)
+    checks["right_bottom_owner_flag_static_guard_tests"] = collect("right_bottom_owner_flag_static_guard_tests", build_right_bottom_owner_flag_static_guard_tests, args)
+    checks["right_bottom_owner_flag_inventory_tests"] = collect("right_bottom_owner_flag_inventory_tests", build_right_bottom_owner_flag_inventory_tests, args)
+    checks["right_bottom_route_timing_guard_tests"] = collect("right_bottom_route_timing_guard_tests", build_right_bottom_route_timing_guard_tests, args)
+    checks["castle_overview_evidence"] = collect("castle_overview_evidence", build_castle_matrix, args)
+    checks["castle_owner_records_summary_tests"] = collect("castle_owner_records_summary_tests", build_castle_owner_records_tests, args)
+    checks["castle_save_owner_flag_scan_tests"] = collect("castle_save_owner_flag_scan_tests", build_castle_save_owner_flag_scan_tests, args)
+    checks["castle_overview_evidence_matrix_tests"] = collect("castle_overview_evidence_matrix_tests", build_castle_matrix_tests, args)
+    checks["castle_overview_gate_tests"] = collect("castle_overview_gate_tests", build_castle_gate_tests, args)
+    checks["castle_overview_hitbox_summary_tests"] = collect("castle_overview_hitbox_summary_tests", build_castle_hitbox_summary_tests, args)
+    checks["castle_overview_hitmap_summary_tests"] = collect("castle_overview_hitmap_summary_tests", build_castle_hitmap_summary_tests, args)
+    checks["castle_overview_multihit_summary_tests"] = collect("castle_overview_multihit_summary_tests", build_castle_multihit_summary_tests, args)
+    checks["castle_overview_promotion_decision"] = collect("castle_overview_promotion_decision", build_castle_decision, args)
+    checks["castle_overview_promotion_decision_tests"] = collect("castle_overview_promotion_decision_tests", build_castle_decision_tests, args)
+    checks["castle_overview_baseline_recheck"] = collect("castle_overview_baseline_recheck", build_castle_baseline_recheck, args)
+    checks["castle_overview_baseline_recheck_tests"] = collect("castle_overview_baseline_recheck_tests", build_castle_baseline_recheck_tests, args)
+    checks["castle_overview_probe_guard"] = collect("castle_overview_probe_guard", build_castle_probe_guard, args)
+    checks["castle_overview_probe_guard_tests"] = collect("castle_overview_probe_guard_tests", build_castle_probe_guard_tests, args)
+    checks["battle_ui_summary_tests"] = collect("battle_ui_summary_tests", build_battle_ui_summary_tests, args)
+    checks["battle_ui_gate_tests"] = collect("battle_ui_gate_tests", build_battle_ui_gate_tests, args)
+    checks["battle_visible_input_summary"] = collect("battle_visible_input_summary", build_battle_visible_input_summary, args)
+    checks["battle_visible_input_summary_tests"] = collect("battle_visible_input_summary_tests", build_battle_visible_input_summary_tests, args)
+    checks["battle_ui_evidence_matrix"] = collect("battle_ui_evidence_matrix", build_battle_ui_evidence_matrix, args)
+    checks["battle_ui_evidence_matrix_tests"] = collect("battle_ui_evidence_matrix_tests", build_battle_ui_evidence_matrix_tests, args)
+    checks["battle_visible_harness_guard"] = collect("battle_visible_harness_guard", build_battle_visible_harness_guard, args)
+    checks["battle_visible_harness_guard_tests"] = collect("battle_visible_harness_guard_tests", build_battle_visible_harness_guard_tests, args)
+    checks["patch_definition_guard"] = collect("patch_definition_guard", build_patch_definition_guard, args)
+    checks["patch_definition_guard_tests"] = collect("patch_definition_guard_tests", build_patch_definition_tests, args)
+    checks["stable_stage_guard"] = collect("stable_stage_guard", build_stable_stage_guard, args)
+    checks["stable_stage_guard_tests"] = collect("stable_stage_guard_tests", build_stable_stage_guard_tests, args)
+    checks["exe_artifact_guard"] = collect("exe_artifact_guard", build_exe_artifact_guard, args)
+    checks["surface_dump_policy_guard"] = collect("surface_dump_policy_guard", build_surface_dump_policy_guard, args)
+    checks["visible_runtime_launcher_guard"] = collect("visible_runtime_launcher_guard", build_visible_runtime_launcher_guard, args)
+    checks["visible_runtime_launcher_guard_tests"] = collect("visible_runtime_launcher_guard_tests", build_visible_runtime_launcher_guard_tests, args)
+    checks["python_runtime_safety_guard"] = collect("python_runtime_safety_guard", build_python_runtime_safety_guard, args)
+    checks["python_runtime_safety_guard_tests"] = collect("python_runtime_safety_guard_tests", build_python_runtime_safety_tests, args)
+    checks["no_visible_runtime_guard"] = collect("no_visible_runtime_guard", build_no_visible_runtime_guard, args, checks)
+    checks["no_visible_runtime_guard_tests"] = collect("no_visible_runtime_guard_tests", build_no_visible_runtime_guard_tests, args)
+    checks["process_hygiene_guard"] = collect("process_hygiene_guard", build_process_hygiene_guard, args)
+    checks["process_hygiene_guard_tests"] = collect("process_hygiene_guard_tests", build_process_hygiene_guard_tests, args)
+    checks["patch_resolution_tests"] = collect("patch_resolution_tests", build_patch_resolution_tests, args)
+    checks["launcher_policy_guard"] = collect("launcher_policy_guard", build_launcher_policy_guard, args)
+    checks["launcher_policy_guard_tests"] = collect("launcher_policy_guard_tests", build_launcher_policy_guard_tests, args)
+    checks["launcher_core_tests"] = collect("launcher_core_tests", build_launcher_core_tests, args)
+    checks["resolution_manifest_guard"] = collect("resolution_manifest_guard", build_resolution_manifest_guard, args)
+    checks["resolution_manifest_guard_tests"] = collect("resolution_manifest_guard_tests", build_resolution_manifest_guard_tests, args)
+    checks["no_popup_guard_tests"] = collect("no_popup_guard_tests", build_no_popup_guard_tests, args)
+    checks["manual_directinput_checklist"] = collect("manual_directinput_checklist", build_manual_directinput_checklist, args)
+    checks["manual_directinput_checklist_tests"] = collect("manual_directinput_checklist_tests", build_manual_directinput_checklist_tests, args)
+    checks["hd_layout_promotion_decision"] = collect("hd_layout_promotion_decision", build_hd_layout_promotion_decision, args)
+    checks["hd_layout_promotion_decision_tests"] = collect("hd_layout_promotion_decision_tests", build_hd_layout_promotion_decision_tests, args)
+    checks["manual_directinput_proof_template"] = collect("manual_directinput_proof_template", build_manual_directinput_proof_template, args)
+    checks["manual_directinput_proof_template_tests"] = collect("manual_directinput_proof_template_tests", build_manual_directinput_proof_template_tests, args)
+    checks["manual_directinput_run_plan"] = collect("manual_directinput_run_plan", build_manual_directinput_run_plan, args)
+    checks["manual_directinput_run_plan_tests"] = collect("manual_directinput_run_plan_tests", build_manual_directinput_run_plan_tests, args)
+    checks["promotion_override_manifest"] = collect("promotion_override_manifest", build_promotion_override_manifest, args)
+    checks["promotion_override_manifest_tests"] = collect("promotion_override_manifest_tests", build_promotion_override_manifest_tests, args)
+    checks["promotion_override_guard"] = collect("promotion_override_guard", build_promotion_override_guard, args)
+    checks["promotion_override_guard_tests"] = collect("promotion_override_guard_tests", build_promotion_override_guard_tests, args)
+    checks["handoff_freshness_guard"] = collect("handoff_freshness_guard", build_handoff_freshness_guard, args)
+    checks["handoff_freshness_guard_tests"] = collect("handoff_freshness_guard_tests", build_handoff_freshness_guard_tests, args)
+    checks["current_completion_summary_tests"] = collect("current_completion_summary_tests", build_current_completion_summary_tests, args)
+    checks["current_completion_summary"] = collect("current_completion_summary", build_current_completion_summary, args, checks)
+    checks["hd_soak_harness_guard"] = collect("hd_soak_harness_guard", build_hd_soak_harness_guard, args)
+    checks["hd_soak_harness_guard_tests"] = collect("hd_soak_harness_guard_tests", build_hd_soak_harness_guard_tests, args)
+    checks["hd_soak_execution_boundary"] = collect("hd_soak_execution_boundary", build_hd_soak_execution_boundary, args)
+    checks["hd_soak_execution_boundary_tests"] = collect("hd_soak_execution_boundary_tests", build_hd_soak_execution_boundary_tests, args)
+    checks["hd_soak_report_guard"] = collect("hd_soak_report_guard", build_hd_soak_report_guard, args)
+    checks["hd_soak_report_guard_tests"] = collect("hd_soak_report_guard_tests", build_hd_soak_report_guard_tests, args)
+    checks["hidden_soak_report_assembler_tests"] = collect("hidden_soak_report_assembler_tests", build_hidden_soak_report_assembler_tests, args)
+    checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
+    checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
+    checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
+    checks["hd_soak_short_artifact_manifest_tests"] = collect("hd_soak_short_artifact_manifest_tests", build_hd_soak_short_artifact_manifest_tests, args)
+    checks["hd_soak_short_validation_refresh"] = collect("hd_soak_short_validation_refresh", build_hd_soak_short_validation_refresh, args)
+    checks["hd_soak_short_validation_refresh_tests"] = collect("hd_soak_short_validation_refresh_tests", build_hd_soak_short_validation_refresh_tests, args)
+    checks["hd_soak_short_step_status"] = collect("hd_soak_short_step_status", build_hd_soak_short_step_status, args)
+    checks["hd_soak_short_step_status_tests"] = collect("hd_soak_short_step_status_tests", build_hd_soak_short_step_status_tests, args)
+    checks["hd_soak_dry_run_plan"] = collect("hd_soak_dry_run_plan", build_hd_soak_dry_run_plan, args)
+    checks["hd_soak_dry_run_plan_tests"] = collect("hd_soak_dry_run_plan_tests", build_hd_soak_dry_run_plan_tests, args)
+    checks["hd_soak_intro_skip_rerun_readiness"] = collect("hd_soak_intro_skip_rerun_readiness", build_hd_soak_intro_skip_rerun_readiness, args)
+    checks["hd_soak_intro_skip_rerun_readiness_tests"] = collect("hd_soak_intro_skip_rerun_readiness_tests", build_hd_soak_intro_skip_rerun_readiness_tests, args)
+    checks["hd_continuity_status"] = collect("hd_continuity_status", build_hd_continuity_status, args)
+    checks["hd_continuity_status_tests"] = collect("hd_continuity_status_tests", build_hd_continuity_status_tests, args)
+    checks["hd_soak_long_report_guard"] = collect("hd_soak_long_report_guard", build_hd_soak_long_report_guard, args)
+    checks["hd_soak_long_report_guard_tests"] = collect("hd_soak_long_report_guard_tests", build_hd_soak_long_report_guard_tests, args)
+    checks["hd_endurance_release_checklist"] = collect("hd_endurance_release_checklist", build_hd_endurance_release_checklist, args)
+    checks["hd_endurance_release_checklist_tests"] = collect("hd_endurance_release_checklist_tests", build_hd_endurance_release_checklist_tests, args)
+    checks["hd_soak_route_coverage"] = collect("hd_soak_route_coverage", build_hd_soak_route_coverage, args)
+    checks["hd_soak_route_coverage_tests"] = collect("hd_soak_route_coverage_tests", build_hd_soak_route_coverage_tests, args)
+    checks["hd_endurance_next_actions"] = collect("hd_endurance_next_actions", build_hd_endurance_next_actions, args)
+    checks["hd_endurance_next_actions_tests"] = collect("hd_endurance_next_actions_tests", build_hd_endurance_next_actions_tests, args)
+    checks["hd_soak_short_tier_ladder"] = collect("hd_soak_short_tier_ladder", build_hd_soak_short_tier_ladder, args)
+    checks["hd_soak_short_tier_ladder_tests"] = collect("hd_soak_short_tier_ladder_tests", build_hd_soak_short_tier_ladder_tests, args)
+    checks["hd_soak_approval_preflight"] = collect("hd_soak_approval_preflight", build_hd_soak_approval_preflight, args)
+    checks["hd_soak_approval_preflight_tests"] = collect("hd_soak_approval_preflight_tests", build_hd_soak_approval_preflight_tests, args)
+    checks["capture_corpus_index"] = collect("capture_corpus_index", build_capture_corpus_index, args)
+    checks["capture_corpus_index_tests"] = collect("capture_corpus_index_tests", build_capture_corpus_index_tests, args)
+    checks["no_popup_boundary_guard"] = collect("no_popup_boundary_guard", build_no_popup_boundary_guard, args, checks)
+    checks["docs_consistency_guard"] = collect("docs_consistency_guard", build_docs_consistency_guard, args, checks)
+    checks["docs_consistency_guard_tests"] = collect("docs_consistency_guard_tests", build_docs_consistency_tests, args)
+    checks["no_popup_boundary_guard"] = collect("no_popup_boundary_guard", build_no_popup_boundary_guard, args, checks)
+    checks["evidence_index_check"] = collect("evidence_index_check", build_evidence_index_check, args)
+    checks["current_completion_summary"] = collect("current_completion_summary", build_current_completion_summary, args, checks)
     failures: list[str] = []
     for name, check in checks.items():
         if not check.get("passed"):

@@ -454,9 +454,20 @@ python -B tools/test_battle_profile_native_line_original.py --original-backed C:
 
 Use the public boundary and cloud checks before focused source fixtures:
 
+`tools/current_evidence_refresh.py` retains completed check results when a later
+builder raises on missing or malformed local evidence. It records failed
+collection diagnostics with the original exception and bounded traceback, then
+continues the existing check order. An earlier collection exception remains
+failed if a repeated check later succeeds. Missing private evidence stays a
+failure; no approval, runtime observation or evidence document is synthesized.
+The existing CLI overrides and default report/`--require-pass` exit policy are
+unchanged. Focused collection fixtures mock the expensive builders; they do
+not execute the aggregate or establish its actual evidence status.
+
 ```powershell
 python -B tools/check-public-boundary.py
 python -B tools/cloud_check.py --mode cloud
+python -B tools/test_current_evidence_refresh_collection.py
 python -B tools/test_classic_all_presets_candidate.py
 python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
