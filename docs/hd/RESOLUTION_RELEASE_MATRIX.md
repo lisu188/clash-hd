@@ -266,6 +266,32 @@ explicitly unverified. No hooks, header/owner-state changes, clear/present,
 safe standalone native replacements, expanded-battle acceptance or promotion
 are supplied by this preparatory component.
 
+`tools/hidden_soak_loaded_read_session.py` prepares the supplied-reader side of
+the initial-loader comparison. Its public preparation privately reconstructs
+the frozen canonical request inventory before launch and issues an opaque,
+identity-bound capability; clones or artifact JSON cannot create admission.
+The fixed original held-start QPC tick and epoch are never moved. Preparation
+performed under an existing hold consumes that same 20-second budget, with
+exact rational projection retaining fractional counter remainders.
+
+Every owner observation, ordered native query, breakpoint count, architecture
+result and raw read attempt is retained before its success predicate. Failed
+HRESULTs with matching stale values, nonzero or missing owner sequences,
+changed sources/generations, partial reads and capacity failures stop further
+reader calls. Original failed and incomplete attempts remain available; no
+successful after-read phase is synthesized. The additional 33,619,971-byte
+allowance covers the 16 MiB raw scope, a 65,539-byte raw temporary, 8 MiB metadata
+and its 8 MiB atomic temporary. Native-host, assets, other producer receipts and
+over-capacity pending originals require separate allowance.
+
+This component installs no native reader or durable storage. Supplied receipts
+do not prove actual initial-loader events, owner authority, coherent reads,
+host-awake coverage or native clock precision. A future native capture followed
+by offline Python comparison must not claim that the later comparison ran
+inside the historical held epoch. All broader loaded-candidate, endurance,
+runtime, manual-input, release and promotion claims remain false; no production
+lane is registered.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

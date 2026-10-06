@@ -206,6 +206,23 @@ continuations. Receiver/argument validity, physical-only clipping, standalone
 callsite admission and RLE/provider cancellation remain unfinished. This is
 source preparation without hooks, safe native replacement, runtime or promotion.
 
+[`hidden_soak_loaded_read_session.py`](../../tools/hidden_soak_loaded_read_session.py)
+prepares an adapter-only initial-loader read session. Canonical reconstruction
+can precede launch through a privately issued, identity-bound read plan; copied
+JSON or a caller-selected inventory cannot substitute. The original held-start
+QPC tick remains fixed, including when preparation occurs after that tick.
+The collector retains actual supplied owner sequences, all five ordered native
+query results, breakpoint counts, architecture results and complete raw read
+attempts before validation. A failed query with a stale zero, a partial read,
+changed source or generation, or an expired 20-second hold stops collection.
+Original failures and capacity debt remain retained; missing after-read phases
+are never invented. Its raw/metadata allowance adds 33,619,971 bytes, including
+an atomic metadata temporary, before native-host and other producer costs.
+This supplies no native or storage adapter. Genuine initial-event, owner,
+clock and coherent-read provenance remain unfinished. Source replay, pending
+RAM and synthetic receipts cannot establish loaded-candidate, endurance,
+runtime, manual-input, release or promotion acceptance.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -225,6 +242,7 @@ python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
 python -B tools/test_hidden_soak_loaded_image.py
+python -B tools/test_hidden_soak_loaded_read_session.py
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 ```
 
