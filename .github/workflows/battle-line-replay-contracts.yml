@@ -44,6 +44,8 @@ jobs:
           python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4
       - name: Check the final line source across all profiles and presets without skips
         run: python -B tools/test_battle_profile_line_replay.py --require-machine-tools
+      - name: Check original-opcode fixture authoring without original game material
+        run: python -B tools/test_battle_profile_native_line_original.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -53,5 +55,6 @@ jobs:
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
               output.write('Two direct memory-line calls are prepared in an uninstalled successor. Whole native call/cleanup windows, both call PCs, duplicate RET8 arguments, outputs and zero-loss admission are source-bound.\n\n')
               output.write('All 36 profile/preset geometries are checked at two modeled image bases. Pixel writes and normal return are synthetic models; original native opcodes are not executed by these fixtures.\n\n')
+              output.write('The separate original-opcode fixture runs only its three authoring contracts here and explicitly reports original_opcode_cpu_verified=False. Its opt-in local --original-backed lane is not run; CI obtains no original game material.\n\n')
               output.write('All installed-hook lists remain empty. RLE/provider ownership, complete battle integration, native rendering, healthy map return, input, endurance, release and promotion remain unproved.\n')
           PY

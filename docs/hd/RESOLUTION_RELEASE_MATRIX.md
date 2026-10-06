@@ -513,6 +513,19 @@ All installed-hook lists remain empty. This supplies no native rendering,
 RLE/provider ownership, complete battle, healthy map return, runtime/input,
 endurance, release or promotion proof.
 
+The separate `tools/test_battle_profile_native_line_original.py` fixture can
+execute genuine authenticated line/fill instructions in Unicorn at two image
+bases with `--original-backed` and the exact local original. Native pixels,
+registers, flags, RET8, CALL/RET ownership and bounds are checked against an
+independent oracle; the line entrypoint is not replaced by a pixel callback.
+The surrounding thread queries remain modeled. All installed-hook lists remain
+empty and this establishes no sprite/provider, Windows rendering, full battle,
+healthy return, visual/input, endurance, release or promotion acceptance.
+Its default public-CI mode checks three authoring contracts only and explicitly
+reports `original_opcode_cpu_verified=False`. It reads no original in that mode,
+writes no game artifact and launches no native process. Original-backed CPU
+results remain a separate local evidence class, not a matrix runtime lane.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,

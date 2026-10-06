@@ -435,6 +435,23 @@ writes and normal RET8. They do not execute the original native body or prove
 Windows rendering. RLE/provider ownership, full battle installation, healthy
 map return, runtime/input/endurance and promotion remain unfinished.
 
+`tools/test_battle_profile_native_line_original.py` supplies a separate opt-in
+CPU fixture. With the exact user-owned original, it executes the authenticated
+line/fill instructions and relocated memory vtable at two image bases against
+synthetic owned surfaces. It does not intercept the native line target or use
+a callback to draw its pixels. Checks cover clipped arguments, native outputs,
+flags, RET8, bounded stack ownership, small arenas, gutters and mutation paths.
+Thread queries remain modeled and every production hook remains uninstalled.
+Without `--original-backed` it runs only three authoring contracts and reports
+`original_opcode_cpu_verified=False`; public CI uses that mode. The optional
+local command below writes no candidate or capture and starts no Windows game
+process. CPU proof supplies no sprite/provider lifetime,
+Windows rendering, visual/input, endurance, release or promotion acceptance.
+
+```powershell
+python -B tools/test_battle_profile_native_line_original.py --original-backed C:/Clash/clash95.exe
+```
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -469,6 +486,7 @@ python -B tools/test_battle_profile_content.py --require-machine-tools
 python -B tools/test_battle_profile_continuation.py --require-machine-tools
 python -B tools/test_battle_profile_primitive_request.py --require-machine-tools
 python -B tools/test_battle_profile_line_replay.py --require-machine-tools
+python -B tools/test_battle_profile_native_line_original.py
 ```
 
 The optional original-backed constructor lane builds only in memory from a
