@@ -10,6 +10,7 @@ from __future__ import annotations
 import ast
 import base64
 import builtins
+from contextlib import contextmanager
 from dataclasses import fields, is_dataclass
 from dataclasses import dataclass
 import ctypes
@@ -70,6 +71,8 @@ FALSE_CLAIMS = {name: False for name in (
     "whole_image_verified", "loaded_probe_verified", "probe_executed", "running_duration_verified",
     "paired_clock_same_instant_verified","host_clock_coverage_verified",
     "map_ready", "runtime_acceptance", "release_acceptance", "manual_input_verified", "promotion_ready", "stable")}
+IDENTITY_FIELDS=("role","phase","pid","creation","exit_time","wait","exit_code","path","sha256",
+    "path_scope","path_sequence","live_identity_sequence","parent_pid","parent_creation","parent_scope")
 
 
 def _require(value, reason):
@@ -114,11 +117,12 @@ def _exact(value, names, reason):
 
 class ArchiveError(ValueError):
     """The entire available originals survive parsing or replay rejection."""
-    def __init__(self, message, original_archive, frames=(), *, originals=None):
+    def __init__(self, message, original_archive, frames=(), *, originals=None, cause=None):
         super().__init__(message)
         self.original_archive = original_archive
         self.frames = frames
         self.originals = originals
+        self.cause = cause
 
 
 @dataclass(frozen=True)
@@ -292,6 +296,37 @@ class NativeFailure(RuntimeError):
     def __init__(self, message, *, events=(), pending=(), cause=None):
         super().__init__(message)
         self.events, self.pending, self.cause = tuple(events), tuple(pending), cause
+
+
+@contextmanager
+def _joined_failure_context(originals, frames=()):
+    """Preserve the issued whole streams and original cause after collection."""
+    try:
+        yield
+    except BaseException as error:
+        if not isinstance(error,Exception):
+            # Cancellation keeps its original exception type and semantics.
+            # Fixture context also retains the issued originals independently.
+            try:
+                error.originals=originals
+                error.frames=frames
+            except Exception:
+                pass
+            raise
+        if isinstance(error,ArchiveError) and error.originals is originals:
+            raise
+        raise ArchiveError(type(error).__name__+": "+str(error),originals.observer,frames,
+            originals=originals,cause=error) from error
+
+
+def _replay_report(observed, fixture, generator_claims):
+    # Both independently defined false-claim inventories include `passed`.
+    # Dictionary unpacking deliberately preserves their false values together.
+    _require(type(generator_claims) is dict and type(FALSE_CLAIMS) is dict and
+        all(value is False for value in (*generator_claims.values(),*FALSE_CLAIMS.values())),
+        "every source claim inventory value must remain exactly false")
+    return {"schema":"loader_v3_joined_replay","fixture_only":fixture,"supplied_receipt_math_only":True,
+            **observed,**generator_claims,**FALSE_CLAIMS}
 
 
 def _plain_path(value, *, directory=False):
@@ -1115,27 +1150,31 @@ def _build_api(own_snapshot, generator_snapshot, *, backend=_NativeSession, _fix
                 session.caller_close_receipt)
         except BaseException as caught:
             raise NativeFailure(str(caught),events=session.events,pending=session.pending,cause=error or caught) from caught
-        guard();state["facts"].check_sources()
-        state["originals"]=originals;state["native_error"]=error
-        state["original_seal"]=_joined_seal(originals)
+        with _joined_failure_context(originals):
+            guard();state["facts"].check_sources()
+            state["originals"]=originals;state["native_error"]=error
+            state["original_seal"]=_joined_seal(originals)
         return originals
     def parse(originals,cap):
         state,fixture=admit(cap,"launch")
-        _require(type(originals) is JoinedOriginals and state.get("originals") is originals,
-                 "exact native-session issued original streams required")
-        _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed")
-        observed,rows=_joined_protocol(originals,state,generator)
-        guard();state["facts"].check_sources()
-        return retain("parsed",dict(state,observed=observed,frames=rows),fixture)
+        issued=state.get("originals")
+        _require(type(issued) is JoinedOriginals,"native session has not issued original streams")
+        with _joined_failure_context(issued):
+            _require(type(originals) is JoinedOriginals and issued is originals,
+                     "exact native-session issued original streams required")
+            _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed")
+            observed,rows=_joined_protocol(originals,state,generator)
+            guard();state["facts"].check_sources()
+            return retain("parsed",dict(state,observed=observed,frames=rows),fixture)
     def replay(cap):
         state,fixture=admit(cap,"parsed");originals=state["originals"]
-        _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed after parsing")
-        observed,rows=_joined_protocol(originals,state,generator)
-        _require(canonical(observed)==canonical(state["observed"]),"joined original replay changed")
-        guard();state["facts"].check_sources()
-        report=dict(schema="loader_v3_joined_replay",fixture_only=fixture,supplied_receipt_math_only=True,
-                    **observed,**generator.FALSE_CLAIMS,**FALSE_CLAIMS)
-        return ReplayResult(canonical(report).decode("ascii"),originals,rows)
+        with _joined_failure_context(originals,state["frames"]):
+            _require(_joined_seal(originals)==state["original_seal"],"native-issued original streams changed after parsing")
+            observed,rows=_joined_protocol(originals,state,generator)
+            _require(canonical(observed)==canonical(state["observed"]),"joined original replay changed")
+            guard();state["facts"].check_sources()
+            report=_replay_report(observed,fixture,generator.FALSE_CLAIMS)
+            return ReplayResult(canonical(report).decode("ascii"),originals,rows)
     def inspect(cap):
         guard();entry=registry.get(id(cap))
         _require(entry is not None and entry[0]() is cap and entry[1]==cap.binding_json,"genuine native capability required")
@@ -1444,7 +1483,7 @@ def _outer_protocol(frames,state,core,generator):
             _require(value["role"] not in artifacts,"duplicate source outer artifact")
             artifacts[value["role"]]=value
         elif row.operation=="identity":
-            _exact(value,("role","phase","pid","creation","exit_time","wait","exit_code","path","sha256","parent_pid","parent_creation","parent_scope"),"original outer identity")
+            _exact(value,IDENTITY_FIELDS,"original outer identity")
             key=value["role"],value["phase"]
             _require(key not in identities,"duplicate original outer generation boundary")
             identities[key]=(row,value)
@@ -1597,30 +1636,91 @@ def _joined_seal(originals):
     return tuple((_sha(getattr(originals,row.name)),len(getattr(originals,row.name))) for row in fields(JoinedOriginals))
 
 
-def _outer_identities(observed,core,state):
-    """The summary identity is checked against its five untouched API packets."""
-    apis=observed["apis"];identities=observed["identities"]
-    for (role,phase),(row,value) in identities.items():
-        relevant=[r for r in apis if r.sequence<row.sequence][-5:]
-        _require(tuple(r.data()["name"] for r in relevant)==("GetProcessId","QueryFullProcessImageNameW",
-            "GetProcessTimes","WaitForSingleObject","GetExitCodeProcess"),"complete original process identity cohort required")
-        _require(all(r.data()["role"]==role and r.data()["phase"]==phase for r in relevant),
-                 "original process role/phase cohort differs")
-        pid,path,times,wait,exit=relevant
-        handle=pid.data()["handle"]
-        _require(handle>0 and all(r.data()["handle"]==handle for r in relevant),"retained process handle changed within cohort")
-        chars=path.data()["returned"]
+def _outer_identity_cohort(observed,row,value):
+    """Exit reobserves the retained object; its path is an explicit live reference."""
+    _exact(value,IDENTITY_FIELDS,"original outer identity")
+    _wire_scalars(value)
+    _require(row.operation=="identity" and row.data()==value,"original identity metadata/summary differs")
+    apis=observed["apis"];role,phase=value["role"],value["phase"]
+    _integer(value["path_sequence"],1,MAX_FRAMES);_integer(value["live_identity_sequence"],0,MAX_FRAMES)
+    _require(phase in ("startup","adopt_before","adopt_after","exit") and not row.raw,
+        "original identity phase/raw policy differs")
+    names=("GetProcessId","GetProcessTimes","WaitForSingleObject","GetExitCodeProcess") if phase=="exit" else \
+        ("GetProcessId","QueryFullProcessImageNameW","GetProcessTimes","WaitForSingleObject","GetExitCodeProcess")
+    relevant=[r for r in apis if r.sequence<row.sequence][-len(names):]
+    _require(tuple(r.data()["name"] for r in relevant)==names,
+        "complete original process identity cohort required")
+    _require(all(r.data()["role"]==role and r.data()["phase"]==phase for r in relevant),
+        "original process role/phase cohort differs")
+    pid,*middle,times,wait,exit=relevant;handle=pid.data()["handle"]
+    _require(handle>0 and all(r.data()["handle"]==handle for r in relevant),
+        "retained process handle changed within cohort")
+    for source,size,detail in ((pid,0,{}),(times,32,{}),(wait,0,dict(timeout=0)),(exit,4,{})):
+        data=source.data()
+        _wire_scalars(data)
+        _require(data["requested"]==data["returned"]==len(source.raw)==size and data["detail"]==detail and
+            data["length_kind"]=="source_capacity_no_native_count" and data["error"]==0,
+            "whole original process API buffer/count/detail policy differs")
+    _require(times.data()["result"]!=0 and exit.data()["result"]!=0,
+        "original retained process timing/exit query failed")
+    closes=[r for r in apis if r.data()["name"]=="CloseHandle" and r.data()["role"]==role and r.data()["handle"]==handle]
+    _require(len(closes)==1 and closes[0].sequence>row.sequence and closes[0].data()["phase"]=="close" and
+        closes[0].data()["result"]!=0 and closes[0].data()["error"]==0 and
+        closes[0].data()["requested"]==closes[0].data()["returned"]==0 and not closes[0].raw and
+        closes[0].data()["detail"]=={} and closes[0].data()["length_kind"]=="source_capacity_no_native_count",
+        "retained process must close exactly once after original identity observations")
+    native_times=struct.unpack("<4Q",times.raw)
+    _require(value["pid"]==pid.data()["result"] and value["pid"]>0 and value["creation"]==native_times[0] and
+        value["exit_time"]==native_times[1] and value["wait"]==wait.data()["result"] and
+        value["exit_code"]==struct.unpack("<I",exit.raw)[0],
+        "original identity summary differs from raw generation")
+    _require(value["creation"]>0 and (value["wait"]==0 and value["exit_code"]!=259 and value["exit_time"]>=value["creation"]
+        if phase=="exit" else value["wait"]==258 and value["exit_code"]==259 and value["exit_time"]==0),
+        "original process liveness/exit differs")
+    if phase=="exit":
+        earlier=[(original,data) for (actor,boundary),(original,data) in observed["identities"].items()
+            if actor==role and boundary!="exit" and original.sequence<row.sequence]
+        _require(earlier,"original exit has no successful live identity reference")
+        live,live_value=max(earlier,key=lambda entry:entry[0].sequence)
+        live_cohort=_outer_identity_cohort(observed,live,live_value)
+        _require(value["path_scope"]=="retained_live_identity" and
+            value["live_identity_sequence"]==live.sequence and value["path_sequence"]==live_value["path_sequence"] and
+            (value["pid"],value["creation"],value["path"],value["sha256"],handle)==
+            (live_value["pid"],live_value["creation"],live_value["path"],live_value["sha256"],live_cohort[0].data()["handle"]),
+            "original exit live reference/retained handle/generation/path/hash differs")
+        _require(not any(r.data()["name"]=="QueryFullProcessImageNameW" and
+            r.data()["role"]==role and r.data()["phase"]=="exit" for r in apis),
+            "exit scope cannot substitute or erase a post-exit native path query")
+        cleanup=[r for r in apis if r.sequence<pid.sequence and r.data()["name"]=="WaitForSingleObject" and
+            r.data()["role"]==role and r.data()["phase"]=="cleanup" and r.data()["handle"]==handle]
+        _require(len(cleanup)==1 and cleanup[0].sequence>live.sequence and cleanup[0].data()["result"]==0 and
+            cleanup[0].data()["error"]==0 and cleanup[0].data()["requested"]==cleanup[0].data()["returned"]==0 and
+            not cleanup[0].raw and cleanup[0].data()["detail"]==dict(timeout=5000) and
+            cleanup[0].data()["length_kind"]=="source_capacity_no_native_count",
+            "original signaled cleanup wait must precede retained exit generation")
+    else:
+        path=middle[0];data=path.data();chars=data["returned"]
         _integer(chars,1,32767)
-        _require(len(path.raw)==65536 and len(times.raw)==32 and len(exit.raw)==4,"whole original generation buffers required")
-        original_path=path.raw[:chars*2].decode("utf-16le","strict")
-        native_times=struct.unpack("<4Q",times.raw)
-        _require(value["pid"]==pid.data()["result"] and value["creation"]==native_times[0] and
-                 value["exit_time"]==native_times[1] and value["wait"]==wait.data()["result"] and
-                 value["exit_code"]==struct.unpack("<I",exit.raw)[0] and value["path"]==original_path.lower(),
-                 "original identity summary differs from raw generation")
-        _require(value["creation"]>0 and (value["wait"]==0 and value["exit_code"]!=259 and value["exit_time"]>=value["creation"]
-                 if phase=="exit" else value["wait"]==258 and value["exit_code"]==259 and value["exit_time"]==0),
-                 "original process liveness/exit differs")
+        _require(data["result"]!=0 and data["error"]==0 and data["requested"]==len(path.raw)==65536 and
+            data["length_kind"]=="original_native_count" and data["detail"]=={} and not any(path.raw[chars*2:]),
+            "whole original live path capacity/query/count/zero-tail policy differs")
+        _require(value["path"]==path.raw[:chars*2].decode("utf-16le","strict").lower() and
+            value["path_scope"]=="native_live_query" and value["path_sequence"]==path.sequence and
+            type(value["live_identity_sequence"]) is int and value["live_identity_sequence"]==0,
+            "original live path scope/sequence/buffer differs")
+    return tuple(relevant)
+
+
+def _outer_identities(observed,core,state):
+    """Join live paths and fresh exit generations to original API/close cohorts."""
+    identities=observed["identities"]
+    _require(set(identities)=={("caller","startup"),("outer","startup"),("observer","startup"),
+        ("observer","adopt_before"),("observer","adopt_after"),("observer","exit"),
+        ("target","adopt_before"),("target","adopt_after"),("target","exit")},
+        "exact live and terminated original actor generation boundaries required")
+    for (role,phase),(row,value) in identities.items():
+        _require((role,phase)==(value["role"],value["phase"]),"original actor boundary key differs")
+        _outer_identity_cohort(observed,row,value)
         path_name={"caller":"caller","outer":"outer","observer":"observer","target":"candidate"}.get(role)
         _require(path_name is not None and value["path"]==core["paths"][path_name].lower(),"source actor file path differs")
         digest=core["hashes"][role] if role in ("caller","outer") else \

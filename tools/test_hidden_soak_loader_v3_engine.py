@@ -10,12 +10,14 @@ from __future__ import annotations
 
 import ast
 from contextlib import contextmanager
+from dataclasses import fields, is_dataclass
 import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import struct
 import sys
 import unittest
 from unittest import mock
@@ -61,7 +63,7 @@ def retain_original(path, raw, allowance):
     return dict(path=str(path),sha256=sha(raw),bytes=len(raw))
 
 
-def retain_failure_originals(error, root, allowance):
+def retain_failure_originals(error, root, allowance, *, originals=None):
     """Keep originals before fixture exit; absent buffers remain explicitly absent.
 
     The extra complete-buffer allowance is checked before each exclusive write.
@@ -69,35 +71,157 @@ def retain_failure_originals(error, root, allowance):
     """
     rows=[];debt=[]
     available=[]
-    for index,row in enumerate(getattr(error,"events",())):
+    joined=getattr(error,"originals",None) if originals is None else originals
+    if joined is None:
+        debt.append(dict(role="issued_joined_originals",scope="not_issued_or_unavailable",
+            error="Joined streams were not issued or were unavailable at this failure boundary",
+            unknown_or_partial_retention=True))
+    else:
+        expected=("caller","outer","observer","observer_stderr","outer_stderr","caller_close_receipt")
+        if not is_dataclass(joined) or isinstance(joined,type) or tuple(row.name for row in fields(joined))!=expected:
+            debt.append(dict(role="issued_joined_originals",error="Exact whole joined original fields unavailable",
+                unknown_or_partial_retention=True))
+        else:
+            for name in expected:
+                raw=getattr(joined,name)
+                if type(raw) is bytes:available.append(("failure-"+name,raw))
+                else:debt.append(dict(role="failure-"+name,error="Whole original byte buffer unavailable",
+                    unknown_or_partial_retention=True))
+    def observations(name):
+        try:return getattr(error,name,())
+        except BaseException as failure:
+            debt.append(dict(role=name,error_type=type(failure).__qualname__,error=str(failure),
+                unknown_or_partial_retention=True));return ()
+    for index,row in enumerate(observations("events")):
         for role in ("metadata","raw","footer"):
-            available.append(("event-"+str(index)+"-"+role,getattr(row,role)))
-    for index,(operation,observation,raw) in enumerate(getattr(error,"pending",())):
-        available.append(("pending-"+str(index)+"-metadata",json.dumps(dict(operation=operation,
+            name="event-"+str(index)+"-"+role
+            try:available.append((name,getattr(row,role)))
+            except BaseException as failure:
+                debt.append(dict(role=name,error_type=type(failure).__qualname__,error=str(failure),
+                    unknown_or_partial_retention=True))
+    for index,pending in enumerate(observations("pending")):
+        name="pending-"+str(index)+"-metadata"
+        try:operation,observation,raw=pending
+        except BaseException as failure:
+            debt.append(dict(role=name,error_type=type(failure).__qualname__,error=str(failure),
+                unknown_or_partial_retention=True));continue
+        try:available.append((name,json.dumps(dict(operation=operation,
             observation=observation,original_available=raw is not None),sort_keys=True,
             separators=(",",":"),ensure_ascii=True,allow_nan=False).encode("ascii")))
+        except BaseException as failure:
+            debt.append(dict(role=name,error_type=type(failure).__qualname__,error=str(failure),
+                unknown_or_partial_retention=True))
         if raw is not None:available.append(("pending-"+str(index)+"-raw",raw))
-        else:rows.append(dict(role="pending-"+str(index)+"-raw",original_available=False))
+        else:
+            role="pending-"+str(index)+"-raw"
+            rows.append(dict(role=role,original_available=False))
+            debt.append(dict(role=role,error="Original pending byte buffer was unavailable",
+                unknown_or_partial_retention=True))
+    if not available and not rows and not debt:
+        debt.append(dict(role="failure_originals",error="No original streams/events/pending observations were available",
+            unknown_or_partial_retention=True))
     for role,raw in available:
         try:rows.append(dict(role=role,original_available=True,**retain_original(root/(role+".bin"),raw,allowance)))
         except BaseException as failure:
             debt.append(dict(role=role,original_bytes=len(raw) if type(raw) is bytes else None,
                 error_type=type(failure).__qualname__,error=str(failure),unknown_or_partial_retention=True))
-    return dict(originals=rows,debt=debt,storage_durability_verified=False)
+    return dict(originals=rows,debt=debt,joined_streams_issued=joined is not None,storage_durability_verified=False)
 
 
 @contextmanager
 def retain_case_failure(case, root, allowance):
     """Retain the original exception before unittest.subTest can consume it."""
+    context={}
     try:
-        yield
+        yield context
     except BaseException as error:
         case["error"]=dict(type=type(error).__qualname__,message=str(error))
-        case["failure_retention"]=retain_failure_originals(error,root,allowance)
+        cause=getattr(error,"cause",None) or error.__cause__
+        if cause is not None:
+            case["error"]["cause"]=dict(type=type(cause).__qualname__,message=str(cause))
+        try:case["failure_retention"]=retain_failure_originals(error,root,allowance,originals=context.get("originals"))
+        except BaseException as retention_error:
+            case["failure_retention"]=dict(originals=[],storage_durability_verified=False,debt=[dict(
+                role="failure_retention",error_type=type(retention_error).__qualname__,error=str(retention_error),
+                unknown_or_partial_retention=True)])
         raise
 
 
 class EngineSourceTests(unittest.TestCase):
+    def test_all_actual_observer_transforms_bind_source_owned_model_core_and_fixed_grammar(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        generator=adapter._generator_private(adapter._source_snapshot(adapter.GENERATOR))
+        graph=adapter._PrivateGraph()
+        try:
+            v2=graph.load("hidden_soak_loader_compare_native_adapter")
+            helpers=graph.load("hidden_soak_loader_native_adapter")
+            schemas={**helpers.STARTUP_SCHEMAS,**helpers.COLLECTOR_SCHEMAS,**v2.EXTRA_SCHEMAS,
+                **adapter.GATE_FIELDS,"generation_capacity":adapter.CAPACITY_FIELDS,
+                "generation_parent_capacity":adapter.PARENT_FIELDS,"fixture_close_challenge":("return","error"),
+                "fixture_close_challenge_event":("return","error"),"read_virtual_capacity":None}
+            schemas.pop("read_virtual",None)
+            allowed=set(schemas)
+        finally:graph.close()
+        for mode in range(11):
+            with self.subTest(mode=mode):
+                apis,candidate,contract,guard,authority=adapter._fixture_generator(generator,mode)
+                plan=apis[0](candidate,contract)
+                ids=tuple(str(index)*32 for index in (1,2,3))
+                request=apis[1](plan,authority(*ids,111,10000000,100000,1000));facts=apis[3](request)
+                metadata=json.loads(facts.metadata_json)
+                core=bytearray(32768);core[:8]=b"CLHDBV3\0";struct.pack_into("<II",core,8,3,32768)
+                struct.pack_into("<IQIQQQQ",core,16,90,999,111,888,10000000,100000,1000)
+                core[64:112]=b"".join(bytes.fromhex(value) for value in ids)
+                closure=sha(adapter._canonical(dict(v3_source_sha256=sha(Path(source.__file__).read_bytes()),
+                    v3_adapter_sha256=sha(Path(adapter.__file__).read_bytes()),
+                    predecessor_producer_closure_sha256=metadata["producer_source_closure_sha256"])))
+                hashes=(sha(facts.request_bytes),sha(facts.expected_payload),metadata["candidate_sha256"],
+                    metadata["probe_sha256"],sha(b"source-owned model caller"),sha(b"source-owned model outer"),closure)
+                core[112:336]=b"".join(bytes.fromhex(value) for value in hashes)
+                core[336:384]=b"".join(bytes.fromhex(str(index)*32) for index in (4,5,6))
+                for index,name in enumerate(source.PATH_NAMES):
+                    path="C:\\fixture" if name=="root" else "C:\\fixture\\"+name+".model"
+                    raw=(path+"\0").encode("utf-16le");core[384+index*2048:384+index*2048+len(raw)]=raw
+                struct.pack_into("<IQQQ",core,27008,7,123,source.retention_budget()["fixed_required_peak_bytes"],0)
+                rendered=apis[2](request,bytes(core)).decode("ascii");guard();facts.check_sources()
+                operations=set(re.findall(r'\b(?:j|journal)\.frame\(\s*"([^"]+)"',rendered))
+                self.assertEqual(operations-allowed,set())
+                self.assertIn("gate_complete",operations);self.assertIn("comparison_result",operations)
+                self.assertIn("read_virtual_capacity",operations)
+                self.assertNotIn("@",rendered)
+
+    def test_exit_identity_queries_retained_generation_with_explicit_live_path_reference(self):
+        for mode in range(11):
+            with self.subTest(mode=mode):
+                text=source.render_outer_source(fixture_mode=mode).decode("ascii")
+                identity=text[text.index("static Identity process_identity("):text.index("static DWORD parent_of(")]
+                self.assertRegex(identity,r"if\(require_live\)\{[^}]+QueryFullProcessImageNameW")
+                self.assertEqual(identity.count("QueryFullProcessImageNameW("),1)
+                self.assertIn('require_live?"native_live_query":"retained_live_identity"',identity)
+                self.assertIn('{"live_identity_sequence",n(require_live?0:x.identity_sequence)}',identity)
+                self.assertIn("pid==x.identity_pid&&ft(t[0])==x.identity_creation",identity)
+                self.assertIn("!x.closed",identity)
+                self.assertIn("waited==WAIT_OBJECT_0&&exit!=STILL_ACTIVE&&ft(t[1])>=ft(t[0])",identity)
+                self.assertLess(identity.index('"native liveness observation failed"'),
+                    identity.index("x.identity_sequence=journal.sequence"))
+                self.assertIn('wait_owned(*process);try{process_identity(*process',text)
+
+    def test_actual_parse_replay_and_fixture_error_paths_bind_issued_originals(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        tree=ast.parse(Path(adapter.__file__).read_bytes())
+        factory=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="_build_api")
+        functions={node.name:node for node in factory.body if isinstance(node,ast.FunctionDef)}
+        for name in ("collect","parse","replay"):
+            contexts=[node for node in ast.walk(functions[name]) if isinstance(node,ast.With) and any(
+                isinstance(item.context_expr,ast.Call) and isinstance(item.context_expr.func,ast.Name) and
+                item.context_expr.func.id=="_joined_failure_context" for item in node.items)]
+            self.assertEqual(len(contexts),1,name)
+        replay_calls=[node.func.id for node in ast.walk(functions["replay"]) if isinstance(node,ast.Call) and
+            isinstance(node.func,ast.Name)]
+        self.assertIn("_replay_report",replay_calls)
+        fixture=Path(__file__).read_text(encoding="utf-8")
+        self.assertLess(fixture.index('failure_context["originals"]=originals'),fixture.index("parsed = adapter.parse_joined"))
+
     def test_private_desktop_uses_supported_restricted_sdk_rights_and_outer_user32(self):
         rights="DESKTOP_CREATEWINDOW|DESKTOP_READOBJECTS|DESKTOP_WRITEOBJECTS|DESKTOP_ENUMERATE"
         for mode in range(11):
@@ -242,14 +366,15 @@ class EngineSourceTests(unittest.TestCase):
         with mock.patch(__name__+".retain_original",side_effect=keep):
             result=retain_failure_originals(Error(),Path("C:/fixture"),123)
         self.assertFalse(result["storage_durability_verified"])
-        self.assertEqual(result["debt"],[])
+        self.assertEqual({row["role"] for row in result["debt"]},{"issued_joined_originals","pending-0-raw"})
+        self.assertFalse(result["joined_streams_issued"])
         self.assertEqual(retained["pending-1-raw.bin"],b"whole\0original")
         self.assertNotIn("pending-0-raw.bin",retained)
         self.assertEqual(next(r for r in result["originals"] if r["role"]=="pending-0-raw"),
             dict(role="pending-0-raw",original_available=False))
         with mock.patch(__name__+".retain_original",side_effect=ValueError("reserve blocked")):
             failed=retain_failure_originals(Error(),Path("C:/fixture"),123)
-        self.assertEqual(len(failed["debt"]),3)
+        self.assertEqual(len(failed["debt"]),5)
         self.assertTrue(all(r["unknown_or_partial_retention"] for r in failed["debt"]))
 
     def test_swallowed_subtest_error_retains_original_pending_buffers(self):
@@ -271,7 +396,78 @@ class EngineSourceTests(unittest.TestCase):
         self.assertEqual(case["error"]["type"],OriginalFailure.__qualname__)
         self.assertEqual(retained["pending-0-raw.bin"],b"complete\0original\xff")
         self.assertFalse(case["failure_retention"]["storage_durability_verified"])
+        self.assertEqual(case["failure_retention"]["debt"][0]["scope"],"not_issued_or_unavailable")
+
+    def test_postcollection_failure_retains_six_exact_streams_and_original_typeerror_cause(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        originals=adapter.JoinedOriginals(b"whole caller",b"whole outer",b"whole observer",b"observer stderr",b"outer stderr",b"original close")
+        cause=TypeError("dict() got multiple values for keyword argument 'passed'")
+        retained={};case={}
+        def keep(path,raw,allowance):
+            retained[path.name]=raw
+            return dict(path=str(path),sha256=sha(raw),bytes=len(raw))
+        class SyntheticSubtest(unittest.TestCase):
+            def runTest(self):
+                with self.subTest(mode="postcollection_model"),retain_case_failure(case,Path("C:/fixture"),123) as context:
+                    context["originals"]=originals
+                    with adapter._joined_failure_context(originals):raise cause
+        result=unittest.TestResult()
+        with mock.patch(__name__+".retain_original",side_effect=keep):SyntheticSubtest().run(result)
+        self.assertEqual(len(result.errors),1)
+        self.assertEqual(case["error"]["cause"],dict(type="TypeError",message=str(cause)))
+        self.assertEqual(retained,{"failure-"+row.name+".bin":getattr(originals,row.name) for row in fields(originals)})
         self.assertEqual(case["failure_retention"]["debt"],[])
+        self.assertFalse(case["failure_retention"]["storage_durability_verified"])
+        with mock.patch(__name__+".retain_original",side_effect=ValueError("reserve blocked")):
+            failure=retain_failure_originals(cause,Path("C:/fixture"),123,originals=originals)
+        self.assertEqual(len(failure["debt"]),6)
+
+    def test_plain_later_error_uses_issued_fixture_context_and_absent_originals_stay_debt(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"",b"",b"",b"close")
+        error=TypeError("plain report construction error")
+        case={};retained={}
+        def keep(path,raw,allowance):
+            retained[path.name]=raw
+            return dict(path=str(path),sha256=sha(raw),bytes=len(raw))
+        with mock.patch(__name__+".retain_original",side_effect=keep),self.assertRaises(TypeError) as caught:
+            with retain_case_failure(case,Path("C:/fixture"),123) as context:
+                context["originals"]=originals;raise error
+        self.assertIs(caught.exception,error)
+        self.assertEqual(len(retained),6)
+        self.assertEqual(retained["failure-observer.bin"],b"")
+        self.assertTrue(next(row for row in case["failure_retention"]["originals"] if row["role"]=="failure-observer")["original_available"])
+        absent=retain_failure_originals(TypeError("no original context"),Path("C:/fixture"),123)
+        self.assertEqual(absent["originals"],[])
+        self.assertEqual(len(absent["debt"]),1)
+        self.assertTrue(absent["debt"][0]["unknown_or_partial_retention"])
+
+    def test_bad_pending_metadata_cannot_mask_original_cause_or_skip_issued_streams(self):
+        import hidden_soak_loader_v3_adapter as adapter
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"observer",b"observer stderr",b"outer stderr",b"close")
+        error=TypeError("original replay failure")
+        error.pending=(("failed_operation",dict(bad=object()),b"whole pending original"),
+            ("unavailable_operation",dict(available=False),None))
+        error.events=(object(),)
+        case={};retained={}
+        def keep(path,raw,allowance):
+            retained[path.name]=raw
+            return dict(path=str(path),sha256=sha(raw),bytes=len(raw))
+        with mock.patch(__name__+".retain_original",side_effect=keep),self.assertRaises(TypeError) as caught:
+            with retain_case_failure(case,Path("C:/fixture"),123) as context:
+                context["originals"]=originals;raise error
+        self.assertIs(caught.exception,error)
+        self.assertEqual({key:value for key,value in retained.items() if key.startswith("failure-")},
+            {"failure-"+row.name+".bin":getattr(originals,row.name) for row in fields(originals)})
+        self.assertEqual(retained["pending-0-raw.bin"],b"whole pending original")
+        self.assertEqual(len(case["failure_retention"]["debt"]),5)
+        self.assertNotIn("pending-1-raw.bin",retained)
+        self.assertTrue(next(row for row in case["failure_retention"]["debt"] if row["role"]=="pending-1-raw")["unknown_or_partial_retention"])
+        with mock.patch(__name__+".retain_failure_originals",side_effect=RuntimeError("unexpected retaining failure")),\
+             self.assertRaises(TypeError) as caught:
+            with retain_case_failure(case,Path("C:/fixture"),123):raise error
+        self.assertIs(caught.exception,error)
+        self.assertTrue(case["failure_retention"]["debt"][0]["unknown_or_partial_retention"])
 
 
 @unittest.skipUnless(OPT_IN, "Explicit hosted Windows synthetic opt-in required")
@@ -301,7 +497,7 @@ class NativeEngineTests(unittest.TestCase):
                 case_root = root/("case-"+str(mode));reserve(root,allowance);case_root.mkdir()
                 case = dict(mode=mode, completed=False, expected_success=mode==0)
                 report["cases"].append(case)
-                with self.subTest(mode=mode),retain_case_failure(case,case_root,allowance):
+                with self.subTest(mode=mode),retain_case_failure(case,case_root,allowance) as failure_context:
                     paths = adapter.NativePaths(root=str(case_root),candidate=str(case_root/"synthetic-loader.exe"),
                         compiler_x64=os.environ["CLASH_V3_CL_X64"],compiler_x86=os.environ["CLASH_V3_CL_X86"],
                         environment_x64=os.environ["CLASH_V3_ENV_X64"],environment_x86=os.environ["CLASH_V3_ENV_X86"],
@@ -312,6 +508,7 @@ class NativeEngineTests(unittest.TestCase):
                     observer = adapter.prepare_observer(suspended)
                     launch = adapter.finalize_bootstrap(observer)
                     originals = adapter.resume_and_collect(launch)
+                    failure_context["originals"]=originals
                     case["caller_close_original"]=retain_original(case_root/"caller-close-original.json",
                         originals.caller_close_receipt,allowance)
                     parsed = adapter.parse_joined(originals,launch)

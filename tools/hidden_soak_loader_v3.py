@@ -748,7 +748,7 @@ static void api(const char *name,const char *role,const char *phase,HANDLE handl
     last_tick=end;if(!retained){failed=true;debt=true;}
     }catch(...){original_debt(name,handle,result,error,requested,returned,raw.data(),raw.size(),begin,end);}
 }
-struct Owned{const char *role="";HANDLE h=nullptr;bool closed=false;};
+struct Owned{const char *role="";HANDLE h=nullptr;bool closed=false;DWORD identity_pid=0;unsigned long long identity_creation=0,identity_sequence=0,path_sequence=0;};
 // Immediate pointer/handle stores only: no allocation or diagnostic can precede adoption.
 static void own(Owned &x,HANDLE h,const char *role) noexcept {x.h=h;x.role=role;}
 static void close_owned(Owned &x,bool desktop=false) noexcept {if(x.closed||!x.h||x.h==INVALID_HANDLE_VALUE)return;
@@ -812,20 +812,25 @@ static void open_file(File &f,const wchar_t *path,const char *role,unsigned long
 struct Identity{DWORD pid;unsigned long long creation;};
 static Identity process_identity(Owned &x,File &image,const char *phase,DWORD parent_pid,unsigned long long parent_creation,bool require_live){
     Tick b=tick();SetLastError(0);DWORD pid=GetProcessId(x.h),pe=GetLastError();api("GetProcessId",x.role,phase,x.h,pid,pe,0,0,Bytes(),"{}",b);
-    std::array<wchar_t,32768> path={};DWORD chars=static_cast<DWORD>(path.size());b=tick();SetLastError(0);BOOL pr=QueryFullProcessImageNameW(x.h,0,path.data(),&chars);DWORD e=GetLastError();
-    api("QueryFullProcessImageNameW",x.role,phase,x.h,pr,e,sizeof(path),chars,bytes(path.data(),sizeof(path)),"{}",b);
+    std::array<wchar_t,32768> path={};DWORD chars=static_cast<DWORD>(path.size()),e=0;BOOL pr=FALSE;unsigned long long path_sequence=x.path_sequence;
+    if(require_live){b=tick();SetLastError(0);pr=QueryFullProcessImageNameW(x.h,0,path.data(),&chars);e=GetLastError();
+        api("QueryFullProcessImageNameW",x.role,phase,x.h,pr,e,sizeof(path),chars,bytes(path.data(),sizeof(path)),"{}",b);path_sequence=journal.sequence;}
     FILETIME t[4]={};b=tick();SetLastError(0);BOOL tr=GetProcessTimes(x.h,&t[0],&t[1],&t[2],&t[3]);e=GetLastError();api("GetProcessTimes",x.role,phase,x.h,tr,e,32,32,bytes(t,32),"{}",b);
     b=tick();SetLastError(0);DWORD waited=WaitForSingleObject(x.h,0),we=GetLastError();api("WaitForSingleObject",x.role,phase,x.h,waited,we,0,0,Bytes(),obj({{"timeout",n(0)}}),b);
     DWORD exit=0;b=tick();SetLastError(0);BOOL er=GetExitCodeProcess(x.h,&exit);e=GetLastError();api("GetExitCodeProcess",x.role,phase,x.h,er,e,4,4,bytes(&exit,4),"{}",b);
     journal.frame("identity",obj({{"role",quote(x.role)},{"phase",quote(phase)},{"pid",n(pid)},
         {"creation",n(ft(t[0]))},{"exit_time",n(ft(t[1]))},{"wait",n(waited)},{"exit_code",n(exit)},
-        {"path",quote(pr&&chars<path.size()?ascii(lower(std::wstring(path.data(),chars))):"")},{"sha256",quote(image.digest)},
+        {"path",quote(require_live?(pr&&chars<path.size()?ascii(lower(std::wstring(path.data(),chars))):""):ascii(image.path))},{"sha256",quote(image.digest)},
+        {"path_scope",quote(require_live?"native_live_query":"retained_live_identity")},{"path_sequence",n(path_sequence)},{"live_identity_sequence",n(require_live?0:x.identity_sequence)},
         {"parent_pid",n(parent_pid)},{"parent_creation",n(parent_creation)},
         {"parent_scope",quote(!strcmp(phase,"startup")?"fresh_snapshot":"previously_proved_retained_generation")}}));
-    demand(!failed&&!debt&&pid&&pr&&chars&&chars<path.size()&&tr&&er&&ft(t[0])&&lower(std::wstring(path.data(),chars))==image.path,
+    demand(!failed&&!debt&&!x.closed&&pid&&tr&&er&&ft(t[0])&&(require_live?
+        (pr&&chars&&chars<path.size()&&lower(std::wstring(path.data(),chars))==image.path):
+        (x.identity_sequence&&x.path_sequence&&pid==x.identity_pid&&ft(t[0])==x.identity_creation)),
         "original process identity unavailable/mismatched");
     demand(require_live?(waited==WAIT_TIMEOUT&&exit==STILL_ACTIVE&&ft(t[1])==0):
-        ((waited==WAIT_TIMEOUT&&exit==STILL_ACTIVE&&ft(t[1])==0)||(waited==WAIT_OBJECT_0&&exit!=STILL_ACTIVE&&ft(t[1])>=ft(t[0]))),"native liveness observation failed");
+        (waited==WAIT_OBJECT_0&&exit!=STILL_ACTIVE&&ft(t[1])>=ft(t[0])),"native liveness observation failed");
+    if(require_live){x.identity_pid=pid;x.identity_creation=ft(t[0]);x.identity_sequence=journal.sequence;x.path_sequence=path_sequence;}
     return Identity{pid,ft(t[0])};
 }
 static DWORD parent_of(DWORD pid){Owned snapshot;Tick b=tick();SetLastError(0);HANDLE h=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);DWORD e=GetLastError();

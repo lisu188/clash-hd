@@ -770,5 +770,224 @@ class InheritanceJoinTests(unittest.TestCase):
         self.assertEqual(parsed["startup_info"].raw,startup.raw);self.assertEqual(parsed["failures"],[])
 
 
+class ExitIdentityTests(unittest.TestCase):
+    """Source-owned original-packet models, never native identity proof."""
+    def originals(self):
+        role="observer";handle=77;pid=501;creation=1000;path=r"c:\fixture\observer.exe"
+        rows=[]
+        def api(name,phase,result,raw=b"",detail=None,*,requested=None,returned=None,error=0):
+            sequence=len(rows)+1
+            value=dict(name=name,role=role,phase=phase,handle=handle,result=result,error=error,
+                requested=len(raw) if requested is None else requested,returned=len(raw) if returned is None else returned,
+                length_kind="original_native_count" if name=="QueryFullProcessImageNameW" else "source_capacity_no_native_count",
+                begin=dict(result=1,error=0,tick=sequence*2),end=dict(result=1,error=0,tick=sequence*2+1),
+                detail={} if detail is None else detail)
+            rows.append(frame("api",value,raw,sequence=sequence))
+        api("GetProcessId","adopt_after",pid)
+        raw=path.encode("utf-16le");api("QueryFullProcessImageNameW","adopt_after",1,
+            raw+bytes(65536-len(raw)),requested=65536,returned=len(path))
+        api("GetProcessTimes","adopt_after",1,struct.pack("<4Q",creation,0,7,9))
+        api("WaitForSingleObject","adopt_after",258,detail=dict(timeout=0))
+        api("GetExitCodeProcess","adopt_after",1,struct.pack("<I",259))
+        live=dict(role=role,phase="adopt_after",pid=pid,creation=creation,exit_time=0,wait=258,exit_code=259,
+            path=path,sha256="a"*64,path_scope="native_live_query",path_sequence=2,live_identity_sequence=0,
+            parent_pid=205,parent_creation=334,parent_scope="previously_proved_retained_generation")
+        live_row=frame("identity",live,sequence=6);rows.append(live_row)
+        api("WaitForSingleObject","cleanup",0,detail=dict(timeout=5000))
+        api("GetProcessId","exit",pid)
+        api("GetProcessTimes","exit",1,struct.pack("<4Q",creation,1500,8,10))
+        api("WaitForSingleObject","exit",0,detail=dict(timeout=0))
+        api("GetExitCodeProcess","exit",1,struct.pack("<I",0))
+        final=dict(live,phase="exit",exit_time=1500,wait=0,exit_code=0,
+            path_scope="retained_live_identity",live_identity_sequence=live_row.sequence)
+        final_row=frame("identity",final,sequence=12);rows.append(final_row)
+        api("CloseHandle","close",1)
+        originals=adapter.OUTER_MAGIC+b"".join(packet(r.sequence,r.operation,r.data(),r.raw) for r in rows)
+        parsed=adapter.parse_frames(originals,actor="outer")
+        observed=dict(apis=[r for r in parsed if r.operation=="api"],
+            identities={(r.data()["role"],r.data()["phase"]):(r,r.data()) for r in parsed if r.operation=="identity"})
+        return observed,*observed["identities"][(role,"exit")]
+
+    def replace_api(self,observed,index,*,raw=None,**changes):
+        row=observed["apis"][index];data=row.data();data.update(changes)
+        observed["apis"][index]=frame("api",data,row.raw if raw is None else raw,sequence=row.sequence)
+
+    def complete_originals(self):
+        """All nine model boundaries and three complete original parent cohorts."""
+        actors=("caller","outer","observer","target");rows=[];live={}
+        paths={role:"c:\\fixture\\"+role+".exe" for role in actors}
+        blobs={role:("whole source-bound "+role).encode("ascii") for role in actors}
+        pids={role:100+index for index,role in enumerate(actors)}
+        creations={role:1000+index for index,role in enumerate(actors)}
+        handles={role:700+index for index,role in enumerate(actors)}
+        def api(name,role,phase,result,raw=b"",detail=None,*,requested=None,returned=None):
+            sequence=len(rows)+1
+            data=dict(name=name,role=role,phase=phase,handle=handles.get(role,800),result=result,error=0,
+                requested=len(raw) if requested is None else requested,returned=len(raw) if returned is None else returned,
+                length_kind="original_native_count" if name=="QueryFullProcessImageNameW" else "source_capacity_no_native_count",
+                begin=dict(result=1,error=0,tick=sequence*2),end=dict(result=1,error=0,tick=sequence*2+1),
+                detail={} if detail is None else detail)
+            rows.append(frame("api",data,raw,sequence=sequence));return sequence
+        def identity(role,phase):
+            exited=phase=="exit"
+            if exited:api("WaitForSingleObject",role,"cleanup",0,detail=dict(timeout=5000))
+            api("GetProcessId",role,phase,pids[role])
+            if exited:reference,path_sequence=live[role]
+            else:
+                raw=paths[role].encode("utf-16le")
+                path_sequence=api("QueryFullProcessImageNameW",role,phase,1,raw+bytes(65536-len(raw)),
+                    requested=65536,returned=len(paths[role]));reference=0
+            api("GetProcessTimes",role,phase,1,struct.pack("<4Q",creations[role],2000 if exited else 0,7,9))
+            api("WaitForSingleObject",role,phase,0 if exited else 258,detail=dict(timeout=0))
+            api("GetExitCodeProcess",role,phase,1,struct.pack("<I",0 if exited else 259))
+            parent={"caller":None,"outer":"caller","observer":"outer","target":"observer"}[role]
+            data=dict(role=role,phase=phase,pid=pids[role],creation=creations[role],exit_time=2000 if exited else 0,
+                wait=0 if exited else 258,exit_code=0 if exited else 259,path=paths[role],sha256=adapter._sha(blobs[role]),
+                path_scope="retained_live_identity" if exited else "native_live_query",path_sequence=path_sequence,
+                live_identity_sequence=reference,parent_pid=pids[parent] if parent else 0,
+                parent_creation=creations[parent] if parent else 0,
+                parent_scope="fresh_snapshot" if phase=="startup" else "previously_proved_retained_generation")
+            rows.append(frame("identity",data,sequence=len(rows)+1))
+            if not exited:live[role]=(rows[-1].sequence,path_sequence)
+        def parent(role,parent_role):
+            raw=bytearray(1152);struct.pack_into("<iIII",raw,0,1,0,568,pids[role])
+            struct.pack_into("<I",raw,40,pids[parent_role]);struct.pack_into("<iIII",raw,576,0,18,568,0)
+            api("Process32FirstW/Process32NextW","snapshot","parent",0,bytes(raw),dict(pid=pids[role]))
+        identity("caller","startup");identity("outer","startup");parent("outer","caller")
+        api("CreateProcessW","observer","launch",1)
+        identity("observer","startup");parent("observer","outer");api("ResumeThread","observer_thread","startup",1)
+        identity("observer","adopt_before");parent("target","observer");identity("target","adopt_before")
+        identity("observer","adopt_after");identity("target","adopt_after")
+        identity("observer","exit");identity("target","exit")
+        for role in actors:api("CloseHandle",role,"close",1)
+        parsed=adapter.parse_frames(adapter.OUTER_MAGIC+b"".join(packet(r.sequence,r.operation,r.data(),r.raw) for r in rows),actor="outer")
+        observed=dict(apis=[r for r in parsed if r.operation=="api"],
+            identities={(r.data()["role"],r.data()["phase"]):(r,r.data()) for r in parsed if r.operation=="identity"})
+        core=dict(paths={**{role:paths[role] for role in actors if role!="target"},"candidate":paths["target"]},
+            hashes={role:adapter._sha(blobs[role]) for role in ("caller","outer")},caller_pid=pids["caller"],
+            caller_creation=creations["caller"],outer_pid=pids["outer"],outer_creation=creations["outer"])
+        return observed,core,dict(observer_binary=blobs["observer"],candidate=blobs["target"])
+
+    def test_all_nine_boundaries_join_full_original_ancestry_source_paths_and_hashes(self):
+        observed,core,state=self.complete_originals()
+        adapter._outer_identities(observed,core,state)
+        self.assertEqual(len(observed["identities"]),9)
+        self.assertEqual(sum(r.data()["name"]=="Process32FirstW/Process32NextW" for r in observed["apis"]),3)
+
+    def test_complete_identity_source_hash_path_parent_generation_or_exit_omission_rejects(self):
+        for variant in ("observer_source","candidate_source","core_path","parent","core_generation","missing_exit"):
+            observed,core,state=self.complete_originals()
+            if variant=="observer_source":state["observer_binary"]+=b"changed"
+            elif variant=="candidate_source":state["candidate"]+=b"changed"
+            elif variant=="core_path":core["paths"]["observer"]=r"c:\fixture\different.exe"
+            elif variant=="parent":observed["identities"][("target","adopt_after")][1]["parent_pid"]+=1
+            elif variant=="core_generation":core["outer_creation"]+=1
+            else:observed["identities"].pop(("target","exit"))
+            with self.subTest(variant=variant),self.assertRaises(ValueError):
+                adapter._outer_identities(observed,core,state)
+
+    def test_fresh_signaled_exit_joins_full_live_path_and_same_retained_generation(self):
+        observed,row,value=self.originals()
+        actual=adapter._outer_identity_cohort(observed,row,value)
+        self.assertEqual(tuple(r.data()["name"] for r in actual),
+            ("GetProcessId","GetProcessTimes","WaitForSingleObject","GetExitCodeProcess"))
+        self.assertEqual(observed["apis"][1].raw[:len(value["path"])*2].decode("utf-16le"),value["path"])
+        self.assertFalse(any(r.data()["name"]=="QueryFullProcessImageNameW" and r.data()["phase"]=="exit"
+            for r in observed["apis"]))
+
+    def test_original_outer_parser_requires_all_successor_identity_scope_fields(self):
+        observed,row,value=self.originals()
+        rows=sorted(observed["apis"]+[item[0] for item in observed["identities"].values()],key=lambda item:item.sequence)
+        rows.append(frame("finish",dict(failed=1,debt=0,scope="V3_initial_loader_terminate_only"),sequence=14))
+        parsed=adapter._outer_protocol(tuple(rows),{}, {},None)
+        self.assertEqual(parsed["identities"][("observer","exit")][1],value)
+        for field in ("path_scope","path_sequence","live_identity_sequence"):
+            changed=dict(value);changed.pop(field)
+            altered=[frame("identity",changed,sequence=item.sequence) if item.sequence==row.sequence else item for item in rows]
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                adapter._outer_protocol(tuple(altered),{}, {},None)
+
+    def test_missing_substituted_live_reference_handle_generation_path_and_hash_reject(self):
+        for variant in ("absent","reference","path_reference","scope","path","hash","pid","creation","other_handle"):
+            observed,row,value=self.originals()
+            if variant=="absent":observed["identities"].pop(("observer","adopt_after"))
+            elif variant=="reference":value["live_identity_sequence"]=5
+            elif variant=="path_reference":value["path_sequence"]=1
+            elif variant=="scope":value["path_scope"]="native_live_query"
+            elif variant=="path":value["path"]=r"c:\fixture\foreign.exe"
+            elif variant=="hash":value["sha256"]="b"*64
+            elif variant=="pid":value["pid"]=502;self.replace_api(observed,6,result=502)
+            elif variant=="creation":value["creation"]=1001;self.replace_api(observed,7,raw=struct.pack("<4Q",1001,1500,8,10))
+            else:
+                for index in range(5):self.replace_api(observed,index,handle=78)
+            with self.subTest(variant=variant),self.assertRaises(ValueError):
+                adapter._outer_identity_cohort(observed,row,value)
+
+    def test_missing_full_buffers_count_policy_failed_queries_and_nonterminated_exit_reject(self):
+        variants=((1,dict(raw=b"short")),(1,dict(result=0,error=31)),(1,dict(requested=65535)),
+            (1,dict(length_kind="source_capacity_no_native_count")),(1,dict(returned=0)),
+            (6,dict(raw=b"unexpected")),(6,dict(returned=1)),(7,dict(raw=bytes(31))),
+            (7,dict(result=0,error=6)),(8,dict(result=258)),(9,dict(raw=bytes(3))),
+            (9,dict(result=0,error=6)))
+        for index,changes in variants:
+            observed,row,value=self.originals();self.replace_api(observed,index,**changes)
+            with self.subTest(index=index,changes=changes),self.assertRaises(ValueError):
+                adapter._outer_identity_cohort(observed,row,value)
+        for exit_time in (0,999):
+            observed,row,value=self.originals();value["exit_time"]=exit_time
+            self.replace_api(observed,7,raw=struct.pack("<4Q",1000,exit_time,8,10))
+            with self.assertRaises(ValueError):adapter._outer_identity_cohort(observed,row,value)
+
+    def test_early_duplicate_failed_close_or_added_postexit_path_query_rejects(self):
+        for variant in ("early","duplicate","failed","missing","cleanup","postexit_query","identity_raw"):
+            observed,row,value=self.originals();close=observed["apis"][-1]
+            if variant=="early":observed["apis"][-1]=frame("api",close.data(),sequence=7)
+            elif variant=="duplicate":observed["apis"].append(close)
+            elif variant=="failed":self.replace_api(observed,-1,result=0,error=6)
+            elif variant=="missing":observed["apis"].pop()
+            elif variant=="cleanup":self.replace_api(observed,5,result=258)
+            elif variant=="identity_raw":row=frame("identity",value,b"unexpected",sequence=row.sequence)
+            else:
+                live_path=observed["apis"][1];data=dict(live_path.data(),phase="exit",result=0,error=31)
+                observed["apis"].insert(6,frame("api",data,bytes(65536),sequence=7))
+            with self.subTest(variant=variant),self.assertRaises(ValueError):
+                adapter._outer_identity_cohort(observed,row,value)
+
+
+class ReplayFailureTests(unittest.TestCase):
+    def test_overlapping_false_inventories_preserve_scoped_observation_and_all_broader_false_claims(self):
+        import hidden_soak_loader_v3 as source
+        self.assertTrue(set(source.FALSE_CLAIMS)&set(adapter.FALSE_CLAIMS))
+        report=adapter._replay_report(dict(scoped_composition_complete=True,passed=True),True,source.FALSE_CLAIMS)
+        self.assertTrue(report["scoped_composition_complete"])
+        self.assertTrue(report["fixture_only"])
+        self.assertTrue(all(report[key] is False for key in set(source.FALSE_CLAIMS)|set(adapter.FALSE_CLAIMS)))
+        for claims in (dict(source.FALSE_CLAIMS,passed=True),dict(source.FALSE_CLAIMS,passed=0),None):
+            with self.assertRaises(ValueError):adapter._replay_report({},True,claims)
+        with patch.dict(adapter.FALSE_CLAIMS,passed=True):
+            with self.assertRaises(ValueError):adapter._replay_report({},True,source.FALSE_CLAIMS)
+
+    def test_postcollection_plain_error_preserves_exact_joined_streams_frames_and_original_cause(self):
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"observer",b"observer stderr",b"outer stderr",b"close")
+        cause=TypeError("dict() got multiple values for keyword argument 'passed'")
+        rows=(frame("api",{}),)
+        with self.assertRaises(adapter.ArchiveError) as caught:
+            with adapter._joined_failure_context(originals,rows):raise cause
+        self.assertIs(caught.exception.originals,originals)
+        self.assertIs(caught.exception.original_archive,originals.observer)
+        self.assertIs(caught.exception.frames,rows)
+        self.assertIs(caught.exception.cause,cause);self.assertIs(caught.exception.__cause__,cause)
+        self.assertIn("TypeError",str(caught.exception))
+
+    def test_existing_joined_rejection_and_cancellation_keep_original_exception(self):
+        originals=adapter.JoinedOriginals(b"caller",b"outer",b"observer",b"stderr")
+        for error in (adapter.ArchiveError("original rejection",originals.observer,originals=originals),
+                      KeyboardInterrupt("original cancellation"),SystemExit(7)):
+            with self.subTest(kind=type(error).__name__),self.assertRaises(type(error)) as caught:
+                with adapter._joined_failure_context(originals):raise error
+            self.assertIs(caught.exception,error)
+            self.assertIs(error.originals,originals)
+
+
 if __name__ == "__main__":
     unittest.main()
