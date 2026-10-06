@@ -409,6 +409,25 @@ fatal shutdown and healthy restoration remain unfinished. Unknown control still
 stops at exact UD2. Source/synthetic request acceptance is not installed expanded
 battle, runtime, input, endurance, release or promotion proof.
 
+`src/patcher/battle_profile_line_replay.py` prepares two direct calls to the
+authenticated callback-free memory-line closure, while every installed hook
+list remains empty. Its whole 8-byte and 11-byte call/cleanup windows replace
+the overlapping planned post hooks at `430AD8` and `430B0A`. Clipped arguments
+are duplicated for native RET8 without changing the original caller arguments;
+native output registers and flags are retained before post-helper checks.
+Both intrinsic paths require zero latched loss after complete thread/control
+admission and before cached current-receipt reads. Unknown loss reaches UD2.
+The public API captures a privately compiled canonical issuer and checks the
+original SHA before reconstructing dependencies. Replacing public helper aliases
+cannot choose its implementation; canonical source is checked before and after.
+
+The final 4K RX totals are 106,941/126,920 bytes, leaving 24,131/4,152 bytes
+within the same reservation and frame sizes. Source checks authenticate the
+complete line/fill spans and memory vtable, and synthetic fixtures model pixel
+writes and normal RET8. They do not execute the original native body or prove
+Windows rendering. RLE/provider ownership, full battle installation, healthy
+map return, runtime/input/endurance and promotion remain unfinished.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -441,6 +460,7 @@ python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 python -B tools/test_battle_profile_content.py --require-machine-tools
 python -B tools/test_battle_profile_continuation.py --require-machine-tools
 python -B tools/test_battle_profile_primitive_request.py --require-machine-tools
+python -B tools/test_battle_profile_line_replay.py --require-machine-tools
 ```
 
 The optional original-backed constructor lane builds only in memory from a
