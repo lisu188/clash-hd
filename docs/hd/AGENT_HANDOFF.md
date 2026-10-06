@@ -44,6 +44,13 @@ text and widget chain across the nine canonical presets. All use separate
 validation identities and retain the frozen recipes. They do not install the
 expanded-battle successor or change launcher defaults or stable status.
 
+`tools/resolution_recipe_authentication.py` privately reconstructs the legacy
+and all-preset Complete HD recipes from a pinned 27-source graph. The matrix
+captures its canonical source loader before public helper or builder aliases
+can replace it, and checks source identity before and after reconstruction.
+The legacy recipe retains its five supported presets; its successor supports
+all nine. Byte, metadata and probe authentication supplies no runtime proof.
+
 [`battle_profile_context.py`](../../src/patcher/battle_profile_context.py)
 independently reconstructs those parents and derives profile-specific code/state
 allocation plans. Classic and Framed need fresh RX and RW sections; Complete HD
@@ -437,6 +444,7 @@ python -B tools/test_classic_all_presets_candidate.py
 python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_resolution_recipe_authentication.py SourceTests
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools

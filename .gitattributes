@@ -1054,3 +1054,5 @@
 /src/patcher/battle_profile_line_replay.py text eol=lf
 /tools/test_battle_profile_line_replay.py text eol=lf
 /.github/workflows/battle-line-replay-contracts.yml text eol=lf
+/tools/resolution_recipe_authentication.py text eol=lf
+/tools/test_resolution_recipe_authentication.py text eol=lf
