@@ -244,6 +244,28 @@ native issuance. Source comparison is separate from loaded-candidate,
 whole-image, runtime, manual-input, release and promotion proof; those claims
 remain false and no missing production verifier is registered.
 
+`src/patcher/battle_profile_stack_lease.py` prepares an uninstalled owning stack
+lease around the exact frozen V2 field. Its 192-byte descriptor and 512-byte
+helper frame bind the root stack, owning thread, source VA, field lifetime and
+bounded Tile/Unit/Adjacent/effect/primitive ancestry. Public construction
+privately reconstructs the actual parent and authenticates 36 original native
+CALL sites and ten complete RET operands. The field frame stays 1280 bytes;
+the protected 4096-byte owner page and 128 KiB RX reservation remain unchanged.
+At 4K, remaining RX space is 65,983 bytes for Classic/Framed and 46,127 bytes
+for Complete HD/Modal Widgets.
+
+The primitive wrappers copy original arguments and preserve native register
+outputs and flags after normal return and resource cleanup. Fixed receipts,
+thread identity and stack control precede cached heap/world reads. Unknown
+ancestry, changed descriptors and callbacks that poison those cached pages
+fail the scoped check. A retained loss returns outer status 2; it cannot stop
+the next frozen V2 Tile, unadapted Unit/Tile continuations or RLE/provider work
+before normal return. Receiver/argument validity, physical-only clipping,
+installed external callsite admission and immediate cancellation remain
+explicitly unverified. No hooks, header/owner-state changes, clear/present,
+safe standalone native replacements, expanded-battle acceptance or promotion
+are supplied by this preparatory component.
+
 ## Required acceptance and next work
 
 Each final candidate needs actual native acquisition/read, selection/movement,
