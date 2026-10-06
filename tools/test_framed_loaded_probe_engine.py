@@ -19,6 +19,7 @@ import test_framed_loaded_probe as fixtures
 
 MAGIC = b"CLASH_HD_DEBUGGER_FIXTURE_V1"
 # Parse native LF/CRLF without changing the retained original output bytes.
+HEADER = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) stage=([^\s]+) resolution=([0-9]+x[0-9]+)(?:\r?\n|\Z)", re.MULTILINE)
 RESULT = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) result=(pass|fail)(?: chunks=([0-9]+))?(?:\r?\n|\Z)", re.MULTILINE)
 MISMATCH = re.compile(r"^BNDLOAD_MISMATCH chunk=([0-9]+)(?:\r?\n|\Z)", re.MULTILINE)
 
@@ -706,9 +707,23 @@ class DebuggerEngineTests(unittest.TestCase):
         self.assertTrue(record["phase_receipt_passed"], combined)
         return combined
 
+    def assert_bound_records(self, log):
+        headers, records = HEADER.findall(log), RESULT.findall(log)
+        self.assertEqual(len(headers), 1, log)
+        self.assertLessEqual(len(records), 1, log)
+        self.assertEqual(len(re.findall(r"^BNDLOAD\b", log, re.M)), len(headers) + len(records), log)
+        self.assertEqual(headers[0][2], probe.bounded.STAGE, log)
+        resolution = probe.recipe.patcher.parse_resolution(headers[0][3])
+        self.assertEqual(resolution.key, headers[0][3], log)
+        self.assertTrue(all(row[:2] == headers[0][:2] for row in records), log)
+        if records:
+            self.assertLess(HEADER.search(log).start(), RESULT.search(log).start(), log)
+        return headers[0], records
+
     def assert_pass(self, log, facts):
-        self.assertEqual(RESULT.findall(log), [(facts["contract_id"], facts["candidate_sha256"], "pass", str(facts["required_chunks"]))], log)
-        self.assertEqual(len(re.findall(r"^BNDLOAD\b", log, re.M)), 1, log)
+        header, records = self.assert_bound_records(log)
+        self.assertEqual(header, (facts["contract_id"], facts["candidate_sha256"], facts["stage"], facts["resolution"]), log)
+        self.assertEqual(records, [(facts["contract_id"], facts["candidate_sha256"], "pass", str(facts["required_chunks"]))], log)
         self.assertIn("HARNESS_END hr=00000000", log)
         self.assertIn("HARNESS_CONTEXT before=014c after=014c", log)
         self.assertFalse(MISMATCH.findall(log), log)
@@ -716,8 +731,7 @@ class DebuggerEngineTests(unittest.TestCase):
         self.assertNotIn("Syntax error", log)
 
     def assert_rejected(self, log, *, syntax_valid=True):
-        records = RESULT.findall(log)
-        self.assertEqual(len(records), len(re.findall(r"^BNDLOAD\b", log, re.M)), log)
+        _, records = self.assert_bound_records(log)
         self.assertFalse(any(row[2] == "pass" for row in records), log)
         if syntax_valid:
             self.assertEqual(len(records), 1, log)

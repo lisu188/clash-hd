@@ -278,6 +278,9 @@ The next head exposed LF-only diagnostic anchors on original Windows CRLF
 output. The parser now accepts complete LF or CRLF lines while retaining their
 original bytes and rejecting malformed or duplicate markers. Those failed run
 reports remain failed; raw phase parsing after the fix is a separate check.
+The Framed verifier emits one canonical identity header before its result. Both
+are checked separately for identity, order and uniqueness; the header cannot be
+mistaken for an extra result or omitted from its negative fixtures.
 
 The retained PR #161 first-attempt timeout and its one unchanged successful rerun
 are historical synthetic diagnostics, not proof of the timeout cause or game
