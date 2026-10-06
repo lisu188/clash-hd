@@ -637,6 +637,62 @@ class CallerWriteTests(unittest.TestCase):
         self.assertLessEqual(len(state.caller_close_receipt),adapter.CALLER_CLOSE_ORIGINAL_BYTES)
 
 
+class DesktopReceiptTests(unittest.TestCase):
+    run_id="0123456789abcdef0123456789abcdef"
+
+    def receipt(self,*,handle=700,result=700,error=0):
+        return dict(name="CreateDesktopW",role="desktop",phase="setup",handle=handle,result=result,error=error,
+            requested=0,returned=0,length_kind="source_capacity_no_native_count",begin=dict(result=1,error=0,tick=1),
+            end=dict(result=1,error=0,tick=2),detail=dict(name="ClashLoaderV3_"+self.run_id,desired_access=0xC3))
+
+    def parse(self,data,raw=b""):
+        original=adapter.OUTER_MAGIC+packet(1,"api",data,raw)+packet(2,"finish",
+            dict(failed=1,debt=0,scope="V3_initial_loader_terminate_only"))
+        return adapter._outer_protocol(adapter.parse_frames(original,actor="outer"),{},dict(run_id=self.run_id),None)
+
+    def test_original_restricted_request_is_bound_to_source_run_and_retained(self):
+        data=self.receipt();before=deepcopy(data);parsed=self.parse(data)
+        self.assertEqual(parsed["apis"][0].data(),before)
+        self.assertEqual(data,before);self.assertEqual(parsed["failures"],[])
+        self.assertTrue(parsed["failed"])
+
+    def test_missing_expanded_untyped_foreign_and_duplicate_desktop_requests_reject(self):
+        for access in (0,0x83,0xC7,0x1C3,0xCC,0x1000C3,0xF01FF,True,"195"):
+            with self.subTest(access=access):
+                data=self.receipt();data["detail"]["desired_access"]=access
+                with self.assertRaises(ValueError):self.parse(data)
+        for variant in ("missing","extra","name","role","phase","requested","returned","kind","raw","duplicate"):
+            with self.subTest(variant=variant):
+                data=self.receipt();raw=b""
+                if variant=="missing":del data["detail"]["desired_access"]
+                elif variant=="extra":data["detail"]["switch_desktop"]=0
+                elif variant=="name":data["detail"]["name"]="ClashLoaderV3_foreign"
+                elif variant=="role":data["role"]="observer"
+                elif variant=="phase":data["phase"]="inherit"
+                elif variant in ("requested","returned"):data[variant]=1
+                elif variant=="kind":data["length_kind"]="original_native_count"
+                elif variant=="raw":raw=b"invented desktop output"
+                else:
+                    second=deepcopy(data);second["begin"]["tick"]=3;second["end"]["tick"]=4
+                    original=adapter.OUTER_MAGIC+packet(1,"api",data)+packet(2,"api",second)+packet(3,"finish",
+                        dict(failed=1,debt=0,scope="V3_initial_loader_terminate_only"))
+                    with self.assertRaises(ValueError):
+                        adapter._outer_protocol(adapter.parse_frames(original,actor="outer"),{},dict(run_id=self.run_id),None)
+                    continue
+                with self.assertRaises(ValueError):self.parse(data,raw)
+
+    def test_failed_creation_keeps_original_handle_error_and_failure(self):
+        data=self.receipt(handle=0,result=0,error=5);parsed=self.parse(data)
+        self.assertEqual(parsed["apis"][0].data(),data)
+        self.assertEqual(parsed["failures"],[("CreateDesktopW","desktop","setup",0,5)])
+        self.assertTrue(parsed["failed"])
+
+    def test_success_claim_missing_original_desktop_creation_rejects(self):
+        original=adapter.OUTER_MAGIC+packet(1,"finish",dict(failed=0,debt=0,scope="V3_initial_loader_terminate_only"))
+        with self.assertRaisesRegex(ValueError,"complete outer needs the original restricted private desktop request"):
+            adapter._outer_protocol(adapter.parse_frames(original,actor="outer"),{},dict(run_id=self.run_id),None)
+
+
 class InheritanceJoinTests(unittest.TestCase):
     def originals(self):
         roles=("stdin","stdout","stderr","challenge_writer_inherited","adoption_reader_inherited",
