@@ -1087,3 +1087,6 @@
 /reports/battle-content-v2-local-fixture-failure-20261006.json text eol=lf
 /tools/complete_hd_evidence.py text eol=lf
 /tools/test_complete_hd_evidence.py text eol=lf
+/tools/paused_surface_triple_replay.py text eol=lf
+/tools/test_paused_surface_triple_replay.py text eol=lf
+/.github/workflows/paused-surface-triple-contracts.yml text eol=lf

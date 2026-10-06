@@ -1,0 +1,94 @@
+name: Paused stack-three journal source contracts
+
+on:
+  pull_request:
+    paths:
+      - 'tools/paused_surface_triple_replay.py'
+      - 'tools/test_paused_surface_triple_replay.py'
+      - 'tools/ordinary_map_input_plan.py'
+      - 'tools/complete_hd_evidence.py'
+      - '.github/workflows/paused-surface-triple-contracts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/paused_surface_triple_replay.py'
+      - 'tools/test_paused_surface_triple_replay.py'
+      - 'tools/ordinary_map_input_plan.py'
+      - 'tools/complete_hd_evidence.py'
+      - '.github/workflows/paused-surface-triple-contracts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paused-surface-triple-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Supplied stack-three raw journal consistency (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require all twenty-eight offline methods without skips
+        run: |
+          python -B - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import sys
+          import unittest
+          sys.path.insert(0, str(Path('tools').resolve()))
+          import test_paused_surface_triple_replay as fixture
+          paths = ('tools/paused_surface_triple_replay.py',
+                   'tools/test_paused_surface_triple_replay.py',
+                   'tools/ordinary_map_input_plan.py', 'tools/complete_hd_evidence.py')
+          def closure():
+              return {path: hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in paths}
+          before = closure()
+          expected = {
+              'tools/paused_surface_triple_replay.py': '60fbb1b8392b302b4366e0acaec7bd659705daf8c856df6a2818a5e5b0690dcb',
+              'tools/test_paused_surface_triple_replay.py': 'd906e9f1e35344931938a090a0d0acf70f63d8dd175d657c4f4db6a7202ab32a',
+          }
+          if any(before[path] != digest for path, digest in expected.items()):
+              raise ValueError('Reviewed paused journal source or fixture bytes changed')
+          print('source_closure_before ' + json.dumps(before, sort_keys=True), flush=True)
+          loader = unittest.TestLoader()
+          suite = unittest.TestSuite(loader.loadTestsFromTestCase(cls) for cls in
+                                     (fixture.ReplayTests, fixture.FileAndJSONTests))
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          after = closure()
+          print('source_closure_after ' + json.dumps(after, sort_keys=True), flush=True)
+          if before != after:
+              raise ValueError('Paused journal source closure changed during fixtures')
+          print('producer_available=False verifier_registered=False runtime_executed=False promotion_ready=False')
+          raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 28
+                           and not result.skipped and not result.expectedFailures else 1)
+          PY
+      - name: Record evidence limits
+        if: always()
+        run: |
+          python -B - <<'PY'
+          import os
+          from pathlib import Path
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
+              output.write('Offline supplied-journal consistency for the controlled selected-stack-3/panel-stack-3 Army redraw stop only. No current producer emits the required 39-read protocol.\n\n')
+              output.write('The legacy prior marker means panel stack at 0x514194; previous stack at 0x511B5C remains unobserved. General map, Framed and modal representations are not covered.\n\n')
+              output.write('Synthetic buffers cover ordering, native return/count representation, original retention, timing, complete headers/frames, bounded files, identity drift and rejection paths. Their consistency supplies no authenticated native execution.\n\n')
+              output.write('All fourteen authority flags remain false, including passed, candidate/source/probe authentication, geometry, runtime, input, cleanup, endurance, release and promotion. The helper remains outside the production verifier registry.\n\n')
+              output.write('No game, native API, debugger, compiler, live capture, human input, runtime acceptance or stable promotion occurs in this job.\n')
+          PY

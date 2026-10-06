@@ -277,6 +277,26 @@ independently reconstructed `--prepared-matrix-candidate` or
 outside this raw-retention path. See [Development](DEVELOPMENT.md) for its disk
 allowance and evidence limits.
 
+[`paused_surface_triple_replay.py`](../../tools/paused_surface_triple_replay.py)
+prepares offline consistency checks for a new 39-read journal: three original
+state/E0/full-header/pixel cohorts, each bracketed by retained native process,
+status/count and QPC outputs. No current producer emits this protocol. Its only
+representation is the controlled selected-stack-3/panel-stack-3 Army redraw
+stop on Complete HD's physical E0. The legacy `prior` token means panel stack
+at `0x514194`; previous stack at `0x511B5C` remains unobserved. General map
+coherence, Framed and modal representations remain outside this scope.
+
+The frozen helper (`60fbb1b8...`) and fixture (`d906e9f1...`) passed 28 focused
+offline methods without skips on 2026-10-06 in 3.033 seconds and received an
+independent source review. Supplied buffers exercise nonzero native BOOLs,
+original-output retention, timing, complete headers/frames, bounded reads and
+file identity/drift rejection. These synthetic results authenticate no native
+execution. Only raw-artifact consistency can become true; all fourteen
+authority flags, including `passed`, remain false. The helper is unregistered,
+leaving all 14 missing production verifiers, candidate/probe reconstruction,
+frame/footer/minimap/panel audits, runtime/input, endurance and promotion
+requirements unfinished. Raw journals and failed reads belong outside Git.
+
 The ordinary-map pause client retains original acknowledgment read errors.
 While waiting for readiness, pause or resume, missing files and replacement
 permission errors may retry only within that request's original absolute
@@ -687,6 +707,7 @@ python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
 python -B tools/test_ordinary_map_read_replay.py
+python -B tools/test_paused_surface_triple_replay.py
 python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
