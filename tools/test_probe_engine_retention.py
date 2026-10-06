@@ -333,6 +333,102 @@ class RetentionTests(unittest.TestCase):
             Fake.doClassCleanups()
 
 
+class NativeLineEndingTests(unittest.TestCase):
+    setUp = RetentionTests.setUp
+
+    @staticmethod
+    def endings(log, mode):
+        # These are authored fixture lines, not normalization of an observation.
+        return ''.join(line + ('\r\n' if mode == 'crlf' or mode == 'mixed' and index % 2 else '\n')
+                       for index, line in enumerate(log.splitlines()))
+
+    def test_lf_crlf_and_mixed_phase_receipts_preserve_original_raw_bytes(self):
+        for mode in ('lf', 'crlf', 'mixed'):
+            with self.subTest(mode=mode):
+                log = self.endings(diagnostic_log(), mode)
+                raw = log.encode('utf-8')
+                self.assertTrue(engine.phase_receipt(log))
+                row = self.ledger.prepare(b'MZ explicit mock', b'original\r\n',
+                                          test='test_line_endings', label=mode, mode='block')
+                self.ledger.outcome(row, returncode=0, stdout=raw, stderr=b'')
+                self.assertEqual(row['log'], log)
+                self.assertEqual(Path(row['stdout']['artifact']['path']).read_bytes(), raw)
+                self.assertEqual(row['stdout']['artifact']['sha256'], engine.probe._sha(raw))
+                self.assertTrue(engine.terminal_cases([row], [mode]))
+        self.assertTrue(engine.phase_receipt(diagnostic_log().rstrip('\n')))
+
+    def test_extra_or_bare_carriage_returns_and_malformed_terminal_rows_fail(self):
+        log = diagnostic_log()
+        lines = log.splitlines()
+        targets = (lines[0], lines[2], lines[-2], lines[-1])
+        for target in targets:
+            for terminator in ('\r\r\n', '\r'):
+                with self.subTest(target=target, terminator=repr(terminator)):
+                    self.assertFalse(engine.phase_receipt(log.replace(target + '\n', target + terminator)))
+            with self.subTest(extra=target):
+                self.assertFalse(engine.phase_receipt(log + target + '\r\r\n'))
+        for suffix in ('HARNESS_END malformed\r\n', 'HARNESS_COMPLETEX\r\n',
+                       'HARNESS_COMPLETE trailing\r\n'):
+            with self.subTest(suffix=suffix):
+                self.assertFalse(engine.phase_receipt(log + suffix))
+
+    def test_crlf_does_not_hide_failed_reordered_or_duplicate_phase_receipts(self):
+        log = self.endings(diagnostic_log(), 'crlf')
+        lines = log.splitlines(keepends=True)
+        variants = (log.replace('qpc=1', 'qpc=0', 1),
+                    log.replace('hr=0', 'hr=-2147467259', 1),
+                    log.replace('value=6', 'value=0'),
+                    ''.join(lines[:2] + [lines[3], lines[2]] + lines[4:]),
+                    log + lines[2], log + 'HARNESS_ERROR original failure\r\n')
+        for changed in variants:
+            with self.subTest(changed=changed):
+                self.assertFalse(engine.phase_receipt(changed))
+
+    @staticmethod
+    def assertions():
+        class Comparisons(unittest.TestCase):
+            assert_pass = engine.DebuggerEngineTests.assert_pass
+            assert_rejected = engine.DebuggerEngineTests.assert_rejected
+        return Comparisons()
+
+    def test_result_and_mismatch_receipts_accept_only_exact_lf_crlf_or_mixed_lines(self):
+        facts = dict(contract_id='a' * 64, candidate_sha256='b' * 64, required_chunks=3)
+        result = 'BNDLOAD contract=' + facts['contract_id'] + ' candidate=' + facts['candidate_sha256']
+        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
+        expected = [(facts['contract_id'], facts['candidate_sha256'], 'pass', '3')]
+        for mode in ('lf', 'crlf', 'mixed'):
+            with self.subTest(mode=mode):
+                passed = self.endings(prefix + result + ' result=pass chunks=3\n', mode)
+                self.assertEqual(engine.RESULT.findall(passed), expected)
+                self.assertions().assert_pass(passed, facts)
+                failed = self.endings(prefix + 'BNDLOAD_MISMATCH chunk=2\n' + result + ' result=fail\n', mode)
+                self.assertEqual(engine.MISMATCH.findall(failed), ['2'])
+                self.assertions().assert_rejected(failed)
+
+    def test_duplicate_malformed_or_wrong_result_fields_and_mismatches_cannot_pass(self):
+        facts = dict(contract_id='a' * 64, candidate_sha256='b' * 64, required_chunks=3)
+        result = 'BNDLOAD contract=' + facts['contract_id'] + ' candidate=' + facts['candidate_sha256']
+        prefix = diagnostic_log() + 'HARNESS_CONTEXT before=014c after=014c\n'
+        valid = result + ' result=pass chunks=3\r\n'
+        variants = (prefix + valid + valid, prefix + valid + 'BNDLOAD malformed\r\n',
+                    prefix + valid[:-2] + '\r\r\n', prefix + valid[:-2] + '\r',
+                    prefix + valid.replace('chunks=3', 'chunks=2'),
+                    prefix + valid.replace('a' * 64, 'c' * 64),
+                    prefix + valid.replace('b' * 64, 'd' * 64),
+                    prefix + valid + 'BNDLOAD_MISMATCH chunk=2\r\n',
+                    prefix + valid + 'BNDLOAD_MISMATCH malformed\r\n')
+        for changed in variants:
+            with self.subTest(changed=changed), self.assertRaises(AssertionError):
+                self.assertions().assert_pass(changed, facts)
+        failed = result + ' result=fail\r\n'
+        for changed in (failed + failed, failed + 'BNDLOAD malformed\r\n',
+                        failed[:-2] + '\r\r\n', failed[:-2] + '\r'):
+            with self.subTest(changed=changed), self.assertRaises(AssertionError):
+                self.assertions().assert_rejected(changed)
+        for terminator in ('\r\r\n', '\r'):
+            self.assertEqual(engine.MISMATCH.findall('BNDLOAD_MISMATCH chunk=2' + terminator), [])
+
+
 class CastleReportTests(unittest.TestCase):
     setUp = RetentionTests.setUp
 

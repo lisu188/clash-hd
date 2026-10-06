@@ -274,6 +274,10 @@ then two workflows failed validation without creating jobs. Their diagnostics
 remain retained outside the repository. The corrected source requires all five
 Castle test methods and all seven distinct terminal case receipts; changing the
 workflow does not turn either earlier failure into a pass.
+The next head exposed LF-only diagnostic anchors on original Windows CRLF
+output. The parser now accepts complete LF or CRLF lines while retaining their
+original bytes and rejecting malformed or duplicate markers. Those failed run
+reports remain failed; raw phase parsing after the fix is a separate check.
 
 The retained PR #161 first-attempt timeout and its one unchanged successful rerun
 are historical synthetic diagnostics, not proof of the timeout cause or game

@@ -349,7 +349,9 @@ requires five native test methods and seven distinct cases, plus successful
 compiler retention and no sticky failure or retention debt. The workflows
 configure their external directory in the executing step, where RUNNER_TEMP is
 available. Prior missing-directory and workflow-validation failures remain
-historical diagnostics, not accepted receipts. The known retained-output
+historical diagnostics, not accepted receipts. Native LF/CRLF parsing preserves
+the full original output bytes and rejects malformed/duplicate markers. Repairing
+a parser cannot rewrite an earlier sticky failed report as accepted. The known retained-output
 and atomic-write allowances are 512 MiB and 64 MiB respectively, in addition to
 the strict free-space reserve. Oversized output remains failed retention debt;
 hard runner loss can still prevent upload. These changes improve future timeout

@@ -18,8 +18,9 @@ import framed_loaded_probe as probe
 import test_framed_loaded_probe as fixtures
 
 MAGIC = b"CLASH_HD_DEBUGGER_FIXTURE_V1"
-RESULT = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) result=(pass|fail)(?: chunks=([0-9]+))?$", re.MULTILINE)
-MISMATCH = re.compile(r"^BNDLOAD_MISMATCH chunk=([0-9]+)$", re.MULTILINE)
+# Parse native LF/CRLF without changing the retained original output bytes.
+RESULT = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) result=(pass|fail)(?: chunks=([0-9]+))?(?:\r?\n|\Z)", re.MULTILINE)
+MISMATCH = re.compile(r"^BNDLOAD_MISMATCH chunk=([0-9]+)(?:\r?\n|\Z)", re.MULTILINE)
 
 # Synthetic CI diagnostics only. These bounds are storage allowances, not proof
 # of native cleanup, game execution, input or release acceptance.
@@ -28,7 +29,7 @@ ATOMIC_LIMIT = 64 * 1024 * 1024
 CASE_LIMIT = 128
 PHASES = ("execute", "flush", "processor", "restore", "status", "ip", "compare", "end_session")
 PHASE = re.compile(r"^HARNESS_PHASE seq=(\d+) name=(\w+) edge=(begin|end) "
-                   r"tick=(-?\d+) qpc=(-?\d+) error=(\d+) hr=(-?\d+) value=(\d+)$", re.M)
+                   r"tick=(-?\d+) qpc=(-?\d+) error=(\d+) hr=(-?\d+) value=(\d+)(?:\r?\n|\Z)", re.M)
 
 
 class RetentionError(RuntimeError):
@@ -157,13 +158,15 @@ def phase_receipt(log):
                 or (name == "compare" and edge == "end" and int(value) != 1)):
             return False
         previous = tick
-    frequencies = re.findall(r"^HARNESS_CLOCK frequency=(-?\d+) native=(-?\d+) error=(\d+)$", log, re.M)
+    frequencies = re.findall(r"^HARNESS_CLOCK frequency=(-?\d+) native=(-?\d+) error=(\d+)(?:\r?\n|\Z)", log, re.M)
     return (len(frequencies) == 1 and len(re.findall(r"^HARNESS_CLOCK\b[^\r\n]*", log, re.M)) == 1
             and 0 < int(frequencies[0][0]) < (1 << 63)
             and -(1 << 31) <= int(frequencies[0][1]) < (1 << 31) and int(frequencies[0][1]) != 0
             and 0 <= int(frequencies[0][2]) < (1 << 32)
-            and re.findall(r"^HARNESS_END\b[^\r\n]*", log, re.M) == ["HARNESS_END hr=00000000 paused=1 same_ip=1 unchanged=1"]
-            and re.findall(r"^HARNESS_COMPLETE[^\r\n]*", log, re.M) == ["HARNESS_COMPLETE"]
+            and len(re.findall(r"^HARNESS_END\b", log, re.M)) == 1
+            and re.findall(r"^(HARNESS_END\b[^\r\n]*)(?:\r?\n|\Z)", log, re.M) == ["HARNESS_END hr=00000000 paused=1 same_ip=1 unchanged=1"]
+            and len(re.findall(r"^HARNESS_COMPLETE", log, re.M)) == 1
+            and re.findall(r"^(HARNESS_COMPLETE[^\r\n]*)(?:\r?\n|\Z)", log, re.M) == ["HARNESS_COMPLETE"]
             and "HARNESS_ERROR" not in log)
 
 
@@ -705,13 +708,16 @@ class DebuggerEngineTests(unittest.TestCase):
 
     def assert_pass(self, log, facts):
         self.assertEqual(RESULT.findall(log), [(facts["contract_id"], facts["candidate_sha256"], "pass", str(facts["required_chunks"]))], log)
+        self.assertEqual(len(re.findall(r"^BNDLOAD\b", log, re.M)), 1, log)
         self.assertIn("HARNESS_END hr=00000000", log)
         self.assertIn("HARNESS_CONTEXT before=014c after=014c", log)
         self.assertFalse(MISMATCH.findall(log), log)
+        self.assertNotRegex(log, re.compile(r"^BNDLOAD_MISMATCH\b", re.M), log)
         self.assertNotIn("Syntax error", log)
 
     def assert_rejected(self, log, *, syntax_valid=True):
         records = RESULT.findall(log)
+        self.assertEqual(len(records), len(re.findall(r"^BNDLOAD\b", log, re.M)), log)
         self.assertFalse(any(row[2] == "pass" for row in records), log)
         if syntax_valid:
             self.assertEqual(len(records), 1, log)
