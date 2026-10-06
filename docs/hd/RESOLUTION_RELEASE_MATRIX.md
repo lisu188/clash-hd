@@ -312,6 +312,28 @@ and precleanup snapshots do not cover the per-frame or whole-run membership
 schedule. Native no-breakaway cleanup, endurance, runtime, manual-input, release
 and promotion remain unverified, and no production lane is registered.
 
+`tools/hidden_soak_loader_native.py` prepares a fixed x86 command-free initial
+loader batch from the private canonical candidate/read-plan chain. Opaque
+source-issued request identities reject reconstructed clones and changed source
+bytes. `tools/hidden_soak_loader_native_adapter.py` retains original framed
+stdout bytes and strictly checks source, candidate, launch, callback, generation,
+QPC and complete read-buffer bindings before replaying the supplied receipts.
+Failed native calls and malformed or truncated archives cannot become passes.
+Native callback strings, full-capacity buffers and the original initial-stop
+clock remain distinct from parser-derived values.
+
+The native batch writes one regular-file journal and includes a reserved complete
+failure tail. Its shared raw/metadata journal plus atomic metadata allowance adds
+35,717,123 bytes; a second complete raw-archive copy requires additional space.
+Assets, compiler outputs, independent generation/job/clock receipts and unknown
+original-output debt are additional costs. The Windows CI
+fixture launches only a marked synthetic executable, adopts its target handle
+while still live and checks actual original read bytes. It compares them after
+termination. Canonical comparison during the native hold, real instrumented
+generation/job ownership, durable raw storage and whole-candidate/probe/runtime
+acceptance remain false. No production lane or stable status is registered by
+this source preparation or its synthetic native CI fixture.
+
 `src/patcher/battle_profile_content.py` prepares 28 fixed operand helpers from
 the authenticated stack-lease chain. Exact whole original/parent instructions,
 native CALL/RET ancestry and neighbor tables are authenticated independently.
