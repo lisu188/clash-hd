@@ -36,6 +36,14 @@ for the launcher-resolved recipe or advertise a missing preset. Legacy
 acceptance cannot qualify these successors, and the matrix remains failed
 without all applicable production evidence and a promotion decision.
 
+For `complete_hd_v1` and `complete_hd_all_presets_v1`, the matrix privately
+executes the pinned `tools/resolution_recipe_authentication.py` source and
+reconstructs its complete 27-source graph. Public builder and helper aliases
+cannot choose the implementation. Canonical paths, reparse status, source
+bounds, identity stamps and hashes are checked before and after reconstruction.
+The legacy recipe retains five supported presets and its successor supports
+all nine; the other recipes retain their existing reconstruction paths.
+
 ## Current implementation limits
 
 The matrix adds mandatory inventory, exact candidate reconstruction, existing

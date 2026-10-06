@@ -12,6 +12,8 @@ import importlib
 import json
 import math
 import sys
+import types
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -80,6 +82,8 @@ RECIPE_SOURCES = {
     "classic_all_presets_v1": ("src/patcher/classic_all_presets_candidate.py",),
     "framed_all_presets_v1": ("src/patcher/framed_all_presets_candidate.py",),
 }
+COMPLETE_AUTH_SOURCE = "tools/resolution_recipe_authentication.py"
+COMPLETE_AUTH_SHA256 = "60157b38b6ba2975b2c0cdd3e24e5221ac4a122b42f3ac5a52373ddcc1840a82"
 
 
 def sha(data: bytes) -> str:
@@ -222,6 +226,78 @@ def _rebuild(profile: str, resolution: str, original: bytes, display, repo_root:
         raise ValueError("fixed recipe returned invalid candidate bundle types")
     return {"image": image, "metadata": metadata, "probe": probe, "projection": projection,
             "source_hashes": {**before, **actual_sources}}
+
+
+def _complete_recipe_reconstructor():
+    """Capture fixed source execution, never an imported public helper export."""
+    root, path, pin = ROOT, ROOT / COMPLETE_AUTH_SOURCE, COMPLETE_AUTH_SHA256
+    registered, module_type, fresh = sys.modules, types.ModuleType, uuid.uuid4
+    digest, compiler, execute = hashlib.sha256, compile, exec
+    def read_source():
+        if path.resolve(strict=True) != path or not path.is_relative_to(root):
+            raise ValueError("Complete recipe helper escaped the fixed canonical ROOT")
+        for entry in (path, *path.parents):
+            if (entry.is_symlink() or getattr(entry, "is_junction", lambda: False)()
+                    or getattr(entry.stat(), "st_file_attributes", 0) & 0x400):
+                raise ValueError("Complete recipe helper has a reparse ancestor")
+        before = path.stat()
+        if not 0 < before.st_size <= 2 * 1024**2:
+            raise ValueError("Complete recipe helper exceeded its source read bound")
+        raw = path.read_bytes()
+        after = path.stat()
+        stamp = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns)
+        if stamp(before) != stamp(after) or len(raw) != before.st_size:
+            raise ValueError("Complete recipe helper changed while reading or exceeded its bound")
+        if digest(raw).hexdigest() != pin:
+            raise ValueError("Complete recipe helper source pin differs")
+        return raw, stamp(after)
+    def rebuild(original, *, profile, resolution, recipe_revision, stage):
+        raw, stamp = read_source()
+        name = "_clash_matrix_complete_auth_" + fresh().hex
+        if name in registered:
+            raise ValueError("private Complete recipe namespace collision")
+        module = module_type(name); module.__file__ = str(path)
+        registered[name] = module
+        try:
+            execute(compiler(raw, str(path), "exec"), module.__dict__)
+            if module.__file__ != str(path) or module.__name__ != name:
+                raise ValueError("private Complete recipe helper identity changed")
+            if read_source() != (raw, stamp):
+                raise ValueError("Complete recipe helper changed during private execution")
+            api = module.rebuild_recipe
+            return api(original, profile=profile, resolution=resolution,
+                       recipe_revision=recipe_revision, stage=stage)
+        finally:
+            try:
+                if read_source() != (raw, stamp):
+                    raise ValueError("Complete recipe helper changed during reconstruction")
+            finally:
+                if registered.get(name) is module:
+                    del registered[name]
+    return rebuild
+
+
+def _bind_complete_rebuild(legacy):
+    # Keep the five-argument override interface. Capture the private loader
+    # before later public aliases can replace the recipe or helper callable.
+    complete, root = _complete_recipe_reconstructor(), ROOT
+    revisions = frozenset(("complete_hd_v1", "complete_hd_all_presets_v1"))
+    stages = {"complete_hd_v1": evidence.STAGE,
+              "complete_hd_all_presets_v1": VALIDATION_RECIPES["complete_hd_all_presets_v1"]["stage"]}
+    presets = tuple(PRESETS)
+    def rebuild(profile, resolution, original, display, repo_root):
+        if display.recipe_revision in revisions:
+            if repo_root.resolve() != root.resolve():
+                raise ValueError("production reconstruction requires the fixed repository ROOT")
+            if profile != "completehd" or resolution not in presets or display.stage != stages[display.recipe_revision]:
+                raise ValueError("Complete recipe does not belong to this exact profile, preset and stage")
+            return complete(original, profile=profile, resolution=resolution,
+                            recipe_revision=display.recipe_revision, stage=display.stage)
+        return legacy(profile, resolution, original, display, repo_root)
+    return rebuild
+
+
+_rebuild = _bind_complete_rebuild(_rebuild)
 
 
 def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,

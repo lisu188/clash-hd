@@ -7,7 +7,9 @@ import copy
 import io
 import json
 from pathlib import Path
+import sys
 import tempfile
+import types
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -241,6 +243,10 @@ class MatrixTests(unittest.TestCase):
 
     def test_successor_loaded_module_paths_and_constants_are_bound(self):
         for revision, selected in matrix.VALIDATION_RECIPES.items():
+            if revision == "complete_hd_all_presets_v1":
+                # Complete has a canonical byte loader, covered independently
+                # below; its public recipe module is never admitted.
+                continue
             display = SimpleNamespace(recipe_revision=revision, stage=selected["stage"])
             attributes = dict(__file__=str(matrix.ROOT / matrix.RECIPE_SOURCES[revision][0]),
                               ROOT=matrix.ROOT, STAGE=selected["stage"], REVISION=revision, RESOLUTIONS=matrix.PRESETS)
@@ -255,7 +261,8 @@ class MatrixTests(unittest.TestCase):
 
     def test_successor_call_interface_and_legacy_framed_option(self):
         selections = [(revision, selected["profile"], selected["stage"], {})
-                      for revision, selected in matrix.VALIDATION_RECIPES.items()]
+                      for revision, selected in matrix.VALIDATION_RECIPES.items()
+                      if revision != "complete_hd_all_presets_v1"]
         selections.append(("four-border-partial-initial-v1", "framed", "fixture-only-legacy-stage",
                            {"minimap_viewport": True}))
         pins = {"fixture-only-source.py": "a" * 64}
@@ -342,11 +349,11 @@ class MatrixTests(unittest.TestCase):
             load.assert_not_called()
 
     def test_loaded_recipe_and_classic_implementation_paths_are_bound(self):
-        fixture = self.fixture()
+        fixture = self.fixture("framed")
         wrong = SimpleNamespace(__file__=str(self.root / "wrong.py"))
         with patch.object(matrix.importlib, "import_module", return_value=wrong):
             with self.assertRaisesRegex(ValueError, "another checkout"):
-                matrix._rebuild("completehd", "1920x1080", b"synthetic", fixture.display, matrix.ROOT)
+                matrix._rebuild("framed", "1920x1080", b"synthetic", fixture.display, matrix.ROOT)
         fixture = self.fixture("classic", "800x600")
         shim = SimpleNamespace(__file__=str(matrix.ROOT / "patch_clash95_hd.py"), _IMPL=wrong)
         with patch.object(matrix.importlib, "import_module", return_value=shim):
@@ -490,6 +497,191 @@ class MatrixTests(unittest.TestCase):
             status = matrix.main(["--write-json", str(target)])
         self.assertEqual(status, 2)
         self.assertEqual(target.read_bytes(), initial)
+
+class CompleteRecipeIntegrationTests(unittest.TestCase):
+    """Canonical loader rejection tests without candidate or native outputs."""
+    ROOT = matrix.ROOT
+    HELPER = ROOT / "tools/resolution_recipe_authentication.py"
+    STAGES = {
+        "complete_hd_v1": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+        "complete_hd_all_presets_v1": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-allpresets-validation",
+    }
+
+    def display(self, revision="complete_hd_v1"):
+        return SimpleNamespace(recipe_revision=revision, stage=self.STAGES[revision])
+
+    def call(self, revision="complete_hd_v1", *, profile="completehd", resolution="1920x1080", display=None):
+        return matrix._rebuild(profile, resolution, b"marked invalid original; no game material",
+                               display or self.display(revision), self.ROOT)
+
+    def namespaces(self):
+        return {name: module for name, module in sys.modules.items()
+                if name.startswith(("_clash_matrix_complete_auth_", "_clash_recipe_authenticator_"))}
+
+    def test_two_complete_routes_ignore_public_recipe_and_helper_exports(self):
+        trap = Mock(side_effect=AssertionError("mutable public producer/helper executed"))
+        aliases = {}
+        for name in ("resolution_recipe_authentication", "tools.resolution_recipe_authentication",
+                     "src.patcher.complete_hd_candidate", "src.patcher.complete_hd_all_presets_candidate"):
+            module = types.ModuleType(name); module.__file__ = str(self.HELPER)
+            module.build_candidate = module.rebuild_recipe = module._factory = trap
+            aliases[name] = module
+        with patch.dict(sys.modules, aliases), patch.object(matrix.importlib, "import_module", trap):
+            for revision in self.STAGES:
+                with self.subTest(revision=revision), self.assertRaisesRegex(ValueError, "exact original executable"):
+                    self.call(revision)
+        trap.assert_not_called()
+
+    def test_later_public_loader_path_pin_and_predicate_aliases_are_not_authority(self):
+        trap = Mock(side_effect=AssertionError("public loader alias executed"))
+        with contextlib.ExitStack() as stack:
+            for name, value in (("_complete_recipe_reconstructor", trap), ("_bind_complete_rebuild", trap),
+                                ("_plain_path", trap), ("sha", trap), ("ROOT", Path("relative")),
+                                ("COMPLETE_AUTH_SOURCE", "caller.py"), ("COMPLETE_AUTH_SHA256", "0" * 64),
+                                ("sys", SimpleNamespace()), ("types", SimpleNamespace()), ("uuid", SimpleNamespace())):
+                stack.enter_context(patch.object(matrix, name, value))
+            for revision in self.STAGES:
+                with self.subTest(revision=revision), self.assertRaisesRegex(ValueError, "exact original executable"):
+                    self.call(revision)
+        trap.assert_not_called()
+
+    def test_wrong_selection_rejects_before_helper_or_recipe_execution(self):
+        read = Path.read_bytes; reads = []
+        def observed(path):
+            if path == self.HELPER: reads.append(path)
+            return read(path)
+        with patch.object(Path, "read_bytes", observed), patch.object(matrix.importlib, "import_module") as public:
+            for revision in self.STAGES:
+                for changed in (dict(profile="classic"), dict(resolution="802x602"),
+                                dict(display=SimpleNamespace(recipe_revision=revision, stage="wrong"))):
+                    with self.subTest(revision=revision, changed=changed), self.assertRaisesRegex(ValueError, "exact profile, preset and stage"):
+                        self.call(revision, **changed)
+            public.assert_not_called()
+        self.assertEqual(reads, [])
+
+    def test_unknown_recipe_stays_in_legacy_rejection_branch(self):
+        with patch.object(matrix.importlib, "import_module") as public, self.assertRaisesRegex(ValueError, "fixed profile registry"):
+            self.call(display=SimpleNamespace(recipe_revision="caller_recipe", stage=self.STAGES["complete_hd_v1"]))
+        public.assert_not_called()
+
+    def test_all_preset_route_checks_original_and_legacy_unsupported_sizes_reject(self):
+        with patch.object(matrix.importlib, "import_module") as public:
+            for resolution in matrix.PRESETS:
+                with self.subTest(resolution=resolution), self.assertRaisesRegex(ValueError, "exact original executable"):
+                    self.call("complete_hd_all_presets_v1", resolution=resolution)
+            for resolution in ("1366x768", "2560x1440", "3440x1440", "3840x2160"):
+                with self.subTest(legacy_unsupported=resolution), self.assertRaisesRegex(ValueError, "exact supported preset"):
+                    self.call("complete_hd_v1", resolution=resolution)
+            public.assert_not_called()
+
+    def test_other_repository_root_rejects_before_helper_reads(self):
+        read = Mock(side_effect=AssertionError("source read before fixed ROOT check"))
+        with patch.object(Path, "read_bytes", read), self.assertRaisesRegex(ValueError, "fixed repository ROOT"):
+            matrix._rebuild("completehd", "1920x1080", b"invalid", self.display(), self.ROOT.parent)
+        read.assert_not_called()
+
+    def test_changed_or_missing_canonical_helper_fails_before_execution(self):
+        read = Path.read_bytes; trap = Mock(side_effect=AssertionError("public module import executed"))
+        for mode in ("changed", "missing"):
+            def altered(path, mode=mode):
+                if path == self.HELPER:
+                    if mode == "missing": raise FileNotFoundError("modeled missing canonical helper")
+                    return b"raise AssertionError('unapproved bytes must never execute')\n"
+                return read(path)
+            with self.subTest(mode=mode), patch.object(Path, "read_bytes", altered), \
+                    patch.object(matrix, "COMPLETE_AUTH_SHA256", matrix.sha(b"raise AssertionError('unapproved bytes must never execute')\n")), \
+                    patch.object(matrix.importlib, "import_module", trap):
+                with self.assertRaises((ValueError, FileNotFoundError)):
+                    self.call()
+        trap.assert_not_called()
+
+    def test_noncanonical_helper_path_symlink_and_junction_ancestors_reject(self):
+        resolve = Path.resolve
+        def redirected(path, *args, **kwargs):
+            return self.ROOT / "caller.py" if path == self.HELPER else resolve(path, *args, **kwargs)
+        with patch.object(Path, "resolve", redirected), self.assertRaisesRegex(ValueError, "fixed canonical ROOT"):
+            self.call()
+        is_symlink = Path.is_symlink
+        with patch.object(Path, "is_symlink", lambda path: path == self.HELPER.parent or is_symlink(path)), \
+                self.assertRaisesRegex(ValueError, "reparse ancestor"):
+            self.call()
+        if hasattr(Path, "is_junction"):
+            is_junction = Path.is_junction
+            with patch.object(Path, "is_junction", lambda path: path == self.ROOT or is_junction(path)), \
+                    self.assertRaisesRegex(ValueError, "reparse ancestor"):
+                self.call()
+
+    def test_native_reparse_attribute_and_changed_source_stamp_reject(self):
+        stat = Path.stat
+        def reparse(path, *args, **kwargs):
+            value = stat(path, *args, **kwargs)
+            if path != self.ROOT or kwargs.get("follow_symlinks") is False: return value
+            return SimpleNamespace(st_mode=value.st_mode,
+                st_file_attributes=getattr(value, "st_file_attributes", 0) | 0x400)
+        with patch.object(Path, "stat", reparse), self.assertRaisesRegex(ValueError, "reparse ancestor"):
+            self.call()
+        calls = 0
+        def changed(path, *args, **kwargs):
+            nonlocal calls
+            value = stat(path, *args, **kwargs)
+            if path != self.HELPER or kwargs.get("follow_symlinks") is False: return value
+            calls += 1
+            return SimpleNamespace(st_dev=value.st_dev, st_ino=value.st_ino, st_size=value.st_size,
+                st_mode=value.st_mode, st_mtime_ns=value.st_mtime_ns + (1 if calls >= 3 else 0), st_file_attributes=0)
+        with patch.object(Path, "stat", changed), self.assertRaisesRegex(ValueError, "changed while reading"):
+            self.call()
+
+    def test_oversized_helper_rejects_before_reading_or_compiling(self):
+        stat = Path.stat
+        def oversized(path, *args, **kwargs):
+            value = stat(path, *args, **kwargs)
+            if path != self.HELPER or kwargs.get("follow_symlinks") is False: return value
+            return SimpleNamespace(st_dev=value.st_dev, st_ino=value.st_ino, st_mode=value.st_mode,
+                st_size=2 * 1024**2 + 1, st_mtime_ns=value.st_mtime_ns, st_file_attributes=0)
+        read = Mock(side_effect=AssertionError("oversized source read"))
+        with patch.object(Path, "stat", oversized), patch.object(Path, "read_bytes", read), \
+                self.assertRaisesRegex(ValueError, "source read bound"):
+            self.call()
+        read.assert_not_called()
+
+    def test_source_changes_after_private_execution_or_failed_api_keep_no_result(self):
+        read = Path.read_bytes
+        for after in (6, 8):
+            count = 0; before = self.namespaces()
+            def changed(path):
+                nonlocal count
+                raw = read(path)
+                if path == self.HELPER:
+                    count += 1
+                    if count >= after: return raw[:-1] + bytes([raw[-1] ^ 1])
+                return raw
+            with self.subTest(after=after), patch.object(Path, "read_bytes", changed):
+                with self.assertRaisesRegex(ValueError, "source pin differs") as raised:
+                    self.call()
+                self.assertGreaterEqual(count, after)
+                if after == 8:
+                    self.assertIsInstance(raised.exception.__context__, ValueError)
+                    self.assertIn("exact original executable", str(raised.exception.__context__))
+            self.assertEqual(self.namespaces(), before)
+
+    def test_cleanup_preserves_replaced_namespace_identity(self):
+        read = Path.read_bytes; replaced = {}; foreign = types.ModuleType("foreign_fixture")
+        def replace(path):
+            if path == self.HELPER and not replaced:
+                matches = {name: value for name, value in self.namespaces().items()
+                           if name.startswith("_clash_matrix_complete_auth_")}
+                if matches:
+                    name = next(iter(matches)); replaced[name] = matches[name]; sys.modules[name] = foreign
+            return read(path)
+        try:
+            with patch.object(Path, "read_bytes", replace), self.assertRaises(ValueError):
+                self.call()
+            self.assertEqual(len(replaced), 1)
+            self.assertIs(sys.modules[next(iter(replaced))], foreign)
+        finally:
+            for name in replaced:
+                if sys.modules.get(name) is foreign: del sys.modules[name]
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
