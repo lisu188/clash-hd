@@ -130,6 +130,91 @@ class Fixture:
             return evidence.evaluate_release_manifest(self.path, builder=self.builder, repo_root=self.repo)
 
 
+def test_pinned_json_references_reject_duplicate_keys_and_invalid_numbers(root):
+    invalid = (
+        (b'{"approved":false,"approved":true}', "duplicate JSON key"),
+        (b'{"identity":{"stage":"wrong","stage":"claimed"}}', "duplicate JSON key"),
+        (b'{"rows":[{"passed":false,"passed":true}]}', "duplicate JSON key"),
+        (b'{"measurement":NaN}', "invalid JSON numeric constant"),
+        (b'{"measurement":Infinity}', "invalid JSON numeric constant"),
+        (b'{"measurement":-Infinity}', "invalid JSON numeric constant"),
+        (b'{"measurement":1e9999}', "non-finite JSON number"),
+        (b'{"measurement":-1e9999}', "non-finite JSON number"),
+        (b'{"nested":' + b'[' * 64 + b'0' + b']' * 64 + b'}', "container nesting exceeds 64"),
+        (b'{"nested":' + b'[' * 10000 + b'0' + b']' * 10000 + b'}', "parser capacity"),
+    )
+    for index, (data, reason) in enumerate(invalid):
+        reference = write(root / f"invalid-{index}.json", data)
+        # A correct digest cannot make ambiguous or non-JSON content valid.
+        assert evidence.read_reference(reference, root)[1] == data
+        for read in (
+            lambda: evidence.read_reference(reference, root, json_object=True),
+            lambda: evidence.verify_reference_graph({"retained": reference}, root),
+        ):
+            try:
+                read()
+            except ValueError as exc:
+                assert reason in str(exc), (index, str(exc))
+            else:
+                raise AssertionError((index, "invalid pinned JSON was accepted"))
+
+    valid = b'\xef\xbb\xbf{"rows":[{"name":"first","value":1.25},{"name":"second","value":-2e2}],"approved":false}'
+    reference = write(root / "valid.json", valid)
+    expected = {"rows": [{"name": "first", "value": 1.25}, {"name": "second", "value": -200.0}],
+                "approved": False}
+    assert evidence.read_reference(reference, root, json_object=True)[1] == expected
+    evidence.verify_reference_graph({"retained": reference}, root)
+    assert Path(reference["path"]).read_bytes() == valid
+    deepest = b'{"nested":' + b'[' * 63 + b'0' + b']' * 63 + b'}'
+    reference = write(root / "maximum-depth.json", deepest)
+    evidence.read_reference(reference, root, json_object=True)
+    evidence.verify_reference_graph({"retained": reference}, root)
+
+
+def test_release_json_rejects_ambiguity_before_candidate_reconstruction(root):
+    cases = (
+        b'{"schema":"unsupported","schema":"' + evidence.RELEASE_SCHEMA.encode() + b'"}',
+        b'{"candidate":{"identity":{"passed":false,"passed":true}}}',
+        b'{"untrusted":NaN}',
+        b'{"untrusted":1e9999}',
+        b'{"untrusted":' + b'[' * 64 + b'0' + b']' * 64 + b'}',
+        b'{"untrusted":' + b'[' * 10000 + b'0' + b']' * 10000 + b'}',
+    )
+    for index, data in enumerate(cases):
+        reference = write(root / f"release-{index}.json", data)
+        with patch.object(evidence, "candidate_context", side_effect=AssertionError("must fail before candidate reads")):
+            result = evidence.evaluate_release_manifest(Path(reference["path"]))
+        assert result["passed"] is False and result["evidence_ready"] is False, result
+        assert result["promotion_ready"] is False and result["candidate_context"] == {}, result
+        assert result["failures"], result
+        assert Path(reference["path"]).read_bytes() == data
+
+
+def test_reference_graph_handles_long_chains_and_rechecks_shared_inputs(root):
+    leaf = write(root / "leaf.json", b'{"leaf":true}')
+    reference = leaf
+    for index in range(40):
+        # Every individual document stays below the 64-container bound; their
+        # combined graph exceeds the old recursive walk's Python stack limit.
+        nested = reference
+        for _ in range(32):
+            nested = [nested]
+        data = json.dumps(nested, separators=(",", ":")).encode()
+        reference = write(root / f"chain-{index}.json", data)
+    seen = set()
+    evidence.verify_reference_graph({"retained": reference, "shared": reference}, root, seen)
+    assert len(seen) == 41, seen
+    # Seen inputs still have their bytes rechecked, rather than trusting a prior
+    # graph visit after the same correctly recorded input has changed.
+    Path(leaf["path"]).write_bytes(b'{"leaf":false}')
+    try:
+        evidence.verify_reference_graph(leaf, root, seen)
+    except ValueError as exc:
+        assert "artifact SHA-256 mismatch" in str(exc), str(exc)
+    else:
+        raise AssertionError("changed shared input was accepted")
+
+
 def test_complete_evidence_only_grants_eligibility(root):
     fixture = Fixture(root)
     before = {path: path.read_bytes() for path in root.rglob("*") if path.is_file()}
