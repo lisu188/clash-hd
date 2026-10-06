@@ -85,6 +85,23 @@ they establish no native lifetime or healthy map-return proof. Drawing, input,
 camera, animation, dialogs/results and all quit paths still need atomic
 integration before an expanded-battle candidate can be installed.
 
+[`battle_profile_lifecycle_v2.py`](../../src/patcher/battle_profile_lifecycle_v2.py)
+privately reconstructs the versioned allocation context and re-emits the frozen
+lifecycle at fresh RX/RW addresses. The bounded source transformation and
+complete operand inventory retain original native callback targets and planned
+whole-byte hook checks. The first 128-byte owned and inherited records are
+compared completely; all remaining new RW bytes must stay zero because no
+provider records exist. Nonzero inherited modal tail is explicitly unsupported
+by this restrictive admission, and does not prove native dynamic-field lifetime.
+Checks run after each modeled callback before following cached headers. The
+component's maximum added helper stack is 456 bytes; its 4K code occupies 27,252
+bytes for Classic/Framed or 45,962 for Complete HD/Modal Widgets. Those are
+component bounds, not complete-chain capacity. Synthetic fixtures cover all 36
+geometries at two image bases, including actual outer-adapter stack and null
+failure routes with modeled callbacks. The optional original-backed lane
+reconstructs only in RAM. No hook, section, provider or candidate is installed;
+native lifetime, full battle integration and all runtime acceptance remain open.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -516,6 +533,7 @@ python -B tools/test_resolution_recipe_authentication.py SourceTests
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_context_v2.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
+python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
