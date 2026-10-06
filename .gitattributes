@@ -1019,3 +1019,5 @@
 /tools/test_hidden_soak_running_time.py text eol=lf
 /tools/hidden_soak_loaded_image.py text eol=lf
 /tools/test_hidden_soak_loaded_image.py text eol=lf
+/src/patcher/battle_profile_stack_lease.py text eol=lf
+/tools/test_battle_profile_stack_lease.py text eol=lf

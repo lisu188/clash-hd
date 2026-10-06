@@ -195,6 +195,17 @@ runtime data and preferred/nonpreferred probe execution remain unverified.
 This component supplies no reader, run or production evidence lane and keeps
 loaded-candidate, whole-image, runtime, manual-input and promotion claims false.
 
+[`battle_profile_stack_lease.py`](../../src/patcher/battle_profile_stack_lease.py)
+prepares an uninstalled stack lease around the frozen V2 battle field. It binds
+the owning thread, bounded native frame ancestry and exact CALL/RET operands,
+copies primitive arguments and checks receipts after normal native return.
+Fixed authorities and thread/control checks precede cached heap/world reads.
+It preserves the original owner pages and RX reservation. A latched loss yields
+outer status 2, but does not stop frozen V2's next Tile or unadapted native
+continuations. Receiver/argument validity, physical-only clipping, standalone
+callsite admission and RLE/provider cancellation remain unfinished. This is
+source preparation without hooks, safe native replacement, runtime or promotion.
+
 Use the public boundary and cloud checks before focused source fixtures:
 
 ```powershell
@@ -214,6 +225,7 @@ python -B tools/test_hidden_soak_process_lease.py
 python -B tools/test_hidden_soak_frame_ledger.py
 python -B tools/test_hidden_soak_running_time.py
 python -B tools/test_hidden_soak_loaded_image.py
+python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
 ```
 
 The optional original-backed constructor lane builds only in memory from a
