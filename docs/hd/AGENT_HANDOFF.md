@@ -257,6 +257,30 @@ independent receipts and unknown output debt are also excluded. Local source fix
 launch no processes; native CI success cannot grant endurance, manual-input,
 release or promotion acceptance.
 
+[`hidden_soak_loader_expected.py`](../../tools/hidden_soak_loader_expected.py)
+privately reconstructs the exact parent candidate, resolved recipe and canonical
+probe before issuing opaque expected-image payloads. Narrow and wide Classic
+keep distinct recipe identities. The bounded stream contains canonical metadata,
+headers/RX chunks and whole selected HIGHLOW fields; no report boolean supplies
+its byte authority. Fresh replay rejects resealed candidate/probe substitutions,
+changed sources, capability clones and malformed or incomplete payloads. Source
+loss after modeling publishes no chunks and retains the complete original.
+
+Its exact maximum payload is 17,121,324 bytes. Payload plus atomic temporary,
+existing native journal and a separate complete raw archive need 96,239,710 bytes
+of known allowance. Assets, compiler, RAM, generation/job/clock receipts and
+unknown original output remain additional costs. No filesystem/native adapter
+or reserve bypass is installed. The preferred header ImageBase remains unchanged;
+the PEB four-byte base read is independently mandatory. Nonexecutable data,
+provider/RW/IAT regions and alignment gaps remain excluded.
+
+The 2026-10-06 first audit reconstructed all 36 combinations at three modeled
+addresses on its baseline source. After source-isolation and post-model rejection
+repairs, five representative final-source admissions passed separately. These
+RAM checks establish no genuine native generation, read coherence, comparison
+during the hold, whole candidate/probe, cleanup, runtime, endurance, manual-input,
+release or promotion acceptance. All broader claims remain false.
+
 The synthetic debugger interpreter fixtures retain each pending case, exact
 candidate and CRLF probe before launch under an explicit external CI artifact
 directory. Original compiler outputs, stdout/stderr bytes and partial timeout
@@ -328,6 +352,7 @@ python -B tools/test_hidden_soak_loaded_read_session.py
 python -B tools/test_hidden_soak_job_lease.py
 python -B tools/test_hidden_soak_loader_native.py
 python -B tools/test_hidden_soak_loader_native_engine.py EngineSourceTests
+python -B tools/test_hidden_soak_loader_expected.py
 python -B tools/test_probe_engine_retention.py
 python -B tools/test_framed_loaded_probe_engine.py ExecutableFixtureTests
 python -B tools/test_battle_profile_stack_lease.py --require-machine-tools
