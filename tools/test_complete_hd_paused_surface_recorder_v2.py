@@ -625,6 +625,108 @@ class BudgetPublicationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 recorder.TinySyntheticPublisher(directory, free=10**9, total=2 * 10**9)
 
+    def test_created_identity_binds_ordinary_and_normalized_publication_paths(self):
+        for normalized in (False, True):
+            with self.subTest(normalized=normalized), tempfile.TemporaryDirectory(prefix="synthetic-paused-recorder-") as parent:
+                helper, source, stamp = recorder._helper()
+                checked = helper.checked_path
+                ordinary = Path(parent) / "owned"
+                expected = Path(parent).resolve(strict=True) / "owned"
+                directory = ordinary
+                modeled = []
+                normalization_class = "ordinary_literal_path"
+                if normalized and os.name == "posix":
+                    directory = Path("//" + str(Path(parent)).lstrip("/")) / "owned"
+                    self.assertNotEqual(directory, expected)
+                    normalization_class = "posix_double_leading_slash"
+                elif normalized:
+                    # This is a synthetic spelling model, not a Windows alias
+                    # observation: move only the just-created tiny directory,
+                    # retaining its actual identity under the new spelling.
+                    expected = Path(parent).resolve(strict=True) / "normalized-owned"
+                    normalization_class = "synthetic_created_directory_spelling_model"
+                    def normalize(value):
+                        canonical = checked(value)
+                        if Path(value) == ordinary:
+                            resolved_root = Path(parent).resolve(strict=True)
+                            original_target = ordinary.resolve(strict=True)
+                            expected_parent = expected.parent.resolve(strict=True)
+                            expected_target = expected_parent / expected.name
+                            self.assertTrue(resolved_root.is_absolute())
+                            self.assertEqual(canonical, original_target)
+                            self.assertTrue(original_target.is_absolute())
+                            self.assertTrue(original_target.is_relative_to(resolved_root))
+                            self.assertTrue(expected_target.is_absolute())
+                            self.assertTrue(expected_target.is_relative_to(resolved_root))
+                            self.assertEqual(original_target.parent, expected_parent)
+                            self.assertEqual(original_target, resolved_root / "owned")
+                            self.assertEqual(expected_target, resolved_root / "normalized-owned")
+                            self.assertEqual(expected, expected_target)
+                            self.assertFalse(expected_target.exists())
+                            self.assertTrue(original_target.is_dir())
+                            self.assertFalse(list(original_target.iterdir()))
+                            before = ordinary.lstat()
+                            ordinary.rename(expected)
+                            modeled.append((before.st_dev, before.st_ino))
+                            return checked(str(expected))
+                        return canonical
+                    helper.checked_path = normalize
+                with patch.object(recorder, "_helper", return_value=(helper, source, stamp)):
+                    publisher = recorder.TinySyntheticPublisher(directory, free=10**9, total=2 * 10**9)
+                    self.assertEqual(publisher.directory, expected)
+                    info = expected.lstat()
+                    self.assertEqual(publisher.directory_identity, (info.st_dev, info.st_ino))
+                    if modeled:
+                        self.assertEqual(modeled, [publisher.directory_identity])
+                    else:
+                        self.assertTrue(os.path.samefile(directory, publisher.directory))
+                    reference = publisher.put(b"canonical tiny original")
+                    target = Path(reference["path"])
+                    self.assertEqual(target.parent, publisher.directory)
+                    self.assertEqual(target, checked(str(target)))
+                    self.assertEqual(target.read_bytes(), b"canonical tiny original")
+                    self.assertEqual(publisher.pending, [b"canonical tiny original"])
+                    publisher.unchanged()
+                    self.assertFalse(publisher.failures)
+                    self.assertFalse(publisher.original_exceptions)
+                print(json.dumps(dict(publication_path_case=normalization_class,
+                    synthetic_only=True, windows_alias_observed=False,
+                    native_provenance_verified=False, runtime_acceptance=False)), flush=True)
+
+    def test_canonical_directory_substitution_and_post_admission_failure_retain_originals(self):
+        with tempfile.TemporaryDirectory(prefix="synthetic-paused-recorder-") as parent:
+            helper, source, stamp = recorder._helper()
+            checked = helper.checked_path
+            foreign = Path(parent) / "foreign"
+            foreign.mkdir()
+            directory = Path(parent) / "owned"
+            def substitute(value):
+                canonical = checked(value)
+                return checked(str(foreign)) if Path(value) == directory else canonical
+            helper.checked_path = substitute
+            with patch.object(recorder, "_helper", return_value=(helper, source, stamp)):
+                with self.assertRaisesRegex(ValueError, "canonical directory identity"):
+                    recorder.TinySyntheticPublisher(directory, free=10**9, total=2 * 10**9)
+            self.assertTrue(directory.is_dir())
+            self.assertFalse(os.path.samefile(directory, foreign))
+        with tempfile.TemporaryDirectory(prefix="synthetic-paused-recorder-") as parent:
+            publisher = recorder.TinySyntheticPublisher(Path(parent) / "owned", free=10**9, total=2 * 10**9)
+            foreign = Path(parent) / "foreign"
+            foreign.mkdir()
+            actual_lstat = Path.lstat
+            def replace_identity(value, *args, **kwargs):
+                return actual_lstat(foreign) if value == publisher.directory else actual_lstat(value, *args, **kwargs)
+            original = b"preserve before directory identity rejection"
+            with patch.object(Path, "lstat", replace_identity), self.assertRaisesRegex(ValueError, "directory identity changed") as caught:
+                publisher.put(original)
+            self.assertEqual(publisher.pending, [original])
+            self.assertIs(publisher.original_exceptions[-1], caught.exception)
+            self.assertFalse(publisher.rows)
+            self.assertTrue(publisher.failures)
+            self.assertFalse(list(publisher.directory.iterdir()))
+            with self.assertRaisesRegex(ValueError, "sticky"):
+                publisher.unchanged()
+
     def test_real_owner_execute_cli_and_registry_stay_unavailable_without_side_effects(self):
         for call in (recorder.native_owner_factory, recorder.execute):
             with self.assertRaises(recorder.SourceOnlyError):

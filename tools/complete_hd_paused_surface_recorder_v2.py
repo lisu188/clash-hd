@@ -512,6 +512,14 @@ class TinySyntheticPublisher:
         directory.mkdir()
         info = directory.lstat()
         self.directory_identity = (info.st_dev, info.st_ino)
+        helper, _, _ = _helper()
+        canonical_directory = helper.checked_path(str(directory))
+        canonical_info = canonical_directory.lstat()
+        require(stat.S_ISDIR(info.st_mode) and stat.S_ISDIR(canonical_info.st_mode)
+                and not (getattr(canonical_info, "st_file_attributes", 0) & 0x400)
+                and (canonical_info.st_dev, canonical_info.st_ino) == self.directory_identity,
+                "fixture canonical directory identity changed")
+        self.directory = canonical_directory
         self.pending = []
 
     def put(self, data):

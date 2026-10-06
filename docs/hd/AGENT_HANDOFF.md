@@ -306,9 +306,17 @@ requirements unfinished. Raw journals and failed reads belong outside Git.
 
 [`complete_hd_paused_surface_recorder_v2.py`](../../tools/complete_hd_paused_surface_recorder_v2.py)
 prepares a fixed dispatcher for this journal using an explicitly synthetic
-adapter. The final recorder (`c56bea73...`) and fixture (`1986a363...`) passed
-all 30 source/RAM methods without skips on 2026-10-06 in 1.466 seconds;
-independent source review covered complete packet and exception retention.
+adapter. The current recorder (`c73e6050...`) and fixture (`be44887d...`) passed
+all 32 source/RAM methods without skips on 2026-10-06 in 1.511 seconds after
+independent source review. The constructor binds the canonical directory to
+the exclusively created directory's physical identity before storing its path;
+publication and final checks retain their original identity and byte guards.
+Two added methods cover ordinary and normalized paths, foreign-directory
+rejection, and preservation after an admitted directory's identity changes.
+The Windows normalization case is an explicitly synthetic spelling model,
+not a measured Windows alias. The POSIX case requires its separate hosted run.
+The older recorder (`c56bea73...`) and fixture (`1986a363...`) passed 30 methods
+in 1.466 seconds; that receipt remains a historical result for different bytes.
 All 39 read roles across three cohorts retain original-shaped buffers before
 semantic checks, including failed or malformed outputs. The complete failed
 packet and exact exception object remain available without invoking supplied
