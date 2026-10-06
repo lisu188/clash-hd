@@ -1090,3 +1090,4 @@
 /tools/paused_surface_triple_replay.py text eol=lf
 /tools/test_paused_surface_triple_replay.py text eol=lf
 /.github/workflows/paused-surface-triple-contracts.yml text eol=lf
+/reports/paused-stack3-ci-fixture-failure-20261006.json text eol=lf

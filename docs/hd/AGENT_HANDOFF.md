@@ -286,9 +286,16 @@ stop on Complete HD's physical E0. The legacy `prior` token means panel stack
 at `0x514194`; previous stack at `0x511B5C` remains unobserved. General map
 coherence, Framed and modal representations remain outside this scope.
 
-The frozen helper (`60fbb1b8...`) and fixture (`d906e9f1...`) passed 28 focused
-offline methods without skips on 2026-10-06 in 3.033 seconds and received an
-independent source review. Supplied buffers exercise nonzero native BOOLs,
+The frozen helper (`60fbb1b8...`) and current fixture (`09a836ad...`) passed all
+28 focused offline methods without skips on 2026-10-06 in 3.497 seconds and
+received an independent source review. The earlier fixture (`d906e9f1...`)
+passed locally and on Ubuntu, but its hosted Windows final reparse test failed:
+the mock targeted the pre-resolution path rather than the canonical path
+retained by the reader. The fixture correction proves both paths name the
+same physical file and retains the rejection and original hash checks; the
+helper is unchanged. Keep this historical CI diagnostic in
+[`reports/paused-stack3-ci-fixture-failure-20261006.json`](../../reports/paused-stack3-ci-fixture-failure-20261006.json).
+Supplied buffers exercise nonzero native BOOLs,
 original-output retention, timing, complete headers/frames, bounded reads and
 file identity/drift rejection. These synthetic results authenticate no native
 execution. Only raw-artifact consistency can become true; all fourteen

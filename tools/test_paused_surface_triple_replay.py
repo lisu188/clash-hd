@@ -500,16 +500,21 @@ class FileAndJSONTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="synthetic-paused-replay-") as directory:
             path = Path(directory) / "a.bin"; path.write_bytes(b"synthetic")
             reader = replay.FileArtifacts(); reader.reference(self.ref(path, b"synthetic"), "raw")
+            self.assertEqual(len(reader.loaded), 1)
+            canonical_path = next(iter(reader.loaded))
+            self.assertEqual(canonical_path, replay.checked_path(str(path)))
+            self.assertTrue(os.path.samefile(canonical_path, path))
             actual = Path.lstat
             class Reparse:
                 st_mode = stat.S_IFREG
                 st_file_attributes = 0x400
             def lstat(value, *args, **kwargs):
-                return Reparse() if value == path else actual(value, *args, **kwargs)
+                return Reparse() if value == canonical_path else actual(value, *args, **kwargs)
             with patch.object(Path, "lstat", lstat):
                 with self.assertRaisesRegex(ValueError, "reparse"):
                     reader.unchanged()
             self.assertEqual(reader.receipts()[0]["sha256"], replay.sha(b"synthetic"))
+            self.assertEqual(reader.receipts()[0]["path"], str(canonical_path))
 
     def test_file_type_hash_size_and_aggregate_budget_reject(self):
         with tempfile.TemporaryDirectory(prefix="synthetic-paused-replay-") as directory:

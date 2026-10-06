@@ -1,0 +1,104 @@
+{
+  "schema": "paused_stack3_offline_ci_fixture_diagnostic_v1",
+  "recorded_at": "2026-10-06",
+  "evidence_class": "historical_offline_ci_fixture_failure",
+  "passed": false,
+  "historical_head": "01a19650b33e8418d5dd1c53208d277d989035e9",
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/181",
+  "helper": {
+    "path": "tools/paused_surface_triple_replay.py",
+    "sha256": "60fbb1b8392b302b4366e0acaec7bd659705daf8c856df6a2818a5e5b0690dcb",
+    "changed_by_fixture_repair": false
+  },
+  "historical_fixture": {
+    "path": "tools/test_paused_surface_triple_replay.py",
+    "sha256": "d906e9f1e35344931938a090a0d0acf70f63d8dd175d657c4f4db6a7202ab32a"
+  },
+  "windows_failure": {
+    "job_id": 112446783878,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37515362456/job/112446783878",
+    "tests_run": 28,
+    "passed_methods": 27,
+    "failures": 1,
+    "errors": 0,
+    "skips": 0,
+    "elapsed_seconds": 3.166,
+    "exit_code": 1,
+    "conclusion": "failure",
+    "log_truncated": false,
+    "source_closure_unchanged": true,
+    "failed_method": "FileAndJSONTests.test_final_reparse_substitution_is_rejected_and_original_receipt_retained",
+    "fixture_line": 510,
+    "error": "AssertionError: ValueError not raised"
+  },
+  "same_head_ubuntu": {
+    "job_id": 112446784284,
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37515362456/job/112446784284",
+    "tests_run": 28,
+    "passed_methods": 28,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "elapsed_seconds": 4.203,
+    "conclusion": "success",
+    "log_truncated": false,
+    "source_closure_unchanged": true
+  },
+  "diagnosis": {
+    "boundary": "fixture_mock_path_identity",
+    "observed": "The final reparse mock compared the original temporary path, whereas FileArtifacts stores the checked canonical path returned by resolve(strict=True). The unchanged helper checks that retained path and its parents.",
+    "windows_path_spelling_normalization": "consistent_with_failure_not_independently_measured",
+    "repair": "Target the sole retained canonical Path, independently prove samefile with the original, and retain reparse rejection plus original hash and canonical receipt path assertions."
+  },
+  "reviewed_repair": {
+    "fixture_sha256": "09a836ad32f428772e07c24ff56e207e1e9eb45daf50debd629b9acb9d8d06d7",
+    "method_inventory": 28,
+    "changed_test_methods": ["FileAndJSONTests.test_final_reparse_substitution_is_rejected_and_original_receipt_retained"],
+    "exact_inverse_reproduces_historical_fixture": true,
+    "independent_read_only_source_review": true,
+    "focused_method": {
+      "tests_run": 1,
+      "elapsed_seconds": 0.004,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 0
+    },
+    "local_full_suite": {
+      "tests_run": 28,
+      "elapsed_seconds": 3.4974901,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 0,
+      "source_closure_unchanged": true
+    },
+    "extracted_hosted_workflow": {
+      "tests_run": 28,
+      "elapsed_seconds": 3.109,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 0,
+      "source_closure_unchanged": true
+    },
+    "hosted_successor_status_at_recording": "pending"
+  },
+  "raw_diagnostics": {
+    "retained_outside_git": true,
+    "windows": "pr181-helper-windows-failure-full-01a19650.json",
+    "ubuntu": "pr181-helper-ubuntu-full-01a19650.json",
+    "location": "task-owned hd-completion-source worktree parent",
+    "contains_original_game_bytes": false
+  },
+  "limits": {
+    "native_execution": false,
+    "producer_available": false,
+    "production_verifier_registered": false,
+    "candidate_authenticated": false,
+    "runtime_acceptance": false,
+    "promotion_ready": false,
+    "all_fourteen_authority_flags_remain_false": true,
+    "accepted_new_runtime_combinations": 0
+  }
+}
