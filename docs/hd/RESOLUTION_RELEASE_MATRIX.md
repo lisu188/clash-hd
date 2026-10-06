@@ -334,6 +334,32 @@ generation/job ownership, durable raw storage and whole-candidate/probe/runtime
 acceptance remain false. No production lane or stable status is registered by
 this source preparation or its synthetic native CI fixture.
 
+The inherited synthetic verifier harness now retains pending and terminal cases
+outside the repository before its unchanged 35-second process invocation. Exact
+source, compiler, candidate, CRLF probe and original output bytes accompany a
+sticky failure ledger; partial timeout output and unavailable streams cannot be
+replaced with a passing report. QPC and original HRESULT boundaries around the
+existing debugger calls distinguish a missing return from later callback flush,
+inspection or termination failures. Clock/flush diagnostics add strict checks;
+all original byte, relocation and rejection comparisons remain required.
+
+Only completed distinct small-world and Castle cases with retained raw outputs
+and complete diagnostic boundaries can satisfy their synthetic reports. Castle
+requires five native test methods and seven distinct cases, plus successful
+compiler retention and no sticky failure or retention debt. The workflows
+configure their external directory in the executing step, where RUNNER_TEMP is
+available. Prior missing-directory and workflow-validation failures remain
+historical diagnostics, not accepted receipts. Native LF/CRLF parsing preserves
+the full original output bytes and rejects malformed/duplicate markers. Repairing
+a parser cannot rewrite an earlier sticky failed report as accepted. The Framed
+identity header and final result are separate source-bound records, with strict
+order, uniqueness and matching identities. The known retained-output
+and atomic-write allowances are 512 MiB and 64 MiB respectively, in addition to
+the strict free-space reserve. Oversized output remains failed retention debt;
+hard runner loss can still prevent upload. These changes improve future timeout
+diagnostics. They do not establish the cause of historical timeouts, native game
+cleanup, any production lane, release acceptance or stable promotion.
+
 `src/patcher/battle_profile_content.py` prepares 28 fixed operand helpers from
 the authenticated stack-lease chain. Exact whole original/parent instructions,
 native CALL/RET ancestry and neighbor tables are authenticated independently.

@@ -17,6 +17,10 @@ sys.path[:0]=[str(ROOT),str(ROOT/'tools')]
 from src.patcher import ordinary_castle_entry_matrix as tool
 import test_framed_loaded_probe_engine as engine
 
+EXPECTED={'fixed-file':True, 'fixed-block':True, 'aslr':True,
+          'corrupt-rx':False, 'missing':False, 'reordered':False,
+          'unreadable':False}
+
 
 def fixture(aslr=False):
     image, _, _ = engine.executable_fixture(aslr=aslr)
@@ -43,9 +47,7 @@ class MatrixEngineTests(unittest.TestCase):
         destination=os.environ.get('CLASH_ORDINARY_ENTRY_ENGINE_REPORT')
         if not destination:
             return
-        expected={'fixed-file':True, 'fixed-block':True, 'aslr':True,
-                  'corrupt-rx':False, 'missing':False, 'reordered':False,
-                  'unreadable':False}
+        expected=EXPECTED
         cases=[]
         for record in cls.records:
             item=dict(record)
@@ -62,27 +64,35 @@ class MatrixEngineTests(unittest.TestCase):
                 match=re.search(r'HARNESS_BEGIN base=([0-9a-f]+)',log)
                 preferred=tool.pe.inspect_pe(fixture(aslr=True)[0]).image_base
                 relocated=bool(match and int(match.group(1),16)!=preferred)
+            phase_receipt=engine.phase_receipt(log)
             item.update(expected_acceptance=should_accept,
                         observed_acceptance=accepted,
                         observed_rejection=rejected,
                         paused_unchanged_receipt=receipt,
+                        phase_receipt_passed=phase_receipt,
                         actual_relocation_verified=relocated if label=='aslr' else None,
-                        passed=(label in expected and item['returncode']==0 and receipt
+                        passed=(label in expected and item.get('status')=='completed'
+                                and item.get('raw_retention_complete') is True and phase_receipt
+                                and item['returncode']==0 and receipt
                                 and 'Syntax error' not in log and relocated
                                 and (accepted if should_accept else rejected)))
             cases.append(item)
-        complete=(len(cases)==len(expected)
-                  and {item['case'] for item in cases}==set(expected))
-        Path(destination).write_text(json.dumps(dict(
+        complete=(engine.terminal_cases(cases,expected)
+                  and cls.ledger.failure is None and not cls.store.failed)
+        report=dict(
             schema='clash95_ordinary_entry_matrix_debugger_fixture_v1',
             generator_sha256=tool.sha(Path(tool.__file__).read_bytes()),
             fixture_source_sha256=tool.sha(Path(__file__).read_bytes()),
             harness_source_sha256=tool.sha(Path(engine.__file__).read_bytes()),
             engine='system x86 DbgEng',fixture_only=True,
             game_runtime_executed=False,manual_input_proof=False,
+            native_cleanup_verified=False,promotion_ready=False,
+            first_failure=cls.ledger.failure,retention_debt=cls.store.failed,
+            artifact_directory=str(cls.root),compiler=cls.compiler_receipt,
             expected_cases=len(expected),completed=complete,
             passed=complete and all(item['passed'] for item in cases),
-            cases=cases),indent=2)+'\n',encoding='utf-8')
+            cases=cases)
+        engine.publish_report(cls,destination,report)
 
     def accepted(self,log):
         self.assertEqual(len(re.findall(r'^OCEM_CONTRACT_PASS ',log,re.M)),1,log)
