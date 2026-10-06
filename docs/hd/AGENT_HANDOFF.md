@@ -102,6 +102,21 @@ failure routes with modeled callbacks. The optional original-backed lane
 reconstructs only in RAM. No hook, section, provider or candidate is installed;
 native lifetime, full battle integration and all runtime acceptance remain open.
 
+[`battle_profile_routing_v2.py`](../../src/patcher/battle_profile_routing_v2.py)
+re-emits the frozen routing after the privately authenticated fresh lifecycle.
+It protects the complete new RX/RW spans and the separate inherited modal page,
+checks full 128-byte records and exact-zero tails before cached accesses, and
+rechecks after modeled thread callbacks. Query status zero requires exact virgin
+records without a callback; owned/history/callback loss returns status two.
+Neither status authorizes a native target write: both initial adapters restore
+the incoming ABI and reach an explicit unsafe endpoint. That endpoint establishes
+no production cancellation, healthy fallback or map restoration. Six routing
+entries retain 1280-byte local frames with a complete typed operand inventory;
+nested source allowances are not a full-chain or native capacity proof. Public
+fixtures use modeled callbacks and synthetic pixel buffers, with the original
+RAM lane separately opt-in. No hook, provider or candidate is installed. Frozen
+predecessors, all runtime gates and the protected default remain unchanged.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -508,6 +523,7 @@ python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_context_v2.py
 python -B tools/test_battle_profile_lifecycle.py --require-machine-tools
 python -B tools/test_battle_profile_lifecycle_v2.py --require-machine-tools
+python -B tools/test_battle_profile_routing_v2.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

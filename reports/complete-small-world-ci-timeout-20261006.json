@@ -1,0 +1,76 @@
+{
+  "case_ordinal": 5,
+  "execute_phase_completed": false,
+  "failed_block_originals": {
+    "harness_source_sha256": "157064560c3713842c5e6b306c78426d2f3ae69be111ba7ce3bc980ee386480d",
+    "runner_sha256": "bd13ccad4b01c65e91e7e48e0fdde1bbd95ccb23e942eaefc6e153a3a9faaaa9",
+    "stderr_bytes": 2301,
+    "stderr_sha256": "de1ce6208a10b1115f091b83096b1a20f78d48a2486617af3bc1d7863e0a872a",
+    "stdout_bytes": 1956,
+    "stdout_sha256": "47f8265692521a3e5600d7adc193ba03cd340a52b2eeab457bfa953cdbba432b"
+  },
+  "failed_case": "fixed-block",
+  "fixture_duration_seconds": 79.207,
+  "fixture_failures": 1,
+  "fixture_methods": 6,
+  "game_runtime_executed": false,
+  "head_revision": "5655d24e167f91c8fd689b82321699f7923d20ee",
+  "inference": "Original telemetry localizes CPU-active block ingestion/processing before visible script progress. The single strict same-head repeat passes, without establishing the first timeout cause or erasing its failure.",
+  "job_conclusion": "failure",
+  "job_id": 112286265564,
+  "manual_input_proof": false,
+  "observed_date_utc": "2026-10-06",
+  "original_artifact": {
+    "entry_count": 109,
+    "expanded_bytes": 245380674,
+    "id": 11417435275,
+    "inspection": "Authenticated ZIP and bounded original streams inspected in RAM; no filesystem extraction",
+    "url": "https://github.com/lisu188/clash-hd/actions/runs/37468714212/artifacts/11417435275",
+    "zip_bytes": 11058012,
+    "zip_sha256": "108e65cdd81eee7322ad9f2bb5fe319fce0d0d7288c06fff805b65ce207f4d37"
+  },
+  "original_game_read": false,
+  "original_script": {
+    "bytes": 14457121,
+    "lines": 8097,
+    "maximum_line_bytes": 1971,
+    "sha256": "94b03abfc629bacce8f89f9b0d8e0e99fcc1c7f3bb712a03446da7c2c96f9f14"
+  },
+  "promotion_ready": false,
+  "provider_log_truncated": false,
+  "pull_request": "https://github.com/lisu188/clash-hd/pull/174",
+  "release_acceptance": false,
+  "runtime_acceptance": false,
+  "same_script_file_mode": {
+    "case_ordinal": 4,
+    "execute_seconds": 2.7656535,
+    "fixture_sha256": "c3bea0700633e9788ed6b8be94c9156ea3fca7e4c72de806ba4fb70fe3711d81"
+  },
+  "schema": "complete_small_world_hosted_timeout_v1",
+  "strict_same_head_repeat": {
+    "artifact_id": 11417043233,
+    "artifact_url": "https://github.com/lisu188/clash-hd/actions/runs/37468714212/artifacts/11417043233",
+    "cause_of_first_timeout_established": false,
+    "conclusion": "success",
+    "fixture_duration_seconds": 75.58,
+    "fixture_methods": 6,
+    "inspection": "Complete backend log and original-artifact checks in hosted workflow; repeat ZIP not independently downloaded in this checkpoint",
+    "job_id": 112297428762,
+    "run_id": 37468714212,
+    "source_and_limit_unchanged": true,
+    "timeout_seconds": 35,
+    "uploaded_zip_bytes": 11059038,
+    "uploaded_zip_sha256": "307a7924df11335091189852dcb181cda82c089ba817f3f6b9942570ae728986"
+  },
+  "timeout_seconds": 35,
+  "watchdog_observation": {
+    "active": true,
+    "callback_count": 56,
+    "callback_input_bytes": 1673,
+    "cpu_seconds": 30.03125,
+    "read_bytes_after_10s": 15239303,
+    "read_operations_after_10s": 3738,
+    "scheduled_seconds": 30
+  },
+  "workflow_run_id": 37468714212
+}
