@@ -149,6 +149,17 @@ def nonpatched_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+def _manifest_summary(manifest: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "exe": manifest.get("exe"),
+        "stage": manifest.get("stage"),
+        "exe_sha256": manifest.get("exe_sha256"),
+        "patch_count": manifest.get("patch_count"),
+        "status_counts": manifest.get("status_counts") or {},
+        "current_hd_map_gate_passed": (manifest.get("current_hd_map_gate") or {}).get("passed"),
+    }
+
+
 def build_comparison(left_path: Path, right_path: Path) -> dict[str, Any]:
     left = load_json(left_path)
     right = load_json(right_path)
@@ -177,22 +188,8 @@ def build_comparison(left_path: Path, right_path: Path) -> dict[str, Any]:
     return {
         "left_path": str(left_path),
         "right_path": str(right_path),
-        "left_summary": {
-            "exe": left.get("exe"),
-            "stage": left.get("stage"),
-            "exe_sha256": left.get("exe_sha256"),
-            "patch_count": left.get("patch_count"),
-            "status_counts": left.get("status_counts") or {},
-            "current_hd_map_gate_passed": (left.get("current_hd_map_gate") or {}).get("passed"),
-        },
-        "right_summary": {
-            "exe": right.get("exe"),
-            "stage": right.get("stage"),
-            "exe_sha256": right.get("exe_sha256"),
-            "patch_count": right.get("patch_count"),
-            "status_counts": right.get("status_counts") or {},
-            "current_hd_map_gate_passed": (right.get("current_hd_map_gate") or {}).get("passed"),
-        },
+        "left_summary": _manifest_summary(left),
+        "right_summary": _manifest_summary(right),
         "counts": {
             "left_records": len(left_records),
             "right_records": len(right_records),

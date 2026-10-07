@@ -61,6 +61,7 @@ def run_test(
     timeout_sec: int,
     output_chars: int,
 ) -> dict[str, Any]:
+    timeout_fields: dict[str, Any] = {}
     started = time.monotonic()
     try:
         completed = subprocess.run(
@@ -73,32 +74,25 @@ def run_test(
             check=False,
         )
         duration = time.monotonic() - started
-        return {
-            "name": test_path.name,
-            "path": str(test_path.relative_to(root)).replace("/", "\\")
-            if test_path.is_relative_to(root)
-            else str(test_path),
-            "passed": completed.returncode == 0,
-            "exit_code": completed.returncode,
-            "duration_sec": round(duration, 3),
-            "stdout": clipped(completed.stdout, output_chars),
-            "stderr": clipped(completed.stderr, output_chars),
-        }
+        passed, exit_code = completed.returncode == 0, completed.returncode
+        stdout, stderr = completed.stdout, completed.stderr
     except subprocess.TimeoutExpired as exc:
         duration = time.monotonic() - started
-        return {
-            "name": test_path.name,
-            "path": str(test_path.relative_to(root)).replace("/", "\\")
-            if test_path.is_relative_to(root)
-            else str(test_path),
-            "passed": False,
-            "exit_code": None,
-            "duration_sec": round(duration, 3),
-            "timed_out": True,
-            "timeout_sec": timeout_sec,
-            "stdout": clipped(exc.stdout or "", output_chars),
-            "stderr": clipped(exc.stderr or "", output_chars),
-        }
+        passed, exit_code = False, None
+        timeout_fields = {"timed_out": True, "timeout_sec": timeout_sec}
+        stdout, stderr = exc.stdout or "", exc.stderr or ""
+    return {
+        "name": test_path.name,
+        "path": str(test_path.relative_to(root)).replace("/", "\\")
+        if test_path.is_relative_to(root)
+        else str(test_path),
+        "passed": passed,
+        "exit_code": exit_code,
+        "duration_sec": round(duration, 3),
+        **timeout_fields,
+        "stdout": clipped(stdout, output_chars),
+        "stderr": clipped(stderr, output_chars),
+    }
 
 
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
