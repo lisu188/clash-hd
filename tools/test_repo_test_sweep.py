@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -103,15 +103,13 @@ def test_no_tests_fails_closed(fixture: Path) -> None:
 
 
 def run_tests() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "repo-test-sweep-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    fixture_parent = ROOT / ".codex-loop" / "tmp-tests"
+    fixture_parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="repo-test-sweep-fixture-", dir=fixture_parent) as directory:
+        fixture = Path(directory)
         test_build_report_records_pass_and_failure(fixture / "mixed")
         test_cli_writes_outputs_and_requires_pass(fixture / "cli")
         test_no_tests_fails_closed(fixture / "empty")
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
 
 
 def main() -> int:

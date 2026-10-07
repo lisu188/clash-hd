@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -189,10 +189,12 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
 
 
 def run_tests() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "capture-corpus-index-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    fixture_parent = ROOT / ".codex-loop" / "tmp-tests"
+    fixture_parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix="capture-corpus-index-fixture-", dir=fixture_parent
+    ) as directory:
+        fixture = Path(directory)
         test_current_hidden_reference_passes(fixture / "hidden")
         test_missing_current_reference_fails(fixture / "missing")
         test_fixture_run_placeholder_is_not_current_reference(fixture / "fixture-run-placeholder")
@@ -202,8 +204,6 @@ def run_tests() -> None:
         test_current_visible_or_sandbox_reference_fails(fixture / "current-visible")
         test_visible_fallback_cdb_reference_fails(fixture / "visible-fallback")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
 
 
 def main() -> int:
