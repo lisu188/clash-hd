@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mocked collection and actual source-only matrix registration; no aggregate or runtime."""
+"""Mocked collection and actual source-only registration; no aggregate, runtime or canonical outputs."""
 from __future__ import annotations
 
 import ast
@@ -78,7 +78,8 @@ class CollectionTests(unittest.TestCase):
 
     def test_all_original_dispatches_order_arguments_and_names_preserved(self):
         # Preserve the original 169-call/167-key oracle and admit only the
-        # explicitly registered matrix-context, field-loss, Tile, content and Count suites.
+        # explicitly registered matrix-context, field-loss, Tile, content, Count
+        # and hidden-soak suites.
         # It includes both repeated dependent calls and the zero-argument runner.
         tree = ast.parse(inspect.getsource(refresh.build_refresh))
         calls = sorted((n for n in ast.walk(tree) if isinstance(n, ast.Call)
@@ -87,7 +88,8 @@ class CollectionTests(unittest.TestCase):
         rows = [(n.args[0].value, n.args[1].id, [a.id for a in n.args[2:]]) for n in calls]
         added = {"matrix_cell_release_tests", "battle_field_loss_tests", "battle_tile_replay_tests",
                  "battle_content_replay_tests", "battle_count_entry_tests", "battle_count_body_v2_tests",
-                 "battle_native_count_authoring_tests"}
+                 "battle_native_count_authoring_tests",
+                 "hidden_soak_integration_tests", "hidden_soak_harness_preflight_tests"}
         original_rows = [row for row in rows if row[0] not in added]
         digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
@@ -101,8 +103,10 @@ class CollectionTests(unittest.TestCase):
             ("battle_count_entry_tests", "build_battle_count_entry_tests", ["args"]),
             ("battle_count_body_v2_tests", "build_battle_count_body_v2_tests", ["args"]),
             ("battle_native_count_authoring_tests", "build_battle_native_count_authoring_tests", ["args"]),
+            ("hidden_soak_integration_tests", "build_hidden_soak_integration_tests", ["args"]),
+            ("hidden_soak_harness_preflight_tests", "build_hidden_soak_harness_preflight_tests", ["args"]),
         ])
-        self.assertEqual(len(rows), 176)
+        self.assertEqual(len(rows), 178)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -110,7 +114,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 174)
+        self.assertEqual(len(report["checks"]), 176)
         self.assertIs(report["passed"], True)
 
     def test_simple_test_policy_default_preserves_legacy_result(self):
@@ -285,6 +289,33 @@ class CollectionTests(unittest.TestCase):
         self.assertIn("no runtime or release acceptance", payload["guard_policy"])
         self.assertFalse(payload["failures"])
 
+    @unittest.skipUnless(
+        sys.platform == "win32" and refresh.test_hidden_soak_harness_preflight.POWERSHELL.exists(),
+        "real pure-PowerShell registration needs Windows",
+    )
+    def test_registered_hidden_preflight_entrypoint_and_runtime_policy(self):
+        # Exercise the actual registered runner, not a mocked callable. Output
+        # serializers alone are mocked so no canonical evidence is rewritten.
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ):
+            result = refresh.build_hidden_soak_harness_preflight_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        payload = write_json.call_args.args[1]
+        self.assertIn("isolated read-only PowerShell", payload["runtime_policy"])
+        self.assertIn("never executes the runtime harness", payload["runtime_policy"])
+        self.assertNotIn("does not launch Clash95, CDB, wrappers, PowerShell", payload["runtime_policy"])
+
+    def test_registered_hidden_integration_entrypoint(self):
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ):
+            result = refresh.build_hidden_soak_integration_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        payload = write_json.call_args.args[1]
+        self.assertIn("synthetic source-only integration", payload["guard_policy"])
+        self.assertEqual(len(payload["tests"]), 5)
+
     def test_early_missing_input_keeps_completed_and_later_results(self):
         message = "captures/current/patch-stage-current-hd-map.json is missing"
         def missing(args):
@@ -294,7 +325,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 176)
+        self.assertEqual(len(self.calls), 178)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -340,7 +371,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 176)
+                self.assertEqual(len(self.calls), 178)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

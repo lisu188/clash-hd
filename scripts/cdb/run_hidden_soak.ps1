@@ -45,7 +45,10 @@ param(
     [int]$ReadyTimeoutSec = 240,
     [ValidateRange(30, 900)]
     [int]$EndGraceSec = 180,
+    [ValidateRange(1, 4096)]
     [int]$MaxArtifactMB = 250,
+    [ValidateRange(64, 4096)]
+    [int]$BuildHeadroomMB = 256,
     [int]$MaxWorkingSetGrowthMB = 64,
     [int]$MaxPrivateMemoryGrowthMB = 64,
     [int]$MaxHandleGrowth = 128,
@@ -76,6 +79,47 @@ $ExpectedOutputRoot = 'C:\ClashCaptures\hd-soak\hidden'
 function Get-FullPath {
     param([string]$Path)
     [System.IO.Path]::GetFullPath($Path)
+}
+
+function Assert-SoakPlainPaths {
+    # Walk lexical ancestors root-first, without querying through a junction. Missing run
+    # descendants are allowed, but every existing ancestor must be readable and
+    # ordinary, and an existing volume root must eventually be reached.
+    param([string[]]$Paths)
+    foreach ($path in $Paths) {
+        if (-not $path) { continue }
+        $current = Get-FullPath -Path $path
+        $ancestors = New-Object 'System.Collections.Generic.List[string]'
+        while ($current) {
+            $ancestors.Add($current)
+            $current = [System.IO.Path]::GetDirectoryName($current.TrimEnd('\'))
+        }
+        $foundRoot = $false
+        for ($index = $ancestors.Count - 1; $index -ge 0; $index--) {
+            $current = $ancestors[$index]
+            try {
+                $item = Get-Item -LiteralPath $current -Force -ErrorAction Stop
+                if ($null -eq $item -or $null -eq $item.Attributes) {
+                    throw "Physical path attributes are unavailable: $current"
+                }
+                if (([int64]$item.Attributes -band [int64][System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                    throw "Reparse-point evidence/input path is forbidden: $current"
+                }
+                if ([string]::Equals($current.TrimEnd('\'),
+                    ([System.IO.Path]::GetPathRoot($current)).TrimEnd('\'),
+                    [System.StringComparison]::OrdinalIgnoreCase)) {
+                    $foundRoot = $true
+                }
+            }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                # The nearest existing ancestor is now fully checked. Missing
+                # descendants cannot be queried safely as if they existed.
+                # Permission/provider/attribute errors never enter this catch.
+                break
+            }
+        }
+        if (-not $foundRoot) { throw "Physical path has no readable existing volume root: $path" }
+    }
 }
 
 function Get-FileSha256 {
@@ -132,6 +176,42 @@ function Get-PeMachine {
     }
 }
 
+function Get-SoakDiskSpace {
+    param([string]$VolumeRoot)
+    $drive = New-Object System.IO.DriveInfo($VolumeRoot)
+    if (-not $drive.IsReady) { throw "Output volume is not ready: $VolumeRoot" }
+    [pscustomobject]@{
+        TotalBytes = [int64]$drive.TotalSize
+        FreeBytes = [int64]$drive.AvailableFreeSpace
+    }
+}
+
+function Assert-SoakDiskReserve {
+    # Read-only, including in dry-run. Pending bytes are declared before any
+    # compiler, candidate, capture or report writes; 90% used is never admitted.
+    param([string[]]$Paths, [int64]$PendingBytes)
+    if ($PendingBytes -lt 0) { throw 'Pending disk allowance cannot be negative' }
+    Assert-SoakPlainPaths -Paths $Paths
+    $volumes = @{}
+    foreach ($path in $Paths) {
+        if (-not $path) { continue }
+        $volume = [System.IO.Path]::GetPathRoot((Get-FullPath -Path $path))
+        if (-not $volume) { throw "Cannot determine output volume for $path" }
+        $volumes[$volume] = $true
+    }
+    foreach ($volume in $volumes.Keys) {
+        $space = Get-SoakDiskSpace -VolumeRoot $volume
+        if ($space.TotalBytes -le 0 -or $space.FreeBytes -lt 0 -or $space.FreeBytes -gt $space.TotalBytes) {
+            throw "Invalid disk-space observation for $volume"
+        }
+        $remaining = [decimal]$space.FreeBytes - [decimal]$PendingBytes
+        $reserve = [decimal]$space.TotalBytes / 10
+        if ($remaining -le $reserve) {
+            throw "Disk reserve refused $volume : free=$($space.FreeBytes) pending=$PendingBytes bytes; more than 10% ($reserve bytes) must remain free"
+        }
+    }
+}
+
 if ($FrameIntervalSec -ge $DurationSec) {
     throw "-FrameIntervalSec ($FrameIntervalSec) must be smaller than -DurationSec ($DurationSec)"
 }
@@ -142,6 +222,8 @@ if ($Route -eq 'map-pan' -and $PanIntervalSec -ge $DurationSec) {
 # Everything through this boundary is read-only.  In particular, keep Add-Type,
 # directory creation, patching, proxy compilation, probe generation, and process
 # launch below the explicit -Execute gate.
+Assert-SoakPlainPaths -Paths @($RepoRoot, $InputExe, $WorkDir, $Cdb, $CandidateDir, $OutDir,
+    $ReportJson, $ReportMarkdown, $GuardJson, $GuardMarkdown)
 foreach ($path in @($InputExe, $WorkDir, $Cdb, $ProbeTemplate, $SoakProbeTemplate, $DdrawProxyBuildScript)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required preflight path was not found: $path"
@@ -228,6 +310,11 @@ foreach ($publishSpec in @(
         throw "-$($publishSpec.Name) must use the $($publishSpec.Extension) extension"
     }
 }
+$diskPaths = @($RepoRoot, $inputFull, $WorkDir, $Cdb, $candidateRunDir, $candidateFull, $runDir,
+    $ReportJson, $ReportMarkdown, $GuardJson, $GuardMarkdown)
+$pendingArtifactBytes = [int64]$MaxArtifactMB * 1MB
+$pendingRunBytes = $pendingArtifactBytes + [int64]$BuildHeadroomMB * 1MB + (Get-Item -LiteralPath $inputFull).Length
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingRunBytes
 
 if (-not $Execute) {
     $commandParts = @('powershell.exe -NoProfile -ExecutionPolicy Bypass -File')
@@ -242,6 +329,7 @@ if (-not $Execute) {
         @{ Name = 'EndGraceSec'; Value = $EndGraceSec },
         @{ Name = 'PngEdgeCount'; Value = $PngEdgeCount },
         @{ Name = 'MaxArtifactMB'; Value = $MaxArtifactMB },
+        @{ Name = 'BuildHeadroomMB'; Value = $BuildHeadroomMB },
         @{ Name = 'MaxWorkingSetGrowthMB'; Value = $MaxWorkingSetGrowthMB },
         @{ Name = 'MaxPrivateMemoryGrowthMB'; Value = $MaxPrivateMemoryGrowthMB },
         @{ Name = 'MaxHandleGrowth'; Value = $MaxHandleGrowth },
@@ -835,6 +923,49 @@ function Get-RouteValidationFailures {
     if ($start -and $end -and $end.LineNumber -le $start.LineNumber) {
         $failures += 'SOAK_ROUTE_END was not ordered after SOAK_ROUTE_START'
     }
+    if ($start -and $soakReadyRows.Count -eq 1 -and
+        ($soakReadyRows[0].LineNumber -le $start.LineNumber -or
+         ($end -and $soakReadyRows[0].LineNumber -ge $end.LineNumber))) {
+        $failures += 'SOAK_SURFDUMP_READY was not ordered between route start and end'
+    }
+
+    # Heartbeats, pan writes and the end marker share the redraw clock latch.
+    # A heartbeat and pan/end on one redraw may have identical tick/hit pairs;
+    # no later source row may move either counter backwards or change player.
+    $orderedEvents = @(@($Observations.Heartbeats) + @($Observations.PanEvents) + @($Observations.RouteEnds) |
+        Sort-Object LineNumber)
+    $previousEventTick = 0L
+    $previousEventHits = 0L
+    $currentScrollX = if ($start) { $start.ScrollX } else { $null }
+    $currentScrollY = if ($start) { $start.ScrollY } else { $null }
+    foreach ($event in $orderedEvents) {
+        if ($event.TickDelta -lt $previousEventTick -or $event.Hits -lt $previousEventHits -or
+            $event.Hits -le 0 -or
+            ($event.Hits -eq $previousEventHits -and $event.TickDelta -ne $previousEventTick)) {
+            $failures += 'route marker rows are not globally ordered by redraw tickdelta and hits'
+            break
+        }
+        if (($event.PSObject.Properties.Name -contains 'Player') -and
+            $start -and $event.Player -ne $start.Player) {
+            $failures += 'route marker player changed from SOAK_ROUTE_START'
+            break
+        }
+        if (($event.PSObject.Properties.Name -contains 'ScrollX') -and $start -and
+            ($event.ScrollX -ne $currentScrollX -or $event.ScrollY -ne $currentScrollY)) {
+            $failures += 'route marker scroll changed outside the ordered forced-pan writes'
+            break
+        }
+        if ($event.PSObject.Properties.Name -contains 'DeltaX') {
+            $currentScrollX = $event.X
+            $currentScrollY = $event.Y
+        }
+        if ($end -and $event.TickDelta -gt $end.TickDelta) {
+            $failures += 'route marker tickdelta exceeds SOAK_ROUTE_END'
+            break
+        }
+        $previousEventTick = $event.TickDelta
+        $previousEventHits = $event.Hits
+    }
 
     $previousHeartbeatTick = -1L
     $previousHeartbeatHits = -1L
@@ -876,6 +1007,11 @@ function Get-RouteValidationFailures {
         return @($failures)
     }
     $plan = $Observations.PanPlans[0]
+    if (($start -and $plan.LineNumber -le $start.LineNumber) -or
+        ($soakReadyRows.Count -eq 1 -and $plan.LineNumber -le $soakReadyRows[0].LineNumber) -or
+        ($end -and $plan.LineNumber -ge $end.LineNumber)) {
+        $failures += 'SOAK_PAN_PLAN was not ordered after readiness and before route end'
+    }
     if ($start -and ($plan.BaseX -ne $start.ScrollX -or $plan.BaseY -ne $start.ScrollY)) {
         $failures += 'SOAK_PAN_PLAN base does not match SOAK_ROUTE_START scroll coordinates'
     }
@@ -901,6 +1037,9 @@ function Get-RouteValidationFailures {
     }
     $previousTick = 0L
     $previousHits = -1L
+    # Preserve the minimum scheduled interval. Permit at most two seconds of
+    # redraw jitter, never an unobserved interior or terminal stretch of pans.
+    $maximumPanGapTicks = $ExpectedPanIntervalTicks + 128L
     for ($index = 0; $index -lt $events.Count; $index++) {
         $event = $events[$index]
         $expectedPhase = $index % 4
@@ -918,8 +1057,16 @@ function Get-RouteValidationFailures {
             $failures += "SOAK_PAN_SET event $index coordinates=($($event.X),$($event.Y)), expected=($expectedX,$expectedY)"
             break
         }
-        if (($event.TickDelta - $previousTick) -lt $ExpectedPanIntervalTicks -or $event.Hits -le $previousHits) {
+        if (($event.TickDelta - $previousTick) -lt $ExpectedPanIntervalTicks -or $event.Hits -le $previousHits -or $event.Hits -le 0) {
             $failures += "SOAK_PAN_SET event $index is not ordered by the requested pan interval and redraw hits"
+            break
+        }
+        if (($event.TickDelta - $previousTick) -gt $maximumPanGapTicks) {
+            $failures += "SOAK_PAN_SET event $index leaves a pan coverage gap beyond the requested interval plus two seconds"
+            break
+        }
+        if ($event.LineNumber -le $plan.LineNumber -or ($end -and $event.TickDelta -ge $end.TickDelta)) {
+            $failures += "SOAK_PAN_SET event $index is outside its plan or route tick interval"
             break
         }
         if (($start -and $event.LineNumber -le $start.LineNumber) -or ($end -and $event.LineNumber -ge $end.LineNumber)) {
@@ -928,6 +1075,9 @@ function Get-RouteValidationFailures {
         }
         $previousTick = $event.TickDelta
         $previousHits = $event.Hits
+    }
+    if ($end -and ($end.TickDelta - $events[-1].TickDelta) -gt $maximumPanGapTicks) {
+        $failures += 'SOAK_PAN_SET terminal coverage ends more than the requested interval plus two seconds before route end'
     }
     return @($failures)
 }
@@ -950,6 +1100,7 @@ $publishReportMarkdown = $ReportMarkdown
 $publishGuardJson = $GuardJson
 $publishGuardMarkdown = $GuardMarkdown
 
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingRunBytes
 New-Item -ItemType Directory -Path $candidateRunDir -Force | Out-Null
 New-Item -ItemType Directory -Path $runDir -Force | Out-Null
 $framesDir = Join-Path $runDir 'frames'
@@ -963,6 +1114,7 @@ $runReportMarkdown = Join-Path $runDir 'RUN-SUMMARY.md'
 $runGuardJson = Join-Path $runDir 'guard.json'
 $runGuardMarkdown = Join-Path $runDir 'GUARD-SUMMARY.md'
 
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingRunBytes
 & $pythonExe $patcher --input $inputFull --output $candidateFull --stage $Stage
 if ($LASTEXITCODE -ne 0) {
     throw "patch_clash95_hd.py failed with exit code $LASTEXITCODE"
@@ -979,6 +1131,7 @@ if ($LASTEXITCODE -ne 0) {
 $proxyDllPath = Join-Path $candidateRunDir 'ddraw.dll'
 $proxyManifestPath = Join-Path $candidateRunDir 'ddraw_surfdump_proxy.build.json'
 $proxyLogPath = Join-Path $candidateRunDir 'ddraw_surfdump_proxy.log'
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingRunBytes
 & $DdrawProxyBuildScript -OutputDll $proxyDllPath -LogDir $runDir
 if (-not (Test-Path -LiteralPath $proxyDllPath -PathType Leaf)) {
     throw "DirectDraw proxy build did not create $proxyDllPath"
@@ -1070,6 +1223,7 @@ $leftoverPlaceholders = [regex]::Matches($probeText, '__[A-Z0-9_]+__') | ForEach
 if (@($leftoverPlaceholders).Count -gt 0) {
     throw "Probe composition left unsubstituted placeholders: $($leftoverPlaceholders -join ', ')"
 }
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 Set-Content -LiteralPath $generatedProbe -Value $probeText -Encoding ASCII
 
 # --- Hidden-desktop launch + sampling loop -----------------------------------
@@ -1105,6 +1259,7 @@ $cleanup = $null
 $observations = Parse-SoakLog -LogText ''
 
 try {
+    Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
     $launch = Start-CdbOnHiddenDesktop -CdbPath $Cdb -Arguments $cdbArgs -WorkingDirectory $WorkDir -DesktopName $desktopName
     $cdbProcess = [System.Diagnostics.Process]::GetProcessById($launch.ProcessId)
 
@@ -1113,6 +1268,9 @@ try {
     $nextSampleAt = $null
 
     while ((Get-Date) -lt $overallDeadline) {
+        # CDB and the proxy append their own logs while the target is running.
+        # Stop this owned chain if another writer consumes the reserved room.
+        Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
         Start-Sleep -Milliseconds 500
         $logText = if (Test-Path -LiteralPath $logPath) { [string](Get-Content -LiteralPath $logPath -Raw) } else { '' }
         $observations = Parse-SoakLog -LogText $logText
@@ -1274,6 +1432,14 @@ finally {
     if ($launch -and $launch.DesktopHandle -ne [IntPtr]::Zero) {
         [ClashHiddenSoakNative]::CloseDesktop($launch.DesktopHandle) | Out-Null
     }
+    try {
+        if ((Get-FileSha256 -Path $inputFull) -ne $inputSha) {
+            $runnerFailures += 'original executable SHA changed during the runtime'
+        }
+    }
+    catch {
+        $runnerFailures += "original executable post-runtime verification failed: $($_.Exception.Message)"
+    }
 }
 
 # --- Persist first/last N frames as raw + PNG --------------------------------
@@ -1290,6 +1456,7 @@ foreach ($name in ($edgeNames.Keys | Sort-Object)) {
     $rawPath = Join-Path $framesDir ("$name.raw")
     $pngPath = Join-Path $framesDir ("$name.png")
     $pngMetaPath = Join-Path $framesDir ("$name.png.json")
+    Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
     [System.IO.File]::WriteAllBytes($rawPath, $edgeNames[$name])
     & $pythonExe $converter $rawPath --width $ready.Width --height $ready.Height --output $pngPath --metadata $pngMetaPath --log $logPath
     if ($LASTEXITCODE -ne 0) {
@@ -1439,19 +1606,23 @@ $samples = [ordered]@{
     report_json = $runReportJson
     report_markdown = $runReportMarkdown
 }
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 $samples | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $samplesJson -Encoding ASCII
 
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 & $pythonExe $assembler $samplesJson --write-json $runReportJson --write-markdown $runReportMarkdown
 if ($LASTEXITCODE -ne 0) {
     throw "hidden_soak_report_assembler.py failed with exit code $LASTEXITCODE"
 }
 
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 & $pythonExe $grader $runReportJson --hidden --write-json $runGuardJson --write-markdown $runGuardMarkdown
 if ($LASTEXITCODE -ne 0) {
     throw "hd_soak_report.py failed with exit code $LASTEXITCODE"
 }
 $report = Get-Content -LiteralPath $runReportJson -Raw | ConvertFrom-Json
 $guard = Get-Content -LiteralPath $runGuardJson -Raw | ConvertFrom-Json
+Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 Publish-CanonicalArtifact -Source $runReportJson -Destination $publishReportJson
 Publish-CanonicalArtifact -Source $runReportMarkdown -Destination $publishReportMarkdown
 Publish-CanonicalArtifact -Source $runGuardJson -Destination $publishGuardJson

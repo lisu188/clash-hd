@@ -48,6 +48,12 @@ from hd_soak_report import (  # noqa: E402
     integer_or_none,
     float_or_none,
     is_sha256,
+    hidden_frame_sample_failures,
+    hidden_pan_coverage_failures,
+    hidden_pan_pattern_failures,
+    hidden_process_sample_failures,
+    hidden_route_end_failures,
+    hidden_sample_coverage_failures,
     normalize_sha,
     status_text,
     timestamp_span_seconds,
@@ -146,8 +152,15 @@ def assemble_report(
     route = str(samples.get("route") or "")
     duration_sec = integer_or_none(samples.get("duration_sec"))
     frame_interval_sec = integer_or_none(samples.get("frame_interval_sec"))
-    frame_samples = list(samples.get("frame_samples") or [])
-    process_samples = list(samples.get("process_samples") or [])
+    raw_frame_samples = list(samples.get("frame_samples") or [])
+    raw_process_samples = list(samples.get("process_samples") or [])
+    # Evaluate malformed rows as missing fields without dropping the originals
+    # from the returned diagnostic inventory.
+    frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
+    process_samples = [row if isinstance(row, dict) else {} for row in raw_process_samples]
+    for index, row in enumerate(raw_frame_samples):
+        if not isinstance(row, dict):
+            failures.append(f"frame sample {index} is not an object")
     capture_errors = list(samples.get("capture_errors") or [])
     runner_failures = [str(row) for row in (samples.get("runner_failures") or [])]
     ready_marker = samples.get("ready_marker")
@@ -334,6 +347,17 @@ def assemble_report(
         failures.append(
             f"map-idle route recorded {pan_event_count} forced-scroll events; an idle route must not pan"
         )
+    if route == "map-pan":
+        failures.extend(hidden_pan_pattern_failures(route_start_marker, pan_events))
+        failures.extend(hidden_pan_coverage_failures(
+            pan_events, duration_ticks=expected_duration_ticks,
+            interval_sec=integer_or_none(samples.get("pan_interval_sec")),
+            end_tick_delta=end_tick_delta,
+        ))
+    failures.extend(hidden_route_end_failures(
+        route_start_marker, route_end_marker, pan_events,
+        route=route, duration_ticks=expected_duration_ticks,
+    ))
 
     # The memory-only proxy is part of the hidden capture chain. It must have a
     # SHA-tied build/log trail and presentation must remain disabled.
@@ -394,6 +418,12 @@ def assemble_report(
         failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
 
     # --- frame inventory + render metrics (real reads only) ------------------
+    failures.extend(hidden_frame_sample_failures(
+        raw_frame_samples, min_nonblack_percent=min_nonblack_percent,
+        min_unique_sample_colors=min_unique_sample_colors,
+        expected_width=expected_width, expected_height=expected_height,
+        allowed_capture_modes=(HIDDEN_CAPTURE_MODE,),
+    ))
     frame_count = len(frame_samples)
     if frame_count < min_frames:
         failures.append(f"frame sample count {frame_count} is below {min_frames}")
@@ -417,14 +447,14 @@ def assemble_report(
         )
 
     nonblack_values = [
-        value
-        for value in (float_or_none(frame.get("NonblackPercent")) for frame in frame_samples)
-        if value is not None
+        float(frame["NonblackPercent"])
+        for frame in frame_samples
+        if type(frame.get("NonblackPercent")) in (int, float) and 0 <= frame["NonblackPercent"] <= 100
     ]
     unique_values = [
-        value
-        for value in (integer_or_none(frame.get("UniqueSampleColors")) for frame in frame_samples)
-        if value is not None
+        frame["UniqueSampleColors"]
+        for frame in frame_samples
+        if type(frame.get("UniqueSampleColors")) is int and 0 <= frame["UniqueSampleColors"] <= 256
     ]
     if len(nonblack_values) != frame_count:
         failures.append("one or more frame samples are missing NonblackPercent")
@@ -464,6 +494,7 @@ def assemble_report(
     process_sample_count = len(process_samples)
     if process_sample_count < 2:
         failures.append(f"process sample count {process_sample_count} is below 2")
+    failures.extend(hidden_process_sample_failures(raw_process_samples))
     exited_rows = [row for row in process_samples if row.get("HasExited") is True]
     if exited_rows:
         failures.append(f"{len(exited_rows)} process samples reported HasExited=True")
@@ -518,6 +549,12 @@ def assemble_report(
     # --- elapsed coverage ------------------------------------------------------
     frame_elapsed_sec, invalid_frame_ts = timestamp_span_seconds(frame_samples)
     process_elapsed_sec, invalid_process_ts = timestamp_span_seconds(process_samples)
+    coverage_failures = hidden_sample_coverage_failures(
+        raw_frame_samples, duration_sec=duration_sec, interval_sec=frame_interval_sec, label="frame"
+    ) + hidden_sample_coverage_failures(
+        raw_process_samples, duration_sec=duration_sec, interval_sec=frame_interval_sec, label="process"
+    )
+    failures.extend(coverage_failures)
     if invalid_frame_ts:
         failures.append(f"{invalid_frame_ts} frame samples have missing or invalid timestamps")
     if invalid_process_ts:
@@ -631,6 +668,7 @@ def assemble_report(
         "route": route,
         "duration_sec": duration_sec,
         "sample_interval_sec": frame_interval_sec,
+        "pan_interval_sec": pan_interval_sec,
         "stage": stage,
         "protected_stable_stage": PROTECTED_STABLE_STAGE,
         "stable_stage_should_change": False,
@@ -694,6 +732,7 @@ def assemble_report(
                 and process_elapsed_sec is not None
                 and frame_elapsed_sec >= required_elapsed_sec
                 and process_elapsed_sec >= required_elapsed_sec
+                and not coverage_failures
             ),
         },
         "process_sample_count": process_sample_count,
@@ -712,8 +751,8 @@ def assemble_report(
         "max_artifact_mb": max_artifact_mb,
         "artifact_limit_bytes": artifact_limit_bytes,
         "artifact_bytes": artifact_bytes,
-        "frame_samples": frame_samples,
-        "process_samples": process_samples,
+        "frame_samples": raw_frame_samples,
+        "process_samples": raw_process_samples,
         "capture_errors": capture_errors,
     }
     return report

@@ -1,0 +1,79 @@
+{
+  "schema": "hidden_soak_revalidation_conclusion_v1",
+  "observed_date": "2026-10-08",
+  "scope": "source-only integrity repairs and read-only local evidence revalidation",
+  "runtime_launched": false,
+  "original_executable_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "original_executable_unchanged": true,
+  "historical_short_steps_recorded_passing": 5,
+  "short_steps_freshly_verifiable": 0,
+  "fresh_dispatcher_result": "all five canonical short reports fail because their exact external patch-stage manifests are absent",
+  "retained_receipts_modified": false,
+  "missing_external_provenance": {
+    "candidates": 5,
+    "patch_stage_manifests": 5,
+    "run_output_directories": 5,
+    "hidden_proxy_dlls": 4,
+    "hidden_proxy_build_manifests": 4,
+    "hidden_proxy_runtime_logs": 4,
+    "hidden_cdb_logs": 4,
+    "hidden_generated_probes": 4,
+    "hidden_raw_frame_references": 210,
+    "hidden_png_references": 210,
+    "visible_menu_frame_references": 8
+  },
+  "long_evidence": {
+    "map_idle": "retained failed cleanup attempt and separate interrupted attempt; neither is passing proof",
+    "map_pan": "missing",
+    "combined_proof": "missing"
+  },
+  "runtime_blockers": [
+    "C volume usage is approximately 94.6 percent; strict greater-than-ten-percent free reserve plus pending allowance is not met",
+    "original authenticated external soak artifacts are absent; historical pass flags cannot unlock new long runs"
+  ],
+  "source_integrity_repairs": [
+    "strict disk and physical-root preflight before hidden execution mutations",
+    "complete periodic sample and pan coverage with unchanged duration - interval - 2 endpoint bound",
+    "strict metrics, dimensions, hashes and hidden capture modes on every retained frame row",
+    "explicit process telemetry on every row, ordered markers, terminal route/player/scroll binding",
+    "fresh environment-aware short-ladder regrading rather than saved pass booleans",
+    "hidden long source and patch byte binding, fresh regrading and compact-summary identity checks",
+    "synthetic end-to-end integration and RAM-only harness preflight suites registered in aggregate"
+  ],
+  "remaining_production_gaps": [
+    "retained native process/job ownership and generation-safe cleanup",
+    "coherent full-frame pixel retention rather than intermediate metric/hash receipts alone",
+    "loaded-image authentication rather than on-disk hash receipts alone",
+    "retention and independent regrading of exact live-bound pan-plan receipts",
+    "running-time coverage excluding debugger holds and host sleep"
+  ],
+  "required_next_decision": "restore the original authenticated external artifacts or explicitly choose a new evidence strategy; free capacity before artifact-producing work",
+  "source_only_verification": {
+    "passed_focused_suites": [
+      "test_hd_soak_report.py",
+      "test_hidden_soak_report_assembler.py",
+      "test_hd_soak_short_step_status.py",
+      "test_hd_soak_short_validation_refresh.py",
+      "test_hd_soak_failure_triage.py",
+      "test_hd_soak_short_tier_ladder.py",
+      "test_hd_soak_harness_guard.py",
+      "test_hidden_soak_harness_preflight.py",
+      "test_hidden_soak_cleanup.py",
+      "test_current_evidence_refresh_collection.py",
+      "test_hd_soak_long_report_guard.py",
+      "test_hidden_soak_integration.py"
+    ],
+    "public_source_checks_passed": 8,
+    "powershell_ast_parse_passed": true,
+    "diff_check_passed": true,
+    "preserved_baseline_hashes_checked": 3382,
+    "preservation_mismatches": 0,
+    "runtime_or_native_build_proof": false
+  },
+  "full_aggregate_refreshes_completed": 0,
+  "manual_directinput_proof": "unresolved",
+  "visible_composition_acceptance": "unresolved",
+  "release_complete": false,
+  "stable_stage_promoted": false,
+  "publication_constraint": "current historical merge and descendants remain local; any publication requires content-only sanitized origin/main ancestry"
+}

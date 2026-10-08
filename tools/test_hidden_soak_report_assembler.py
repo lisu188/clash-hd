@@ -4,6 +4,7 @@ hidden soak probe and runner (nothing is executed; probe/runner are only read)."
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 import subprocess
@@ -105,7 +106,9 @@ def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
         },
         "route_end_marker": {
             "route_ticks": duration * 64, "pan": int(route == "map-pan"),
-            "hits": 8192, "tick_delta": duration * 64, "player": 0, "scroll_x": 4, "scroll_y": 6,
+            "hits": 8192, "tick_delta": duration * 64, "player": 0,
+            "scroll_x": 5 if route == "map-pan" else 4,
+            "scroll_y": 7 if route == "map-pan" else 6,
         },
         "pan_events": [
             {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
@@ -302,6 +305,108 @@ def test_elapsed_coverage_gap_fails() -> None:
     assert any("frame sample elapsed coverage" in failure for failure in report["failures"])
 
 
+def test_periodic_coverage_rejects_sparse_unordered_and_missing_samples() -> None:
+    samples = make_samples()
+    samples.update(duration_sec=7200, duration_ticks=460800,
+                   frame_samples=frame_rows(2, 7200), process_samples=process_rows(2, 7200))
+    samples["route_start_marker"]["route_ticks"] = 460800
+    samples["route_end_marker"].update(route_ticks=460800, tick_delta=460800)
+    samples["elapsed_coverage"].update(required_sec=7168, frame_elapsed_sec=7200, process_elapsed_sec=7200)
+    report = assembler.assemble_report(samples)
+    assert not report["passed"]
+    assert any("periodic sample count" in failure for failure in report["failures"])
+    assert not report["elapsed_coverage"]["passed"]
+    for inventory in ("frame_samples", "process_samples"):
+        for mutation in ("interior_gap", "reversed", "duplicate", "malformed"):
+            samples = make_samples()
+            rows = samples[inventory]
+            if mutation == "interior_gap":
+                rows.pop(2)  # Endpoint coverage remains 120s and count remains sufficient.
+            elif mutation == "reversed":
+                rows[1], rows[2] = rows[2], rows[1]
+            elif mutation == "duplicate":
+                rows[2]["Timestamp"] = rows[1]["Timestamp"]
+            else:
+                rows[2] = "retained malformed original"
+            report = assembler.assemble_report(samples)
+            assert not report["passed"], (inventory, mutation)
+            assert report[inventory] == rows  # No dropped or synthesized original rows.
+            assert any("sample" in failure for failure in report["failures"])
+    samples = make_samples()
+    for inventory in ("frame_samples", "process_samples"):
+        for row, seconds in zip(samples[inventory], (0, 31, 61, 92, 120)):
+            row["Timestamp"] = iso(seconds)
+    assert assembler.assemble_report(samples)["passed"]
+
+
+def test_periodic_count_uses_the_same_bounded_jitter_as_each_gap() -> None:
+    samples = make_samples()
+    samples.update(duration_sec=1800, duration_ticks=115200, frame_interval_sec=15,
+                   frame_samples=frame_rows(119, 15), process_samples=process_rows(119, 15))
+    samples["route_start_marker"]["route_ticks"] = 115200
+    samples["route_end_marker"].update(route_ticks=115200, tick_delta=115200)
+    samples["elapsed_coverage"].update(required_sec=1783, frame_elapsed_sec=1798, process_elapsed_sec=1798)
+    for inventory in ("frame_samples", "process_samples"):
+        for index, row in enumerate(samples[inventory]):
+            row["Timestamp"] = iso(index * 1798 / 118)
+    report = assembler.assemble_report(samples)
+    assert report["passed"], report["failures"]
+    assert report["frame_sample_count"] == report["process_sample_count"] == 119
+    assert report["required_elapsed_sec"] == 1783
+
+
+def test_terminal_marker_identity_and_scroll_are_bound_to_the_route() -> None:
+    for route in ("map-idle", "map-pan"):
+        for field in ("route_ticks", "pan", "player", "scroll_x", "scroll_y"):
+            for missing in (True, False):
+                samples = make_samples(route)
+                end = samples["route_end_marker"]
+                if missing:
+                    end.pop(field)
+                else:
+                    end[field] += 1
+                report = assembler.assemble_report(samples)
+                assert not report["passed"], (route, field, missing)
+                assert any(f"route_end_marker.{field}" in failure for failure in report["failures"]), report["failures"]
+
+
+def test_every_process_sample_requires_live_numeric_telemetry() -> None:
+    for field in ("WorkingSet64", "PrivateMemorySize64", "HandleCount", "HasExited"):
+        for value in (None, -1, True, "unavailable"):
+            samples = make_samples()
+            samples["process_samples"][2][field] = value
+            report = assembler.assemble_report(samples)
+            assert not report["passed"], (field, value)
+            assert any(field in failure for failure in report["failures"]), report["failures"]
+
+
+def test_pan_events_require_positive_periodic_full_route_coverage() -> None:
+    for mutation in ("negative_tick", "zero_hits", "missing_middle", "missing_tail", "late_start", "past_end"):
+        samples = make_samples("map-pan")
+        events = samples["pan_events"]
+        if mutation == "negative_tick":
+            events[0]["tick_delta"] = -1
+        elif mutation == "zero_hits":
+            events[0]["hits"] = 0
+        elif mutation == "missing_middle":
+            events.pop(3)
+        elif mutation == "missing_tail":
+            del events[4:]
+        elif mutation == "late_start":
+            for event in events:
+                event["tick_delta"] += 129
+        else:
+            events[-1]["tick_delta"] = samples["duration_ticks"]
+        samples["pan_event_count"] = len(events)
+        report = assembler.assemble_report(samples)
+        assert not report["passed"], mutation
+        assert any("pan" in failure for failure in report["failures"]), report["failures"]
+    samples = make_samples("map-pan")
+    for event in samples["pan_events"]:
+        event["tick_delta"] += 128  # Bounded first-redraw jitter, exact adjacent interval.
+    assert assembler.assemble_report(samples)["passed"]
+
+
 def test_missing_or_forged_provenance_fails() -> None:
     for field in ("ready_marker", "route_start_marker", "route_end_marker", "proxy", "cleanup", "elapsed_coverage"):
         samples = make_samples()
@@ -335,6 +440,195 @@ def test_reports_pass_shared_hidden_grader(fixture: Path) -> None:
         report = assembler.assemble_report(make_samples(route, patch_stage_report=str(patch_path)))
         guard = evaluate_report_for_environment(report)
         assert guard["overall"], guard["failures"]
+
+
+def test_every_hidden_frame_requires_strict_metrics_and_surface_provenance(fixture: Path) -> None:
+    from hd_soak_report import evaluate_report_for_environment
+
+    fixture.mkdir(parents=True, exist_ok=True)
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+    samples = make_samples(patch_stage_report=str(patch_path))
+    baseline = assembler.assemble_report(samples)
+    assert baseline["passed"]
+    assert evaluate_report_for_environment(baseline)["overall"]
+    cases = [
+        ("NonblackPercent", value)
+        for value in (None, True, False, "87.5", float("nan"), float("inf"), -float("inf"), -1, 101, 9.9)
+    ] + [
+        ("UniqueSampleColors", value)
+        for value in (None, True, False, "42", 42.5, float("nan"), float("inf"), -1, 257, 7)
+    ] + [
+        ("CaptureMode", "screen"), ("CaptureMode", "qmp_screendump"), ("CaptureMode", None),
+        ("RenderEvidence", False), ("Width", 800.5), ("Height", "600"),
+        ("Hash", int("1" * 64)),
+    ]
+    for field, value in cases:
+        invalid = copy.deepcopy(samples)
+        invalid["frame_samples"][1][field] = value
+        assembled = assembler.assemble_report(invalid)
+        assert not assembled["passed"], (field, value, assembled["failures"])
+        # Independently exercise the public grader on a formerly passing
+        # report. Do not let assembler source_status=False supply the failure.
+        supplied = copy.deepcopy(baseline)
+        supplied["frame_samples"] = invalid["frame_samples"]
+        guard = evaluate_report_for_environment(supplied)
+        assert not guard["overall"], (field, value)
+        assert not guard["checks"]["render_metrics"]["passed"], (field, value, guard["failures"])
+        assert supplied["frame_samples"] == invalid["frame_samples"]
+    for field in ("NonblackPercent", "UniqueSampleColors"):
+        invalid = copy.deepcopy(samples)
+        del invalid["frame_samples"][1][field]
+        assert not assembler.assemble_report(invalid)["passed"], field
+        supplied = copy.deepcopy(baseline)
+        supplied["frame_samples"] = invalid["frame_samples"]
+        assert not evaluate_report_for_environment(supplied)["overall"], field
+
+    # Legacy hidden grader rows omit the optional stamp and name the same
+    # surface-read mechanism differently. The raw assembler stays canonical.
+    legacy = copy.deepcopy(baseline)
+    for row in legacy["frame_samples"]:
+        row.pop("RenderEvidence")
+        row["CaptureMode"] = "host_readprocessmemory_surface"
+    assert evaluate_report_for_environment(legacy)["overall"]
+    raw_legacy = copy.deepcopy(samples)
+    raw_legacy["frame_samples"] = legacy["frame_samples"]
+    assert not assembler.assemble_report(raw_legacy)["passed"]
+    unstamped = copy.deepcopy(samples)
+    for row in unstamped["frame_samples"]:
+        row.pop("RenderEvidence")
+    assert assembler.assemble_report(unstamped)["passed"]
+
+
+def test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture: Path) -> None:
+    from hd_soak_report import evaluate_report_for_environment
+
+    fixture.mkdir(parents=True, exist_ok=True)
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    samples["pan_events"] = [
+        {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
+         "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 500,
+         "tick_delta": (index + 1) * 768}
+        for index in range(9)
+    ]
+    samples["pan_event_count"] = len(samples["pan_events"])
+    samples["route_end_marker"].update(scroll_x=4, scroll_y=6)
+    report = assembler.assemble_report(samples)
+    assert report["passed"], report["failures"]
+    assert evaluate_report_for_environment(report)["overall"]
+    samples["pan_events"][0]["tick_delta"] += 1
+    assert not assembler.assemble_report(samples)["passed"]
+    supplied = copy.deepcopy(report)
+    supplied["pan_events"] = samples["pan_events"]
+    guard = evaluate_report_for_environment(supplied)
+    assert not guard["overall"]
+    assert not guard["checks"]["marker_provenance"]["passed"]
+
+
+def test_terminal_redraw_hits_must_advance_after_the_final_pan(fixture: Path) -> None:
+    from hd_soak_report import evaluate_report_for_environment
+
+    fixture.mkdir(parents=True, exist_ok=True)
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    final_pan_hits = samples["pan_events"][-1]["hits"]
+    assert samples["route_end_marker"]["tick_delta"] > samples["pan_events"][-1]["tick_delta"]
+    samples["route_end_marker"]["hits"] = final_pan_hits + 1
+    baseline = assembler.assemble_report(samples)
+    assert baseline["passed"], baseline["failures"]
+    assert evaluate_report_for_environment(baseline)["overall"]
+    for hits in (0, 1, final_pan_hits - 1, final_pan_hits):
+        invalid = copy.deepcopy(samples)
+        invalid["route_end_marker"]["hits"] = hits
+        assembled = assembler.assemble_report(invalid)
+        assert not assembled["passed"], hits
+        assert any("route_end_marker.hits" in failure for failure in assembled["failures"])
+        supplied = copy.deepcopy(baseline)
+        supplied["route_end_marker"] = invalid["route_end_marker"]
+        guard = evaluate_report_for_environment(supplied)
+        assert not guard["overall"], hits
+        assert not guard["checks"]["marker_provenance"]["passed"]
+        assert any("route_end_marker.hits" in failure for failure in guard["failures"])
+
+
+def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Path) -> None:
+    from hd_soak_report import evaluate_report_for_environment
+
+    fixture.mkdir(parents=True, exist_ok=True)
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+
+    def cycle(dx: int, dy: int, *, declared: bool = False) -> dict[str, Any]:
+        samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+        for index, event in enumerate(samples["pan_events"]):
+            event["x"] = 4 + (dx if index % 4 in (1, 2) else 0)
+            event["y"] = 6 + (dy if index % 4 in (2, 3) else 0)
+            if declared:
+                event.update(delta_x=dx, delta_y=dy)
+        samples["route_end_marker"].update(
+            scroll_x=samples["pan_events"][-1]["x"], scroll_y=samples["pan_events"][-1]["y"],
+        )
+        return samples
+
+    for dx, dy in ((1, 1), (-1, -1), (1, -1), (-1, 1), (1, 0), (-1, 0), (0, 1), (0, -1)):
+        for declared in (False, True):
+            samples = cycle(dx, dy, declared=declared)
+            report = assembler.assemble_report(samples)
+            assert report["passed"], (dx, dy, declared, report["failures"])
+            assert evaluate_report_for_environment(report)["overall"], (dx, dy, declared)
+    baseline = assembler.assemble_report(cycle(1, 1))
+    for mutation in ("zero_pan", "wrong_phase_zero", "wrong_phase_y", "inconsistent_x", "inconsistent_y",
+                     "declared_zero", "declared_inconsistent", "declared_partial", "fractional_coordinate"):
+        invalid = cycle(1, 1)
+        events = invalid["pan_events"]
+        if mutation == "zero_pan":
+            invalid = cycle(0, 0)
+        elif mutation == "wrong_phase_zero":
+            events[0]["x"] = 5
+        elif mutation == "wrong_phase_y":
+            events[1]["y"] = 7
+        elif mutation == "inconsistent_x":
+            events[5]["x"] = 3
+        elif mutation == "inconsistent_y":
+            events[6]["y"] = 5
+        elif mutation == "declared_zero":
+            for event in events:
+                event.update(delta_x=0, delta_y=0)
+        elif mutation == "declared_inconsistent":
+            invalid = cycle(1, 1, declared=True)
+            invalid["pan_events"][2]["delta_x"] = -1
+        elif mutation == "declared_partial":
+            events[0]["delta_x"] = 1
+        else:
+            events[1]["x"] = 4.5
+        assembled = assembler.assemble_report(invalid)
+        assert not assembled["passed"], mutation
+        supplied = copy.deepcopy(baseline)
+        supplied["pan_events"] = invalid["pan_events"]
+        supplied["route_end_marker"] = invalid["route_end_marker"]
+        guard = evaluate_report_for_environment(supplied)
+        assert not guard["overall"], mutation
+        assert not guard["checks"]["marker_provenance"]["passed"], mutation
+        assert any("pan" in failure for failure in guard["failures"]), (mutation, guard["failures"])
 
 
 def test_runner_structured_marker_parser(fixture: Path) -> None:
@@ -393,12 +687,16 @@ $failures = @(Get-RouteValidationFailures -Observations $observed -ExpectedRoute
     assert parse(idle.replace("tickdelta=7680", "tickdelta=10"))["failures"]
 
     pan_plan = "SOAK_PAN_PLAN base=(4,6) delta=(1,1) max=(20,20) safe=1\n"
-    pan_events = "".join(
+    pan_event_rows = [
         f"SOAK_PAN_SET phase={event['phase']} x={event['x']} y={event['y']} hits={event['hits']} "
         f"tickdelta={event['tick_delta']} delta=(1,1)\n"
         for event in make_samples("map-pan")["pan_events"]
-    )
-    pan = prose + start.replace("pan=0", "pan=1") + ready + pan_plan + heartbeat + pan_events + end.replace("pan=0", "pan=1")
+    ]
+    pan_heartbeat = heartbeat.replace("hits=2048", "hits=1600")
+    pan = (prose + start.replace("pan=0", "pan=1") + ready + pan_plan
+           + "".join(pan_event_rows[:3]) + pan_heartbeat.replace("scroll=(4,6)", "scroll=(5,7)")
+           + "".join(pan_event_rows[3:])
+           + end.replace("pan=0", "pan=1").replace("scroll=(4,6)", "scroll=(5,7)"))
     assert not parse(pan, "map-pan")["failures"]
     assert parse(pan.replace("phase=1 x=5", "phase=1 x=99"), "map-pan")["failures"]
     # A real short30 run logged event 7 at 5121 after scheduling it at 5120,
@@ -420,6 +718,7 @@ def test_cli_writes_outputs_and_require_pass_fails_closed(fixture: Path) -> None
     result = subprocess.run(
         [
             sys.executable,
+            "-B",
             str(SCRIPT),
             str(samples_path),
             "--write-json",
@@ -449,7 +748,7 @@ def test_cli_passing_samples_exit_zero(fixture: Path) -> None:
     samples_path.write_text(json.dumps(make_samples("map-pan"), indent=2), encoding="ascii")
     out_json = fixture / "report.json"
     result = subprocess.run(
-        [sys.executable, str(SCRIPT), str(samples_path), "--write-json", str(out_json), "--require-pass"],
+        [sys.executable, "-B", str(SCRIPT), str(samples_path), "--write-json", str(out_json), "--require-pass"],
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -543,8 +842,17 @@ def run_tests() -> None:
         test_render_thresholds_and_size_fail_closed()
         test_wrong_capture_mode_fails()
         test_elapsed_coverage_gap_fails()
+        test_periodic_coverage_rejects_sparse_unordered_and_missing_samples()
+        test_periodic_count_uses_the_same_bounded_jitter_as_each_gap()
+        test_terminal_marker_identity_and_scroll_are_bound_to_the_route()
+        test_every_process_sample_requires_live_numeric_telemetry()
+        test_pan_events_require_positive_periodic_full_route_coverage()
         test_missing_or_forged_provenance_fails()
         test_reports_pass_shared_hidden_grader(fixture / "shared-grader")
+        test_every_hidden_frame_requires_strict_metrics_and_surface_provenance(fixture / "strict-frames")
+        test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture / "pan-jitter")
+        test_terminal_redraw_hits_must_advance_after_the_final_pan(fixture / "terminal-pan-hits")
+        test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture / "pan-coordinate-cycle")
         test_runner_structured_marker_parser(fixture / "parser")
         test_cli_writes_outputs_and_require_pass_fails_closed(fixture / "cli-fail")
         test_cli_passing_samples_exit_zero(fixture / "cli-pass")

@@ -471,6 +471,36 @@ closed if the handoff is stale or manually edited.
 
 ## Current Status
 
+### Revalidation checkpoint - 2026-10-08
+
+The dated results below remain historical observations. Fresh local grading
+currently rejects all five saved short reports: their exact external patch-stage
+manifests, candidates and raw run artifacts are unavailable. Saved 5/5 flags
+therefore cannot unlock long tiers. The status reader now regrades canonical
+reports and the long guard revalidates the ladder instead of trusting saved
+booleans. Hidden long guards additionally bind the exact retained source and
+patch-manifest bytes and require fresh matching environment-aware grading.
+
+The source harness now checks strict disk reserve and physical-root safety
+before execution mutations, complete marker/pan order and interval coverage,
+and matching terminal route/player/scroll state. The assembler and hidden
+grader reject sparse endpoint-only inventories, invalid or excluded interior
+frames and missing per-row process telemetry. The existing elapsed endpoint
+formula remains unchanged; new
+periodic-gap checks allow no more than two seconds of scheduling jitter.
+
+No new runtime was executed. Capacity remains above the 90% guard, so builds,
+captures, long runs and full aggregate refreshes are deferred. Restore original
+authenticated evidence or obtain a new strategy decision; do not fabricate
+replacement provenance or automatically rerun completed visible validation.
+See [the compact conclusion](../../reports/hidden-soak-revalidation-20261008.json)
+for the missing-artifact inventory. Native process/job ownership, coherent frame
+retention, loaded-image authentication, retained live-bound pan-plan receipts
+and exclusion of debugger/sleep holds from running time remain separate production
+gaps. Manual input, release completion and promotion remain open.
+
+### Historical checkpoint - 2026-09-05
+
 The [latest aggregate](../../captures/current/current-evidence-refresh-current.json)
 records **164/166 passing checks at 2026-09-05T20:39:17+02:00**. The three short
 planning consumers now reverify all five bound passing reports and guards,

@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -236,7 +238,7 @@ def passing_hidden_report(tmp: Path) -> dict:
     candidate_sha = "e" * 64
     patch_path = tmp / "patch-stage-hidden.json"
     patch_path.write_text(json.dumps(patch_stage_report(candidate_sha)), encoding="ascii")
-    return {
+    report = {
         "executed": True,
         "passed": True,
         "failures": [],
@@ -283,6 +285,7 @@ def passing_hidden_report(tmp: Path) -> dict:
             "scroll_x": 10, "scroll_y": 10, "game_data": "00600000",
         },
         "route_end_marker": {
+            "route_ticks": 7680, "pan": 0,
             "hits": 128, "tick_delta": 7680, "player": 0, "scroll_x": 10, "scroll_y": 10,
         },
         "pan_events": [],
@@ -347,6 +350,24 @@ def passing_hidden_report(tmp: Path) -> dict:
         ],
         "capture_errors": [],
     }
+    # A periodic hidden fixture must cover the interval, not only its two
+    # distant endpoints. Preserve the original summary extrema and growth.
+    started = datetime(2026, 6, 16, 12, 0, tzinfo=timezone.utc)
+    first_frame, last_frame = report["frame_samples"]
+    first_process, last_process = report["process_samples"]
+    report["frame_samples"] = [
+        dict(first_frame if index < 8 else last_frame,
+             Name=f"frame-{index:04d}", Timestamp=(started + timedelta(seconds=index * 15)).isoformat())
+        for index in range(9)
+    ]
+    report["process_samples"] = [
+        dict(first_process, Timestamp=(started + timedelta(seconds=index * 15)).isoformat(),
+             WorkingSet64=1000 + index * 128, PrivateMemorySize64=2000 + index * 256,
+             HandleCount=last_process["HandleCount"] if index == 8 else first_process["HandleCount"])
+        for index in range(9)
+    ]
+    report["frame_sample_count"] = report["process_sample_count"] = 9
+    return report
 
 
 def passing_hidden_pan_report(tmp: Path) -> dict:
@@ -355,11 +376,14 @@ def passing_hidden_pan_report(tmp: Path) -> dict:
     report["pan_mechanism"] = soak.HIDDEN_PAN_MECHANISM
     report["frame_progress_expected"] = True
     report["route_start_marker"]["pan"] = 1
+    report["pan_interval_sec"] = 10
     report["pan_events"] = [
-        {"phase": phase, "x": x, "y": y, "hits": phase + 1, "tick_delta": (phase + 1) * 100}
-        for phase, (x, y) in enumerate(((11, 10), (11, 11), (10, 11), (10, 10)))
+        {"phase": index % 4, "x": 10 + int(index % 4 in (1, 2)),
+         "y": 10 + int(index % 4 in (2, 3)), "hits": index + 1, "tick_delta": (index + 1) * 640}
+        for index in range(11)
     ]
     report["pan_event_count"] = len(report["pan_events"])
+    report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11)
     return report
 
 
@@ -450,7 +474,8 @@ def test_hidden_map_pan_requires_frame_progression() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_hidden_pan_report(Path(directory))
         report["frame_hash_unique_count"] = 1
-        report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+        for frame in report["frame_samples"]:
+            frame["Hash"] = report["frame_samples"][0]["Hash"]
         evaluation = soak.evaluate_hidden_report(report)
     assert evaluation["overall"] is False
     assert evaluation["checks"]["frame_progression"]["passed"] is False
@@ -1240,7 +1265,13 @@ def test_dispatch_forwards_every_applicable_threshold() -> None:
         report = {"environment": environment}
         with patch.object(soak, grader, return_value={"grader": grader}) as grading:
             result = soak.evaluate_report_for_environment(report, **supplied)
-        assert result == {"grader": grader}
+            if environment == soak.HIDDEN_ENVIRONMENT:
+                assert result == {
+                    "grader": grader, "source_report_sha256": None,
+                    "source_report_binding_errors": ["JSON source path is missing or invalid"],
+                }
+            else:
+                assert result == {"grader": grader}
         grading.assert_called_once_with(report, **expected)
 
 
@@ -1248,7 +1279,7 @@ def test_dispatch_thresholds_change_actual_grading() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
         for report in (passing_report(tmp), passing_hidden_report(tmp), passing_guest_report()):
-            strict = soak.evaluate_report_for_environment(report, min_frames=3, min_nonblack_percent=46.0)
+            strict = soak.evaluate_report_for_environment(report, min_frames=10, min_nonblack_percent=46.0)
             assert not strict["checks"]["frame_inventory"]["passed"]
             assert not strict["checks"]["render_metrics"]["passed"]
         for report in (passing_report(tmp), passing_hidden_report(tmp)):
@@ -1298,6 +1329,168 @@ def test_hidden_contradictory_provenance_fails_closed() -> None:
             assert not evaluation["checks"][check]["passed"], (check, evaluation)
 
 
+def test_hidden_periodic_inventory_cannot_be_replaced_by_distant_endpoints() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.update(tier="custom", duration_sec=7200, sample_interval_sec=30)
+        report["route_start_marker"]["route_ticks"] = 460800
+        report["route_end_marker"].update(route_ticks=460800, tick_delta=460800)
+        for inventory, count_field in (("frame_samples", "frame_sample_count"),
+                                       ("process_samples", "process_sample_count")):
+            report[inventory] = [report[inventory][0], report[inventory][-1]]
+            report[inventory][-1]["Timestamp"] = "2026-06-16T14:00:00+00:00"
+            report[count_field] = 2
+        evaluated = soak.evaluate_report_for_environment(report)
+        assert not evaluated["overall"]
+        assert not evaluated["checks"]["elapsed_coverage"]["passed"]
+        assert any("periodic sample count" in failure for failure in evaluated["failures"])
+        for inventory in ("frame_samples", "process_samples"):
+            for mutation in ("missing", "duplicate", "reverse", "malformed"):
+                report = passing_hidden_report(Path(directory))
+                rows = report[inventory]
+                if mutation == "missing":
+                    rows.pop(4)
+                elif mutation == "duplicate":
+                    rows[4]["Timestamp"] = rows[3]["Timestamp"]
+                elif mutation == "reverse":
+                    rows[3], rows[4] = rows[4], rows[3]
+                else:
+                    rows[4] = "retained malformed row"
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["checks"]["elapsed_coverage"]["passed"], (inventory, mutation)
+                assert rows == report[inventory]
+
+
+def test_hidden_periodic_count_and_max_gap_share_one_jitter_contract() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.update(tier="short30", duration_sec=1800)
+        report["route_start_marker"]["route_ticks"] = 115200
+        report["route_end_marker"].update(route_ticks=115200, tick_delta=115200)
+        started = datetime(2026, 6, 16, 12, 0, tzinfo=timezone.utc)
+        first_frame, last_frame = report["frame_samples"][0], report["frame_samples"][-1]
+        first_process, last_process = report["process_samples"][0], report["process_samples"][-1]
+        report["frame_samples"] = [
+            dict(first_frame if index < 118 else last_frame, Name=f"frame-{index:04d}",
+                 Timestamp=(started + timedelta(seconds=index * 1798 / 118)).isoformat())
+            for index in range(119)
+        ]
+        report["process_samples"] = [
+            dict(first_process, Timestamp=(started + timedelta(seconds=index * 1798 / 118)).isoformat(),
+                 WorkingSet64=1000 + index * 1024 // 118,
+                 PrivateMemorySize64=2000 + index * 2048 // 118,
+                 HandleCount=last_process["HandleCount"] if index == 118 else first_process["HandleCount"])
+            for index in range(119)
+        ]
+        report["frame_sample_count"] = report["process_sample_count"] = 119
+        evaluated = soak.evaluate_report_for_environment(report)
+        assert evaluated["overall"], evaluated["failures"]
+        assert evaluated["checks"]["elapsed_coverage"]["summary"]["required_elapsed_sec"] == 1783
+
+
+def test_hidden_terminal_marker_requires_exact_identity_player_and_final_scroll() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for fixture in (passing_hidden_report, passing_hidden_pan_report):
+            for field in ("route_ticks", "pan", "player", "scroll_x", "scroll_y"):
+                for missing in (True, False):
+                    report = fixture(Path(directory))
+                    end = report["route_end_marker"]
+                    if missing:
+                        end.pop(field)
+                    else:
+                        end[field] += 1
+                    evaluated = soak.evaluate_report_for_environment(report)
+                    assert not evaluated["checks"]["marker_provenance"]["passed"], (fixture.__name__, field, missing)
+                    assert any(f"route_end_marker.{field}" in failure for failure in evaluated["failures"])
+
+
+def test_hidden_dispatcher_binds_only_matching_written_source_bytes() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        source = passing_hidden_report(tmp)
+        source_path = tmp / "source.json"
+        source["report_json"] = str(source_path)
+        original = json.dumps(source, indent=2).encode("utf-8") + b"\n"
+        source_path.write_bytes(original)
+        evaluated = soak.evaluate_report_for_environment(source)
+        assert evaluated["overall"], evaluated["failures"]
+        assert evaluated["source_report_sha256"] == hashlib.sha256(original).hexdigest()
+        assert evaluated["source_report_binding_errors"] == []
+        patch_path = Path(source["patch_stage_report"])
+        assert evaluated["checks"]["patch_evidence"]["summary"]["patch_stage_report_sha256"] == hashlib.sha256(patch_path.read_bytes()).hexdigest()
+        # The same JSON with changed physical bytes acquires a different
+        # receipt; a saved long guard must reject the old byte identity.
+        source_path.write_bytes(original + b"\n")
+        changed = soak.evaluate_report_for_environment(source)
+        assert changed["source_report_sha256"] != evaluated["source_report_sha256"]
+        for raw in (b"{}", b"{", b"\xff"):
+            source_path.write_bytes(raw)
+            unbound = soak.evaluate_report_for_environment(source)
+            assert unbound["source_report_sha256"] is None
+            assert unbound["source_report_binding_errors"]
+        source_path.unlink()
+        missing = soak.evaluate_report_for_environment(source)
+        assert missing["source_report_sha256"] is None and missing["source_report_binding_errors"]
+        with patch.object(Path, "read_bytes", side_effect=PermissionError("retained read failure")):
+            denied = soak.evaluate_report_for_environment(source)
+            assert denied["source_report_sha256"] is None
+            assert any("retained read failure" in error for error in denied["source_report_binding_errors"])
+        for visible_or_guest in (passing_report(tmp), passing_guest_report()):
+            assert "source_report_sha256" not in soak.evaluate_report_for_environment(visible_or_guest)
+
+
+def test_explicit_hidden_cli_uses_the_written_source_binding_dispatcher() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        source = passing_hidden_report(tmp)
+        source_path, guard_path = tmp / "source.json", tmp / "guard.json"
+        source["report_json"] = str(source_path)
+        source_path.write_text(json.dumps(source), encoding="ascii")
+        result = subprocess.run(
+            [sys.executable, "-B", str(Path(soak.__file__)), str(source_path), "--hidden",
+             "--write-json", str(guard_path), "--require-pass"],
+            capture_output=True, text=True, check=False,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+        evaluated = json.loads(guard_path.read_text(encoding="ascii"))
+        assert evaluated["source_report_sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+
+
+def test_hidden_every_process_row_requires_live_numeric_telemetry() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for field in ("WorkingSet64", "PrivateMemorySize64", "HandleCount", "HasExited"):
+            for value in (None, -1, True, "unavailable"):
+                report = passing_hidden_report(Path(directory))
+                report["process_samples"][4][field] = value
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["checks"]["process_growth"]["passed"], (field, value)
+                assert any(field in failure for failure in evaluated["failures"])
+
+
+def test_hidden_pan_inventory_must_cover_every_interval_and_both_route_edges() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for mutation in ("negative_tick", "zero_hits", "missing_middle", "missing_tail", "late_start", "past_end"):
+            report = passing_hidden_pan_report(Path(directory))
+            events = report["pan_events"]
+            if mutation == "negative_tick":
+                events[0]["tick_delta"] = -1
+            elif mutation == "zero_hits":
+                events[0]["hits"] = 0
+            elif mutation == "missing_middle":
+                events.pop(3)
+            elif mutation == "missing_tail":
+                del events[4:]
+            elif mutation == "late_start":
+                for event in events:
+                    event["tick_delta"] += 129
+            else:
+                events[-1]["tick_delta"] = report["route_end_marker"]["tick_delta"]
+            report["pan_event_count"] = len(events)
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["checks"]["marker_provenance"]["passed"], mutation
+            assert any("pan" in failure for failure in evaluated["failures"])
+
+
 def test_map_pan_cannot_disable_frame_progression_in_any_environment() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -1306,7 +1499,8 @@ def test_map_pan_cannot_disable_frame_progression_in_any_environment() -> None:
             report["frame_progress_expected"] = False
             report["frame_stability_class"] = "stable_idle"
             report["frame_hash_unique_count"] = 1
-            report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+            for frame in report["frame_samples"]:
+                frame["Hash"] = report["frame_samples"][0]["Hash"]
             evaluation = soak.evaluate_report_for_environment(report)
             assert not evaluation["checks"]["frame_progression"]["passed"], evaluation
 
@@ -1338,6 +1532,13 @@ def run_tests() -> None:
     test_dispatch_thresholds_change_actual_grading()
     test_hidden_missing_structured_provenance_fails_closed()
     test_hidden_contradictory_provenance_fails_closed()
+    test_hidden_periodic_inventory_cannot_be_replaced_by_distant_endpoints()
+    test_hidden_periodic_count_and_max_gap_share_one_jitter_contract()
+    test_hidden_terminal_marker_requires_exact_identity_player_and_final_scroll()
+    test_hidden_dispatcher_binds_only_matching_written_source_bytes()
+    test_explicit_hidden_cli_uses_the_written_source_binding_dispatcher()
+    test_hidden_every_process_row_requires_live_numeric_telemetry()
+    test_hidden_pan_inventory_must_cover_every_interval_and_both_route_edges()
     test_map_pan_cannot_disable_frame_progression_in_any_environment()
     test_cli_rejects_unknown_and_contradictory_environment_selection()
     test_hidden_passing_report()

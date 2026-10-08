@@ -15,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import hd_soak_report
+
 
 PROTECTED_STABLE_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-"
@@ -243,7 +245,7 @@ def step_status(
             },
         )
 
-    guard_passed = bool(guard.get("overall"))
+    guard_passed = guard.get("overall") is True
     # Label the evidence environment on the step row: host visible runtime is
     # the default; the approved hidden_cdb_host (and guest) classes are
     # accepted the same way but must stay visibly labeled.
@@ -271,6 +273,32 @@ def step_status(
             },
         )
     if report.get("passed") is True and guard_passed:
+        # Saved guards are historical receipts, not authority for currently
+        # available evidence. Regrade the exact canonical report before a
+        # claimed pass can unlock the next rung or the long tiers. This reads
+        # provenance only; it never rewrites the report or its saved guard.
+        try:
+            revalidation = hd_soak_report.evaluate_report_for_environment(report)
+            revalidation_failures = list(revalidation.get("failures") or [])
+            revalidation_passed = revalidation.get("overall") is True
+        except (OSError, ValueError, TypeError, AttributeError, KeyError, OverflowError) as exc:
+            revalidation_passed = False
+            revalidation_failures = [f"{type(exc).__name__}: {exc}"]
+        if not revalidation_passed:
+            failures.extend(
+                f"{step['id']} saved passing guard failed source revalidation: {failure}"
+                for failure in (revalidation_failures or ["environment grader did not pass"])
+            )
+            return (
+                "invalid_guard_stale", False, failures,
+                {
+                    "canonical_report_present": True, "guard_present": True,
+                    "guard_overall": guard.get("overall"), "triage_present": triage is not None,
+                    "environment": report_environment, "evidence_class": report_evidence_class,
+                    "revalidation_overall": False, "revalidation_failures": revalidation_failures,
+                    "next_command": step.get("guard_command"),
+                },
+            )
         if not prerequisites_passed:
             return (
                 "locked_by_prerequisite", False, failures,

@@ -2,6 +2,37 @@
 
 This file intentionally contains only source-level project state.
 
+## Hidden-soak integrity checkpoint - 2026-10-08
+
+The historical short ladder's saved 5/5 flags are not current acceptance. A
+read-only environment-dispatch regrade fails all five canonical reports because
+their exact external patch-stage manifests are absent. Their candidate, proxy
+and raw-frame references also lack retained backing. Keep the original receipts
+and failed/interrupted two-hour attempts unchanged; do not substitute unrelated
+older manifests or automatically repeat the visible menu run.
+See the [compact revalidation conclusion](../../reports/hidden-soak-revalidation-20261008.json).
+
+Source checks now require complete periodic sampling and forced-pan coverage,
+valid hidden-frame metrics and per-row process telemetry, ordered and matching
+terminal markers, strict disk and physical-root preflight, fresh short-ladder
+grading, and exact retained hidden-long source/patch byte bindings. The synthetic
+integration and RAM-only harness preflight suites are registered in the aggregate.
+These are source and
+fixture results, not newly executed endurance evidence. The shared elapsed
+endpoint bound remains `duration - interval - 2`; individual sample/pan gaps
+allow at most two seconds of scheduling jitter.
+
+No game/debugger session was launched at this checkpoint. Local C: usage is
+approximately 94.6%, above the 90% guard; large fixtures, builds, captures and
+both full aggregate refreshes remain deferred. Restore authenticated external
+soak artifacts or obtain a new evidence-strategy decision, and recover capacity
+before runtime. Retained-handle/job cleanup, coherent full-frame retention,
+loaded-image authentication, retained live-bound pan-plan receipts and running-time
+rather than wall-clock coverage still require production work. Physical-path
+preflight does not authenticate immutable file or process identity.
+Manual DirectInput, final visible composition, release and promotion remain
+unresolved; the protected stable stage and launcher defaults are unchanged.
+
 ## Public repository state
 
 - The repository contains independently authored patcher/launcher source,

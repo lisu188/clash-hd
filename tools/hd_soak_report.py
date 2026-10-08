@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -105,6 +106,25 @@ HIDDEN_RUNTIME_POLICY = (
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def matching_json_file_sha256(path_text: Any, payload: dict[str, Any]) -> tuple[str | None, list[str]]:
+    """Bind exact current bytes only when the file is the supplied JSON object.
+
+    Hidden producers write the full report before dispatching its grader. An
+    in-memory fixture or an unrelated path gets no invented byte-hash receipt.
+    Read/parse failures remain explicit diagnostics, not uncaught exceptions.
+    """
+    if not isinstance(path_text, (str, Path)) or not str(path_text).strip():
+        return None, ["JSON source path is missing or invalid"]
+    try:
+        raw = Path(path_text).read_bytes()
+        actual = json.loads(raw.decode("utf-8-sig"))
+    except (OSError, ValueError, TypeError) as exc:
+        return None, [f"{type(exc).__name__}: {exc}"]
+    if actual != payload:
+        return None, ["JSON source content does not match the supplied object"]
+    return hashlib.sha256(raw).hexdigest(), []
 
 
 def status_text(passed: bool) -> str:
@@ -301,6 +321,246 @@ def timestamp_span_seconds(rows: list[Any]) -> tuple[float | None, int]:
     if len(parsed) < 2:
         return None, invalid_count
     return (max(parsed) - min(parsed)).total_seconds(), invalid_count
+
+
+def hidden_sample_coverage_failures(
+    rows: list[Any], *, duration_sec: int | None, interval_sec: int | None, label: str
+) -> list[str]:
+    """Require a periodic inventory, not merely two distant endpoint stamps.
+
+    The existing endpoint coverage formula is unchanged. Two seconds permit
+    bounded sampling jitter; they do not permit a missing periodic sample or
+    reversed/duplicate timestamps. The derived minimum count is
+    ceil(required_elapsed / (interval + 2)) + 1: it uses the same maximum gap,
+    not a contradictory ideal-cadence count. Endpoint coverage and every
+    individual gap remain mandatory. Only the hidden lane uses this contract.
+    """
+    failures: list[str] = []
+    if duration_sec is None or interval_sec is None or interval_sec <= 0:
+        return failures
+    required = max(0, duration_sec - interval_sec - 2)
+    maximum_gap = interval_sec + 2
+    minimum_count = max(2, (required + maximum_gap - 1) // maximum_gap + 1)
+    if len(rows) < minimum_count:
+        failures.append(
+            f"{label} periodic sample count {len(rows)} is below required {minimum_count}"
+        )
+    previous: datetime | None = None
+    for index, row in enumerate(rows):
+        current = parse_timestamp(row.get("Timestamp") if isinstance(row, dict) else None)
+        if current is None:
+            failures.append(f"{label} sample {index} has a missing or invalid timestamp")
+            previous = None
+            continue
+        if previous is not None:
+            gap = (current - previous).total_seconds()
+            if gap <= 0:
+                failures.append(f"{label} sample timestamps are not strictly increasing at row {index}")
+            elif gap > maximum_gap:
+                failures.append(
+                    f"{label} sample gap {gap:.3f}s at row {index} exceeds interval + 2 ({maximum_gap}s)"
+                )
+        previous = current
+    return failures
+
+
+def hidden_process_sample_failures(rows: list[Any]) -> list[str]:
+    """Every periodic process row must carry measured, live host telemetry."""
+    failures: list[str] = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            failures.append(f"process sample {index} is not an object")
+            continue
+        if row.get("HasExited") is not False:
+            failures.append(f"process sample {index}.HasExited is missing or is not false")
+        for field in ("WorkingSet64", "PrivateMemorySize64", "HandleCount"):
+            value = row.get(field)
+            if type(value) is not int or value < 0:
+                failures.append(f"process sample {index}.{field} is missing or is not a nonnegative integer")
+    return failures
+
+
+def hidden_frame_sample_failures(
+    rows: list[Any], *, min_nonblack_percent: float, min_unique_sample_colors: int,
+    expected_width: int = 800, expected_height: int = 600,
+    allowed_capture_modes: tuple[str, ...] = (
+        "hidden-cdb-host-readprocessmemory", "host_readprocessmemory_surface",
+    ),
+) -> list[str]:
+    """Validate every hidden periodic frame before summary/partition arithmetic.
+
+    Both named modes are host surface reads, not visible or guest captures.
+    Missing metrics, NaN/infinity, bools and coercible strings cannot disappear
+    from extrema or be excluded using a RenderEvidence=False stamp. An absent
+    stamp remains compatible with the producer's original raw frame format.
+    """
+    failures: list[str] = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            failures.append(f"frame sample {index} is not an object")
+            continue
+        if row.get("CaptureMode") not in allowed_capture_modes:
+            failures.append(f"frame sample {index}.CaptureMode is not a hidden host surface-read mode")
+        if row.get("RenderEvidence") is False:
+            failures.append(f"frame sample {index} is explicitly excluded from render evidence")
+        for field, expected in (("Width", expected_width), ("Height", expected_height)):
+            if type(row.get(field)) is not int or row[field] != expected:
+                failures.append(f"frame sample {index}.{field} is not the expected integer {expected}")
+        if not isinstance(row.get("Hash"), str) or not is_sha256(row["Hash"]):
+            failures.append(f"frame sample {index}.Hash is not a SHA-256 hex string")
+        nonblack = row.get("NonblackPercent")
+        if type(nonblack) not in (int, float) or not 0 <= nonblack <= 100:
+            failures.append(f"frame sample {index}.NonblackPercent is missing or is not a finite number in 0..100")
+        elif nonblack < min_nonblack_percent:
+            failures.append(
+                f"frame sample {index}.NonblackPercent {nonblack} is below {min_nonblack_percent}"
+            )
+        colors = row.get("UniqueSampleColors")
+        if type(colors) is not int or not 0 <= colors <= 256:
+            failures.append(f"frame sample {index}.UniqueSampleColors is missing or is not an integer in 0..256")
+        elif colors < min_unique_sample_colors:
+            failures.append(
+                f"frame sample {index}.UniqueSampleColors {colors} is below {min_unique_sample_colors}"
+            )
+    return failures
+
+
+def hidden_pan_coverage_failures(
+    events: list[Any], *, duration_ticks: int | None, interval_sec: int | None,
+    end_tick_delta: int | None,
+) -> list[str]:
+    """Keep forced pans periodic throughout the route, including both edges."""
+    failures: list[str] = []
+    if interval_sec is None or interval_sec <= 0:
+        return ["map-pan route has no positive pan_interval_sec"]
+    interval_ticks = interval_sec * 64
+    maximum_gap = interval_ticks + 2 * 64
+    if duration_ticks is not None:
+        required = max(0, duration_ticks - interval_ticks - 2 * 64)
+        minimum_count = max(1, (required + maximum_gap - 1) // maximum_gap)
+        if len(events) < minimum_count:
+            failures.append(f"pan event count {len(events)} is below periodic coverage requirement {minimum_count}")
+    previous_tick = 0
+    previous_hits = 0
+    last_tick: int | None = None
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            failures.append(f"pan_events[{index}] is not an object")
+            continue
+        tick = event.get("tick_delta")
+        hits = event.get("hits")
+        if type(tick) is not int or tick <= 0 or type(hits) is not int or hits <= 0:
+            failures.append(f"pan_events[{index}] tick_delta and hits must be positive")
+            continue
+        gap = tick - previous_tick
+        if gap < interval_ticks or gap > maximum_gap or hits <= previous_hits:
+            failures.append(
+                f"pan_events[{index}] does not preserve periodic interval/hit coverage "
+                f"({interval_ticks}..{maximum_gap} ticks)"
+            )
+        if end_tick_delta is not None and tick >= end_tick_delta:
+            failures.append(f"pan_events[{index}] is not before the route end tick")
+        previous_tick, previous_hits, last_tick = tick, hits, tick
+    if last_tick is not None and end_tick_delta is not None and end_tick_delta - last_tick > maximum_gap:
+        failures.append("pan events do not cover the route end within pan interval + 2 seconds")
+    return failures
+
+
+def hidden_route_end_failures(
+    start: Any, end: Any, events: Any, *, route: str, duration_ticks: int | None,
+) -> list[str]:
+    """Bind the terminal row to the requested route and its last scroll state."""
+    if not isinstance(start, dict) or not isinstance(end, dict):
+        return []  # The marker-presence checks retain these separate failures.
+    failures: list[str] = []
+    if integer_or_none(end.get("route_ticks")) != duration_ticks or duration_ticks is None:
+        failures.append("route_end_marker.route_ticks does not match the requested duration")
+    if integer_or_none(end.get("pan")) != int(route == "map-pan"):
+        failures.append("route_end_marker.pan does not match the route")
+    player = integer_or_none(end.get("player"))
+    start_player = integer_or_none(start.get("player"))
+    if player is None or start_player is None or player != start_player:
+        failures.append("route_end_marker.player does not match the route start player")
+    if route == "map-pan":
+        final = events[-1] if isinstance(events, list) and events else None
+        expected_x = integer_or_none(final.get("x")) if isinstance(final, dict) else None
+        expected_y = integer_or_none(final.get("y")) if isinstance(final, dict) else None
+        if isinstance(final, dict):
+            # Pan writes are strictly before the terminal tick. The later
+            # terminal redraw must therefore also advance its redraw count.
+            # A positive but reset/equal hit count is not a coherent end row.
+            end_hits = end.get("hits")
+            final_hits = final.get("hits")
+            if type(end_hits) is not int or type(final_hits) is not int or end_hits <= final_hits:
+                failures.append("route_end_marker.hits must be greater than the final pan redraw hits")
+    else:
+        expected_x = integer_or_none(start.get("scroll_x"))
+        expected_y = integer_or_none(start.get("scroll_y"))
+    for axis, expected in (("x", expected_x), ("y", expected_y)):
+        actual = integer_or_none(end.get(f"scroll_{axis}"))
+        if expected is None or actual is None or actual != expected:
+            failures.append(
+                f"route_end_marker.scroll_{axis} does not match the final route scroll state"
+            )
+    return failures
+
+
+def hidden_pan_pattern_failures(start: Any, events: Any) -> list[str]:
+    """Require one genuine bounded direction and its exact four-phase cycle.
+
+    Inference authenticates the recorded coordinate pattern only. It does not
+    create a missing live-bounds receipt. A zero component permits a map with
+    only one movable axis, but the vector and observed movement cannot be zero.
+    """
+    if not isinstance(start, dict) or not isinstance(events, list) or not events:
+        return []  # Separate marker/pan-inventory checks retain these failures.
+    base_x, base_y = start.get("scroll_x"), start.get("scroll_y")
+    if type(base_x) is not int or type(base_y) is not int:
+        return ["pan cycle requires integer route-start scroll coordinates"]
+    failures: list[str] = []
+    deltas_x: set[int] = set()
+    deltas_y: set[int] = set()
+    declared: set[tuple[int, int]] = set()
+    observed_movement = False
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            continue  # The pan-coverage validator rejects non-object rows.
+        x, y = event.get("x"), event.get("y")
+        if type(x) is not int or type(y) is not int:
+            failures.append(f"pan_events[{index}] cycle coordinates must be integers")
+            continue
+        observed_movement = observed_movement or (x, y) != (base_x, base_y)
+        if index % 4 in (1, 2):
+            deltas_x.add(x - base_x)
+        if index % 4 in (2, 3):
+            deltas_y.add(y - base_y)
+        if "delta_x" in event or "delta_y" in event:
+            dx, dy = event.get("delta_x"), event.get("delta_y")
+            if type(dx) is not int or type(dy) is not int or dx not in (-1, 0, 1) or dy not in (-1, 0, 1):
+                failures.append(f"pan_events[{index}] declared delta is not a bounded integer vector")
+            else:
+                declared.add((dx, dy))
+    if len(declared) > 1 or len(deltas_x) > 1 or len(deltas_y) > 1:
+        failures.append("pan events do not preserve one consistent forced-scroll direction")
+        return failures
+    if declared:
+        dx, dy = next(iter(declared))
+    else:
+        dx = next(iter(deltas_x), 0)
+        dy = next(iter(deltas_y), 0)
+    if dx not in (-1, 0, 1) or dy not in (-1, 0, 1) or (dx, dy) == (0, 0):
+        failures.append("pan events do not establish a nonzero bounded +/-1 forced-scroll direction")
+    if not observed_movement:
+        failures.append("pan events contain no actual scroll excursion from the route start")
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            continue
+        phase = index % 4
+        expected_x = base_x + (dx if phase in (1, 2) else 0)
+        expected_y = base_y + (dy if phase in (2, 3) else 0)
+        if event.get("x") != expected_x or event.get("y") != expected_y:
+            failures.append(f"pan_events[{index}] coordinates do not match the exact four-phase cycle")
+    return failures
 
 
 def normalize_sha(value: Any) -> str:
@@ -1632,8 +1892,10 @@ def evaluate_hidden_report(
     * Protected-stage and candidate-SHA/patch-evidence checks are identical to
       the host variant.
     """
-    frame_samples = list(report.get("frame_samples") or [])
-    process_samples = list(report.get("process_samples") or [])
+    raw_frame_samples = list(report.get("frame_samples") or [])
+    raw_process_samples = list(report.get("process_samples") or [])
+    frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
+    process_samples = [row if isinstance(row, dict) else {} for row in raw_process_samples]
     capture_errors = list(report.get("capture_errors") or [])
     artifact_bytes = int(report.get("artifact_bytes") or 0)
     reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
@@ -1797,6 +2059,13 @@ def evaluate_hidden_report(
             "checked": executed,
         },
         failures,
+    )
+    patch_digest, patch_binding_errors = matching_json_file_sha256(
+        report.get("patch_stage_report"), patch_report,
+    ) if patch_report is not None else (None, ["patch report is unavailable"])
+    checks["patch_evidence"]["summary"].update(
+        patch_stage_report_sha256=patch_digest,
+        patch_stage_report_binding_errors=patch_binding_errors,
     )
 
     failures = []
@@ -2032,8 +2301,22 @@ def evaluate_hidden_report(
                 failures.append(f"pan_events[{index}] is outside the bounded inward +/-1 cycle")
         if route == "map-pan" and not pan_events:
             failures.append("map-pan route has no parsed SOAK_PAN_SET rows")
+        if route == "map-pan":
+            failures.extend(hidden_pan_pattern_failures(start_marker, pan_events))
+            pan_detail = report.get("pan_mechanism_detail")
+            pan_interval = integer_or_none(report.get("pan_interval_sec"))
+            if pan_interval is None and isinstance(pan_detail, dict):
+                pan_interval = integer_or_none(pan_detail.get("pan_interval_sec"))
+            failures.extend(hidden_pan_coverage_failures(
+                pan_events, duration_ticks=expected_duration_ticks, interval_sec=pan_interval,
+                end_tick_delta=integer_or_none(end_marker.get("tick_delta"))
+                if isinstance(end_marker, dict) else None,
+            ))
         if route != "map-pan" and pan_events:
             failures.append("non-pan route contains SOAK_PAN_SET rows")
+        failures.extend(hidden_route_end_failures(
+            start_marker, end_marker, pan_events, route=route, duration_ticks=expected_duration_ticks,
+        ))
         if integer_or_none(report.get("pan_event_count")) != len(pan_events):
             failures.append("pan_event_count does not match the parsed pan_events inventory")
         if integer_or_none(report.get("heartbeat_count")) is None or integer_or_none(
@@ -2110,10 +2393,25 @@ def evaluate_hidden_report(
     )
 
     failures = []
+    if executed:
+        failures.extend(hidden_frame_sample_failures(
+            raw_frame_samples, min_nonblack_percent=min_nonblack_percent,
+            min_unique_sample_colors=min_unique_sample_colors,
+            expected_width=expected_width, expected_height=expected_height,
+        ))
     evidence_frames, excluded_frames, capture_modes = partition_render_evidence(frame_samples)
-    nonblack_values = numbers([frame.get("NonblackPercent") for frame in evidence_frames])
+    # Keep invalid originals in frame_samples and the failures above. Exclude
+    # them only from arithmetic so malformed values cannot crash collection or
+    # turn into plausible extrema by float/int coercion.
+    nonblack_values = [
+        float(frame["NonblackPercent"]) for frame in evidence_frames
+        if type(frame.get("NonblackPercent")) in (int, float) and 0 <= frame["NonblackPercent"] <= 100
+    ]
     luma_values = numbers([frame.get("MeanLuma") for frame in evidence_frames])
-    unique_values = numbers([frame.get("UniqueSampleColors") for frame in evidence_frames])
+    unique_values = [
+        float(frame["UniqueSampleColors"]) for frame in evidence_frames
+        if type(frame.get("UniqueSampleColors")) is int and 0 <= frame["UniqueSampleColors"] <= 256
+    ]
     min_nonblack = min(nonblack_values) if nonblack_values else 0.0
     min_unique = min(unique_values) if unique_values else 0.0
     if executed:
@@ -2122,7 +2420,7 @@ def evaluate_hidden_report(
         if min_unique < min_unique_sample_colors:
             failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
     checks["render_metrics"] = check_record(
-        (not executed) or (min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors),
+        (not executed) or not failures,
         {
             "min_nonblack_percent": min_nonblack,
             "min_unique_sample_colors": min_unique,
@@ -2285,6 +2583,7 @@ def evaluate_hidden_report(
     working_set_limit_bytes = int(max_working_set_growth_mb) * 1024 * 1024
     private_memory_limit_bytes = int(max_private_memory_growth_mb) * 1024 * 1024
     if executed:
+        failures.extend(hidden_process_sample_failures(raw_process_samples))
         if process_sample_count < 2:
             failures.append(f"process sample count {process_sample_count} is below 2")
         if working_set_growth is None:
@@ -2319,6 +2618,13 @@ def evaluate_hidden_report(
     failures = []
     frame_elapsed_sec, invalid_frame_timestamps = timestamp_span_seconds(frame_samples)
     process_elapsed_sec, invalid_process_timestamps = timestamp_span_seconds(process_samples)
+    if executed:
+        failures.extend(hidden_sample_coverage_failures(
+            raw_frame_samples, duration_sec=duration, interval_sec=sample_interval_sec, label="frame"
+        ))
+        failures.extend(hidden_sample_coverage_failures(
+            raw_process_samples, duration_sec=duration, interval_sec=sample_interval_sec, label="process"
+        ))
     if executed and sample_interval_sec is None:
         failures.append("sample_interval_sec is missing")
     elif executed and sample_interval_sec <= 0:
@@ -2520,7 +2826,11 @@ def evaluate_report_for_environment(
         "max_handle_growth": max_handle_growth,
     }
     if environment == HIDDEN_ENVIRONMENT:
-        return evaluate_hidden_report(report, **common, **host_process)
+        evaluation = evaluate_hidden_report(report, **common, **host_process)
+        source_digest, source_errors = matching_json_file_sha256(report.get("report_json"), report)
+        evaluation["source_report_sha256"] = source_digest
+        evaluation["source_report_binding_errors"] = source_errors
+        return evaluation
     if environment == GUEST_ENVIRONMENT:
         return evaluate_guest_report(report, **common, min_guest_status_samples=min_guest_status_samples)
     if "environment" not in report or environment == HOST_ENVIRONMENT:
@@ -2647,9 +2957,9 @@ def main() -> int:
     args = parser.parse_args()
 
     report_data = load_json(args.report)
-    if args.hidden:
+    if args.hidden and report_data.get("environment") != HIDDEN_ENVIRONMENT:
         evaluation = evaluate_hidden_report(report_data)
-    elif args.guest:
+    elif args.guest and report_data.get("environment") != GUEST_ENVIRONMENT:
         evaluation = evaluate_guest_report(report_data)
     else:
         evaluation = evaluate_report_for_environment(report_data, max_input_drift_px=args.max_input_drift_px)
