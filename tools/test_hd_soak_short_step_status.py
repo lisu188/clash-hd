@@ -73,11 +73,12 @@ def hidden_soak_report(step: dict[str, Any], *, passed: bool = True) -> dict[str
         samples["pan_events"] = [
             {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
              "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 500,
-             "tick_delta": (index + 1) * 640}
+             "tick_delta": (index + 1) * 640, "delta_x": 1, "delta_y": 1, "line_number": 13 + index}
             for index in range(duration // 10 - 1)
         ]
         samples["pan_event_count"] = len(samples["pan_events"])
         samples["route_end_marker"]["hits"] = samples["pan_events"][-1]["hits"] + 1
+        samples["route_end_marker"]["line_number"] = 13 + len(samples["pan_events"])
     samples["patch_stage_report"] = str(write_patch_stage_fixture(
         Path(step["paths"]["report_json"]).parent / f"{step['id']}-patch-stage.json",
         samples["candidate_sha256"],

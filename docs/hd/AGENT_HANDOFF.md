@@ -16,9 +16,9 @@ Source checks now require complete periodic sampling and forced-pan coverage,
 valid hidden-frame metrics and per-row process telemetry, ordered and matching
 terminal markers, strict disk and physical-root preflight, fresh short-ladder
 grading, and exact retained hidden-long source/patch byte bindings. The synthetic
-integration and RAM-only harness preflight suites are registered in the aggregate.
-These are source and
-fixture results, not newly executed endurance evidence. The shared elapsed
+integration, isolated harness preflight/storage and mocked-native cleanup suites
+are registered in the aggregate. These are source and fixture results, not newly
+executed endurance evidence. The shared elapsed
 endpoint bound remains `duration - interval - 2`; individual sample/pan gaps
 allow at most two seconds of scheduling jitter.
 
@@ -26,10 +26,31 @@ No game/debugger session was launched at this checkpoint. Local C: usage is
 approximately 94.6%, above the 90% guard; large fixtures, builds, captures and
 both full aggregate refreshes remain deferred. Restore authenticated external
 soak artifacts or obtain a new evidence-strategy decision, and recover capacity
-before runtime. Retained-handle/job cleanup, coherent full-frame retention,
-loaded-image authentication, retained live-bound pan-plan receipts and running-time
-rather than wall-clock coverage still require production work. Physical-path
-preflight does not authenticate immutable file or process identity.
+before runtime.
+
+The follow-up source batch retains every periodic and terminal raw frame with an
+exclusive create, flush and SHA reread. Admission includes the complete raw
+schedule and RGB edge-PNG costs; unreadable inventories, reparse points, invalid
+sizes and artifact overflow fail closed. Retained live-bound pan plans and actual
+marker line positions are independently checked through assembly and grading.
+Hidden artifact layout requires matching immediate run directories under the
+exact hidden roots and candidate-local proxy files; this is lexical containment,
+not physical file authentication.
+
+The native host source now creates CDB suspended, assigns and verifies a
+kill-on-close/no-breakaway job before resume, and uses retained handles for
+termination, generation checks, drain and closes. Failed CreateProcess outputs
+remain diagnostics rather than kill/close authority. The cleanup envelope keeps
+operation receipts and errors. Source-derived layout and mocked orchestration
+fixtures do not compile C# or execute this native adapter, and successful poll
+waits are not a complete retained transcript. Native verification and independent
+cleanup-receipt regrading remain required.
+
+The sampler still discovers its candidate by PID/path and reopens it for live
+ReadProcessMemory. Loaded-image/target authentication, held coherent frame reads,
+physical authentication of every retained artifact and running-time rather than
+wall-clock coverage remain production gaps. Physical-path preflight and saved
+receipt consistency do not authenticate immutable file or process identity.
 Manual DirectInput, final visible composition, release and promotion remain
 unresolved; the protected stable stage and launcher defaults are unchanged.
 

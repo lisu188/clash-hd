@@ -174,10 +174,13 @@ python tools\repo_test_sweep.py --write-json captures\current\repo-test-sweep-cu
 | `short10` | 10 min | `map-idle`, `map-pan` | Short stability trend. Does not promote. |
 | `short30` | 30 min | `map-pan`, castle enter/exit when scripted | Pre-endurance screen/input trend. Does not promote. |
 
-The ladder starts with one passing `short2` run on the protected default
-stage. Its current hidden-CDB evidence completes all five rungs; do not restart
-that completed ladder because a planning consumer still expects a current step.
-Longer tiers stay opt-in and should not enter default tests.
+The ladder starts with one passing `short2` run on the protected default stage.
+Its historical five recorded passes are not freshly verifiable at the
+2026-10-08 checkpoint below: external provenance is missing. Do not restart
+completed steps merely because a planning consumer expects a current step, or
+unlock longer tiers from saved booleans. Restore authenticated evidence or
+obtain a replacement-strategy decision first. Longer tiers stay opt-in and
+should not enter default tests.
 
 The compact route coverage inventory is generated at
 `captures/current/hd-soak-route-coverage-current.md`. The current harness
@@ -392,10 +395,11 @@ Release completion needs all of these, not just a short soak:
 The compact current checklist is generated at
 `captures/current/hd-endurance-release-checklist-current.md`. It intentionally
 fails closed until every release-horizon item has current proof. The short
-ladder is complete; representative 2h endurance and manual/promotion evidence
-remain outstanding. Its canonical report, guard and triage paths preserve
-each rung's actual result. A stale missing-current-step planning failure must
-not request another first short run or erase the completed evidence.
+ladder has historical 5/5 receipts but currently lacks freshly verifiable
+backing; representative 2h endurance and manual/promotion evidence also remain
+outstanding. Its canonical report, guard and triage paths preserve each rung's
+actual result. A stale planning failure must not request another first short
+run or erase the preserved evidence.
 
 The compact next-action handoff is generated at
 `captures/current/hd-endurance-next-actions-current.md`. It keeps the safe
@@ -494,10 +498,30 @@ captures, long runs and full aggregate refreshes are deferred. Restore original
 authenticated evidence or obtain a new strategy decision; do not fabricate
 replacement provenance or automatically rerun completed visible validation.
 See [the compact conclusion](../../reports/hidden-soak-revalidation-20261008.json)
-for the missing-artifact inventory. Native process/job ownership, coherent frame
-retention, loaded-image authentication, retained live-bound pan-plan receipts
-and exclusion of debugger/sleep holds from running time remain separate production
-gaps. Manual input, release completion and promotion remain open.
+for the missing-artifact inventory.
+
+The follow-up source batch adds exclusive, flushed and rehashed raw retention
+for every periodic/terminal frame; complete-schedule and RGB edge-PNG admission;
+and fail-closed artifact inventory/overflow handling. Structured live-bound pan
+plans and marker line positions now survive serialization and independent
+regrading. Hidden-only lexical layout requires one matching run below the exact
+hidden roots, without claiming physical file authentication.
+
+Native host source now admits suspended CDB to a retained no-breakaway,
+kill-on-close job before resume and keeps termination, generation, drain, close
+and original failure receipts. Only confirmed CreateProcess success grants
+process/thread operation authority; failed or uncertain outputs remain diagnostic
+debt. This adapter has not been compiled or executed at this checkpoint.
+The 16 cleanup methods model 33 lifecycle cases; the 23 preflight/storage methods
+use mocked observations plus tiny private raw files. Aggregate registration is
+covered by 20 collection methods, not by an actual full aggregate refresh.
+
+Real loaded target/probe identity, coherent held reads, physical artifact-byte
+verification, independent cleanup-receipt replay and exclusion of debugger/sleep
+holds from credited running time remain production requirements. The sampler
+still discovers a target by PID/path and opens it for an unpaused read. Neither
+that path nor source/mock checks establish native ownership, coherent frames or
+endurance. Manual input, release completion and promotion remain open.
 
 ### Historical checkpoint - 2026-09-05
 

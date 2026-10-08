@@ -345,11 +345,15 @@ def test_hidden_long_requires_ten_second_pan_intervals(fixture: Path) -> None:
     source["pan_events"] = [
         {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
          "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 768,
-         "tick_delta": (index + 1) * 768}
+         "tick_delta": (index + 1) * 768, "delta_x": 1, "delta_y": 1,
+         "line_number": 13 + index}
         for index in range((7200 * 64 - 1) // 768)
     ]
     source["pan_event_count"] = source["pan_mechanism_detail"]["pan_event_count"] = len(source["pan_events"])
-    source["route_end_marker"].update(scroll_x=source["pan_events"][-1]["x"], scroll_y=source["pan_events"][-1]["y"])
+    source["route_end_marker"].update(
+        scroll_x=source["pan_events"][-1]["x"], scroll_y=source["pan_events"][-1]["y"],
+        line_number=13 + len(source["pan_events"]),
+    )
     source["report_json"] = str(fixture / "source-report.json")
     write_json(Path(source["report_json"]), source)
     report = soak.evaluate_report_for_environment(source)

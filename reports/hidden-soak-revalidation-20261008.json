@@ -8,6 +8,11 @@
   "historical_short_steps_recorded_passing": 5,
   "short_steps_freshly_verifiable": 0,
   "fresh_dispatcher_result": "all five canonical short reports fail because their exact external patch-stage manifests are absent",
+  "fresh_regrade_additional_failures": {
+    "short10_map_idle": "terminal scroll_x does not match the final route state",
+    "short10_map_pan": "retained structured SOAK_PAN_PLAN receipt is missing",
+    "short30_map_pan": "retained structured SOAK_PAN_PLAN receipt is missing"
+  },
   "retained_receipts_modified": false,
   "missing_external_provenance": {
     "candidates": 5,
@@ -38,13 +43,19 @@
     "explicit process telemetry on every row, ordered markers, terminal route/player/scroll binding",
     "fresh environment-aware short-ladder regrading rather than saved pass booleans",
     "hidden long source and patch byte binding, fresh regrading and compact-summary identity checks",
-    "synthetic end-to-end integration and RAM-only harness preflight suites registered in aggregate"
+    "synthetic end-to-end integration, isolated preflight/storage and mocked-native cleanup suites registered in aggregate",
+    "exclusive flushed and rehashed retention of every periodic and terminal raw frame in producer source",
+    "complete raw schedule and RGB edge-PNG admission, fail-closed inventory enumeration and overflow handling",
+    "retained live-bound pan-plan and marker-line receipts independently regraded through assembly and dispatch",
+    "hidden-only lexical paths bound to matching immediate run roots and candidate-local proxy files",
+    "source-only suspended CDB admission to a retained no-breakaway kill-on-close job, generation checks, drain and checked closes",
+    "failed or uncertain CreateProcess outputs retained as diagnostic debt, never kill or close authority"
   ],
   "remaining_production_gaps": [
-    "retained native process/job ownership and generation-safe cleanup",
-    "coherent full-frame pixel retention rather than intermediate metric/hash receipts alone",
+    "native verification of the retained process/job adapter, per-frame owned target binding and independent cleanup-receipt regrading",
+    "coherent held full-frame reads rather than unpaused ReadProcessMemory through a newly opened PID handle",
+    "physical byte authentication of candidate, proxy, build/runtime/CDB logs, generated probe and every raw frame",
     "loaded-image authentication rather than on-disk hash receipts alone",
-    "retention and independent regrading of exact live-bound pan-plan receipts",
     "running-time coverage excluding debugger holds and host sleep"
   ],
   "required_next_decision": "restore the original authenticated external artifacts or explicitly choose a new evidence strategy; free capacity before artifact-producing work",
@@ -64,6 +75,11 @@
       "test_hidden_soak_integration.py"
     ],
     "public_source_checks_passed": 8,
+    "preflight_storage_test_methods": 23,
+    "cleanup_test_methods": 16,
+    "cleanup_mocked_lifecycle_cases": 33,
+    "refresh_collection_test_methods": 20,
+    "integration_synthetic_groups": 5,
     "powershell_ast_parse_passed": true,
     "diff_check_passed": true,
     "preserved_baseline_hashes_checked": 3382,

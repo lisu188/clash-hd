@@ -51,6 +51,7 @@ from hd_soak_report import (  # noqa: E402
     hidden_frame_sample_failures,
     hidden_pan_coverage_failures,
     hidden_pan_pattern_failures,
+    hidden_pan_plan_failures,
     hidden_process_sample_failures,
     hidden_route_end_failures,
     hidden_sample_coverage_failures,
@@ -58,6 +59,7 @@ from hd_soak_report import (  # noqa: E402
     status_text,
     timestamp_span_seconds,
 )
+from hidden_soak_artifact_layout import validate_hidden_artifact_layout  # noqa: E402
 
 HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
@@ -167,6 +169,7 @@ def assemble_report(
     route_start_marker = samples.get("route_start_marker")
     route_end_marker = samples.get("route_end_marker")
     pan_events = samples.get("pan_events")
+    pan_plans = samples.get("pan_plans")
     proxy = samples.get("proxy")
     cleanup = samples.get("cleanup")
 
@@ -179,6 +182,10 @@ def assemble_report(
             f"samples environment is {samples.get('environment')!r}; this assembler only builds "
             f"{HIDDEN_ENVIRONMENT!r} reports"
         )
+
+    # Declared path layout only, not file existence or byte authentication.
+    _, layout_failures = validate_hidden_artifact_layout(samples)
+    failures.extend(layout_failures)
 
     if route not in {"map-idle", "map-pan"}:
         failures.append(f"unknown hidden soak route: {route!r}")
@@ -354,6 +361,9 @@ def assemble_report(
             interval_sec=integer_or_none(samples.get("pan_interval_sec")),
             end_tick_delta=end_tick_delta,
         ))
+    failures.extend(hidden_pan_plan_failures(
+        pan_plans, route_start_marker, ready_marker, route_end_marker, pan_events, route=route,
+    ))
     failures.extend(hidden_route_end_failures(
         route_start_marker, route_end_marker, pan_events,
         route=route, duration_ticks=expected_duration_ticks,
@@ -610,15 +620,16 @@ def assemble_report(
             failures.append("elapsed_coverage.passed is not true")
 
     # --- artifact budget -------------------------------------------------------
-    artifact_bytes = integer_or_none(samples.get("artifact_bytes"))
+    raw_artifact_bytes = samples.get("artifact_bytes")
+    artifact_bytes = raw_artifact_bytes if type(raw_artifact_bytes) is int else None
     max_artifact_mb = integer_or_none(samples.get("max_artifact_mb"))
     artifact_limit_bytes = None
     if max_artifact_mb is None or max_artifact_mb <= 0:
         failures.append("max_artifact_mb is missing or not positive")
     else:
         artifact_limit_bytes = max_artifact_mb * 1024 * 1024
-    if artifact_bytes is None:
-        failures.append("artifact_bytes is missing")
+    if artifact_bytes is None or artifact_bytes < 0:
+        failures.append("artifact_bytes must be an explicit nonnegative integer inventory")
     elif artifact_limit_bytes is not None and artifact_bytes > artifact_limit_bytes:
         failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
 
@@ -700,6 +711,7 @@ def assemble_report(
         "route_start_marker": route_start_marker if isinstance(route_start_marker, dict) else None,
         "route_end_marker": route_end_marker if isinstance(route_end_marker, dict) else None,
         "pan_events": pan_events,
+        "pan_plans": pan_plans,
         "proxy": proxy,
         "cleanup": cleanup,
         "ready_observed": ready_valid,

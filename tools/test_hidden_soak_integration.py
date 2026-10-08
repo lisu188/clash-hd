@@ -43,11 +43,13 @@ def hidden_report(tmp: Path, route: str, duration: int, interval: int) -> dict:
         samples["pan_events"] = [
             {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
              "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 640,
-             "tick_delta": (index + 1) * 640}
+             "tick_delta": (index + 1) * 640, "delta_x": 1, "delta_y": 1,
+             "line_number": 13 + index}
             for index in range((duration * 64 - 1) // 640)
         ]
         samples["route_end_marker"].update(
             scroll_x=samples["pan_events"][-1]["x"], scroll_y=samples["pan_events"][-1]["y"],
+            line_number=13 + len(samples["pan_events"]),
         )
         samples["pan_event_count"] = len(samples["pan_events"])
     report = assembler.assemble_report(samples)

@@ -2,17 +2,19 @@
 """Source and AST-isolated hidden-soak contracts; never execute the harness.
 
 The only child is a hidden PowerShell interpreter. Disk observations are mocked,
-marker logs stay in memory, and no game/debugger, native build, report, candidate
-or temporary fixture file is created.
+marker logs stay in memory. Tiny private raw-storage fixtures exercise exclusive
+file retention; no game/debugger, native build, runtime report or candidate is created.
 """
 
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 
 
@@ -25,6 +27,8 @@ def extracted_fixture(names: tuple[str, ...], body: str) -> object:
     """Read only whitelisted function ASTs, then run the supplied pure fixture."""
     allowed = {
         "Get-FullPath", "Assert-SoakPlainPaths", "Assert-SoakDiskReserve", "Parse-SoakLog", "Get-RouteValidationFailures",
+        "Get-HiddenRawRetentionBudget", "Get-FileSha256", "Write-HiddenRawFrame",
+        "Get-DirectorySizeBytes",
     }
     if not set(names) <= allowed:
         raise AssertionError("Runtime helper extraction is forbidden")
@@ -102,11 +106,203 @@ class HiddenSoakHarnessSourceTests(unittest.TestCase):
         loop = source.index("    while ((Get-Date) -lt $overallDeadline)")
         self.assertLess(source.index(guard, loop), source.index("Start-Sleep -Milliseconds 500", loop))
         for write in (
-            "Set-Content -LiteralPath $generatedProbe", "[System.IO.File]::WriteAllBytes($rawPath",
+            "Set-Content -LiteralPath $generatedProbe",
             "$samples | ConvertTo-Json", "& $pythonExe $assembler", "& $pythonExe $grader",
         ):
             offset = source.index(write)
             self.assertIn(guard, source[max(0, offset - 160):offset], write)
+
+    def test_every_periodic_and_terminal_raw_read_is_retained(self):
+        source = RUNNER.read_text(encoding="ascii")
+        self.assertEqual(source.count("$rawPath = Write-HiddenRawFrame -FramesDirectory"), 2)
+        self.assertEqual(source.count("RawPath = $rawPath"), 2)
+        self.assertNotIn("WriteAllBytes($rawPath", source)
+        self.assertIn("[System.IO.FileMode]::CreateNew", source)
+        self.assertIn("$stream.Flush($true)", source)
+        budget = source.index("$rawRetentionBudget = Get-HiddenRawRetentionBudget")
+        self.assertLess(budget, source.index("if (-not $Execute) {"))
+        self.assertIn("$pendingArtifactBytes -lt $rawRetentionBudget.MinimumArtifactBytes", source)
+        self.assertIn("(Get-DirectorySizeBytes -Path $runDir) + 2MB", source)
+        self.assertIn("* 2MB", source)
+        self.assertIn("Retained run artifacts exceeded the declared limit during collection", source)
+
+
+@unittest.skipUnless(sys.platform == "win32" and POWERSHELL.exists(), "pure storage fixtures need Windows")
+class HiddenSoakRawRetentionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with tempfile.TemporaryDirectory(prefix="clash-soak-raw-storage-") as directory:
+            frames = Path(directory) / "frames"
+            frames.mkdir()
+            escaped = str(frames).replace("'", "''")
+            digest = hashlib.sha256(bytes((1, 2, 3, 4))).hexdigest()
+            body = r'''
+$script:Frames='__FRAMES__'
+$script:Digest='__DIGEST__'
+$script:ExistingBytes=0L
+$script:ReserveFailure=$false
+$script:HashFailure=$false
+$script:InventoryFailure=$false
+$script:ReserveCalls=0
+$script:OriginalHasher=${function:Get-FileSha256}
+function Assert-SoakDiskReserve {
+    param([string[]]$Paths,[int64]$PendingBytes)
+    $script:ReserveCalls++
+    if ($script:ReserveFailure) { throw 'mock reserve refused before write' }
+}
+function Get-DirectorySizeBytes {
+    param([string]$Path)
+    if ($script:InventoryFailure) { throw 'mock artifact enumeration denied before write' }
+    return $script:ExistingBytes
+}
+function Get-FileSha256 {
+    param([string]$Path)
+    if ($script:HashFailure) { return ('0' * 64) }
+    & $script:OriginalHasher -Path $Path
+}
+function Invoke-StorageCase {
+    param([string]$Case,[string]$Name,[byte[]]$Bytes,[int64]$Limit=100)
+    $errorText=$null
+    $path=$null
+    try {
+        $path=Write-HiddenRawFrame -FramesDirectory $script:Frames -Name $Name -Bytes $Bytes -ExpectedSha256 $script:Digest -DiskPaths @($script:Frames) -ArtifactLimitBytes $Limit
+    }
+    catch { $errorText=$_.Exception.Message }
+    $expected=Join-Path $script:Frames ($Name + '.raw')
+    $exists=Test-Path -LiteralPath $expected -PathType Leaf
+    [ordered]@{Case=$Case;Error=$errorText;ReturnedPath=$path;Exists=$exists;
+        Bytes=$(if($exists){@([System.IO.File]::ReadAllBytes($expected))}else{@()})}
+}
+$rows=@()
+$rows+=Invoke-StorageCase 'round_trip' 'frame-0001' ([byte[]](1,2,3,4))
+$rows+=Invoke-StorageCase 'duplicate' 'frame-0001' ([byte[]](5,6,7,8))
+$script:ExistingBytes=98
+$rows+=Invoke-StorageCase 'quota' 'frame-0002' ([byte[]](1,2,3,4))
+$script:ExistingBytes=0
+$script:ReserveFailure=$true
+$rows+=Invoke-StorageCase 'reserve' 'frame-0003' ([byte[]](1,2,3,4))
+$script:ReserveFailure=$false
+$script:HashFailure=$true
+$rows+=Invoke-StorageCase 'hash_drift' 'frame-0004' ([byte[]](1,2,3,4))
+$script:HashFailure=$false
+$rows+=Invoke-StorageCase 'bad_name' '../frame-0005' ([byte[]](1,2,3,4))
+$rows+=Invoke-StorageCase 'empty' 'frame-0006' ([byte[]]@())
+$rows+=Invoke-StorageCase 'zero_limit' 'frame-0007' ([byte[]](1,2,3,4)) 0
+$script:InventoryFailure=$true
+$rows+=Invoke-StorageCase 'inventory_denied' 'frame-0008' ([byte[]](1,2,3,4))
+$budget=Get-HiddenRawRetentionBudget -DurationSec 7200 -FrameIntervalSec 30 -PngEdgeCount 3
+$dense=Get-HiddenRawRetentionBudget -DurationSec 28800 -FrameIntervalSec 1 -PngEdgeCount 3
+$badBudget=$null
+try { Get-HiddenRawRetentionBudget -DurationSec 60 -FrameIntervalSec 0 -PngEdgeCount 3 | Out-Null }
+catch { $badBudget=$_.Exception.Message }
+[ordered]@{Cases=$rows;Budget=$budget;DenseBudget=$dense;BadBudget=$badBudget;ReserveCalls=$script:ReserveCalls} | ConvertTo-Json -Depth 6
+'''.replace("__FRAMES__", escaped).replace("__DIGEST__", digest)
+            cls.result = extracted_fixture(
+                ("Get-FullPath", "Get-HiddenRawRetentionBudget", "Get-FileSha256", "Write-HiddenRawFrame"), body
+            )
+        cls.rows = {row["Case"]: row for row in cls.result["Cases"]}
+
+    def test_original_bytes_round_trip_and_duplicate_never_overwrites(self):
+        first = self.rows["round_trip"]
+        self.assertIsNone(first["Error"])
+        self.assertTrue(first["ReturnedPath"].endswith("frame-0001.raw"))
+        self.assertEqual(first["Bytes"], [1, 2, 3, 4])
+        self.assertIsNotNone(self.rows["duplicate"]["Error"])
+        self.assertEqual(self.rows["duplicate"]["Bytes"], [1, 2, 3, 4])
+
+    def test_reserve_quota_and_invalid_requests_do_not_create_files(self):
+        for name in ("quota", "reserve", "bad_name", "empty", "zero_limit", "inventory_denied"):
+            self.assertIsNotNone(self.rows[name]["Error"], name)
+            self.assertFalse(self.rows[name]["Exists"], name)
+
+    def test_hash_mismatch_retains_original_failure_artifact(self):
+        row = self.rows["hash_drift"]
+        self.assertIn("SHA does not match", row["Error"])
+        self.assertTrue(row["Exists"])
+        self.assertEqual(row["Bytes"], [1, 2, 3, 4])
+
+    def test_full_raw_schedule_is_budgeted_before_execution(self):
+        budget = self.result["Budget"]
+        self.assertEqual(budget["MaximumScheduledFrames"], 242)
+        self.assertEqual(budget["RawBytes"], 242 * 480000)
+        self.assertGreater(budget["MinimumArtifactBytes"], budget["RawBytes"])
+        self.assertLess(budget["MinimumArtifactBytes"], 250 * 1024 * 1024)
+        self.assertGreater(self.result["DenseBudget"]["MinimumArtifactBytes"], 4096 * 1024 * 1024)
+        self.assertIsNotNone(self.result["BadBudget"])
+
+
+@unittest.skipUnless(sys.platform == "win32" and POWERSHELL.exists(), "pure inventory fixtures need Windows")
+class HiddenSoakArtifactInventoryTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.rows = extracted_fixture(("Get-DirectorySizeBytes",), r'''
+function New-Entry {
+    param([string]$Name,[bool]$Directory,[object]$Length=0L,[int64]$Attributes=0)
+    [pscustomobject]@{FullName=$Name;PSIsContainer=$Directory;Length=$Length;Attributes=$Attributes}
+}
+function Get-Item {
+    [CmdletBinding()]
+    param([string]$LiteralPath,[switch]$Force)
+    if ($script:Case -eq 'missing_root') { throw 'mock root missing' }
+    if ($script:Case -eq 'denied_root') { throw 'mock root access denied' }
+    if ($script:Case -eq 'file_root') { return (New-Entry $LiteralPath $false 3L) }
+    if ($script:Case -eq 'reparse_root') { return (New-Entry $LiteralPath $true 0L 1024) }
+    New-Entry $LiteralPath $true
+}
+function Get-ChildItem {
+    [CmdletBinding()]
+    param([string]$LiteralPath,[switch]$Force)
+    if (-not $Force) { throw 'Hidden files must be inventoried' }
+    if ($script:Case -eq 'denied_enumeration' -or
+        ($script:Case -eq 'denied_nested' -and $LiteralPath.EndsWith('\nested'))) {
+        throw 'mock artifact enumeration denied'
+    }
+    if ($LiteralPath.EndsWith('\nested')) { return (New-Entry ($LiteralPath+'\b.raw') $false 7L) }
+    switch ($script:Case) {
+        'empty' { return }
+        'reparse_child' { return (New-Entry ($LiteralPath+'\linked') $true 0L 1024) }
+        'reparse_file' { return (New-Entry ($LiteralPath+'\linked.raw') $false 1L 1024) }
+        'negative_length' { return (New-Entry ($LiteralPath+'\bad.raw') $false -1L) }
+        'missing_length' { return (New-Entry ($LiteralPath+'\bad.raw') $false $null) }
+        'string_length' { return (New-Entry ($LiteralPath+'\bad.raw') $false '7') }
+        'overflow' {
+            New-Entry ($LiteralPath+'\a.raw') $false ([int64]::MaxValue)
+            New-Entry ($LiteralPath+'\b.raw') $false 1L
+            return
+        }
+    }
+    New-Entry ($LiteralPath+'\a.raw') $false 3L 2
+    New-Entry ($LiteralPath+'\nested') $true
+}
+$rows=@()
+foreach ($case in @('valid','empty','missing_root','denied_root','file_root','reparse_root',
+    'denied_enumeration','denied_nested','reparse_child','reparse_file','negative_length',
+    'missing_length','string_length','overflow')) {
+    $script:Case=$case; $size=$null; $errorText=$null
+    try { $size=Get-DirectorySizeBytes -Path 'C:\Synthetic\Run' }
+    catch { $errorText=$_.Exception.Message }
+    $rows += [ordered]@{Name=$case;Size=$size;Error=$errorText}
+}
+$rows | ConvertTo-Json -Depth 4
+''')
+        cls.rows = {row["Name"]: row for row in cls.rows}
+
+    def test_complete_inventory_counts_hidden_and_nested_files(self):
+        self.assertIsNone(self.rows["valid"]["Error"])
+        self.assertEqual(self.rows["valid"]["Size"], 10)
+        self.assertIsNone(self.rows["empty"]["Error"])
+        self.assertEqual(self.rows["empty"]["Size"], 0)
+
+    def test_unreadable_or_missing_inventory_never_returns_zero(self):
+        for name in ("missing_root", "denied_root", "file_root", "denied_enumeration", "denied_nested"):
+            self.assertIsNotNone(self.rows[name]["Error"], name)
+            self.assertIsNone(self.rows[name]["Size"], name)
+
+    def test_reparse_points_and_invalid_sizes_fail_closed(self):
+        for name in ("reparse_root", "reparse_child", "reparse_file", "negative_length",
+                     "missing_length", "string_length", "overflow"):
+            self.assertIsNotNone(self.rows[name]["Error"], name)
+            self.assertIsNone(self.rows[name]["Size"], name)
 
 
 @unittest.skipUnless(sys.platform == "win32" and POWERSHELL.exists(), "pure PowerShell AST fixtures need Windows")

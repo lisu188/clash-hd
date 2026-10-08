@@ -165,6 +165,7 @@ import test_battle_profile_count_body_v2
 import test_battle_profile_native_count_original
 import test_hidden_soak_integration
 import test_hidden_soak_harness_preflight
+import test_hidden_soak_cleanup
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -668,6 +669,8 @@ DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_JSON = Path("captures/current/hidden-soak-
 DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_MD = Path("captures/current/hidden-soak-integration-tests-current.md")
 DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_JSON = Path("captures/current/hidden-soak-harness-preflight-tests-current.json")
 DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD = Path("captures/current/hidden-soak-harness-preflight-tests-current.md")
+DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON = Path("captures/current/hidden-soak-cleanup-tests-current.json")
+DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD = Path("captures/current/hidden-soak-cleanup-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5807,14 +5810,40 @@ def build_hidden_soak_harness_preflight_tests(args: argparse.Namespace) -> dict[
             "reserve checks precede all hidden execution mutations and repeat before artifact growth",
             "complete pan coverage rejects missing first, interior and terminal intervals",
             "route markers require global tick/hit order, player and final scroll consistency",
+            "every periodic and terminal raw frame is exclusively retained and rehashed within its admission budget",
+            "unreadable artifact inventories, reparse points and invalid file sizes fail closed before growth",
         ],
         title="Hidden-CDB Harness Preflight Tests",
         json_path=args.hidden_soak_harness_preflight_tests_json,
         md_path=args.hidden_soak_harness_preflight_tests_md,
-        guard_policy="RAM-only source-extracted PowerShell fixtures; no harness, game, debugger or compiler execution",
+        guard_policy=(
+            "source-extracted PowerShell fixtures with mocked disk/marker observations and tiny private raw files; "
+            "no harness, game, debugger or compiler execution"
+        ),
         runtime_policy=(
             "source-only fixtures with isolated read-only PowerShell function extraction and mocked observations; "
+            "tiny private files test raw-storage exclusivity and byte consistency; "
             "never executes the runtime harness or launches Clash95, CDB, wrappers, native compilers or visible windows"
+        ),
+    )
+
+
+def build_hidden_soak_cleanup_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_cleanup,
+        tests=[
+            "suspended owned launch requires no-breakaway job assignment and membership before resume",
+            "retained-handle termination, generation checks, job drain and checked closes keep original failures",
+            "partial launches and mocked native failures retain cleanup debt without PID/path adoption",
+            "source-derived native layouts and serialized cleanup fields are checked without compiling C#",
+        ],
+        title="Hidden-CDB Owned Cleanup Source Tests",
+        json_path=args.hidden_soak_cleanup_tests_json,
+        md_path=args.hidden_soak_cleanup_tests_md,
+        guard_policy="RAM-only source-extracted orchestration with a mocked native adapter; no native ownership proof",
+        runtime_policy=(
+            "isolated hidden PowerShell runs only extracted orchestration with a mocked native adapter; "
+            "no runtime harness, Add-Type, native process API, compiler, game, debugger or visible window execution"
         ),
     )
 
@@ -8157,6 +8186,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["battle_native_count_authoring_tests"] = collect("battle_native_count_authoring_tests", build_battle_native_count_authoring_tests, args)
     checks["hidden_soak_integration_tests"] = collect("hidden_soak_integration_tests", build_hidden_soak_integration_tests, args)
     checks["hidden_soak_harness_preflight_tests"] = collect("hidden_soak_harness_preflight_tests", build_hidden_soak_harness_preflight_tests, args)
+    checks["hidden_soak_cleanup_tests"] = collect("hidden_soak_cleanup_tests", build_hidden_soak_cleanup_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9557,6 +9587,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden-soak-integration-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_MD)
     parser.add_argument("--hidden-soak-harness-preflight-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_JSON)
     parser.add_argument("--hidden-soak-harness-preflight-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD)
+    parser.add_argument("--hidden-soak-cleanup-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON)
+    parser.add_argument("--hidden-soak-cleanup-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(
         "--hd-soak-failure-triage-tests-json",

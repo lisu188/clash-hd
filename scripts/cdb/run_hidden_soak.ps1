@@ -176,6 +176,25 @@ function Get-PeMachine {
     }
 }
 
+function Get-HiddenRawRetentionBudget {
+    param([int]$DurationSec, [int]$FrameIntervalSec, [int]$PngEdgeCount)
+    if ($DurationSec -le 0 -or $FrameIntervalSec -le 0 -or $PngEdgeCount -lt 0) {
+        throw 'Invalid full-frame retention schedule'
+    }
+    # Include the initial and separate terminal reads, full indexed8 originals,
+    # conservative edge PNG costs and an explicit log/report allowance.
+    $count = [int64][math]::Ceiling($DurationSec / [double]$FrameIntervalSec) + 2L
+    $rawBytes = $count * 480000L
+    # The converter emits RGB PNGs, not indexed PNGs. Two MiB covers each
+    # 800x600 RGB row stream, compression/container overhead and metadata.
+    $edgeBytes = [int64][math]::Min($count, 2L * $PngEdgeCount) * 2MB
+    [pscustomobject]@{
+        MaximumScheduledFrames = $count
+        RawBytes = $rawBytes
+        MinimumArtifactBytes = $rawBytes + $edgeBytes + 16MB
+    }
+}
+
 function Get-SoakDiskSpace {
     param([string]$VolumeRoot)
     $drive = New-Object System.IO.DriveInfo($VolumeRoot)
@@ -313,6 +332,10 @@ foreach ($publishSpec in @(
 $diskPaths = @($RepoRoot, $inputFull, $WorkDir, $Cdb, $candidateRunDir, $candidateFull, $runDir,
     $ReportJson, $ReportMarkdown, $GuardJson, $GuardMarkdown)
 $pendingArtifactBytes = [int64]$MaxArtifactMB * 1MB
+$rawRetentionBudget = Get-HiddenRawRetentionBudget -DurationSec $DurationSec -FrameIntervalSec $FrameIntervalSec -PngEdgeCount $PngEdgeCount
+if ($pendingArtifactBytes -lt $rawRetentionBudget.MinimumArtifactBytes) {
+    throw "-MaxArtifactMB cannot retain every scheduled raw frame plus edge PNGs and logs: requires at least $($rawRetentionBudget.MinimumArtifactBytes) bytes"
+}
 $pendingRunBytes = $pendingArtifactBytes + [int64]$BuildHeadroomMB * 1MB + (Get-Item -LiteralPath $inputFull).Length
 Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingRunBytes
 
@@ -408,6 +431,35 @@ public static class ClashHiddenSoakNative {
         public UInt32 dwThreadId;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JOB_BASIC_LIMIT_INFORMATION {
+        public Int64 PerProcessUserTimeLimit, PerJobUserTimeLimit;
+        public UInt32 LimitFlags;
+        public UIntPtr MinimumWorkingSetSize, MaximumWorkingSetSize;
+        public UInt32 ActiveProcessLimit;
+        public UIntPtr Affinity;
+        public UInt32 PriorityClass, SchedulingClass;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct IO_COUNTERS {
+        public UInt64 ReadOperationCount, WriteOperationCount, OtherOperationCount;
+        public UInt64 ReadTransferCount, WriteTransferCount, OtherTransferCount;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JOB_EXTENDED_LIMIT_INFORMATION {
+        public JOB_BASIC_LIMIT_INFORMATION BasicLimitInformation;
+        public IO_COUNTERS IoInfo;
+        public UIntPtr ProcessMemoryLimit, JobMemoryLimit, PeakProcessMemoryUsed, PeakJobMemoryUsed;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JOB_BASIC_ACCOUNTING_INFORMATION {
+        public Int64 TotalUserTime, TotalKernelTime, ThisPeriodTotalUserTime, ThisPeriodTotalKernelTime;
+        public UInt32 TotalPageFaultCount, TotalProcesses, ActiveProcesses, TotalTerminatedProcesses;
+    }
+
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern IntPtr CreateDesktop(string lpszDesktop, IntPtr lpszDevice, IntPtr pDevmode, UInt32 dwFlags, UInt32 dwDesiredAccess, IntPtr lpsa);
 
@@ -429,6 +481,42 @@ public static class ClashHiddenSoakNative {
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool CloseHandle(IntPtr hObject);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern IntPtr CreateJobObject(IntPtr attributes, string name);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetInformationJobObject(IntPtr job, int informationClass, ref JOB_EXTENDED_LIMIT_INFORMATION limits, UInt32 length);
+    [DllImport("kernel32.dll", EntryPoint = "QueryInformationJobObject", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetJobLimits(IntPtr job, int informationClass, out JOB_EXTENDED_LIMIT_INFORMATION limits, UInt32 length, out UInt32 returned);
+    [DllImport("kernel32.dll", EntryPoint = "QueryInformationJobObject", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetJobAccounting(IntPtr job, int informationClass, out JOB_BASIC_ACCOUNTING_INFORMATION accounting, UInt32 length, out UInt32 returned);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool IsProcessInJob(IntPtr process, IntPtr job, [MarshalAs(UnmanagedType.Bool)] out bool member);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool TerminateJobObject(IntPtr job, UInt32 code);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool TerminateProcess(IntPtr process, UInt32 code);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern UInt32 ResumeThread(IntPtr thread);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern UInt32 WaitForSingleObject(IntPtr process, UInt32 milliseconds);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern UInt32 GetProcessId(IntPtr process);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetProcessTimes(IntPtr process, out Int64 creation, out Int64 exit, out Int64 kernel, out Int64 user);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetExitCodeProcess(IntPtr process, out UInt32 code);
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr OpenProcess(UInt32 dwDesiredAccess, bool bInheritHandle, UInt32 dwProcessId);
@@ -506,71 +594,284 @@ function Read-TargetSurfaceBytes {
     }
 }
 
-function Start-CdbOnHiddenDesktop {
-    param(
-        [string]$CdbPath,
-        [string[]]$Arguments,
-        [string]$WorkingDirectory,
-        [string]$DesktopName
-    )
-
-    $desktopAllAccess = 0x000F01FF
-    $desktop = [ClashHiddenSoakNative]::CreateDesktop($DesktopName, [IntPtr]::Zero, [IntPtr]::Zero, 0, $desktopAllAccess, [IntPtr]::Zero)
-    if ($desktop -eq [IntPtr]::Zero) {
-        $lastError = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        throw "CreateDesktop failed with Win32 error $lastError. This harness never falls back to a visible desktop."
+function New-SoakOwnedLaunch {
+    # This mutable owner exists before launch. Partial native outputs remain
+    # reachable by the outer finally even if a subsequent operation throws.
+    @{
+        RunId = [guid]::NewGuid().ToString('N'); ProcessId = 0; ThreadId = 0; CreationFileTime = 0L
+        ProcessHandle = [IntPtr]::Zero; ThreadHandle = [IntPtr]::Zero
+        JobHandle = [IntPtr]::Zero; DesktopHandle = [IntPtr]::Zero
+        JobAssigned = $false; ResumeAttempted = $false; Resumed = $false
+        ProcessCreateAttempted = $false; ProcessCreateCompleted = $false; ProcessCreateSucceeded = $false
+        RawProcessInformation = @{ ProcessHandle = 0L; ThreadHandle = 0L; ProcessId = 0; ThreadId = 0 }
+        Receipts = @(); Errors = @(); Cleanup = $null
     }
+}
 
-    $startupInfo = New-Object ClashHiddenSoakNative+STARTUPINFO
-    $startupInfo.cb = [Runtime.InteropServices.Marshal]::SizeOf([type]'ClashHiddenSoakNative+STARTUPINFO')
-    $startupInfo.lpDesktop = $DesktopName
-    $startupInfo.dwFlags = 0x00000001
-    $startupInfo.wShowWindow = 0
-
-    $processInfo = New-Object ClashHiddenSoakNative+PROCESS_INFORMATION
-    $commandLine = New-Object System.Text.StringBuilder
-    [void]$commandLine.Append((Quote-CommandLineArgument $CdbPath))
-    foreach ($argument in $Arguments) {
-        [void]$commandLine.Append(' ')
-        [void]$commandLine.Append((Quote-CommandLineArgument $argument))
+function Invoke-SoakOwnedNative {
+    # The sole native adapter for owned launch/cleanup. Fixtures replace this
+    # function, never Add-Type or an actual process API. PID/path lookup is not
+    # an ownership capability and is deliberately absent from this adapter.
+    param([hashtable]$Ownership, [string]$Operation, [hashtable]$Arguments = @{})
+    $value = $null
+    $handle = [IntPtr]::Zero
+    $result = $false
+    $errorCode = 0
+    $receiptAlreadyRetained = $false
+    switch ($Operation) {
+        'desktop_create' {
+            $handle = [ClashHiddenSoakNative]::CreateDesktop($Arguments.DesktopName, [IntPtr]::Zero, [IntPtr]::Zero, 0, 0x000F01FF, [IntPtr]::Zero)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $Ownership.DesktopHandle = $handle
+            $result = $handle -ne [IntPtr]::Zero
+        }
+        'job_create' {
+            $handle = [ClashHiddenSoakNative]::CreateJobObject([IntPtr]::Zero, $null)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $Ownership.JobHandle = $handle
+            $result = $handle -ne [IntPtr]::Zero
+        }
+        'job_configure' {
+            $handle = $Ownership.JobHandle
+            $limits = New-Object ClashHiddenSoakNative+JOB_EXTENDED_LIMIT_INFORMATION
+            $basic = $limits.BasicLimitInformation
+            $basic.LimitFlags = 0x2000 # KILL_ON_JOB_CLOSE, with neither breakaway flag.
+            $limits.BasicLimitInformation = $basic
+            $size = [Runtime.InteropServices.Marshal]::SizeOf($limits)
+            $result = [ClashHiddenSoakNative]::SetInformationJobObject($handle, 9, [ref]$limits, $size)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = @{ LimitFlags = $limits.BasicLimitInformation.LimitFlags; Capacity = $size }
+        }
+        'job_limits' {
+            $handle = $Ownership.JobHandle
+            $limits = New-Object ClashHiddenSoakNative+JOB_EXTENDED_LIMIT_INFORMATION
+            $size = [Runtime.InteropServices.Marshal]::SizeOf($limits)
+            [uint32]$returned = 0
+            $result = [ClashHiddenSoakNative]::GetJobLimits($handle, 9, [ref]$limits, $size, [ref]$returned)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = @{ LimitFlags = $limits.BasicLimitInformation.LimitFlags; Capacity = $size; Returned = $returned }
+        }
+        'process_create' {
+            $startup = New-Object ClashHiddenSoakNative+STARTUPINFO
+            $startup.cb = [Runtime.InteropServices.Marshal]::SizeOf($startup)
+            $startup.lpDesktop = $Arguments.DesktopName
+            $startup.dwFlags = 1; $startup.wShowWindow = 0
+            $info = New-Object ClashHiddenSoakNative+PROCESS_INFORMATION
+            $command = New-Object Text.StringBuilder $Arguments.CommandLine
+            $saved = [Environment]::GetEnvironmentVariable('CLASH_PROXY_PRESENT', 'Process')
+            [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', '0', 'Process')
+            try {
+                # CREATE_SUSPENDED | CREATE_NO_WINDOW. No inherited job/process
+                # handles; admission must finish before any CDB code executes.
+                $Ownership.ProcessCreateAttempted = $true
+                try {
+                    $result = [ClashHiddenSoakNative]::CreateProcess($Arguments.CdbPath, $command,
+                        [IntPtr]::Zero, [IntPtr]::Zero, $false, 0x08000004, [IntPtr]::Zero,
+                        $Arguments.WorkingDirectory, [ref]$startup, [ref]$info)
+                    $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+                }
+                catch {
+                    # A managed/native-call exception has no confirmed return
+                    # and grants no ownership. Preserve any output bits solely
+                    # as unresolved diagnostics, never as usable handles.
+                    $Ownership.RawProcessInformation = @{ ProcessHandle = $info.hProcess.ToInt64();
+                        ThreadHandle = $info.hThread.ToInt64(); ProcessId = $info.dwProcessId; ThreadId = $info.dwThreadId }
+                    $Ownership.Receipts += [pscustomobject]@{
+                        Operation = $Operation; Handle = $info.hProcess.ToInt64()
+                        Result = $false; ErrorCode = $null
+                        Value = @{ ProcessId = $info.dwProcessId; ThreadId = $info.dwThreadId;
+                            ThreadHandle = $info.hThread.ToInt64(); CreationFlags = 0x08000004;
+                            OwnershipGranted = $false; ReturnConfirmed = $false; Exception = $_.Exception.Message }
+                    }
+                    throw
+                }
+                # Only a confirmed successful CreateProcess grants ownership.
+                # Failed-call output scalars are diagnostics, not capabilities.
+                if ($result) {
+                    $Ownership.ProcessHandle = $info.hProcess
+                    $Ownership.ThreadHandle = $info.hThread
+                    $Ownership.ProcessId = [int]$info.dwProcessId
+                    $Ownership.ThreadId = [int]$info.dwThreadId
+                }
+                $Ownership.ProcessCreateCompleted = $true
+                $Ownership.ProcessCreateSucceeded = [bool]$result
+                $Ownership.RawProcessInformation = @{ ProcessHandle = $info.hProcess.ToInt64();
+                    ThreadHandle = $info.hThread.ToInt64(); ProcessId = $info.dwProcessId; ThreadId = $info.dwThreadId }
+                # Retain the original call before environment restoration can
+                # throw. Later source/managed failures cannot erase its error
+                # or make the partial native handles unreachable.
+                $Ownership.Receipts += [pscustomobject]@{
+                    Operation = $Operation; Handle = $info.hProcess.ToInt64()
+                    Result = [bool]$result; ErrorCode = $errorCode
+                    Value = @{ ProcessId = $info.dwProcessId; ThreadId = $info.dwThreadId;
+                        ThreadHandle = $info.hThread.ToInt64(); CreationFlags = 0x08000004; OwnershipGranted = [bool]$result }
+                }
+                $receiptAlreadyRetained = $true
+            }
+            finally { [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', $saved, 'Process') }
+            $handle = $Ownership.ProcessHandle
+            $value = @{ ProcessId = $Ownership.ProcessId; ThreadId = $info.dwThreadId; CreationFlags = 0x08000004 }
+        }
+        'process_id' {
+            $handle = $Ownership.ProcessHandle
+            $value = [ClashHiddenSoakNative]::GetProcessId($handle)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $result = $value -ne 0
+        }
+        'process_times' {
+            $handle = $Ownership.ProcessHandle
+            [long]$created = 0; [long]$ended = 0; [long]$kernel = 0; [long]$user = 0
+            $result = [ClashHiddenSoakNative]::GetProcessTimes($handle, [ref]$created, [ref]$ended, [ref]$kernel, [ref]$user)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = @{ Creation = $created; Exit = $ended; Kernel = $kernel; User = $user }
+        }
+        'job_assign' {
+            $handle = $Ownership.JobHandle
+            $result = [ClashHiddenSoakNative]::AssignProcessToJobObject($handle, $Ownership.ProcessHandle)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            if ($result) { $Ownership.JobAssigned = $true }
+        }
+        'job_member' {
+            $handle = $Ownership.JobHandle
+            [bool]$member = $false
+            $result = [ClashHiddenSoakNative]::IsProcessInJob($Ownership.ProcessHandle, $handle, [ref]$member)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = $member
+        }
+        'thread_resume' {
+            $handle = $Ownership.ThreadHandle
+            $Ownership.ResumeAttempted = $true
+            $value = [ClashHiddenSoakNative]::ResumeThread($handle)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $result = $value -eq 1
+            if ($value -ne [uint32]::MaxValue) { $Ownership.Resumed = $true }
+        }
+        'process_wait' {
+            $handle = $Ownership.ProcessHandle
+            $value = [ClashHiddenSoakNative]::WaitForSingleObject($handle, $Arguments.Milliseconds)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $result = $value -in @(0, 258)
+        }
+        'process_exit' {
+            $handle = $Ownership.ProcessHandle
+            [uint32]$code = 0
+            $result = [ClashHiddenSoakNative]::GetExitCodeProcess($handle, [ref]$code)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = $code
+        }
+        'job_terminate' {
+            $handle = $Ownership.JobHandle
+            $result = [ClashHiddenSoakNative]::TerminateJobObject($handle, 1)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        }
+        'process_terminate' {
+            # Only the exact suspended/unassigned CreateProcess handle, never a
+            # discovered child or a replacement for failed job termination.
+            if ($Ownership.JobAssigned -or $Ownership.ResumeAttempted) { throw 'Unassigned process termination is not authorized after admission/resume' }
+            $handle = $Ownership.ProcessHandle
+            $result = [ClashHiddenSoakNative]::TerminateProcess($handle, 1)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+        }
+        'job_accounting' {
+            $handle = $Ownership.JobHandle
+            $accounting = New-Object ClashHiddenSoakNative+JOB_BASIC_ACCOUNTING_INFORMATION
+            $size = [Runtime.InteropServices.Marshal]::SizeOf($accounting)
+            [uint32]$returned = 0
+            $result = [ClashHiddenSoakNative]::GetJobAccounting($handle, 1, [ref]$accounting, $size, [ref]$returned)
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            $value = @{ ActiveProcesses = $accounting.ActiveProcesses; TotalProcesses = $accounting.TotalProcesses;
+                TotalTerminatedProcesses = $accounting.TotalTerminatedProcesses; Capacity = $size; Returned = $returned }
+        }
+        { $_ -in @('thread_close', 'process_close', 'job_close', 'desktop_close') } {
+            $field = @{ thread_close = 'ThreadHandle'; process_close = 'ProcessHandle'; job_close = 'JobHandle'; desktop_close = 'DesktopHandle' }[$Operation]
+            $handle = $Ownership[$field]
+            if ($Operation -eq 'desktop_close') { $result = [ClashHiddenSoakNative]::CloseDesktop($handle) }
+            else { $result = [ClashHiddenSoakNative]::CloseHandle($handle) }
+            $errorCode = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            if ($result) { $Ownership[$field] = [IntPtr]::Zero }
+        }
+        default { throw "Unknown owned native operation: $Operation" }
     }
+    [pscustomobject]@{ Operation = $Operation; Handle = $handle.ToInt64(); Result = [bool]$result;
+        ErrorCode = $errorCode; Value = $value; ReceiptAlreadyRetained = $receiptAlreadyRetained }
+}
 
-    $creationFlags = 0x00000010
-    # CDB inherits this process environment and the game inherits CDB's.  Make
-    # presentation impossible for the entire child chain even if the caller has
-    # CLASH_PROXY_PRESENT=1 set for a separate visible-runtime workflow.
-    $savedProxyPresent = [Environment]::GetEnvironmentVariable('CLASH_PROXY_PRESENT', 'Process')
-    [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', $null, 'Process')
+function Invoke-SoakOwnedChecked {
+    param([hashtable]$Ownership, [string]$Operation, [hashtable]$Arguments = @{})
     try {
-        $ok = [ClashHiddenSoakNative]::CreateProcess(
-            $CdbPath,
-            $commandLine,
-            [IntPtr]::Zero,
-            [IntPtr]::Zero,
-            $false,
-            $creationFlags,
-            [IntPtr]::Zero,
-            $WorkingDirectory,
-            [ref]$startupInfo,
-            [ref]$processInfo
-        )
+        $receipt = Invoke-SoakOwnedNative -Ownership $Ownership -Operation $Operation -Arguments $Arguments
+        if (-not $receipt.ReceiptAlreadyRetained) { $Ownership.Receipts += $receipt }
+        if (-not $receipt.Result) { throw "$Operation failed with Win32 error $($receipt.ErrorCode)" }
+        return $receipt
     }
-    finally {
-        [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', $savedProxyPresent, 'Process')
+    catch {
+        $Ownership.Errors += "owned $Operation`: $($_.Exception.Message)"
+        throw
     }
-    if (-not $ok) {
-        $lastError = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
-        [ClashHiddenSoakNative]::CloseDesktop($desktop) | Out-Null
-        throw "CreateProcess on hidden desktop failed with Win32 error $lastError."
-    }
+}
 
-    [ClashHiddenSoakNative]::CloseHandle($processInfo.hThread) | Out-Null
-    [pscustomobject]@{
-        ProcessId = [int]$processInfo.dwProcessId
-        ProcessHandle = $processInfo.hProcess
-        DesktopHandle = $desktop
-        DesktopName = $DesktopName
-        CommandLine = $commandLine.ToString()
+function Start-CdbOnHiddenDesktop {
+    param([string]$CdbPath, [string[]]$Arguments, [string]$WorkingDirectory,
+        [string]$DesktopName, [hashtable]$Ownership)
+    if ($null -eq $Ownership -or $Ownership.Cleanup -or $Ownership.ProcessHandle -ne [IntPtr]::Zero -or
+        $Ownership.JobHandle -ne [IntPtr]::Zero -or $Ownership.DesktopHandle -ne [IntPtr]::Zero) {
+        throw 'A fresh caller-owned launch object is required'
+    }
+    $command = @((Quote-CommandLineArgument $CdbPath))
+    $command += @($Arguments | ForEach-Object { Quote-CommandLineArgument $_ })
+    $Ownership.CommandLine = $command -join ' '
+    $Ownership.DesktopName = $DesktopName
+    try {
+        Invoke-SoakOwnedChecked $Ownership 'desktop_create' @{ DesktopName = $DesktopName } | Out-Null
+        Invoke-SoakOwnedChecked $Ownership 'job_create' | Out-Null
+        Invoke-SoakOwnedChecked $Ownership 'job_configure' | Out-Null
+        $limits = Invoke-SoakOwnedChecked $Ownership 'job_limits'
+        if ($limits.Value.Returned -ne $limits.Value.Capacity -or $limits.Value.LimitFlags -ne 0x2000) {
+            throw 'Owned job limit readback does not prove kill-on-close without breakaway'
+        }
+        Invoke-SoakOwnedChecked $Ownership 'process_create' @{ CdbPath = $CdbPath;
+            CommandLine = $Ownership.CommandLine; WorkingDirectory = $WorkingDirectory; DesktopName = $DesktopName } | Out-Null
+        if ($Ownership.ProcessHandle -eq [IntPtr]::Zero -or $Ownership.ThreadHandle -eq [IntPtr]::Zero -or $Ownership.ProcessId -le 0) {
+            throw 'CreateProcess returned incomplete native ownership'
+        }
+        $identity = Invoke-SoakOwnedChecked $Ownership 'process_id'
+        $times = Invoke-SoakOwnedChecked $Ownership 'process_times'
+        if ($identity.Value -ne $Ownership.ProcessId -or $times.Value.Creation -le 0 -or $times.Value.Exit -ne 0) {
+            throw 'Created CDB retained generation is invalid'
+        }
+        $Ownership.CreationFileTime = [long]$times.Value.Creation
+        Invoke-SoakOwnedChecked $Ownership 'job_assign' | Out-Null
+        $member = Invoke-SoakOwnedChecked $Ownership 'job_member'
+        $limits = Invoke-SoakOwnedChecked $Ownership 'job_limits'
+        if ($member.Value -ne $true -or $limits.Value.Returned -ne $limits.Value.Capacity -or $limits.Value.LimitFlags -ne 0x2000) {
+            throw 'Suspended CDB has no authenticated no-breakaway job admission'
+        }
+        Invoke-SoakOwnedChecked $Ownership 'thread_resume' | Out-Null
+        Invoke-SoakOwnedChecked $Ownership 'thread_close' | Out-Null
+        return $Ownership
+    }
+    catch {
+        $Ownership.Errors += "owned launch: $($_.Exception.Message)"
+        throw
+    }
+}
+
+function Get-SoakOwnedCdbStatus {
+    param([hashtable]$Ownership)
+    # The retained original handle, not a new Process.GetProcessById object.
+    try {
+        $receipt = Invoke-SoakOwnedNative $Ownership 'process_wait' @{ Milliseconds = 0 }
+        if (-not $receipt.Result) {
+            $Ownership.Receipts += $receipt
+            throw "retained wait failed with Win32 error $($receipt.ErrorCode)"
+        }
+        $code = $null
+        if ($receipt.Value -eq 0) { $code = (Invoke-SoakOwnedChecked $Ownership 'process_exit').Value }
+        [pscustomobject]@{ HasExited = $receipt.Value -eq 0; ExitCode = $code }
+    }
+    catch {
+        $Ownership.Errors += "owned CDB poll: $($_.Exception.Message)"
+        throw
     }
 }
 
@@ -593,64 +894,92 @@ function Get-LaunchedCandidateProcesses {
 }
 
 function Stop-LaunchedProcesses {
-    param(
-        [Nullable[int]]$CdbPid,
-        [string]$CandidatePath,
-        [datetime]$RunStart
-    )
-
-    $toStop = @()
-    $errors = @()
-    $stoppedIds = @()
-    if ($CdbPid) {
-        $cdbProcess = Get-Process -Id $CdbPid -ErrorAction SilentlyContinue
-        if ($cdbProcess) {
-            $toStop += $cdbProcess
+    param([hashtable]$Ownership)
+    if ($Ownership.Cleanup) { return $Ownership.Cleanup }
+    $raw = $Ownership.RawProcessInformation
+    $outputsEmpty = $Ownership.ProcessHandle -eq [IntPtr]::Zero -and $Ownership.ThreadHandle -eq [IntPtr]::Zero -and
+        $Ownership.ProcessId -eq 0 -and $Ownership.ThreadId -eq 0 -and $raw.ProcessHandle -eq 0 -and
+        $raw.ThreadHandle -eq 0 -and $raw.ProcessId -eq 0 -and $raw.ThreadId -eq 0
+    $noProcessIssued = $outputsEmpty -and (-not $Ownership.ProcessCreateAttempted -or
+        ($Ownership.ProcessCreateCompleted -and -not $Ownership.ProcessCreateSucceeded))
+    $cdbStopped = $noProcessIssued
+    if ($Ownership.ProcessHandle -eq [IntPtr]::Zero -and -not $noProcessIssued) {
+        $Ownership.Errors += 'Native process issuance is unknown/partial without its retained hProcess; no PID fallback is authorized'
+    }
+    $jobEmpty = $false
+    try {
+        if ($Ownership.JobHandle -ne [IntPtr]::Zero) {
+            try { Invoke-SoakOwnedChecked $Ownership 'job_terminate' | Out-Null } catch { }
+        }
+        if ($Ownership.ProcessHandle -ne [IntPtr]::Zero) {
+            if (-not $Ownership.JobAssigned -and -not $Ownership.ResumeAttempted) {
+                # Assignment/setup failure: only this original, still suspended
+                # created process is eligible, never any PID/path replacement.
+                try { Invoke-SoakOwnedChecked $Ownership 'process_terminate' | Out-Null } catch { }
+            }
+            try {
+                $wait = Invoke-SoakOwnedChecked $Ownership 'process_wait' @{ Milliseconds = 5000 }
+                if ($wait.Value -ne 0) { throw 'Retained CDB did not signal within 5 seconds' }
+                $identity = Invoke-SoakOwnedChecked $Ownership 'process_id'
+                $times = Invoke-SoakOwnedChecked $Ownership 'process_times'
+                $exit = Invoke-SoakOwnedChecked $Ownership 'process_exit'
+                if ($identity.Value -ne $Ownership.ProcessId -or $times.Value.Creation -le 0 -or
+                    ($Ownership.CreationFileTime -gt 0 -and $times.Value.Creation -ne $Ownership.CreationFileTime) -or
+                    $times.Value.Exit -lt $times.Value.Creation) { throw 'Retained CDB exit generation is inconsistent' }
+                $cdbStopped = $true
+            }
+            catch { $Ownership.Errors += "owned CDB cleanup: $($_.Exception.Message)" }
+        }
+        if ($Ownership.JobHandle -ne [IntPtr]::Zero) {
+            $watch = [Diagnostics.Stopwatch]::StartNew()
+            $emptyReads = 0
+            try {
+                do {
+                    $row = Invoke-SoakOwnedChecked $Ownership 'job_accounting'
+                    if ($row.Value.Returned -ne $row.Value.Capacity -or
+                        $row.Value.ActiveProcesses -gt $row.Value.TotalProcesses) { throw 'Incomplete/invalid owned job accounting' }
+                    if ($row.Value.ActiveProcesses -eq 0) { $emptyReads++ } else { $emptyReads = 0 }
+                    if ($emptyReads -ge 2) { $jobEmpty = $true; break }
+                    Start-Sleep -Milliseconds 10
+                } while ($watch.ElapsedMilliseconds -lt 5000)
+                if (-not $jobEmpty) { throw 'Owned job did not drain to two complete zero-active observations within 5 seconds' }
+            }
+            catch { $Ownership.Errors += "owned job cleanup: $($_.Exception.Message)" }
+            finally { $watch.Stop() }
         }
     }
-    $toStop += Get-LaunchedCandidateProcesses -CandidatePath $CandidatePath -RunStart $RunStart
-
-    # Keep the debugger first: its debuggee may not finish terminating until
-    # CDB exits. Deduplicate in insertion order instead of sorting numeric PIDs.
-    $seenIds = New-Object 'System.Collections.Generic.HashSet[int]'
-    foreach ($process in $toStop) {
-        if ($null -eq $process -or -not $seenIds.Add([int]$process.Id)) {
-            continue
-        }
-        try {
-            if (-not $process.HasExited) {
-                Stop-Process -Id $process.Id -Force -ErrorAction Stop
-                if (-not $process.WaitForExit(5000)) {
-                    throw "process $($process.Id) did not exit within 5 seconds"
-                }
-                $stoppedIds += [int]$process.Id
+    catch { $Ownership.Errors += "unexpected owned cleanup failure: $($_.Exception.Message)" }
+    finally {
+        # Closing the kill-on-close job is also the last-resort safety boundary;
+        # it never upgrades failed termination/drain observations to a pass.
+        foreach ($entry in @(
+            @{ Field = 'ThreadHandle'; Operation = 'thread_close' },
+            @{ Field = 'ProcessHandle'; Operation = 'process_close' },
+            @{ Field = 'JobHandle'; Operation = 'job_close' },
+            @{ Field = 'DesktopHandle'; Operation = 'desktop_close' }
+        )) {
+            if ($Ownership[$entry.Field] -ne [IntPtr]::Zero) {
+                try { Invoke-SoakOwnedChecked $Ownership $entry.Operation | Out-Null } catch { }
             }
         }
-        catch {
-            $errors += "failed to stop process $($process.Id): $($_.Exception.Message)"
-        }
     }
-
-    $cdbStillRunning = $false
-    if ($CdbPid) {
-        $cdbStillRunning = $null -ne (Get-Process -Id $CdbPid -ErrorAction SilentlyContinue)
+    $handlesClosed = @('ProcessHandle', 'ThreadHandle', 'JobHandle', 'DesktopHandle' | Where-Object {
+        $Ownership[$_] -ne [IntPtr]::Zero
+    }).Count -eq 0
+    $gameStopped = if ($Ownership.JobAssigned) { $jobEmpty } else { -not $Ownership.ResumeAttempted -and $cdbStopped }
+    $Ownership.Cleanup = [pscustomobject]@{
+        Mechanism = 'retained_native_no_breakaway_job'; RunId = $Ownership.RunId
+        CdbStopped = $cdbStopped; GameStopped = [bool]$gameStopped; JobEmpty = $jobEmpty
+        HandlesClosed = $handlesClosed
+        ProcessCreateAttempted = $Ownership.ProcessCreateAttempted; ProcessCreateCompleted = $Ownership.ProcessCreateCompleted
+        ProcessCreateSucceeded = $(if ($Ownership.ProcessCreateCompleted) { $Ownership.ProcessCreateSucceeded } else { $null })
+        CreatedProcessId = $Ownership.ProcessId; CreatedThreadId = $Ownership.ThreadId
+        RawProcessInformation = $Ownership.RawProcessInformation
+        AllTerminated = $cdbStopped -and $gameStopped -and $handlesClosed -and @($Ownership.Errors).Count -eq 0
+        StoppedProcessIds = $(if ($cdbStopped -and $Ownership.ProcessId -gt 0) { @($Ownership.ProcessId) } else { @() })
+        Errors = @($Ownership.Errors); Receipts = @($Ownership.Receipts)
     }
-    $gameStillRunning = @(
-        Get-LaunchedCandidateProcesses -CandidatePath $CandidatePath -RunStart $RunStart
-    ).Count -gt 0
-    if ($cdbStillRunning) {
-        $errors += "CDB process $CdbPid is still running after cleanup"
-    }
-    if ($gameStillRunning) {
-        $errors += 'one or more candidate game processes are still running after cleanup'
-    }
-    [pscustomobject]@{
-        CdbStopped = -not $cdbStillRunning
-        GameStopped = -not $gameStillRunning
-        AllTerminated = (-not $cdbStillRunning) -and (-not $gameStillRunning) -and $errors.Count -eq 0
-        StoppedProcessIds = @($stoppedIds)
-        Errors = @($errors)
-    }
+    return $Ownership.Cleanup
 }
 
 function Parse-SoakLog {
@@ -733,12 +1062,14 @@ function Parse-SoakLog {
         $match = [regex]::Match($line, '^SOAK_PAN_PLAN base=\((-?\d+),(-?\d+)\) delta=\((-?\d+),(-?\d+)\) max=\((-?\d+),(-?\d+)\) safe=1$')
         if ($match.Success) {
             [void]$panPlans.Add([pscustomobject]@{
+                Source = 'SOAK_PAN_PLAN'
                 BaseX = [int]$match.Groups[1].Value
                 BaseY = [int]$match.Groups[2].Value
                 DeltaX = [int]$match.Groups[3].Value
                 DeltaY = [int]$match.Groups[4].Value
                 MaxX = [int]$match.Groups[5].Value
                 MaxY = [int]$match.Groups[6].Value
+                Safe = 1
                 LineNumber = $lineNumber
             })
             continue
@@ -840,14 +1171,86 @@ function Get-FrameMetrics {
     }
 }
 
+function Write-HiddenRawFrame {
+    param(
+        [string]$FramesDirectory, [string]$Name, [byte[]]$Bytes,
+        [string]$ExpectedSha256, [string[]]$DiskPaths, [int64]$ArtifactLimitBytes
+    )
+    if ($Name -notmatch '^frame-[0-9]{4,}$' -or $null -eq $Bytes -or $Bytes.Length -eq 0 -or
+        $ExpectedSha256 -notmatch '^[0-9a-fA-F]{64}$' -or $ArtifactLimitBytes -le 0) {
+        throw 'Invalid raw-frame retention request'
+    }
+    $rawPath = Join-Path (Get-FullPath -Path $FramesDirectory) ($Name + '.raw')
+    Assert-SoakDiskReserve -Paths @($DiskPaths + @($rawPath)) -PendingBytes $ArtifactLimitBytes
+    $currentBytes = Get-DirectorySizeBytes -Path (Split-Path -Parent $FramesDirectory)
+    if ($currentBytes -lt 0 -or $currentBytes + [int64]$Bytes.Length -gt $ArtifactLimitBytes) {
+        throw "Raw-frame retention would exceed the declared artifact limit: $rawPath"
+    }
+    $stream = $null
+    $writeFailure = $null
+    $closeFailure = $null
+    try {
+        # CreateNew preserves an existing receipt on name collisions. Partial
+        # originals remain at this exact path after any write/flush failure.
+        $stream = [System.IO.File]::Open($rawPath, [System.IO.FileMode]::CreateNew,
+            [System.IO.FileAccess]::Write, [System.IO.FileShare]::Read)
+        $stream.Write($Bytes, 0, $Bytes.Length)
+        $stream.Flush($true)
+    }
+    catch { $writeFailure = $_.Exception }
+    finally {
+        if ($null -ne $stream) {
+            try { $stream.Dispose() } catch { $closeFailure = $_.Exception }
+        }
+    }
+    if ($writeFailure -and $closeFailure) {
+        throw [System.AggregateException]::new('Raw-frame write and close both failed',
+            [System.Exception[]]@($writeFailure, $closeFailure))
+    }
+    if ($writeFailure) { throw $writeFailure }
+    if ($closeFailure) { throw $closeFailure }
+    if ((Get-FileSha256 -Path $rawPath) -ne $ExpectedSha256) {
+        throw "Retained raw-frame SHA does not match the original read: $rawPath"
+    }
+    return $rawPath
+}
+
 function Get-DirectorySizeBytes {
     param([string]$Path)
-    if (-not (Test-Path -LiteralPath $Path)) {
-        return 0
+    # An unavailable inventory is not an empty inventory. Enumerate one level
+    # at a time so reparse-point directories are rejected before traversal,
+    # including hidden/system entries. Every caller requires an existing run.
+    $root = Get-Item -LiteralPath $Path -Force -ErrorAction Stop
+    if ($null -eq $root -or $root.PSIsContainer -ne $true -or
+        $null -eq $root.Attributes -or -not $root.FullName) {
+        throw "Artifact inventory requires a readable directory: $Path"
     }
+    if (([int64]$root.Attributes -band [int64][System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+        throw "Artifact inventory root is a reparse point: $Path"
+    }
+    $pending = New-Object 'System.Collections.Generic.Stack[string]'
+    $pending.Push($root.FullName)
     $size = 0L
-    Get-ChildItem -LiteralPath $Path -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
-        $size += $_.Length
+    while ($pending.Count -gt 0) {
+        $directory = $pending.Pop()
+        foreach ($entry in @(Get-ChildItem -LiteralPath $directory -Force -ErrorAction Stop)) {
+            if ($null -eq $entry -or $null -eq $entry.Attributes -or -not $entry.FullName) {
+                throw "Artifact inventory entry is unavailable under: $directory"
+            }
+            if (([int64]$entry.Attributes -band [int64][System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                throw "Artifact inventory contains a reparse point: $($entry.FullName)"
+            }
+            if ($entry.PSIsContainer -eq $true) {
+                $pending.Push($entry.FullName)
+            }
+            else {
+                if ($entry.PSIsContainer -ne $false -or $entry.Length -isnot [int64] -or
+                    $entry.Length -lt 0 -or $size -gt ([int64]::MaxValue - $entry.Length)) {
+                    throw "Artifact inventory has an invalid or overflowing file length: $($entry.FullName)"
+                }
+                $size += $entry.Length
+            }
+        }
     }
     return $size
 }
@@ -1232,7 +1635,7 @@ $desktopName = "ClashHiddenSoak_$($stamp -replace '[^0-9A-Za-z_]', '_')"
 $cdbCommand = '$$><' + $generatedProbe
 $cdbArgs = @('-hd', '-logo', $logPath, '-c', $cdbCommand, $candidateFull)
 
-$launch = $null
+$launch = New-SoakOwnedLaunch
 $targetProcess = $null
 $ready = $null
 $readyObserved = $false
@@ -1260,8 +1663,7 @@ $observations = Parse-SoakLog -LogText ''
 
 try {
     Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
-    $launch = Start-CdbOnHiddenDesktop -CdbPath $Cdb -Arguments $cdbArgs -WorkingDirectory $WorkDir -DesktopName $desktopName
-    $cdbProcess = [System.Diagnostics.Process]::GetProcessById($launch.ProcessId)
+    $launch = Start-CdbOnHiddenDesktop -CdbPath $Cdb -Arguments $cdbArgs -WorkingDirectory $WorkDir -DesktopName $desktopName -Ownership $launch
 
     $readyDeadline = $runStart.AddSeconds($ReadyTimeoutSec)
     $overallDeadline = $runStart.AddSeconds($ReadyTimeoutSec + $DurationSec + $EndGraceSec)
@@ -1271,6 +1673,9 @@ try {
         # CDB and the proxy append their own logs while the target is running.
         # Stop this owned chain if another writer consumes the reserved room.
         Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
+        if ((Get-DirectorySizeBytes -Path $runDir) -gt $pendingArtifactBytes) {
+            throw 'Retained run artifacts exceeded the declared limit during collection'
+        }
         Start-Sleep -Milliseconds 500
         $logText = if (Test-Path -LiteralPath $logPath) { [string](Get-Content -LiteralPath $logPath -Raw) } else { '' }
         $observations = Parse-SoakLog -LogText $logText
@@ -1297,7 +1702,7 @@ try {
             break
         }
 
-        $cdbProcess.Refresh()
+        $cdbProcess = Get-SoakOwnedCdbStatus -Ownership $launch
         if ($cdbProcess.HasExited -and -not $routeEndInLog) {
             $cdbExitBeforeDuration = $true
             $runnerFailures += "CDB exited with code $($cdbProcess.ExitCode) before the soak duration completed"
@@ -1352,8 +1757,10 @@ try {
                     $metrics = Get-FrameMetrics -Bytes $bytes
                     $frameIndex++
                     $name = 'frame-{0:d4}' -f $frameIndex
+                    $rawPath = Write-HiddenRawFrame -FramesDirectory $framesDir -Name $name -Bytes $bytes -ExpectedSha256 $metrics.Hash -DiskPaths $diskPaths -ArtifactLimitBytes $pendingArtifactBytes
                     [void]$frameSamples.Add([ordered]@{
                         Name = $name
+                        RawPath = $rawPath
                         Timestamp = (Get-Date).ToString('o')
                         Width = $ready.Width
                         Height = $ready.Height
@@ -1390,8 +1797,10 @@ try {
                     $metrics = Get-FrameMetrics -Bytes $bytes
                     $frameIndex++
                     $name = 'frame-{0:d4}' -f $frameIndex
+                    $rawPath = Write-HiddenRawFrame -FramesDirectory $framesDir -Name $name -Bytes $bytes -ExpectedSha256 $metrics.Hash -DiskPaths $diskPaths -ArtifactLimitBytes $pendingArtifactBytes
                     [void]$frameSamples.Add([ordered]@{
                         Name = $name
+                        RawPath = $rawPath
                         Timestamp = (Get-Date).ToString('o')
                         Width = $ready.Width
                         Height = $ready.Height
@@ -1423,22 +1832,31 @@ catch {
     $runnerFailures += "hidden runtime failed: $($_.Exception.Message)"
 }
 finally {
-    $cleanup = Stop-LaunchedProcesses -CdbPid $(if ($launch) { $launch.ProcessId } else { $null }) -CandidatePath $candidateFull -RunStart $runStart
-    $cleanStop = $cleanup.AllTerminated -and $routeEndObserved
-    $runnerFailures += @($cleanup.Errors)
-    if ($launch -and $launch.ProcessHandle -ne [IntPtr]::Zero) {
-        [ClashHiddenSoakNative]::CloseHandle($launch.ProcessHandle) | Out-Null
-    }
-    if ($launch -and $launch.DesktopHandle -ne [IntPtr]::Zero) {
-        [ClashHiddenSoakNative]::CloseDesktop($launch.DesktopHandle) | Out-Null
-    }
     try {
-        if ((Get-FileSha256 -Path $inputFull) -ne $inputSha) {
-            $runnerFailures += 'original executable SHA changed during the runtime'
-        }
+        $cleanup = Stop-LaunchedProcesses -Ownership $launch
+        $cleanStop = $cleanup.AllTerminated -and $routeEndObserved
+        $runnerFailures += @($cleanup.Errors)
     }
     catch {
-        $runnerFailures += "original executable post-runtime verification failed: $($_.Exception.Message)"
+        $launch.Errors += "owned cleanup did not complete: $($_.Exception.Message)"
+        $cleanStop = $false
+        $cleanup = [pscustomobject]@{ Mechanism = 'retained_native_no_breakaway_job'; RunId = $launch.RunId;
+            GameStopped = $false; CdbStopped = $false; AllTerminated = $false; JobEmpty = $false;
+            HandlesClosed = $false; Errors = @($launch.Errors); Receipts = @($launch.Receipts); StoppedProcessIds = @()
+            ProcessCreateAttempted = $launch.ProcessCreateAttempted; ProcessCreateCompleted = $launch.ProcessCreateCompleted
+            ProcessCreateSucceeded = $(if ($launch.ProcessCreateCompleted) { $launch.ProcessCreateSucceeded } else { $null })
+            CreatedProcessId = $launch.ProcessId; CreatedThreadId = $launch.ThreadId; RawProcessInformation = $launch.RawProcessInformation }
+        $runnerFailures += @($cleanup.Errors)
+    }
+    finally {
+        try {
+            if ((Get-FileSha256 -Path $inputFull) -ne $inputSha) {
+                $runnerFailures += 'original executable SHA changed during the runtime'
+            }
+        }
+        catch {
+            $runnerFailures += "original executable post-runtime verification failed: $($_.Exception.Message)"
+        }
     }
 }
 
@@ -1457,7 +1875,21 @@ foreach ($name in ($edgeNames.Keys | Sort-Object)) {
     $pngPath = Join-Path $framesDir ("$name.png")
     $pngMetaPath = Join-Path $framesDir ("$name.png.json")
     Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
-    [System.IO.File]::WriteAllBytes($rawPath, $edgeNames[$name])
+    # Every raw original was already exclusively retained during collection.
+    # Edge PNG generation must never recreate or overwrite that evidence.
+    if (-not (Test-Path -LiteralPath $rawPath -PathType Leaf)) {
+        $captureErrors += "retained raw frame is missing before edge conversion: $rawPath"
+        continue
+    }
+    try {
+        if ((Get-DirectorySizeBytes -Path $runDir) + 2MB -gt $pendingArtifactBytes) {
+            throw 'Edge PNG and metadata allowance would exceed the declared artifact limit'
+        }
+    }
+    catch {
+        $captureErrors += "edge conversion admission failed for $name`: $($_.Exception.Message)"
+        continue
+    }
     & $pythonExe $converter $rawPath --width $ready.Width --height $ready.Height --output $pngPath --metadata $pngMetaPath --log $logPath
     if ($LASTEXITCODE -ne 0) {
         $captureErrors += "cdb_surface_dump_to_png.py failed for $name with exit code $LASTEXITCODE"
@@ -1474,7 +1906,9 @@ foreach ($name in ($edgeNames.Keys | Sort-Object)) {
 
 $heartbeatCount = @($observations.Heartbeats).Count
 $panEventCount = @($observations.PanEvents).Count
-$artifactBytes = Get-DirectorySizeBytes -Path $runDir
+$artifactBytes = $null
+try { $artifactBytes = Get-DirectorySizeBytes -Path $runDir }
+catch { $runnerFailures += "artifact inventory failed: $($_.Exception.Message)" }
 $proxyText = if (Test-Path -LiteralPath $proxyLogPath) { [string](Get-Content -LiteralPath $proxyLogPath -Raw) } else { '' }
 $presentRows = @([regex]::Matches($proxyText, '(?m)^ddraw_surfdump_proxy loaded present_enabled=([01])\s*$'))
 $proxyPresentEnabled = $null
@@ -1533,6 +1967,7 @@ $samples = [ordered]@{
             source = $ready.Source; redraw_seq = $ready.RedrawSeq
             surface = $ready.Surface; base = $ready.Base
             width = $ready.Width; height = $ready.Height; bytes = $ready.Bytes
+            line_number = $ready.LineNumber
         }
     } else { $null }
     route_start_marker = if ($startMarker) {
@@ -1540,6 +1975,7 @@ $samples = [ordered]@{
             route_ticks = $startMarker.RouteTicks; pan = $startMarker.Pan
             player = $startMarker.Player; tick = $startMarker.Tick; game_data = $startMarker.GameData
             scroll_x = $startMarker.ScrollX; scroll_y = $startMarker.ScrollY
+            line_number = $startMarker.LineNumber
         }
     } else { $null }
     route_end_marker = if ($endMarker) {
@@ -1547,12 +1983,21 @@ $samples = [ordered]@{
             route_ticks = $endMarker.RouteTicks; pan = $endMarker.Pan
             hits = $endMarker.Hits; tick_delta = $endMarker.TickDelta; player = $endMarker.Player
             scroll_x = $endMarker.ScrollX; scroll_y = $endMarker.ScrollY
+            line_number = $endMarker.LineNumber
         }
     } else { $null }
+    pan_plans = @($observations.PanPlans | ForEach-Object {
+        [ordered]@{
+            source = $_.Source; safe = $_.Safe; line_number = $_.LineNumber
+            base_x = $_.BaseX; base_y = $_.BaseY; delta_x = $_.DeltaX; delta_y = $_.DeltaY
+            max_x = $_.MaxX; max_y = $_.MaxY
+        }
+    })
     pan_events = @($observations.PanEvents | ForEach-Object {
         [ordered]@{
             phase = $_.Phase; x = $_.X; y = $_.Y; hits = $_.Hits; tick_delta = $_.TickDelta
             delta_x = $_.DeltaX; delta_y = $_.DeltaY
+            line_number = $_.LineNumber
         }
     })
     proxy = [ordered]@{
@@ -1563,6 +2008,13 @@ $samples = [ordered]@{
     cleanup = [ordered]@{
         game_stopped = $cleanup.GameStopped; cdb_stopped = $cleanup.CdbStopped
         errors = @($cleanup.Errors); stopped_process_ids = @($cleanup.StoppedProcessIds)
+        mechanism = $cleanup.Mechanism; run_id = $cleanup.RunId
+        job_empty = $cleanup.JobEmpty; handles_closed = $cleanup.HandlesClosed
+        receipts = @($cleanup.Receipts)
+        process_create_attempted = $cleanup.ProcessCreateAttempted; process_create_completed = $cleanup.ProcessCreateCompleted
+        process_create_succeeded = $cleanup.ProcessCreateSucceeded
+        created_process_id = $cleanup.CreatedProcessId; created_thread_id = $cleanup.CreatedThreadId
+        raw_process_information = $cleanup.RawProcessInformation
     }
     elapsed_coverage = [ordered]@{
         formula = 'duration_sec - sample_interval_sec - 2'

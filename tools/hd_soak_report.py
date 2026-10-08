@@ -13,6 +13,8 @@ from datetime import datetime, timezone
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
+from hidden_soak_artifact_layout import validate_hidden_artifact_layout
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROTECTED_STABLE_STAGE = (
@@ -560,6 +562,80 @@ def hidden_pan_pattern_failures(start: Any, events: Any) -> list[str]:
         expected_y = base_y + (dy if phase in (2, 3) else 0)
         if event.get("x") != expected_x or event.get("y") != expected_y:
             failures.append(f"pan_events[{index}] coordinates do not match the exact four-phase cycle")
+    return failures
+
+
+def hidden_pan_plan_failures(
+    plans: Any, start: Any, ready: Any, end: Any, events: Any, *, route: str,
+) -> list[str]:
+    """Regrade the retained anchored live-bounds plan, never a saved safe flag.
+
+    These rows establish consistency of the recorded CDB plan and writes. They
+    do not authenticate the loaded producer or replace native owner provenance.
+    The axis choice deliberately matches the probe: positive while space
+    remains, negative at a positive upper bound, zero only for an immovable
+    axis. A merely bounded excursion cannot stand in for this actual receipt.
+    """
+    if route != "map-pan":
+        return [] if plans in (None, []) else ["non-pan route contains pan_plans evidence"]
+    if not isinstance(plans, list) or len(plans) != 1 or not isinstance(plans[0], dict):
+        return ["pan_plans must retain exactly one structured SOAK_PAN_PLAN receipt"]
+    failures: list[str] = []
+    plan = plans[0]
+    if plan.get("source") != "SOAK_PAN_PLAN":
+        failures.append("pan_plans[0].source is not the anchored SOAK_PAN_PLAN marker")
+    if type(plan.get("safe")) is not int or plan["safe"] != 1:
+        failures.append("pan_plans[0].safe must retain the integer marker value 1")
+    fields = ("base_x", "base_y", "delta_x", "delta_y", "max_x", "max_y", "line_number")
+    if any(type(plan.get(field)) is not int for field in fields):
+        failures.append("pan_plans[0] bounds, base, delta and line_number must be explicit integers")
+        return failures
+    base_x, base_y = plan["base_x"], plan["base_y"]
+    dx, dy = plan["delta_x"], plan["delta_y"]
+    for axis in ("x", "y"):
+        base, maximum, delta = (plan[f"{prefix}_{axis}"] for prefix in ("base", "max", "delta"))
+        if maximum < 0 or not 0 <= base <= maximum:
+            failures.append(f"pan_plans[0] {axis} base/max bounds are invalid")
+            continue
+        expected_delta = 1 if base < maximum else (-1 if base > 0 else 0)
+        if delta != expected_delta:
+            failures.append(f"pan_plans[0].delta_{axis} does not match the safe inward live-bound axis choice")
+        if not 0 <= base + delta <= maximum:
+            failures.append(f"pan_plans[0] {axis} target leaves the live scroll bounds")
+    if dx not in (-1, 0, 1) or dy not in (-1, 0, 1) or (dx, dy) == (0, 0):
+        failures.append("pan_plans[0] must select a nonzero bounded inward direction")
+    if not isinstance(start, dict) or any(
+        type(start.get(f"scroll_{axis}")) is not int
+        or start[f"scroll_{axis}"] != plan[f"base_{axis}"] for axis in ("x", "y")
+    ):
+        failures.append("pan_plans[0] base does not match the route_start_marker scroll coordinates")
+    marker_lines: list[int | None] = []
+    for name, marker in (("route_start_marker", start), ("ready_marker", ready), ("route_end_marker", end)):
+        line = marker.get("line_number") if isinstance(marker, dict) else None
+        if type(line) is not int or line <= 0:
+            failures.append(f"{name}.line_number is required to bind the live pan plan")
+            line = None
+        marker_lines.append(line)
+    start_line, ready_line, end_line = marker_lines
+    plan_line = plan["line_number"]
+    if plan_line <= 0 or (None not in marker_lines and not start_line < ready_line < plan_line < end_line):
+        failures.append("pan_plans[0] must follow route start/readiness and precede route end")
+    previous_line = plan_line
+    for index, event in enumerate(events if isinstance(events, list) else []):
+        if not isinstance(event, dict):
+            continue  # The complete event inventory is checked separately.
+        for axis, delta in (("x", dx), ("y", dy)):
+            if type(event.get(f"delta_{axis}")) is not int or event[f"delta_{axis}"] != delta:
+                failures.append(f"pan_events[{index}].delta_{axis} does not match the retained pan plan")
+        phase = index % 4
+        expected = (base_x + (dx if phase in (1, 2) else 0), base_y + (dy if phase in (2, 3) else 0))
+        if (event.get("x"), event.get("y")) != expected:
+            failures.append(f"pan_events[{index}] coordinates do not match the retained plan cycle")
+        line = event.get("line_number")
+        if type(line) is not int or line <= previous_line or (end_line is not None and line >= end_line):
+            failures.append(f"pan_events[{index}].line_number is outside the ordered plan/end interval")
+        else:
+            previous_line = line
     return failures
 
 
@@ -1897,7 +1973,8 @@ def evaluate_hidden_report(
     frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
     process_samples = [row if isinstance(row, dict) else {} for row in raw_process_samples]
     capture_errors = list(report.get("capture_errors") or [])
-    artifact_bytes = int(report.get("artifact_bytes") or 0)
+    raw_artifact_bytes = report.get("artifact_bytes")
+    artifact_bytes = raw_artifact_bytes if type(raw_artifact_bytes) is int else None
     reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
     reported_artifact_limit_bytes = integer_or_none(report.get("artifact_limit_bytes"))
     default_artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
@@ -2090,46 +2167,10 @@ def evaluate_hidden_report(
         failures,
     )
 
-    failures = []
-    candidate_outside_repo = not is_under_repo(report.get("candidate"))
-    output_outside_repo = not is_under_repo(report.get("output_directory"))
-    input_matches = normalized_path_text(report.get("input_exe")) == normalized_path_text(EXPECTED_INPUT_EXE)
-    workdir_matches = normalized_path_text(report.get("workdir")) == normalized_path_text(EXPECTED_WORKDIR)
-    candidate_under_expected = is_same_or_under(report.get("candidate"), EXPECTED_CANDIDATE_ROOT)
-    output_under_expected = is_same_or_under(report.get("output_directory"), EXPECTED_OUTPUT_ROOT)
-    if not candidate_outside_repo:
-        failures.append("candidate path is inside the repository")
-    if not output_outside_repo:
-        failures.append("raw output directory is inside the repository")
-    if not input_matches:
-        failures.append(f"input_exe is not {EXPECTED_INPUT_EXE}")
-    if not workdir_matches:
-        failures.append(f"workdir is not {EXPECTED_WORKDIR}")
-    if not candidate_under_expected:
-        failures.append(f"candidate path is not under {EXPECTED_CANDIDATE_ROOT}")
-    if not output_under_expected:
-        failures.append(f"raw output directory is not under {EXPECTED_OUTPUT_ROOT}")
-    checks["artifact_locations"] = check_record(
-        (
-            candidate_outside_repo
-            and output_outside_repo
-            and input_matches
-            and workdir_matches
-            and candidate_under_expected
-            and output_under_expected
-        ),
-        {
-            "input_exe": report.get("input_exe"),
-            "expected_input_exe": EXPECTED_INPUT_EXE,
-            "workdir": report.get("workdir"),
-            "expected_workdir": EXPECTED_WORKDIR,
-            "candidate": report.get("candidate"),
-            "expected_candidate_root": EXPECTED_CANDIDATE_ROOT,
-            "output_directory": report.get("output_directory"),
-            "expected_output_root": EXPECTED_OUTPUT_ROOT,
-        },
-        failures,
-    )
+    # Lexical run binding only: retained-file and loaded-image authentication
+    # remain separate requirements. Visible and guest path policies are intact.
+    layout_summary, failures = validate_hidden_artifact_layout(report)
+    checks["artifact_locations"] = check_record(not failures, layout_summary, failures)
 
     # Capture integrity, adapted to surface-read frames: the frames are host
     # ReadProcessMemory reads of the DirectDraw surface base that
@@ -2209,6 +2250,7 @@ def evaluate_hidden_report(
     start_marker = report.get("route_start_marker")
     end_marker = report.get("route_end_marker")
     pan_events = report.get("pan_events")
+    pan_plans = report.get("pan_plans")
     expected_duration_ticks = duration * 64 if duration is not None else None
     start_scroll_x: int | None = None
     start_scroll_y: int | None = None
@@ -2301,6 +2343,9 @@ def evaluate_hidden_report(
                 failures.append(f"pan_events[{index}] is outside the bounded inward +/-1 cycle")
         if route == "map-pan" and not pan_events:
             failures.append("map-pan route has no parsed SOAK_PAN_SET rows")
+        failures.extend(hidden_pan_plan_failures(
+            pan_plans, start_marker, ready_marker, end_marker, pan_events, route=route,
+        ))
         if route == "map-pan":
             failures.extend(hidden_pan_pattern_failures(start_marker, pan_events))
             pan_detail = report.get("pan_mechanism_detail")
@@ -2329,6 +2374,7 @@ def evaluate_hidden_report(
             "ready_marker": ready_marker,
             "route_start_marker": start_marker,
             "route_end_marker": end_marker,
+            "pan_plans": pan_plans,
             "pan_event_count": len(pan_events) if isinstance(pan_events, list) else None,
             "heartbeat_count": report.get("heartbeat_count"),
             "checked": executed,
@@ -2752,7 +2798,9 @@ def evaluate_hidden_report(
                 f"{reported_artifact_limit_bytes} does not match max_artifact_mb-derived limit "
                 f"{expected_artifact_limit_bytes}"
             )
-        if artifact_bytes > artifact_limit_bytes:
+        if artifact_bytes is None or artifact_bytes < 0:
+            failures.append("artifact_bytes must be an explicit nonnegative integer inventory")
+        elif artifact_bytes > artifact_limit_bytes:
             failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
     checks["artifact_budget"] = check_record(
         (not executed) or not failures,

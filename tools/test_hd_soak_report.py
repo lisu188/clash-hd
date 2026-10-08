@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import hashlib
 import subprocess
@@ -254,11 +255,13 @@ def passing_hidden_report(tmp: Path) -> dict:
         "sample_interval_sec": 15,
         "input_exe": soak.EXPECTED_INPUT_EXE,
         "workdir": soak.EXPECTED_WORKDIR,
-        "candidate": r"C:\ClashTests\hd-soak\clash95_hd_hidden_fixture.exe",
+        "candidate": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\clash95_hd_hidden_fixture.exe",
         "candidate_sha256": candidate_sha,
         "input_sha256": soak.EXPECTED_BASE_SHA256,
         "patch_stage_report": str(patch_path),
-        "output_directory": r"C:\ClashCaptures\hd-soak\hidden-fixture",
+        "output_directory": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture",
+        "cdb_log": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\hidden-soak-cdb.log",
+        "generated_probe": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\probe.generated.cdb",
         "report_json": "captures/current/hd-soak-hidden-current.json",
         "input_proof_class": "hidden_cdb_forced_route_diagnostic_not_manual_directinput_release_proof",
         "right_bottom_promotion_blocked": True,
@@ -270,10 +273,11 @@ def passing_hidden_report(tmp: Path) -> dict:
         "frame_read_method": soak.HIDDEN_FRAME_READ_METHOD,
         "proxy": {
             "used": True,
-            "path": r"C:\ClashTests\hd-soak\ddraw.dll",
+            "path": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw.dll",
             "sha256": "f" * 64,
-            "build_manifest": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.build.json",
-            "log": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.log",
+            "build_manifest": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.build.json",
+            "log": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.log",
+            "build_log": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\ddraw-proxy-build\build.log",
             "present_enabled": False,
         },
         "ready_marker": {
@@ -377,14 +381,35 @@ def passing_hidden_pan_report(tmp: Path) -> dict:
     report["frame_progress_expected"] = True
     report["route_start_marker"]["pan"] = 1
     report["pan_interval_sec"] = 10
+    report["route_start_marker"]["line_number"] = 10
+    report["ready_marker"]["line_number"] = 11
+    report["pan_plans"] = [{
+        "source": "SOAK_PAN_PLAN", "safe": 1, "line_number": 12,
+        "base_x": 10, "base_y": 10, "delta_x": 1, "delta_y": 1, "max_x": 20, "max_y": 20,
+    }]
     report["pan_events"] = [
         {"phase": index % 4, "x": 10 + int(index % 4 in (1, 2)),
-         "y": 10 + int(index % 4 in (2, 3)), "hits": index + 1, "tick_delta": (index + 1) * 640}
+         "y": 10 + int(index % 4 in (2, 3)), "hits": index + 1, "tick_delta": (index + 1) * 640,
+         "delta_x": 1, "delta_y": 1, "line_number": 13 + index}
         for index in range(11)
     ]
     report["pan_event_count"] = len(report["pan_events"])
-    report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11)
+    report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11, line_number=24)
     return report
+
+
+def test_hidden_artifact_inventory_cannot_be_missing_or_coerced() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        for value in (None, True, False, -1, 1.5, "345678", "", [], {}, float("nan")):
+            report = copy.deepcopy(baseline)
+            report["artifact_bytes"] = value
+            result = soak.evaluate_report_for_environment(report)
+            assert not result["overall"], value
+            assert not result["checks"]["artifact_budget"]["passed"], value
+        report = copy.deepcopy(baseline)
+        del report["artifact_bytes"]
+        assert not soak.evaluate_report_for_environment(report)["checks"]["artifact_budget"]["passed"]
 
 
 def test_hidden_passing_report() -> None:
@@ -403,6 +428,74 @@ def test_hidden_passing_report() -> None:
     assert evaluation["checks"]["frame_inventory"]["passed"] is True
     assert evaluation["checks"]["render_metrics"]["passed"] is True
     assert evaluation["checks"]["summary_consistency"]["passed"] is True
+
+
+def test_hidden_artifact_layout_rejects_unbound_or_ambiguous_paths() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        original = passing_hidden_report(Path(directory))
+        path_fields = (
+            "input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe",
+            "proxy.path", "proxy.build_manifest", "proxy.log", "proxy.build_log",
+        )
+        invalid_values = (None, "", 1, False, [], {}, " C:\\Clash\\clash95.exe", "C:\\Clash\\clash95.exe\x00")
+        cases = [(field, value) for field in path_fields for value in invalid_values]
+        cases.extend((field, (original["proxy"][field.split(".", 1)[1]] if field.startswith("proxy.") else original[field]) + separator)
+                     for field in path_fields if field not in {"workdir", "output_directory"}
+                     for separator in ("\\", "/"))
+        cases.extend(("candidate", value) for value in (
+            r"C:\ClashTests\hd-soak\hidden\run\..\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\.\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe:stream",
+            r"C:\ClashTests\hd-soak\hidden\NUL.txt\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\CON .txt\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe.",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture \candidate.exe",
+            r"\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"C:ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\host\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\?\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\.\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\??\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\nested\candidate.exe",
+            r"C:\ClashTests\hd-soak\old-run\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\different-run\candidate.exe",
+        ))
+        cases.extend((
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden"),
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\nested"),
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\different-run"),
+            ("proxy.path", r"C:\unrelated\ddraw.dll"),
+            ("proxy.path", r"C:\ClashTests\hd-soak\hidden\hidden-fixture\other-ddraw.dll"),
+            ("proxy.build_manifest", r"C:\ClashTests\hd-soak\hidden\different-run\ddraw_surfdump_proxy.build.json"),
+            ("proxy.log", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.log"),
+            ("proxy.build_log", r"C:\ClashCaptures\hd-soak\hidden\different-run\build.log"),
+            ("proxy.build_log", original["output_directory"]),
+            ("cdb_log", r"C:\ClashCaptures\hd-soak\hidden\different-run\hidden-soak-cdb.log"),
+            ("generated_probe", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\..\probe.generated.cdb"),
+        ))
+        for field, value in cases:
+            report = json.loads(json.dumps(original))
+            container, key = (report["proxy"], field.split(".", 1)[1]) if field.startswith("proxy.") else (report, field)
+            container[key] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], (field, value, evaluated)
+            assert not evaluated["checks"]["artifact_locations"]["passed"], (field, value, evaluated)
+
+
+def test_hidden_artifact_layout_accepts_case_and_slashes_without_claiming_physical_authentication() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        for field in ("input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe"):
+            report[field] = report[field].upper().replace("\\", "/")
+        for field in ("path", "build_manifest", "log", "build_log"):
+            report["proxy"][field] = report["proxy"][field].upper().replace("\\", "/")
+        evaluated = soak.evaluate_report_for_environment(report)
+    assert evaluated["overall"], evaluated["failures"]
+    summary = evaluated["checks"]["artifact_locations"]["summary"]
+    assert summary["scope"] == "hidden_windows_lexical_artifact_layout_only"
+    assert summary["physical_artifacts_authenticated"] is False
+    assert summary["patch_manifest_layout_checked"] is False
 
 
 def test_hidden_markdown_banners_environment_and_disclosures() -> None:
@@ -1542,6 +1635,9 @@ def run_tests() -> None:
     test_map_pan_cannot_disable_frame_progression_in_any_environment()
     test_cli_rejects_unknown_and_contradictory_environment_selection()
     test_hidden_passing_report()
+    test_hidden_artifact_inventory_cannot_be_missing_or_coerced()
+    test_hidden_artifact_layout_rejects_unbound_or_ambiguous_paths()
+    test_hidden_artifact_layout_accepts_case_and_slashes_without_claiming_physical_authentication()
     test_hidden_markdown_banners_environment_and_disclosures()
     test_hidden_faked_input_responsiveness_number_fails()
     test_hidden_faked_input_responsiveness_true_fails()

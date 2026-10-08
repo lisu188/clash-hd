@@ -91,29 +91,36 @@ def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
         "workdir": r"C:\Clash",
         "output_directory": r"C:\ClashCaptures\hd-soak\hidden\run",
         "load_slot": 2,
-        "cdb_log": r"C:\ClashCaptures\hd-soak-hidden\run\hidden-soak-cdb.log",
-        "generated_probe": r"C:\ClashCaptures\hd-soak-hidden\run\probe.generated.cdb",
+        "cdb_log": r"C:\ClashCaptures\hd-soak\hidden\run\hidden-soak-cdb.log",
+        "generated_probe": r"C:\ClashCaptures\hd-soak\hidden\run\probe.generated.cdb",
         "launch_mode": "hidden-desktop",
         "frame_read_method": "host_readprocessmemory",
         "surface_base": "0x00b40000",
         "ready_marker": {
             "source": "SOAK_SURFDUMP_READY", "redraw_seq": 4, "surface": "00a00000",
             "base": "00b40000", "width": 800, "height": 600, "bytes": 480000,
+            "line_number": 11,
         },
         "route_start_marker": {
             "route_ticks": duration * 64, "pan": int(route == "map-pan"), "player": 0,
             "tick": 1000, "game_data": "00c00000", "scroll_x": 4, "scroll_y": 6,
+            "line_number": 10,
         },
         "route_end_marker": {
             "route_ticks": duration * 64, "pan": int(route == "map-pan"),
             "hits": 8192, "tick_delta": duration * 64, "player": 0,
             "scroll_x": 5 if route == "map-pan" else 4,
             "scroll_y": 7 if route == "map-pan" else 6,
+            "line_number": 24,
         },
+        "pan_plans": [{
+            "source": "SOAK_PAN_PLAN", "safe": 1, "line_number": 12,
+            "base_x": 4, "base_y": 6, "delta_x": 1, "delta_y": 1, "max_x": 20, "max_y": 20,
+        }] if route == "map-pan" else [],
         "pan_events": [
             {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
              "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 500,
-             "tick_delta": (index + 1) * 640}
+             "tick_delta": (index + 1) * 640, "delta_x": 1, "delta_y": 1, "line_number": 13 + index}
             for index in range(11)
         ] if route == "map-pan" else [],
         "proxy": {
@@ -121,6 +128,7 @@ def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
             "sha256": "b" * 64,
             "build_manifest": r"C:\ClashTests\hd-soak\hidden\run\ddraw_surfdump_proxy.build.json",
             "log": r"C:\ClashTests\hd-soak\hidden\run\ddraw_surfdump_proxy.log",
+            "build_log": r"C:\ClashCaptures\hd-soak\hidden\run\ddraw-proxy-build\build.log",
             "present_enabled": False,
         },
         "cleanup": {"game_stopped": True, "cdb_stopped": True, "errors": []},
@@ -159,8 +167,8 @@ def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
         "max_working_set_growth_mb": 64,
         "max_private_memory_growth_mb": 64,
         "max_handle_growth": 128,
-        "report_json": r"C:\ClashCaptures\hd-soak-hidden\run\report.json",
-        "report_markdown": r"C:\ClashCaptures\hd-soak-hidden\run\RUN-SUMMARY.md",
+        "report_json": r"C:\ClashCaptures\hd-soak\hidden\run\report.json",
+        "report_markdown": r"C:\ClashCaptures\hd-soak\hidden\run\RUN-SUMMARY.md",
     }
     samples.update(overrides)
     return samples
@@ -179,6 +187,64 @@ def test_passing_map_idle() -> None:
     assert report["tier"] == "short2"
     assert report["working_set_growth_bytes"] == 4000
     assert report["clean_stop"] is True
+
+
+def test_artifact_layout_rejects_missing_cross_run_and_ambiguous_paths() -> None:
+    original = make_samples()
+    path_fields = (
+        "input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe",
+        "proxy.path", "proxy.build_manifest", "proxy.log", "proxy.build_log",
+    )
+    cases = [(field, value) for field in path_fields for value in (None, "", 1, False, [], {})]
+    cases.extend((field, (original["proxy"][field.split(".", 1)[1]] if field.startswith("proxy.") else original[field]) + separator)
+                 for field in path_fields if field not in {"workdir", "output_directory"}
+                 for separator in ("\\", "/"))
+    cases.extend(("candidate", value) for value in (
+        r"C:\ClashTests\hd-soak\hidden\run\..\candidate.exe",
+        r"C:\ClashTests\hd-soak\hidden\run\.\candidate.exe",
+        r"C:\ClashTests\hd-soak\hidden\run\candidate.exe:stream",
+        r"C:\ClashTests\hd-soak\hidden\NUL.txt\candidate.exe",
+        r"C:\ClashTests\hd-soak\hidden\run\candidate.exe.",
+        r"C:\ClashTests\hd-soak\hidden\run \candidate.exe",
+        r"\ClashTests\hd-soak\hidden\run\candidate.exe",
+        r"C:ClashTests\hd-soak\hidden\run\candidate.exe",
+        r"\\host\ClashTests\hd-soak\hidden\run\candidate.exe",
+        r"\\?\C:\ClashTests\hd-soak\hidden\run\candidate.exe",
+        r"\\.\C:\ClashTests\hd-soak\hidden\run\candidate.exe",
+        r"C:\ClashTests\hd-soak\hidden\candidate.exe",
+        r"C:\ClashTests\hd-soak\hidden\run\nested\candidate.exe",
+        r"C:\ClashTests\hd-soak\different-run\candidate.exe",
+    ))
+    cases.extend((
+        ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\other-run"),
+        ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\run\nested"),
+        ("proxy.path", r"C:\unrelated\ddraw.dll"),
+        ("proxy.build_manifest", r"C:\ClashTests\hd-soak\hidden\other-run\ddraw_surfdump_proxy.build.json"),
+        ("proxy.log", r"C:\ClashTests\hd-soak\hidden\run\nested\ddraw_surfdump_proxy.log"),
+        ("proxy.build_log", r"C:\ClashCaptures\hd-soak\hidden\other-run\build.log"),
+        ("proxy.build_log", original["output_directory"]),
+        ("cdb_log", r"C:\ClashCaptures\hd-soak\hidden\other-run\hidden-soak-cdb.log"),
+        ("generated_probe", r"C:\ClashCaptures\hd-soak-hidden\run\probe.generated.cdb"),
+    ))
+    for field, value in cases:
+        samples = copy.deepcopy(original)
+        container, key = (samples["proxy"], field.split(".", 1)[1]) if field.startswith("proxy.") else (samples, field)
+        container[key] = value
+        report = assembler.assemble_report(samples)
+        assert not report["passed"], (field, value, report)
+        assert any(field in failure for failure in report["failures"]), (field, value, report["failures"])
+
+
+def test_artifact_layout_case_and_slashes_are_lexical_only() -> None:
+    samples = make_samples()
+    for field in ("input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe"):
+        samples[field] = samples[field].upper().replace("\\", "/")
+    for field in ("path", "build_manifest", "log", "build_log"):
+        samples["proxy"][field] = samples["proxy"][field].upper().replace("\\", "/")
+    _, layout_failures = assembler.validate_hidden_artifact_layout(samples)
+    assert not layout_failures, layout_failures
+    report = assembler.assemble_report(samples)
+    assert report["passed"], report["failures"]
 
 
 def test_passing_map_pan_discloses_forced_pan() -> None:
@@ -518,7 +584,7 @@ def test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture: Path) -> No
     samples["pan_events"] = [
         {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
          "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 500,
-         "tick_delta": (index + 1) * 768}
+         "tick_delta": (index + 1) * 768, "delta_x": 1, "delta_y": 1, "line_number": 13 + index}
         for index in range(9)
     ]
     samples["pan_event_count"] = len(samples["pan_events"])
@@ -579,11 +645,26 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
 
     def cycle(dx: int, dy: int, *, declared: bool = False) -> dict[str, Any]:
         samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+        base_x, base_y = (4 if dx else 0), (6 if dy else 0)
+        samples["route_start_marker"].update(scroll_x=base_x, scroll_y=base_y)
+        samples["pan_plans"][0].update(
+            base_x=base_x, base_y=base_y, delta_x=dx, delta_y=dy,
+            max_x=20 if dx == 1 else base_x, max_y=20 if dy == 1 else base_y,
+        )
         for index, event in enumerate(samples["pan_events"]):
-            event["x"] = 4 + (dx if index % 4 in (1, 2) else 0)
-            event["y"] = 6 + (dy if index % 4 in (2, 3) else 0)
-            if declared:
-                event.update(delta_x=dx, delta_y=dy)
+            event["x"] = base_x + (dx if index % 4 in (1, 2) else 0)
+            event["y"] = base_y + (dy if index % 4 in (2, 3) else 0)
+            event.update(delta_x=dx, delta_y=dy)
+        if not declared:
+            # Pattern inference stays independently tested, but a full new
+            # receipt must retain the deltas actually emitted by the probe.
+            inferred = copy.deepcopy(samples["pan_events"])
+            for event in inferred:
+                event.pop("delta_x")
+                event.pop("delta_y")
+            from hd_soak_report import hidden_pan_pattern_failures
+            if (dx, dy) != (0, 0):
+                assert not hidden_pan_pattern_failures(samples["route_start_marker"], inferred)
         samples["route_end_marker"].update(
             scroll_x=samples["pan_events"][-1]["x"], scroll_y=samples["pan_events"][-1]["y"],
         )
@@ -618,6 +699,7 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
             invalid["pan_events"][2]["delta_x"] = -1
         elif mutation == "declared_partial":
             events[0]["delta_x"] = 1
+            events[0].pop("delta_y")
         else:
             events[1]["x"] = 4.5
         assembled = assembler.assemble_report(invalid)
@@ -629,6 +711,128 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
         assert not guard["overall"], mutation
         assert not guard["checks"]["marker_provenance"]["passed"], mutation
         assert any("pan" in failure for failure in guard["failures"]), (mutation, guard["failures"])
+
+
+def test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture: Path) -> None:
+    from hd_soak_report import evaluate_report_for_environment
+
+    fixture.mkdir(parents=True, exist_ok=True)
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    baseline = assembler.assemble_report(samples)
+    assert baseline["passed"], baseline["failures"]
+    assert baseline["pan_plans"] == samples["pan_plans"]
+    assert evaluate_report_for_environment(baseline)["overall"]
+
+    mutations = [
+        "missing", "empty", "duplicate", "nonobject", "nonarray", "source_prose",
+        "unsafe", "safe_bool", "safe_text", "negative_max", "negative_base", "base_beyond_max",
+        "outward_at_upper_bound", "wrong_interior_direction", "voluntary_zero_axis", "voluntary_zero_x", "base_mismatch",
+        "before_start", "before_ready", "at_end", "start_after_plan", "ready_after_plan",
+        "end_before_events", "event_before_plan", "event_at_end", "event_duplicate_line",
+        "event_missing_line", "event_missing_delta", "event_changed_delta", "event_bool_delta", "event_bool_line",
+        "missing_start_line", "missing_ready_line", "missing_end_line",
+    ]
+    for field in ("base_x", "base_y", "max_x", "max_y", "delta_x", "delta_y", "line_number"):
+        mutations.extend((f"missing_{field}", f"bool_{field}", f"float_{field}", f"text_{field}"))
+    for mutation in mutations:
+        invalid = copy.deepcopy(samples)
+        plan = invalid["pan_plans"][0]
+        events = invalid["pan_events"]
+        if mutation == "missing":
+            invalid.pop("pan_plans")
+        elif mutation == "empty":
+            invalid["pan_plans"] = []
+        elif mutation == "duplicate":
+            invalid["pan_plans"].append(copy.deepcopy(plan))
+        elif mutation == "nonobject":
+            invalid["pan_plans"] = ["SOAK_PAN_PLAN"]
+        elif mutation == "nonarray":
+            invalid["pan_plans"] = plan
+        elif mutation == "source_prose":
+            plan["source"] = ".echo SOAK_PAN_PLAN base=(4,6) delta=(1,1) max=(20,20) safe=1"
+        elif mutation in ("unsafe", "safe_bool", "safe_text"):
+            plan["safe"] = {"unsafe": 0, "safe_bool": True, "safe_text": "1"}[mutation]
+        elif mutation == "negative_max":
+            plan["max_x"] = -1
+        elif mutation == "negative_base":
+            plan["base_x"] = -1
+        elif mutation == "base_beyond_max":
+            plan["base_y"] = 21
+        elif mutation == "outward_at_upper_bound":
+            plan["max_x"] = plan["base_x"]
+        elif mutation in ("wrong_interior_direction", "voluntary_zero_axis", "voluntary_zero_x"):
+            axis = "x" if mutation != "voluntary_zero_axis" else "y"
+            delta = -1 if mutation == "wrong_interior_direction" else 0
+            plan[f"delta_{axis}"] = delta
+            for index, event in enumerate(events):
+                active = index % 4 in ((1, 2) if axis == "x" else (2, 3))
+                event[axis] = plan[f"base_{axis}"] + (delta if active else 0)
+                event[f"delta_{axis}"] = delta
+            invalid["route_end_marker"][f"scroll_{axis}"] = events[-1][axis]
+        elif mutation == "base_mismatch":
+            invalid["route_start_marker"]["scroll_x"] = 3
+        elif mutation in ("before_start", "before_ready", "at_end"):
+            plan["line_number"] = {"before_start": 9, "before_ready": 11, "at_end": 24}[mutation]
+        elif mutation in ("start_after_plan", "ready_after_plan", "end_before_events"):
+            marker = {"start_after_plan": "route_start_marker", "ready_after_plan": "ready_marker",
+                      "end_before_events": "route_end_marker"}[mutation]
+            invalid[marker]["line_number"] = 13 if marker != "route_end_marker" else 23
+        elif mutation == "event_before_plan":
+            events[0]["line_number"] = 12
+        elif mutation == "event_at_end":
+            events[-1]["line_number"] = 24
+        elif mutation == "event_duplicate_line":
+            events[1]["line_number"] = events[0]["line_number"]
+        elif mutation == "event_missing_line":
+            events[0].pop("line_number")
+        elif mutation == "event_missing_delta":
+            events[0].pop("delta_y")
+        elif mutation == "event_changed_delta":
+            events[0]["delta_y"] = -1
+        elif mutation == "event_bool_delta":
+            events[0]["delta_y"] = True
+        elif mutation == "event_bool_line":
+            events[0]["line_number"] = True
+        elif mutation in ("missing_start_line", "missing_ready_line", "missing_end_line"):
+            marker = {"missing_start_line": "route_start_marker", "missing_ready_line": "ready_marker",
+                      "missing_end_line": "route_end_marker"}[mutation]
+            invalid[marker].pop("line_number")
+        else:
+            kind, field = mutation.split("_", 1)
+            if kind == "missing":
+                plan.pop(field)
+            else:
+                plan[field] = {"bool": True, "float": 1.0, "text": "1"}[kind]
+        before = copy.deepcopy(invalid)
+        assembled = assembler.assemble_report(invalid)
+        assert not assembled["passed"], mutation
+        assert assembled["pan_plans"] == invalid.get("pan_plans"), mutation
+        assert invalid == before, mutation
+        # Regrade a formerly passing report independently of the assembler's
+        # saved source_status/failures. Missing original receipts stay missing.
+        supplied = copy.deepcopy(baseline)
+        for field in ("pan_plans", "pan_events", "route_start_marker", "ready_marker", "route_end_marker"):
+            if field in invalid:
+                supplied[field] = invalid[field]
+            else:
+                supplied.pop(field, None)
+        guard = evaluate_report_for_environment(supplied)
+        assert not guard["overall"], mutation
+        assert not guard["checks"]["marker_provenance"]["passed"], mutation
+        assert any("pan_plan" in failure or "retained pan plan" in failure
+                   or ".line_number" in failure for failure in guard["failures"]), (mutation, guard["failures"])
+
+    idle = make_samples("map-idle", pan_plans=samples["pan_plans"])
+    assert not assembler.assemble_report(idle)["passed"]
+    # Legacy idle evidence made no pan-plan claim; only pan routes require it.
+    idle.pop("pan_plans")
+    assert assembler.assemble_report(idle)["passed"]
 
 
 def test_runner_structured_marker_parser(fixture: Path) -> None:
@@ -652,12 +856,37 @@ foreach ($functionName in @('Parse-SoakLog', 'Get-RouteValidationFailures')) {
 }
 $observed = Parse-SoakLog -LogText ([System.IO.File]::ReadAllText($Log))
 $failures = @(Get-RouteValidationFailures -Observations $observed -ExpectedRoute $Route -ExpectedDurationTicks 7680 -ExpectedPanIntervalTicks 640)
+$observations = $observed
+$ready = @($observed.ReadyRows | Where-Object { $_.Source -eq 'SOAK_SURFDUMP_READY' }) | Select-Object -First 1
+$startMarker = @($observed.RouteStarts) | Select-Object -First 1
+$endMarker = @($observed.RouteEnds) | Select-Object -First 1
+# Execute only the five exact serialization expressions from the samples
+# hashtable. No surrounding harness, preflight, build or launch is invoked.
+$samplesAssignment = $ast.Find({ param($node)
+    $node -is [System.Management.Automation.Language.AssignmentStatementAst] -and
+    $node.Left.Extent.Text -eq '$samples'
+}, $true)
+$samplesHashtable = $samplesAssignment.Right.Find({ param($node)
+    $node -is [System.Management.Automation.Language.HashtableAst]
+}, $true)
+$serialized = [ordered]@{}
+foreach ($field in @('ready_marker', 'route_start_marker', 'route_end_marker', 'pan_plans', 'pan_events')) {
+    $entry = @($samplesHashtable.KeyValuePairs | Where-Object { $_.Item1.Extent.Text -eq $field })[0]
+    if (-not $entry) { throw "Missing serialization field: $field" }
+    if ($field -in @('pan_plans', 'pan_events')) {
+        $serialized[$field] = @(Invoke-Expression $entry.Item2.Extent.Text)
+    } else {
+        $serialized[$field] = Invoke-Expression $entry.Item2.Extent.Text
+    }
+}
 [ordered]@{
     ready = @($observed.ReadyRows).Count; starts = @($observed.RouteStarts).Count; ends = @($observed.RouteEnds).Count
     heartbeat = @($observed.Heartbeats).Count; pan = @($observed.PanEvents).Count
+    plans = @($observed.PanPlans)
+    serialized = $serialized
     av = $observed.AvObserved; invalid = $observed.SurfaceInvalidObserved; quit = $observed.AppRequestQuitObserved
     failures = $failures
-} | ConvertTo-Json -Depth 5
+} | ConvertTo-Json -Depth 8
 ''', encoding="ascii")
     prose = ".echo SOAK_ROUTE_END and AV_SURFDUMP SURFDUMP_INVALID SURFDUMP_APP_REQUEST_QUIT\n"
 
@@ -697,7 +926,32 @@ $failures = @(Get-RouteValidationFailures -Observations $observed -ExpectedRoute
            + "".join(pan_event_rows[:3]) + pan_heartbeat.replace("scroll=(4,6)", "scroll=(5,7)")
            + "".join(pan_event_rows[3:])
            + end.replace("pan=0", "pan=1").replace("scroll=(4,6)", "scroll=(5,7)"))
-    assert not parse(pan, "map-pan")["failures"]
+    parsed = parse(pan, "map-pan")
+    assert not parsed["failures"]
+    assert len(parsed["plans"]) == 1
+    assert parsed["plans"][0] == {
+        "Source": "SOAK_PAN_PLAN", "Safe": 1, "BaseX": 4, "BaseY": 6,
+        "DeltaX": 1, "DeltaY": 1, "MaxX": 20, "MaxY": 20, "LineNumber": 4,
+    }, parsed["plans"]
+    assert not parse(prose + ".echo " + pan_plan)["plans"]
+    assert not parse(pan_plan.replace("safe=1", "safe=0"))["plans"]
+    # Real source parser and source serialization feed the assembler and
+    # independent dispatcher. All inputs remain tiny synthetic fixture rows.
+    from hd_soak_report import evaluate_report_for_environment
+    patch_path = fixture / "patch-stage.json"
+    patch_path.write_text(json.dumps({
+        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
+        "expected_base_sha256": BASE_SHA, "patch_count": 2,
+        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
+    }), encoding="ascii")
+    parsed_samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    parsed_samples.update(parsed["serialized"])
+    report = assembler.assemble_report(parsed_samples)
+    assert report["passed"], report["failures"]
+    assert evaluate_report_for_environment(report)["overall"]
+    missing = copy.deepcopy(report)
+    missing.pop("pan_plans")
+    assert not evaluate_report_for_environment(missing)["overall"]
     assert parse(pan.replace("phase=1 x=5", "phase=1 x=99"), "map-pan")["failures"]
     # A real short30 run logged event 7 at 5121 after scheduling it at 5120,
     # then event 8 at 5760. Keep rejecting that 639-tick observation: fixing
@@ -761,6 +1015,18 @@ def test_cli_passing_samples_exit_zero(fixture: Path) -> None:
 
 # --- static guards: probe -----------------------------------------------------
 
+def test_artifact_inventory_cannot_be_missing_or_coerced() -> None:
+    for value in (None, True, False, -1, 1.5, "5000000", "", [], {}, float("nan")):
+        samples = make_samples("map-idle")
+        samples["artifact_bytes"] = value
+        report = assembler.assemble_report(samples)
+        assert not report["passed"], value
+        assert any("artifact_bytes must be" in error for error in report["failures"]), report["failures"]
+    samples = make_samples("map-idle")
+    del samples["artifact_bytes"]
+    assert not assembler.assemble_report(samples)["passed"]
+
+
 def test_probe_placeholder_contract_and_safety() -> None:
     text = PROBE.read_text(encoding="ascii")
     # Placeholder contract: the runner substitutes complete CDB literals.
@@ -787,7 +1053,7 @@ def test_probe_placeholder_contract_and_safety() -> None:
     # The forced-pan writes target the documented scroll fields.
     assert "0n140008" in text and "0n140012" in text
     # Soak marker rows the runner and assembler depend on.
-    for marker in ("SOAK_ROUTE_START", "SOAK_SURFDUMP_READY", "SOAK_HEARTBEAT", "SOAK_PAN_SET", "SOAK_ROUTE_END"):
+    for marker in ("SOAK_ROUTE_START", "SOAK_SURFDUMP_READY", "SOAK_HEARTBEAT", "SOAK_PAN_PLAN", "SOAK_PAN_SET", "SOAK_ROUTE_END"):
         assert marker in text, f"probe is missing marker {marker}"
 
 
@@ -808,6 +1074,15 @@ def test_runner_static_contract() -> None:
     assert "hidden_cdb_host" in text
     # Real reads, not fabrication: the ReadProcessMemory path is present.
     assert "ReadProcessMemory" in text
+    # Preserve every actual parsed plan row, including source/safe and bounds;
+    # a summary count or saved validation boolean is not a receipt.
+    assert "$samples = [ordered]@{" in text
+    payload = text.split("$samples = [ordered]@{", 1)[1]
+    assert "pan_plans = @($observations.PanPlans | ForEach-Object" in payload
+    for field in ("source = $_.Source", "safe = $_.Safe", "line_number = $_.LineNumber",
+                  "base_x = $_.BaseX", "base_y = $_.BaseY", "delta_x = $_.DeltaX",
+                  "delta_y = $_.DeltaY", "max_x = $_.MaxX", "max_y = $_.MaxY"):
+        assert field in payload, field
 
 
 def test_probe_deadlines_and_observations_share_one_clock_sample() -> None:
@@ -830,6 +1105,8 @@ def run_tests() -> None:
     with tempfile.TemporaryDirectory(prefix="clash-hidden-soak-tests-") as temporary:
         fixture = Path(temporary)
         test_passing_map_idle()
+        test_artifact_layout_rejects_missing_cross_run_and_ambiguous_paths()
+        test_artifact_layout_case_and_slashes_are_lexical_only()
         test_passing_map_pan_discloses_forced_pan()
         test_map_pan_without_pan_events_fails()
         test_map_pan_single_hash_fails()
@@ -853,10 +1130,12 @@ def run_tests() -> None:
         test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture / "pan-jitter")
         test_terminal_redraw_hits_must_advance_after_the_final_pan(fixture / "terminal-pan-hits")
         test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture / "pan-coordinate-cycle")
+        test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture / "live-pan-plan")
         test_runner_structured_marker_parser(fixture / "parser")
         test_cli_writes_outputs_and_require_pass_fails_closed(fixture / "cli-fail")
         test_cli_passing_samples_exit_zero(fixture / "cli-pass")
         test_probe_placeholder_contract_and_safety()
+        test_artifact_inventory_cannot_be_missing_or_coerced()
         test_probe_deadlines_and_observations_share_one_clock_sample()
         test_runner_static_contract()
 
