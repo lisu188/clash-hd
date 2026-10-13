@@ -159,6 +159,7 @@ import test_hidden_soak_report_assembler
 import test_matrix_release_evidence
 import test_battle_profile_field_loss
 import test_battle_profile_tile_replay
+import test_battle_profile_content_replay
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -650,6 +651,8 @@ DEFAULT_BATTLE_FIELD_LOSS_TESTS_JSON = Path("captures/current/battle-field-loss-
 DEFAULT_BATTLE_FIELD_LOSS_TESTS_MD = Path("captures/current/battle-field-loss-tests-current.md")
 DEFAULT_BATTLE_TILE_REPLAY_TESTS_JSON = Path("captures/current/battle-tile-replay-tests-current.json")
 DEFAULT_BATTLE_TILE_REPLAY_TESTS_MD = Path("captures/current/battle-tile-replay-tests-current.md")
+DEFAULT_BATTLE_CONTENT_REPLAY_TESTS_JSON = Path("captures/current/battle-content-replay-tests-current.json")
+DEFAULT_BATTLE_CONTENT_REPLAY_TESTS_MD = Path("captures/current/battle-content-replay-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5712,6 +5715,19 @@ def build_battle_tile_replay_tests(args: argparse.Namespace) -> dict[str, Any]:
     )
 
 
+def build_battle_content_replay_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_battle_profile_content_replay,
+        tests=["seventeen fresh content adapters preserve native full/partial destinations and exact scalar tails",
+               "table, self-owner and draw-only Count authority reject unsafe tails; detected failures stop at real UD2"],
+        title="Fresh Battle Content Replay Tests",
+        json_path=args.battle_content_replay_tests_json,
+        md_path=args.battle_content_replay_tests_md,
+        guard_policy="uninstalled emitted-code and scalar CPU models only; no runtime or release acceptance",
+        runtime_policy="source-only synthetic Unicorn CPU callbacks and partial-register scalar instruction oracles; no original, game, debugger, compiler or capture",
+    )
+
+
 def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
@@ -8044,6 +8060,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["matrix_cell_release_tests"] = collect("matrix_cell_release_tests", build_matrix_cell_release_tests, args)
     checks["battle_field_loss_tests"] = collect("battle_field_loss_tests", build_battle_field_loss_tests, args)
     checks["battle_tile_replay_tests"] = collect("battle_tile_replay_tests", build_battle_tile_replay_tests, args)
+    checks["battle_content_replay_tests"] = collect("battle_content_replay_tests", build_battle_content_replay_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9431,6 +9448,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--battle-field-loss-tests-md", type=Path, default=DEFAULT_BATTLE_FIELD_LOSS_TESTS_MD)
     parser.add_argument("--battle-tile-replay-tests-json", type=Path, default=DEFAULT_BATTLE_TILE_REPLAY_TESTS_JSON)
     parser.add_argument("--battle-tile-replay-tests-md", type=Path, default=DEFAULT_BATTLE_TILE_REPLAY_TESTS_MD)
+    parser.add_argument("--battle-content-replay-tests-json", type=Path, default=DEFAULT_BATTLE_CONTENT_REPLAY_TESTS_JSON)
+    parser.add_argument("--battle-content-replay-tests-md", type=Path, default=DEFAULT_BATTLE_CONTENT_REPLAY_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(

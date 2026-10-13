@@ -9,6 +9,15 @@ promotion remain separate unfinished requirements; do not reuse the narrow
 legacy 1920x1080 panel proof for another context. Source fixtures establish
 neither a release nor a new runtime pass.
 
+Expanded-battle preparation now includes separate uninstalled fresh field-loss,
+eleven-site Tile replay and seventeen-site content replay successors. Their
+source/CPU checks do not make expanded battle an installed feature. Count's
+earlier record reads still need a fresh entry guard; post-return gates,
+primitive/line successors, provider/RLE lifetime, clipping, native ABI and healthy
+return remain unfinished. Use [the tracked handoff](AGENT_HANDOFF.md) and exact
+component reports for these boundaries. Do not use modeled scalar outcomes as
+runtime, manual input, endurance, release-cell or promotion proof.
+
 ## Public prerequisites
 
 Before any local runtime work:

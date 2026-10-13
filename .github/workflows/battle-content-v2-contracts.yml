@@ -78,6 +78,8 @@ jobs:
         run: python -B tools/test_battle_profile_field_loss.py
       - name: Verify eleven uninstalled native Tile scalar adapters without skips
         run: python -B tools/test_battle_profile_tile_replay.py
+      - name: Verify seventeen uninstalled native content scalar adapters without skips
+        run: python -B tools/test_battle_profile_content_replay.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -90,6 +92,7 @@ jobs:
               output.write('Complete fixed/tail/pointer/control and descriptor-shadow checks surround modeled callbacks. Every captured ancestry span excludes the complete RX/RW/modal allocations before its first read. Unknown private-control corruption reaches an unsafe terminal, which proves no healthy native unwind.\n\n')
               output.write('The separate fresh field-loss join replaces only two post-Tile receipt CALLs in a synthetic emitted field. It consumes modeled lease loss before the next Tile, not within native Tile/provider bodies. Frozen content and field producers remain unchanged and the joined field is not installed.\n\n')
               output.write('The separate Tile replay successor emits eleven MOVSX destination/scalar-tail adapters after that fresh join. Authored scalar CPU oracles check native register/flag outcomes; denial/fault reaches UD2, not a native cleanup epilogue. No native game body or installed hook is executed.\n\n')
+              output.write('The following content replay successor emits the remaining seventeen Vertical/Unit/Adjacent/Count destination adapters. Partial AX/BL/DL retain unaffected bits; exact scalar tails use bounded captured table/self-owner/draw-only Count authority. These late hooks do not protect earlier Count reads, and non-draw/sentinel admission remains unproved.\n\n')
               output.write('The 784-byte helper and numeric interval [EBP-44, EBP+824) establish no mapped/native or whole-chain capacity. Native callback ABI, receiver/argument validity, provider/RLE lifetime, continuation/primitive/line joins, arena clipping, atomic installation, quit and healthy map return remain unfinished.\n\n')
               output.write('No game, native debugger/compiler, live capture, human input, endurance, release acceptance or stable promotion occurs in this job.\n')
           PY
