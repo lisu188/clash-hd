@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fixture tests for hidden_soak_report_assembler.py plus static guards for the
-hidden soak probe and runner (nothing is executed; probe/runner are only read)."""
+hidden soak probe and runner. Only source-extracted parser functions are run in
+isolated PowerShell; no full harness, game, debugger or native build executes."""
 
 from __future__ import annotations
 
@@ -8,6 +9,9 @@ import copy
 import json
 import re
 import subprocess
+from contextlib import redirect_stdout
+from io import StringIO
+from unittest.mock import patch
 import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
@@ -21,6 +25,7 @@ RUNNER = ROOT / "scripts" / "cdb" / "run_hidden_soak.ps1"
 sys.path.insert(0, str(ROOT / "tools"))
 
 import hidden_soak_report_assembler as assembler  # noqa: E402
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, seal_fixture
 
 
 SHA = "a" * 64
@@ -68,7 +73,7 @@ def process_rows(count: int, interval: int) -> list[dict[str, Any]]:
     return rows
 
 
-def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
+def make_samples(route: str = "map-idle", *, _seal: bool = True, **overrides: Any) -> dict[str, Any]:
     duration = 120
     interval = 30
     count = (duration // interval) + 1
@@ -170,6 +175,8 @@ def make_samples(route: str = "map-idle", **overrides: Any) -> dict[str, Any]:
         "report_json": r"C:\ClashCaptures\hd-soak\hidden\run\report.json",
         "report_markdown": r"C:\ClashCaptures\hd-soak\hidden\run\RUN-SUMMARY.md",
     }
+    if _seal:
+        samples = seal_fixture(samples)
     samples.update(overrides)
     return samples
 
@@ -406,7 +413,7 @@ def test_periodic_coverage_rejects_sparse_unordered_and_missing_samples() -> Non
 
 
 def test_periodic_count_uses_the_same_bounded_jitter_as_each_gap() -> None:
-    samples = make_samples()
+    samples = make_samples(_seal=False)
     samples.update(duration_sec=1800, duration_ticks=115200, frame_interval_sec=15,
                    frame_samples=frame_rows(119, 15), process_samples=process_rows(119, 15))
     samples["route_start_marker"]["route_ticks"] = 115200
@@ -415,7 +422,7 @@ def test_periodic_count_uses_the_same_bounded_jitter_as_each_gap() -> None:
     for inventory in ("frame_samples", "process_samples"):
         for index, row in enumerate(samples[inventory]):
             row["Timestamp"] = iso(index * 1798 / 118)
-    report = assembler.assemble_report(samples)
+    report = assembler.assemble_report(seal_fixture(samples))
     assert report["passed"], report["failures"]
     assert report["frame_sample_count"] == report["process_sample_count"] == 119
     assert report["required_elapsed_sec"] == 1783
@@ -467,10 +474,10 @@ def test_pan_events_require_positive_periodic_full_route_coverage() -> None:
         report = assembler.assemble_report(samples)
         assert not report["passed"], mutation
         assert any("pan" in failure for failure in report["failures"]), report["failures"]
-    samples = make_samples("map-pan")
+    samples = make_samples("map-pan", _seal=False)
     for event in samples["pan_events"]:
         event["tick_delta"] += 128  # Bounded first-redraw jitter, exact adjacent interval.
-    assert assembler.assemble_report(samples)["passed"]
+    assert assembler.assemble_report(seal_fixture(samples))["passed"]
 
 
 def test_missing_or_forged_provenance_fails() -> None:
@@ -496,14 +503,8 @@ def test_reports_pass_shared_hidden_grader(fixture: Path) -> None:
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
     for route in ("map-idle", "map-pan"):
-        report = assembler.assemble_report(make_samples(route, patch_stage_report=str(patch_path)))
+        report = assembler.assemble_report(make_samples(route))
         guard = evaluate_report_for_environment(report)
         assert guard["overall"], guard["failures"]
 
@@ -512,13 +513,7 @@ def test_every_hidden_frame_requires_strict_metrics_and_surface_provenance(fixtu
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
-    samples = make_samples(patch_stage_report=str(patch_path))
+    samples = make_samples()
     baseline = assembler.assemble_report(samples)
     assert baseline["passed"]
     assert evaluate_report_for_environment(baseline)["overall"]
@@ -574,13 +569,7 @@ def test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture: Path) -> No
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
-    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    samples = make_samples("map-pan", _seal=False)
     samples["pan_events"] = [
         {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
          "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 500,
@@ -589,6 +578,7 @@ def test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture: Path) -> No
     ]
     samples["pan_event_count"] = len(samples["pan_events"])
     samples["route_end_marker"].update(scroll_x=4, scroll_y=6)
+    samples = seal_fixture(samples)
     report = assembler.assemble_report(samples)
     assert report["passed"], report["failures"]
     assert evaluate_report_for_environment(report)["overall"]
@@ -605,16 +595,11 @@ def test_terminal_redraw_hits_must_advance_after_the_final_pan(fixture: Path) ->
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
-    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    samples = make_samples("map-pan", _seal=False)
     final_pan_hits = samples["pan_events"][-1]["hits"]
     assert samples["route_end_marker"]["tick_delta"] > samples["pan_events"][-1]["tick_delta"]
     samples["route_end_marker"]["hits"] = final_pan_hits + 1
+    samples = seal_fixture(samples)
     baseline = assembler.assemble_report(samples)
     assert baseline["passed"], baseline["failures"]
     assert evaluate_report_for_environment(baseline)["overall"]
@@ -636,15 +621,9 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
 
     def cycle(dx: int, dy: int, *, declared: bool = False) -> dict[str, Any]:
-        samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+        samples = make_samples("map-pan", _seal=False)
         base_x, base_y = (4 if dx else 0), (6 if dy else 0)
         samples["route_start_marker"].update(scroll_x=base_x, scroll_y=base_y)
         samples["pan_plans"][0].update(
@@ -668,7 +647,7 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
         samples["route_end_marker"].update(
             scroll_x=samples["pan_events"][-1]["x"], scroll_y=samples["pan_events"][-1]["y"],
         )
-        return samples
+        return seal_fixture(samples)
 
     for dx, dy in ((1, 1), (-1, -1), (1, -1), (-1, 1), (1, 0), (-1, 0), (0, 1), (0, -1)):
         for declared in (False, True):
@@ -717,13 +696,7 @@ def test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture:
     from hd_soak_report import evaluate_report_for_environment
 
     fixture.mkdir(parents=True, exist_ok=True)
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
-    samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    samples = make_samples("map-pan")
     baseline = assembler.assemble_report(samples)
     assert baseline["passed"], baseline["failures"]
     assert baseline["pan_plans"] == samples["pan_plans"]
@@ -778,15 +751,20 @@ def test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture:
         elif mutation == "base_mismatch":
             invalid["route_start_marker"]["scroll_x"] = 3
         elif mutation in ("before_start", "before_ready", "at_end"):
-            plan["line_number"] = {"before_start": 9, "before_ready": 11, "at_end": 24}[mutation]
+            plan["line_number"] = {
+                "before_start": invalid["route_start_marker"]["line_number"] - 1,
+                "before_ready": invalid["ready_marker"]["line_number"],
+                "at_end": invalid["route_end_marker"]["line_number"],
+            }[mutation]
         elif mutation in ("start_after_plan", "ready_after_plan", "end_before_events"):
             marker = {"start_after_plan": "route_start_marker", "ready_after_plan": "ready_marker",
                       "end_before_events": "route_end_marker"}[mutation]
-            invalid[marker]["line_number"] = 13 if marker != "route_end_marker" else 23
+            invalid[marker]["line_number"] = (plan["line_number"] + 1 if marker != "route_end_marker"
+                                               else events[-1]["line_number"])
         elif mutation == "event_before_plan":
-            events[0]["line_number"] = 12
+            events[0]["line_number"] = plan["line_number"]
         elif mutation == "event_at_end":
-            events[-1]["line_number"] = 24
+            events[-1]["line_number"] = invalid["route_end_marker"]["line_number"]
         elif mutation == "event_duplicate_line":
             events[1]["line_number"] = events[0]["line_number"]
         elif mutation == "event_missing_line":
@@ -830,9 +808,11 @@ def test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture:
 
     idle = make_samples("map-idle", pan_plans=samples["pan_plans"])
     assert not assembler.assemble_report(idle)["passed"]
-    # Legacy idle evidence made no pan-plan claim; only pan routes require it.
+    # A missing retained inventory is not equivalent to an observed empty one.
     idle.pop("pan_plans")
-    assert assembler.assemble_report(idle)["passed"]
+    missing_inventory = assembler.assemble_report(idle)
+    assert not missing_inventory["passed"]
+    assert any("pan_plans inventory" in failure for failure in missing_inventory["failures"])
 
 
 def test_runner_structured_marker_parser(fixture: Path) -> None:
@@ -938,14 +918,9 @@ foreach ($field in @('ready_marker', 'route_start_marker', 'route_end_marker', '
     # Real source parser and source serialization feed the assembler and
     # independent dispatcher. All inputs remain tiny synthetic fixture rows.
     from hd_soak_report import evaluate_report_for_environment
-    patch_path = fixture / "patch-stage.json"
-    patch_path.write_text(json.dumps({
-        "stage": assembler.PROTECTED_STABLE_STAGE, "exe_sha256": SHA,
-        "expected_base_sha256": BASE_SHA, "patch_count": 2,
-        "status_counts": {"patched": 2}, "current_hd_map_gate": {"passed": True},
-    }), encoding="ascii")
-    parsed_samples = make_samples("map-pan", patch_stage_report=str(patch_path))
+    parsed_samples = make_samples("map-pan", _seal=False)
     parsed_samples.update(parsed["serialized"])
+    parsed_samples = seal_fixture(parsed_samples)
     report = assembler.assemble_report(parsed_samples)
     assert report["passed"], report["failures"]
     assert evaluate_report_for_environment(report)["overall"]
@@ -996,7 +971,7 @@ def test_cli_writes_outputs_and_require_pass_fails_closed(fixture: Path) -> None
     assert "not_applicable_hidden" in md
 
 
-def test_cli_passing_samples_exit_zero(fixture: Path) -> None:
+def test_cli_rejects_unbacked_samples_without_test_reader(fixture: Path) -> None:
     samples_path = fixture / "samples.json"
     samples_path.parent.mkdir(parents=True, exist_ok=True)
     samples_path.write_text(json.dumps(make_samples("map-pan"), indent=2), encoding="ascii")
@@ -1008,9 +983,25 @@ def test_cli_passing_samples_exit_zero(fixture: Path) -> None:
         stderr=subprocess.PIPE,
         check=False,
     )
-    assert result.returncode == 0, result.stdout + result.stderr
+    assert result.returncode == 1, result.stdout + result.stderr
     report = json.loads(out_json.read_text(encoding="ascii"))
-    assert report["passed"] is True, report["failures"]
+    assert report["passed"] is False
+    assert any("retained" in failure for failure in report["failures"])
+
+
+def test_cli_main_with_fixed_artifacts_writes_passing_outputs(fixture: Path) -> None:
+    # Only the fixed reader boundary is mocked by the enclosing fixture scope.
+    # Execute the actual CLI parser, assembler and serializers in this process.
+    fixture.mkdir(parents=True, exist_ok=True)
+    samples_path, report_path, markdown_path = fixture / "samples.json", fixture / "report.json", fixture / "report.md"
+    samples_path.write_text(json.dumps(make_samples("map-pan")), encoding="ascii")
+    with patch.object(sys, "argv", [str(SCRIPT), str(samples_path), "--write-json", str(report_path),
+                                   "--write-markdown", str(markdown_path), "--require-pass"]), redirect_stdout(StringIO()):
+        assert assembler.main() == 0
+    report = json.loads(report_path.read_text(encoding="ascii"))
+    assert report["passed"], report["failures"]
+    assert all(check["passed"] for check in report["retained_artifact_checks"].values())
+    assert "not_applicable_hidden" in markdown_path.read_text(encoding="ascii")
 
 
 # --- static guards: probe -----------------------------------------------------
@@ -1101,7 +1092,7 @@ def test_probe_deadlines_and_observations_share_one_clock_sample() -> None:
     assert redraw.count("poi(0040004c)-poi(00400044)") == 4
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     with tempfile.TemporaryDirectory(prefix="clash-hidden-soak-tests-") as temporary:
         fixture = Path(temporary)
         test_passing_map_idle()
@@ -1133,11 +1124,64 @@ def run_tests() -> None:
         test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture / "live-pan-plan")
         test_runner_structured_marker_parser(fixture / "parser")
         test_cli_writes_outputs_and_require_pass_fails_closed(fixture / "cli-fail")
-        test_cli_passing_samples_exit_zero(fixture / "cli-pass")
+        test_cli_rejects_unbacked_samples_without_test_reader(fixture / "cli-unbacked")
+        test_cli_main_with_fixed_artifacts_writes_passing_outputs(fixture / "cli-main")
         test_probe_placeholder_contract_and_safety()
         test_artifact_inventory_cannot_be_missing_or_coerced()
         test_probe_deadlines_and_observations_share_one_clock_sample()
         test_runner_static_contract()
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        for field, value in (("frame_samples", True), ("process_samples", 3),
+                             ("capture_errors", True), ("runner_failures", True),
+                             ("duration_sec", float("inf")), ("duration_sec", "120")):
+            report = assembler.assemble_report(make_samples(**{field: value}))
+            assert not report["passed"], (field, value)
+        samples = make_samples()
+        samples["ready_marker"]["source"] = []
+        assert not assembler.assemble_report(samples)["passed"]
+        samples = make_samples()
+        samples["process_samples"][0]["WorkingSet64"] = float("inf")
+        assert not assembler.assemble_report(samples)["passed"]
+        for inventory in ("frame_samples", "process_samples"):
+            for timestamp in ("9999-12-31T23:59:59-23:59", "0001-01-01T00:00:00+23:59"):
+                samples = make_samples()
+                samples[inventory][0]["Timestamp"] = timestamp
+                report = assembler.assemble_report(samples)
+                assert not report["passed"], (inventory, timestamp)
+                assert any("timestamp" in failure for failure in report["failures"])
+        baseline = make_samples()
+        for field in ("av_observed", "surface_invalid_observed", "app_request_quit_observed"):
+            for value in ("true", 0, [], None):
+                samples = copy.deepcopy(baseline)
+                samples[field] = value
+                report = assembler.assemble_report(samples)
+                assert not report["passed"], (field, value)
+                assert report[field] == value and type(report[field]) is type(value)
+                assert any(field in failure for failure in report["failures"])
+            samples = copy.deepcopy(baseline)
+            del samples[field]
+            report = assembler.assemble_report(samples)
+            assert not report["passed"], field
+            assert any(field in failure for failure in report["failures"])
+        for field, value in (("WorkingSet64", 1 << 63), ("PrivateMemorySize64", 1 << 63),
+                             ("HandleCount", 1 << 31), ("WorkingSet64", 10 ** 1000),
+                             ("PrivateMemorySize64", 10 ** 1000), ("HandleCount", 10 ** 1000)):
+            samples = copy.deepcopy(baseline)
+            samples["process_samples"][2][field] = value
+            report = assembler.assemble_report(samples)
+            assert not report["passed"], field
+            assert any(field in failure and "range" in failure for failure in report["failures"])
+        for value in (True, None, [None], ["oops"], {}):
+            samples = copy.deepcopy(baseline)
+            samples["frame_samples"] = value
+            report = assembler.assemble_report(samples)
+            assert not report["passed"]
+            assert "## Failures" in assembler.to_markdown(report)
+            assert report["frame_samples"] == value
+        _run_tests()
 
 
 def main() -> int:

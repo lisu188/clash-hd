@@ -166,6 +166,9 @@ import test_battle_profile_native_count_original
 import test_hidden_soak_integration
 import test_hidden_soak_harness_preflight
 import test_hidden_soak_cleanup
+import test_hidden_soak_retained_files
+import test_hidden_soak_binary_artifacts
+import test_hidden_soak_log_observations
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -671,6 +674,12 @@ DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_JSON = Path("captures/current/hidden
 DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD = Path("captures/current/hidden-soak-harness-preflight-tests-current.md")
 DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON = Path("captures/current/hidden-soak-cleanup-tests-current.json")
 DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD = Path("captures/current/hidden-soak-cleanup-tests-current.md")
+DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_JSON = Path("captures/current/hidden-soak-retained-files-tests-current.json")
+DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_MD = Path("captures/current/hidden-soak-retained-files-tests-current.md")
+DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_JSON = Path("captures/current/hidden-soak-binary-artifacts-tests-current.json")
+DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD = Path("captures/current/hidden-soak-binary-artifacts-tests-current.md")
+DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON = Path("captures/current/hidden-soak-log-observations-tests-current.json")
+DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD = Path("captures/current/hidden-soak-log-observations-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5848,6 +5857,46 @@ def build_hidden_soak_cleanup_tests(args: argparse.Namespace) -> dict[str, Any]:
     )
 
 
+def build_hidden_soak_retained_files_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_retained_files,
+        tests=["bounded held reads reject missing, drifting, linked, nonregular and unreadable files",
+               "every periodic and terminal raw frame requires exact retained bytes, digest and metrics"],
+        title="Hidden-CDB Retained File Tests",
+        json_path=args.hidden_soak_retained_files_tests_json,
+        md_path=args.hidden_soak_retained_files_tests_md,
+        guard_policy="retained-byte consistency only; no native producer, coherent capture or immutability proof",
+        runtime_policy="source-only fixtures with tiny private files and RAM-only full frames; no game, debugger or compiler",
+    )
+
+
+def build_hidden_soak_binary_artifacts_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_binary_artifacts,
+        tests=["actual candidate bytes undergo the real complete protected-stage patch regrade",
+               "actual proxy, manifest, producer inputs, probes and logs require matching retained byte receipts"],
+        title="Hidden-CDB Binary Artifact Tests",
+        json_path=args.hidden_soak_binary_artifacts_tests_json,
+        md_path=args.hidden_soak_binary_artifacts_tests_md,
+        guard_policy="candidate patch and retained-byte consistency only; no original, loaded-image or native execution proof",
+        runtime_policy="source-only synthetic RAM inventory patches only the fixed file-reader boundary; no native build or runtime",
+    )
+
+
+def build_hidden_soak_log_observations_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_log_observations,
+        tests=["anchored log replay ignores actual startup prose and rejects malformed structured observations",
+               "retained CDB bytes, digests, marker rows, counts, order and failure flags match the report"],
+        title="Hidden-CDB Retained Log Tests",
+        json_path=args.hidden_soak_log_observations_tests_json,
+        md_path=args.hidden_soak_log_observations_tests_md,
+        guard_policy="retained log byte/observation consistency only; no native producer or runtime acceptance",
+        runtime_policy=("source-only synthetic log fixtures and isolated source-extracted PowerShell parser; "
+                        "no runtime harness, game, debugger or compiler execution"),
+    )
+
+
 def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
@@ -8187,6 +8236,9 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hidden_soak_integration_tests"] = collect("hidden_soak_integration_tests", build_hidden_soak_integration_tests, args)
     checks["hidden_soak_harness_preflight_tests"] = collect("hidden_soak_harness_preflight_tests", build_hidden_soak_harness_preflight_tests, args)
     checks["hidden_soak_cleanup_tests"] = collect("hidden_soak_cleanup_tests", build_hidden_soak_cleanup_tests, args)
+    checks["hidden_soak_retained_files_tests"] = collect("hidden_soak_retained_files_tests", build_hidden_soak_retained_files_tests, args)
+    checks["hidden_soak_binary_artifacts_tests"] = collect("hidden_soak_binary_artifacts_tests", build_hidden_soak_binary_artifacts_tests, args)
+    checks["hidden_soak_log_observations_tests"] = collect("hidden_soak_log_observations_tests", build_hidden_soak_log_observations_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9589,6 +9641,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden-soak-harness-preflight-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD)
     parser.add_argument("--hidden-soak-cleanup-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON)
     parser.add_argument("--hidden-soak-cleanup-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD)
+    parser.add_argument("--hidden-soak-retained-files-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_JSON)
+    parser.add_argument("--hidden-soak-retained-files-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_MD)
+    parser.add_argument("--hidden-soak-binary-artifacts-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_JSON)
+    parser.add_argument("--hidden-soak-binary-artifacts-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD)
+    parser.add_argument("--hidden-soak-log-observations-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON)
+    parser.add_argument("--hidden-soak-log-observations-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(
         "--hd-soak-failure-triage-tests-json",

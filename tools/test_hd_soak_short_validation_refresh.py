@@ -15,6 +15,7 @@ import hd_soak_report
 import hd_soak_short_artifact_manifest as manifest
 import hd_soak_short_validation_refresh as refresh
 from test_hd_soak_report import passing_hidden_report
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
@@ -324,7 +325,7 @@ def test_cli_writes_outputs() -> None:
         assert md_out.exists()
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_no_reports_is_pending_and_passes()
     test_passing_report_writes_guard_and_triage()
     test_failed_report_writes_guard_and_classified_triage()
@@ -335,6 +336,11 @@ def run_tests() -> None:
     test_mismatched_report_fails_closed()
     test_missing_manifest_fails_closed()
     test_cli_writes_outputs()
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 if __name__ == "__main__":

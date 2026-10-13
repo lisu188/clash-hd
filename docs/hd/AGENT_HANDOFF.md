@@ -37,6 +37,29 @@ Hidden artifact layout requires matching immediate run directories under the
 exact hidden roots and candidate-local proxy files; this is lexical containment,
 not physical file authentication.
 
+Assembly and the public hidden grader now independently reopen every retained
+raw frame, candidate, patch manifest, proxy, build/runtime/CDB log and probe
+through a bounded read-only reader. Root-first link/reparse checks and held-file
+and endpoint identity checks reject observed drift. The real protected-stage
+patch reporter recomputes all selected candidate observations; frame SHA and
+indexed8 metrics are recomputed from full retained bytes. CDB log replay compares
+actual anchored rows, inventories, line positions and failure flags. Collection
+hash/size receipts are required, and pre-launch input receipts are not resealed
+after runtime. The proxy manifest also pins its DEF and build script.
+
+The three retained-byte suites are registered in the aggregate. Positive source
+fixtures use fixed RAM artifacts and only scoped private file-reader mocks;
+hashing, patch selection and all graders remain real. Following production
+builders and fresh CLI processes reject missing external backing after those
+scopes exit. Malformed hidden arrays, counts, failure flags, overflowing UTC
+timestamps, out-of-native-range process counters and nonfinite values fail
+without being coerced into plausible observations. Failed inventories remain
+in JSON and no longer abort diagnostic Markdown rendering. Visible/guest graders
+retain their existing behavior. This is observed retained-byte consistency, not file
+immutability, original-derived whole-candidate or native-producer authentication.
+Template and generated-probe pins do not establish canonical probe generation;
+the original samples JSON also still needs an independent byte binding.
+
 The native host source now creates CDB suspended, assigns and verifies a
 kill-on-close/no-breakaway job before resume, and uses retained handles for
 termination, generation checks, drain and closes. Failed CreateProcess outputs
@@ -47,12 +70,24 @@ waits are not a complete retained transcript. Native verification and independen
 cleanup-receipt regrading remain required.
 
 The sampler still discovers its candidate by PID/path and reopens it for live
-ReadProcessMemory. Loaded-image/target authentication, held coherent frame reads,
-physical authentication of every retained artifact and running-time rather than
-wall-clock coverage remain production gaps. Physical-path preflight and saved
-receipt consistency do not authenticate immutable file or process identity.
+ReadProcessMemory. Loaded-image/target and native-producer authentication, held
+coherent frame reads, independently verified cleanup receipts, canonical probe
+generation and running-time rather than wall-clock coverage remain production
+gaps. Retained-file checks and physical-path preflight do not authenticate
+immutable file or process identity. No fresh runtime evidence was produced by
+the retained-byte source batch.
 Manual DirectInput, final visible composition, release and promotion remain
 unresolved; the protected stable stage and launcher defaults are unchanged.
+
+The 2026-10-13 source follow-up again regraded all five canonical short reports
+without writing them: fresh acceptance remains 0/5. C: remains above 95% used;
+the hidden external roots are absent. The original executable and all 3,382
+preservation-baseline files still match their recorded hashes. Focused source
+checks and fixture results do not satisfy either runtime prerequisite.
+The bounded cleanup removed only 31 reproducible Python caches (742,531 logical
+bytes) and an empty test scratch directory. Two unreproduced stale caches and all
+evidence were retained. Measured C: free space changed from 48,440,086,528 to
+48,440,958,976 bytes; the reserve still fails and large writes remain deferred.
 
 ## Public repository state
 

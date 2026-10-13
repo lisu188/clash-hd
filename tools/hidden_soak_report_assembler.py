@@ -45,10 +45,11 @@ if str(TOOLS_DIR) not in sys.path:
 from hd_soak_report import (  # noqa: E402
     EXPECTED_BASE_SHA256,
     PROTECTED_STABLE_STAGE,
-    integer_or_none,
-    float_or_none,
+    hidden_integer_or_none as integer_or_none,
+    hidden_float_or_none as float_or_none,
     is_sha256,
     hidden_frame_sample_failures,
+    hidden_array,
     hidden_pan_coverage_failures,
     hidden_pan_pattern_failures,
     hidden_pan_plan_failures,
@@ -57,9 +58,12 @@ from hd_soak_report import (  # noqa: E402
     hidden_sample_coverage_failures,
     normalize_sha,
     status_text,
-    timestamp_span_seconds,
+    hidden_timestamp_span_seconds as timestamp_span_seconds,
 )
 from hidden_soak_artifact_layout import validate_hidden_artifact_layout  # noqa: E402
+from hidden_soak_binary_artifacts import validate_retained_binaries  # noqa: E402
+from hidden_soak_log_observations import validate_retained_log  # noqa: E402
+from hidden_soak_retained_files import validate_retained_frames  # noqa: E402
 
 HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
@@ -154,8 +158,8 @@ def assemble_report(
     route = str(samples.get("route") or "")
     duration_sec = integer_or_none(samples.get("duration_sec"))
     frame_interval_sec = integer_or_none(samples.get("frame_interval_sec"))
-    raw_frame_samples = list(samples.get("frame_samples") or [])
-    raw_process_samples = list(samples.get("process_samples") or [])
+    raw_frame_samples = hidden_array(samples, "frame_samples", failures)
+    raw_process_samples = hidden_array(samples, "process_samples", failures)
     # Evaluate malformed rows as missing fields without dropping the originals
     # from the returned diagnostic inventory.
     frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
@@ -163,8 +167,8 @@ def assemble_report(
     for index, row in enumerate(raw_frame_samples):
         if not isinstance(row, dict):
             failures.append(f"frame sample {index} is not an object")
-    capture_errors = list(samples.get("capture_errors") or [])
-    runner_failures = [str(row) for row in (samples.get("runner_failures") or [])]
+    capture_errors = hidden_array(samples, "capture_errors", failures)
+    runner_failures = [str(row) for row in hidden_array(samples, "runner_failures", failures)]
     ready_marker = samples.get("ready_marker")
     route_start_marker = samples.get("route_start_marker")
     route_end_marker = samples.get("route_end_marker")
@@ -230,7 +234,7 @@ def assemble_report(
     if not ready_valid:
         failures.append("ready_marker is missing or malformed; the anchored SOAK_SURFDUMP_READY row is required")
     else:
-        if ready_marker.get("source") not in {"SOAK_SURFDUMP_READY", "SURFDUMP_READY"}:
+        if ready_marker.get("source") not in ("SOAK_SURFDUMP_READY", "SURFDUMP_READY"):
             failures.append("ready_marker.source is not an anchored surface-ready marker")
         if ready_redraw_seq is None or ready_redraw_seq < 0:
             failures.append("ready_marker.redraw_seq is missing or invalid")
@@ -413,6 +417,9 @@ def assemble_report(
         failures.append("the base template reported SURFDUMP_INVALID")
     if samples.get("app_request_quit_observed") is True:
         failures.append("the game requested App_RequestQuit during the soak")
+    for field in ("av_observed", "surface_invalid_observed", "app_request_quit_observed"):
+        if type(samples.get(field)) is not bool:
+            failures.append(f"{field} must retain the producer's original boolean failure flag")
     if samples.get("cdb_exit_before_duration") is True:
         failures.append("CDB exited before the soak duration completed")
     if samples.get("game_exit_before_duration") is True:
@@ -688,12 +695,25 @@ def assemble_report(
         "candidate": samples.get("candidate"),
         "candidate_sha256": samples.get("candidate_sha256"),
         "patch_stage_report": samples.get("patch_stage_report"),
+        "patch_stage_report_sha256": samples.get("patch_stage_report_sha256"),
+        "patch_stage_report_size": samples.get("patch_stage_report_size"),
         "workdir": samples.get("workdir"),
         "output_directory": samples.get("output_directory"),
         "report_json": samples.get("report_json"),
         "report_markdown": samples.get("report_markdown"),
         "cdb_log": samples.get("cdb_log"),
+        "cdb_log_sha256": samples.get("cdb_log_sha256"),
+        "cdb_log_size": samples.get("cdb_log_size"),
         "generated_probe": samples.get("generated_probe"),
+        "generated_probe_sha256": samples.get("generated_probe_sha256"),
+        "generated_probe_size": samples.get("generated_probe_size"),
+        "probe_template": samples.get("probe_template"),
+        "probe_template_sha256": samples.get("probe_template_sha256"),
+        "probe_template_size": samples.get("probe_template_size"),
+        "soak_probe_template": samples.get("soak_probe_template"),
+        "soak_probe_template_sha256": samples.get("soak_probe_template_sha256"),
+        "soak_probe_template_size": samples.get("soak_probe_template_size"),
+        "load_slot": samples.get("load_slot"),
         "launch_mode": samples.get("launch_mode"),
         "entry_mechanism": ENTRY_MECHANISM,
         "entry_mechanism_detail": entry_mechanism_detail,
@@ -719,7 +739,9 @@ def assemble_report(
         "soak_route_end_observed": end_valid,
         "heartbeat_count": heartbeat_count or 0,
         "pan_event_count": pan_event_count,
-        "av_observed": samples.get("av_observed") is True,
+        "av_observed": samples.get("av_observed"),
+        "surface_invalid_observed": samples.get("surface_invalid_observed"),
+        "app_request_quit_observed": samples.get("app_request_quit_observed"),
         "frame_sample_count": frame_count,
         "frame_hash_unique_count": computed_hash_unique_count,
         "frame_progress_expected": frame_progress_expected,
@@ -763,10 +785,25 @@ def assemble_report(
         "max_artifact_mb": max_artifact_mb,
         "artifact_limit_bytes": artifact_limit_bytes,
         "artifact_bytes": artifact_bytes,
-        "frame_samples": raw_frame_samples,
-        "process_samples": raw_process_samples,
-        "capture_errors": capture_errors,
+        "frame_samples": samples.get("frame_samples"),
+        "process_samples": samples.get("process_samples"),
+        "capture_errors": samples.get("capture_errors"),
     }
+    # No opt-out and no trust in a saved consistency summary. These readers
+    # inspect retained bytes; they supply neither native producer provenance
+    # nor loaded-image, coherent-capture, running-time or input acceptance.
+    report["retained_artifact_checks"] = {}
+    for name, validator in (
+        ("retained_binary_bytes", validate_retained_binaries),
+        ("retained_frame_bytes", validate_retained_frames),
+        ("retained_log_bytes", validate_retained_log),
+    ):
+        summary, retained_failures = validator(report)
+        report["retained_artifact_checks"][name] = {
+            "passed": not retained_failures, "summary": summary, "failures": retained_failures,
+        }
+        failures.extend(retained_failures)
+    report["passed"] = not failures
     return report
 
 
@@ -822,8 +859,12 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Clean stop: `{report.get('clean_stop')}` (`{report.get('clean_stop_mechanism')}`)",
         f"- Artifact bytes: `{report.get('artifact_bytes')}` (limit `{report.get('artifact_limit_bytes')}`)",
     ]
+    # Invalid inventories remain untouched in JSON. A diagnostic renderer must
+    # not abort merely because the rejected producer inventory is malformed.
+    frame_rows = report.get("frame_samples")
     png_frames = [
-        frame for frame in (report.get("frame_samples") or []) if frame.get("PngPath")
+        frame for frame in (frame_rows if type(frame_rows) is list else [])
+        if type(frame) is dict and frame.get("PngPath")
     ]
     if png_frames:
         lines.extend(["", "## Edge frames", ""])

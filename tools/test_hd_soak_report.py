@@ -14,6 +14,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import hd_soak_report as soak
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, retained_bytes, seal_fixture
 
 
 def patch_stage_report(candidate_sha: str) -> dict:
@@ -228,7 +229,7 @@ def passing_guest_report() -> dict:
     }
 
 
-def passing_hidden_report(tmp: Path) -> dict:
+def passing_hidden_report(tmp: Path, *, _seal: bool = True) -> dict:
     """A clean hidden-desktop CDB host soak report (environment=hidden_cdb_host).
 
     The game is a real host process, so all host process telemetry is present
@@ -253,6 +254,7 @@ def passing_hidden_report(tmp: Path) -> dict:
         "route": "map-idle",
         "duration_sec": 120,
         "sample_interval_sec": 15,
+        "load_slot": 2,
         "input_exe": soak.EXPECTED_INPUT_EXE,
         "workdir": soak.EXPECTED_WORKDIR,
         "candidate": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\clash95_hd_hidden_fixture.exe",
@@ -371,11 +373,11 @@ def passing_hidden_report(tmp: Path) -> dict:
         for index in range(9)
     ]
     report["frame_sample_count"] = report["process_sample_count"] = 9
-    return report
+    return seal_fixture(report) if _seal else report
 
 
-def passing_hidden_pan_report(tmp: Path) -> dict:
-    report = passing_hidden_report(tmp)
+def passing_hidden_pan_report(tmp: Path, *, _seal: bool = True) -> dict:
+    report = passing_hidden_report(tmp, _seal=False)
     report["route"] = "map-pan"
     report["pan_mechanism"] = soak.HIDDEN_PAN_MECHANISM
     report["frame_progress_expected"] = True
@@ -395,7 +397,7 @@ def passing_hidden_pan_report(tmp: Path) -> dict:
     ]
     report["pan_event_count"] = len(report["pan_events"])
     report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11, line_number=24)
-    return report
+    return seal_fixture(report) if _seal else report
 
 
 def test_hidden_artifact_inventory_cannot_be_missing_or_coerced() -> None:
@@ -683,7 +685,10 @@ def test_hidden_cli_autodetects_and_gates() -> None:
             capture_output=True,
             text=True,
         )
-    assert pass_result.returncode == 0, pass_result.stdout + pass_result.stderr
+    # A subprocess cannot access the scoped RAM inventory. Default actual
+    # retained-file reads must reject these deliberately absent artifacts.
+    assert pass_result.returncode == 1, pass_result.stdout + pass_result.stderr
+    assert "retained" in pass_result.stdout.lower()
     assert fail_result.returncode == 1, fail_result.stdout + fail_result.stderr
 
 
@@ -1456,7 +1461,7 @@ def test_hidden_periodic_inventory_cannot_be_replaced_by_distant_endpoints() -> 
 
 def test_hidden_periodic_count_and_max_gap_share_one_jitter_contract() -> None:
     with tempfile.TemporaryDirectory() as directory:
-        report = passing_hidden_report(Path(directory))
+        report = passing_hidden_report(Path(directory), _seal=False)
         report.update(tier="short30", duration_sec=1800)
         report["route_start_marker"]["route_ticks"] = 115200
         report["route_end_marker"].update(route_ticks=115200, tick_delta=115200)
@@ -1476,6 +1481,7 @@ def test_hidden_periodic_count_and_max_gap_share_one_jitter_contract() -> None:
             for index in range(119)
         ]
         report["frame_sample_count"] = report["process_sample_count"] = 119
+        report = seal_fixture(report)
         evaluated = soak.evaluate_report_for_environment(report)
         assert evaluated["overall"], evaluated["failures"]
         assert evaluated["checks"]["elapsed_coverage"]["summary"]["required_elapsed_sec"] == 1783
@@ -1509,8 +1515,7 @@ def test_hidden_dispatcher_binds_only_matching_written_source_bytes() -> None:
         assert evaluated["overall"], evaluated["failures"]
         assert evaluated["source_report_sha256"] == hashlib.sha256(original).hexdigest()
         assert evaluated["source_report_binding_errors"] == []
-        patch_path = Path(source["patch_stage_report"])
-        assert evaluated["checks"]["patch_evidence"]["summary"]["patch_stage_report_sha256"] == hashlib.sha256(patch_path.read_bytes()).hexdigest()
+        assert evaluated["checks"]["patch_evidence"]["summary"]["patch_stage_report_sha256"] == hashlib.sha256(retained_bytes(source["patch_stage_report"])).hexdigest()
         # The same JSON with changed physical bytes acquires a different
         # receipt; a saved long guard must reject the old byte identity.
         source_path.write_bytes(original + b"\n")
@@ -1544,9 +1549,15 @@ def test_explicit_hidden_cli_uses_the_written_source_binding_dispatcher() -> Non
              "--write-json", str(guard_path), "--require-pass"],
             capture_output=True, text=True, check=False,
         )
-        assert result.returncode == 0, result.stdout + result.stderr
+        # Source JSON is real and bound, but a fresh process has no test-only
+        # RAM artifact reader and must fail the missing external backing.
+        assert result.returncode == 1, result.stdout + result.stderr
         evaluated = json.loads(guard_path.read_text(encoding="ascii"))
         assert evaluated["source_report_sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert not evaluated["overall"]
+        assert not evaluated["checks"]["retained_binary_bytes"]["passed"]
+        assert not evaluated["checks"]["retained_frame_bytes"]["passed"]
+        assert not evaluated["checks"]["retained_log_bytes"]["passed"]
 
 
 def test_hidden_every_process_row_requires_live_numeric_telemetry() -> None:
@@ -1618,7 +1629,7 @@ def test_cli_rejects_unknown_and_contradictory_environment_selection() -> None:
         assert "unsupported soak environment" in unsupported.stdout
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_environment_dispatch_preserves_distinct_proof_classes()
     test_dispatch_rejects_unknown_labels_and_foreign_unlabeled_classes()
     test_dispatch_forwards_every_applicable_threshold()
@@ -1698,6 +1709,88 @@ def run_tests() -> None:
     test_final_route_marker_mismatch_fails()
     test_summary_metric_mismatch_fails()
     test_cli_honors_max_input_drift_argument()
+
+
+def test_hidden_malformed_inventories_and_summary_counts_fail_without_exceptions() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        for field in ("frame_samples", "process_samples", "capture_errors", "failures",
+                      "frame_sample_count", "process_sample_count"):
+            for value in (True, "bad", {}, None, -1):
+                report = copy.deepcopy(baseline)
+                report[field] = value
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["overall"], (field, value)
+                assert any(field in failure for failure in evaluated["failures"]), (field, value, evaluated["failures"])
+        report = copy.deepcopy(baseline)
+        report["frame_samples"][0].update(Width="bad", Height=[])
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        for field, value in (("duration_sec", float("inf")), ("duration_sec", "120"),
+                             ("sample_interval_sec", True), ("nonblack_percent_min", 10 ** 1000)):
+            report = copy.deepcopy(baseline)
+            report[field] = value
+            assert not soak.evaluate_report_for_environment(report)["overall"], (field, value)
+        for source in ([], {}):
+            report = copy.deepcopy(baseline)
+            report["ready_marker"]["source"] = source
+            assert not soak.evaluate_report_for_environment(report)["overall"]
+        report = copy.deepcopy(baseline)
+        report["process_samples"][0]["WorkingSet64"] = float("inf")
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        report = copy.deepcopy(baseline)
+        report["route_end_marker"]["route_ticks"] = float("inf")
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        for value in ([], True, float("inf"), 10 ** 1000):
+            report = copy.deepcopy(baseline)
+            report["frame_samples"][0]["MeanLuma"] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"]
+            assert any("MeanLuma" in failure for failure in evaluated["failures"])
+        for inventory in ("frame_samples", "process_samples"):
+            for timestamp in ("9999-12-31T23:59:59-23:59", "0001-01-01T00:00:00+23:59"):
+                report = copy.deepcopy(baseline)
+                report[inventory][0]["Timestamp"] = timestamp
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["overall"], (inventory, timestamp)
+                assert not evaluated["checks"]["elapsed_coverage"]["passed"]
+                assert any("timestamp" in failure for failure in evaluated["failures"])
+        for field, value in (("WorkingSet64", 1 << 63), ("PrivateMemorySize64", 1 << 63),
+                             ("HandleCount", 1 << 31), ("WorkingSet64", 10 ** 1000),
+                             ("PrivateMemorySize64", 10 ** 1000), ("HandleCount", 10 ** 1000)):
+            report = copy.deepcopy(baseline)
+            report["process_samples"][2][field] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], field
+            assert any(field in failure and "range" in failure for failure in evaluated["failures"])
+
+
+def test_hidden_receipt_bound_malformed_patch_objects_fail_without_exceptions() -> None:
+    from test_hidden_soak_artifact_fixtures import replace_retained_bytes
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        patch_path = baseline["patch_stage_report"]
+        original = json.loads(retained_bytes(patch_path))
+        for field, value in (("status_counts", "bad"), ("status_counts", []),
+                             ("status_counts", {"patched": "bad"}), ("status_counts", {"patched": True}),
+                             ("patch_count", "bad"), ("patch_count", False),
+                             ("current_hd_map_gate", "bad")):
+            payload = copy.deepcopy(original)
+            payload[field] = value
+            raw = json.dumps(payload).encode("ascii")
+            report = copy.deepcopy(baseline)
+            report.update(patch_stage_report_sha256=hashlib.sha256(raw).hexdigest(), patch_stage_report_size=len(raw))
+            with replace_retained_bytes(patch_path, raw):
+                evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], (field, value)
+            assert not evaluated["checks"]["patch_evidence"]["passed"], (field, value)
+            assert not evaluated["checks"]["retained_binary_bytes"]["passed"], (field, value)
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        test_hidden_malformed_inventories_and_summary_counts_fail_without_exceptions()
+        test_hidden_receipt_bound_malformed_patch_objects_fail_without_exceptions()
+        _run_tests()
 
 
 if __name__ == "__main__":

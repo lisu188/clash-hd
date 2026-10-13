@@ -1,6 +1,7 @@
 {
   "schema": "hidden_soak_revalidation_conclusion_v1",
   "observed_date": "2026-10-08",
+  "source_follow_up_observed_date": "2026-10-13",
   "scope": "source-only integrity repairs and read-only local evidence revalidation",
   "runtime_launched": false,
   "original_executable_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
@@ -33,7 +34,7 @@
     "combined_proof": "missing"
   },
   "runtime_blockers": [
-    "C volume usage is approximately 94.6 percent; strict greater-than-ten-percent free reserve plus pending allowance is not met",
+    "C volume usage remains above 95 percent at the source follow-up; strict greater-than-ten-percent free reserve plus pending allowance is not met",
     "original authenticated external soak artifacts are absent; historical pass flags cannot unlock new long runs"
   ],
   "source_integrity_repairs": [
@@ -49,16 +50,38 @@
     "retained live-bound pan-plan and marker-line receipts independently regraded through assembly and dispatch",
     "hidden-only lexical paths bound to matching immediate run roots and candidate-local proxy files",
     "source-only suspended CDB admission to a retained no-breakaway kill-on-close job, generation checks, drain and checked closes",
-    "failed or uncertain CreateProcess outputs retained as diagnostic debt, never kill or close authority"
+    "failed or uncertain CreateProcess outputs retained as diagnostic debt, never kill or close authority",
+    "default-on bounded retained readers reject observed path, ancestor and held-file identity drift without claiming immutability",
+    "actual retained candidate selected patches and complete patch report independently recomputed through the real protected-stage reporter",
+    "actual proxy PE, source/DEF/build inputs, manifests, logs and probes require matching byte receipts",
+    "every actual full raw frame requires matching SHA and independently recomputed indexed8 metrics",
+    "retained CDB log replay binds anchored observations, line positions, inventories, counts and failure flags",
+    "pre-launch input receipts are preserved and checked after runtime rather than resealed; log receipts follow cleanup",
+    "hidden malformed arrays, flags, native numeric ranges, nonfinite values and overflowing timestamps fail with retained diagnostic output"
   ],
   "remaining_production_gaps": [
     "native verification of the retained process/job adapter, per-frame owned target binding and independent cleanup-receipt regrading",
     "coherent held full-frame reads rather than unpaused ReadProcessMemory through a newly opened PID handle",
-    "physical byte authentication of candidate, proxy, build/runtime/CDB logs, generated probe and every raw frame",
+    "immutable-file and original-derived whole-candidate authentication rather than observed retained-byte consistency alone",
+    "independent exact source-samples JSON byte binding and canonical generated-probe reconstruction",
     "loaded-image authentication rather than on-disk hash receipts alone",
     "running-time coverage excluding debugger holds and host sleep"
   ],
   "required_next_decision": "restore the original authenticated external artifacts or explicitly choose a new evidence strategy; free capacity before artifact-producing work",
+  "bounded_source_cache_cleanup": {
+    "observed_date": "2026-10-13",
+    "removed_reproducible_cache_files": 31,
+    "removed_logical_bytes": 742531,
+    "removed_empty_directory": ".codex-loop/tmp-tests",
+    "preserved_unreproduced_cache_files": [
+      "tools/__pycache__/hd_soak_report.cpython-311.pyc",
+      "tools/__pycache__/hidden_soak_log_observations.cpython-311.pyc"
+    ],
+    "free_bytes_before": 48440086528,
+    "free_bytes_after": 48440958976,
+    "preservation_baseline_entries_removed": 0,
+    "runtime_disk_admission": false
+  },
   "source_only_verification": {
     "passed_focused_suites": [
       "test_hd_soak_report.py",
@@ -72,13 +95,26 @@
       "test_hidden_soak_cleanup.py",
       "test_current_evidence_refresh_collection.py",
       "test_hd_soak_long_report_guard.py",
-      "test_hidden_soak_integration.py"
+      "test_hidden_soak_integration.py",
+      "test_hidden_soak_artifact_fixtures.py",
+      "test_hidden_soak_retained_files.py",
+      "test_hidden_soak_binary_artifacts.py",
+      "test_hidden_soak_log_observations.py"
     ],
     "public_source_checks_passed": 8,
-    "preflight_storage_test_methods": 23,
+    "preflight_storage_test_methods": 25,
     "cleanup_test_methods": 16,
     "cleanup_mocked_lifecycle_cases": 33,
-    "refresh_collection_test_methods": 20,
+    "refresh_collection_test_methods": 24,
+    "retained_file_test_methods": 17,
+    "retained_binary_test_methods": 14,
+    "retained_log_test_methods": 12,
+    "scoped_artifact_registry_test_methods": 5,
+    "aggregate_original_collect_calls": 169,
+    "aggregate_original_check_keys": 167,
+    "aggregate_current_collect_calls": 175,
+    "aggregate_current_check_keys": 173,
+    "visible_and_guest_grader_asts_unchanged": true,
     "integration_synthetic_groups": 5,
     "powershell_ast_parse_passed": true,
     "diff_check_passed": true,

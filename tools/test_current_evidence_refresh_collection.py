@@ -6,10 +6,12 @@ import ast
 from contextlib import ExitStack, contextmanager, redirect_stdout
 import hashlib
 import inspect
+import importlib
 from io import StringIO
 import json
 from pathlib import Path
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -89,7 +91,8 @@ class CollectionTests(unittest.TestCase):
         added = {"matrix_cell_release_tests", "battle_field_loss_tests", "battle_tile_replay_tests",
                  "battle_content_replay_tests", "battle_count_entry_tests", "battle_count_body_v2_tests",
                  "battle_native_count_authoring_tests",
-                 "hidden_soak_integration_tests", "hidden_soak_harness_preflight_tests", "hidden_soak_cleanup_tests"}
+                 "hidden_soak_integration_tests", "hidden_soak_harness_preflight_tests", "hidden_soak_cleanup_tests",
+                 "hidden_soak_retained_files_tests", "hidden_soak_binary_artifacts_tests", "hidden_soak_log_observations_tests"}
         original_rows = [row for row in rows if row[0] not in added]
         digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
@@ -106,8 +109,11 @@ class CollectionTests(unittest.TestCase):
             ("hidden_soak_integration_tests", "build_hidden_soak_integration_tests", ["args"]),
             ("hidden_soak_harness_preflight_tests", "build_hidden_soak_harness_preflight_tests", ["args"]),
             ("hidden_soak_cleanup_tests", "build_hidden_soak_cleanup_tests", ["args"]),
+            ("hidden_soak_retained_files_tests", "build_hidden_soak_retained_files_tests", ["args"]),
+            ("hidden_soak_binary_artifacts_tests", "build_hidden_soak_binary_artifacts_tests", ["args"]),
+            ("hidden_soak_log_observations_tests", "build_hidden_soak_log_observations_tests", ["args"]),
         ])
-        self.assertEqual(len(rows), 179)
+        self.assertEqual(len(rows), 182)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -115,7 +121,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 177)
+        self.assertEqual(len(report["checks"]), 180)
         self.assertIs(report["passed"], True)
 
     def test_simple_test_policy_default_preserves_legacy_result(self):
@@ -332,6 +338,69 @@ class CollectionTests(unittest.TestCase):
         self.assertIn("synthetic source-only integration", payload["guard_policy"])
         self.assertEqual(len(payload["tests"]), 5)
 
+    def assert_registered_retained_entrypoint(self, builder_name, runtime_fragment, guard_fragment):
+        reader_slots = (("hidden_soak_retained_files", "_read_retained_file"),
+                        ("hidden_soak_binary_artifacts", "_read_retained_file"),
+                        ("hidden_soak_log_observations", "_reader"))
+        originals = [(importlib.import_module(module), name) for module, name in reader_slots]
+        readers = [getattr(module, name) for module, name in originals]
+        # These are the actual registered suite entrypoints. Only output
+        # serializers are replaced; no runner, validator, hash or IO policy is
+        # mocked by the registration test.
+        with patch.object(refresh, "write_json") as write_json, patch.object(refresh, "write_simple_tests_markdown") as markdown:
+            result = getattr(refresh, builder_name)(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        write_json.assert_called_once()
+        markdown.assert_called_once()
+        payload = write_json.call_args.args[1]
+        self.assertEqual(len(payload["tests"]), 2)
+        self.assertIn(runtime_fragment, payload["runtime_policy"])
+        self.assertIn(guard_fragment, payload["guard_policy"])
+        self.assertFalse(payload["failures"])
+        for (module, name), original in zip(originals, readers):
+            self.assertIs(getattr(module, name), original, f"leaked fixture reader: {module.__name__}.{name}")
+
+    def test_registered_retained_files_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_retained_files_tests", "tiny private files and RAM-only full frames", "no native producer",
+        )
+
+    def test_registered_binary_artifacts_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_binary_artifacts_tests", "fixed file-reader boundary", "no original, loaded-image",
+        )
+
+    def test_registered_log_observations_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_log_observations_tests", "source-only synthetic log", "no native producer",
+        )
+
+    def test_next_actual_production_builder_cannot_use_prior_fixture_readers(self):
+        from test_hd_soak_report import passing_hidden_report
+        from test_hidden_soak_artifact_fixtures import fixture_artifact_reads
+        with tempfile.TemporaryDirectory(prefix="hidden-collection-tiny-") as directory:
+            tmp = Path(directory)
+            with fixture_artifact_reads():
+                baseline = passing_hidden_report(tmp)
+            source = tmp / "source.json"
+            baseline["report_json"] = str(source)
+            source.write_text(json.dumps(baseline), encoding="ascii")
+            self.args.hd_soak_first_step_report = source
+            self.args.hd_soak_report = tmp / "absent.json"
+            # Execute the new registrations first, then the actual next
+            # production collector in the declared aggregate order. Its only
+            # mock is publication; default retained-file reads must fail.
+            for builder in ("build_hidden_soak_retained_files_tests", "build_hidden_soak_binary_artifacts_tests", "build_hidden_soak_log_observations_tests"):
+                with patch.object(refresh, "write_json"), patch.object(refresh, "write_simple_tests_markdown"):
+                    result = getattr(refresh, builder)(self.args)
+                self.assertIs(result["passed"], True, result["failures"])
+            with patch.object(refresh.hd_soak_failure_triage, "write_outputs") as output:
+                production = refresh.build_hd_soak_failure_triage(self.args)
+            self.assertIs(production["passed"], False)
+            self.assertEqual(production["summary"]["classification"], "guard_validation_failure")
+            triage = output.call_args.args[0]
+            self.assertTrue(any("retained" in failure.lower() for failure in triage["guard_validation"]["failures"]))
+
     def test_early_missing_input_keeps_completed_and_later_results(self):
         message = "captures/current/patch-stage-current-hd-map.json is missing"
         def missing(args):
@@ -341,7 +410,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 179)
+        self.assertEqual(len(self.calls), 182)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -387,7 +456,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 179)
+                self.assertEqual(len(self.calls), 182)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

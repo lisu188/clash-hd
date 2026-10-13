@@ -20,6 +20,7 @@ import hd_soak_long_report_guard as guard  # noqa: E402
 import hd_soak_report as soak
 import test_hd_soak_report as soak_fixtures
 from test_hidden_soak_integration import hidden_report as assembled_hidden_report
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, retained_bytes, replace_retained_bytes
 
 
 SHA = "c" * 64
@@ -110,13 +111,8 @@ def write_proof(tmp: Path, report_paths: list[Path]) -> Path:
 def hidden_long_report(
     fixture: Path, route: str, *, duration_sec: int = guard.MIN_DURATION_SEC, sha: str = SHA
 ) -> dict[str, Any]:
-    """Create real tiny source/patch JSON and its actual environment guard."""
-    source = assembled_hidden_report(fixture, route, duration_sec, 30)
-    source["candidate_sha256"] = sha
-    patch_path = Path(source["patch_stage_report"])
-    patch = json.loads(patch_path.read_text(encoding="utf-8"))
-    patch["exe_sha256"] = sha
-    write_json(patch_path, patch)
+    """Use real policy over fixed RAM artifacts, plus a tiny source JSON."""
+    source = assembled_hidden_report(fixture, route, duration_sec, 30, candidate_variant=int(sha != SHA))
     source_path = fixture / "source-report.json"
     source["report_json"] = str(source_path)
     write_json(source_path, source)
@@ -139,6 +135,7 @@ def test_hidden_long_provenance_cannot_be_dropped_or_failed(fixture: Path) -> No
     for name in (
         "schema", "environment", "wrapper_provenance", "marker_provenance",
         "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
+        "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes",
     ):
         for missing in (True, False):
             report = hidden_long_report(fixture, "map-pan")
@@ -275,7 +272,8 @@ def test_hidden_long_regrades_exact_source_and_preserves_saved_receipts(fixture:
         report = hidden_long_report(fixture / mutation, "map-idle")
         source_path = Path(report["source_report"])
         source = json.loads(source_path.read_text(encoding="utf-8"))
-        patch_path = Path(source["patch_stage_report"])
+        patch_path = source["patch_stage_report"]
+        replacement = ...
         if mutation == "missing_hash":
             report.pop("source_report_sha256")
         elif mutation == "wrong_hash":
@@ -292,15 +290,19 @@ def test_hidden_long_regrades_exact_source_and_preserves_saved_receipts(fixture:
         elif mutation == "invalid_encoding":
             source_path.write_bytes(b"\xff")
         elif mutation == "missing_patch":
-            patch_path.unlink()
+            replacement = None
         elif mutation == "patch_byte_drift":
-            patch_path.write_bytes(patch_path.read_bytes() + b"\n")
+            replacement = retained_bytes(patch_path) + b"\n"
         else:
-            payload = json.loads(patch_path.read_text(encoding="utf-8"))
+            payload = json.loads(retained_bytes(patch_path))
             payload["exe_sha256"] = "0" * 64
-            write_json(patch_path, payload)
+            replacement = json.dumps(payload).encode("ascii")
         original_guard = json.dumps(report, sort_keys=True)
-        valid, failures, _ = guard.validate_long_report(report)
+        if replacement is ...:
+            valid, failures, _ = guard.validate_long_report(report)
+        else:
+            with replace_retained_bytes(patch_path, replacement):
+                valid, failures, _ = guard.validate_long_report(report)
         assert not valid, mutation
         assert any("source_report" in failure or "patch_stage_report" in failure for failure in failures), failures
         assert json.dumps(report, sort_keys=True) == original_guard
@@ -340,20 +342,7 @@ def test_hidden_long_requires_thirty_second_samples_and_complete_end_ticks(fixtu
 
 
 def test_hidden_long_requires_ten_second_pan_intervals(fixture: Path) -> None:
-    source = assembled_hidden_report(fixture, "map-pan", 7200, 30)
-    source["pan_interval_sec"] = source["pan_mechanism_detail"]["pan_interval_sec"] = 12
-    source["pan_events"] = [
-        {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
-         "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 768,
-         "tick_delta": (index + 1) * 768, "delta_x": 1, "delta_y": 1,
-         "line_number": 13 + index}
-        for index in range((7200 * 64 - 1) // 768)
-    ]
-    source["pan_event_count"] = source["pan_mechanism_detail"]["pan_event_count"] = len(source["pan_events"])
-    source["route_end_marker"].update(
-        scroll_x=source["pan_events"][-1]["x"], scroll_y=source["pan_events"][-1]["y"],
-        line_number=13 + len(source["pan_events"]),
-    )
+    source = assembled_hidden_report(fixture, "map-pan", 7200, 30, pan_interval=12)
     source["report_json"] = str(fixture / "source-report.json")
     write_json(Path(source["report_json"]), source)
     report = soak.evaluate_report_for_environment(source)
@@ -573,7 +562,7 @@ def test_cli_writes_outputs_and_require_pass_fails_closed(fixture: Path) -> None
     assert "HD Long Soak Report Guard" in out_md.read_text(encoding="ascii")
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     with tempfile.TemporaryDirectory(prefix="clash-long-soak-guard-") as directory:
         fixture = Path(directory)
         test_incomplete_or_forged_short_ladder_cannot_unlock_long_runs()
@@ -605,6 +594,11 @@ def run_tests() -> None:
         test_short_duration_and_failed_check_fail(fixture / "bad-check")
         test_unprotected_stage_fails(fixture / "bad-stage")
         test_cli_writes_outputs_and_require_pass_fails_closed(fixture / "cli")
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 def main() -> int:

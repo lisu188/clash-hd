@@ -20,16 +20,19 @@ import hd_soak_short_validation_refresh as refresh
 import hidden_soak_report_assembler as assembler
 import test_hd_soak_short_validation_refresh as short_fixtures
 import test_hidden_soak_report_assembler as samples_fixtures
+from test_hidden_soak_artifact_fixtures import (
+    fixture_artifact_reads, seal_fixture, retained_bytes, replace_retained_bytes,
+)
 
 
-def hidden_report(tmp: Path, route: str, duration: int, interval: int) -> dict:
+def hidden_report(tmp: Path, route: str, duration: int, interval: int, *, candidate_variant: int = 0,
+                  pan_interval: int = 10) -> dict:
     tmp.mkdir(parents=True, exist_ok=True)
-    patch_path = short_fixtures.write_patch_stage_fixture(tmp / "patch-stage.json", samples_fixtures.SHA)
     count = duration // interval + 1
-    samples = samples_fixtures.make_samples(route)
+    samples = samples_fixtures.make_samples(route, _seal=False)
     samples.update(
         duration_sec=duration, duration_ticks=duration * 64, frame_interval_sec=interval,
-        patch_stage_report=str(patch_path),
+        pan_interval_sec=pan_interval if route == "map-pan" else None,
         frame_samples=samples_fixtures.frame_rows(count, interval, unique_hashes=2 if route == "map-pan" else 1),
         process_samples=samples_fixtures.process_rows(count, interval),
         elapsed_coverage={
@@ -42,17 +45,17 @@ def hidden_report(tmp: Path, route: str, duration: int, interval: int) -> dict:
     if route == "map-pan":
         samples["pan_events"] = [
             {"phase": index % 4, "x": 4 + int(index % 4 in (1, 2)),
-             "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * 640,
-             "tick_delta": (index + 1) * 640, "delta_x": 1, "delta_y": 1,
+             "y": 6 + int(index % 4 in (2, 3)), "hits": (index + 1) * pan_interval * 64,
+             "tick_delta": (index + 1) * pan_interval * 64, "delta_x": 1, "delta_y": 1,
              "line_number": 13 + index}
-            for index in range((duration * 64 - 1) // 640)
+            for index in range((duration * 64 - 1) // (pan_interval * 64))
         ]
         samples["route_end_marker"].update(
             scroll_x=samples["pan_events"][-1]["x"], scroll_y=samples["pan_events"][-1]["y"],
             line_number=13 + len(samples["pan_events"]),
         )
         samples["pan_event_count"] = len(samples["pan_events"])
-    report = assembler.assemble_report(samples)
+    report = assembler.assemble_report(seal_fixture(samples, candidate_variant=candidate_variant))
     assert report["passed"], report["failures"]
     return report
 
@@ -141,8 +144,8 @@ def test_lost_patch_provenance_revokes_saved_ladder_without_mutating_it(tmp: Pat
     status, path = completed_short_pipeline(tmp)
     original = path.read_bytes()
     source = json.loads(Path(status["steps"][1]["paths"]["report_json"]).read_text(encoding="ascii"))
-    Path(source["patch_stage_report"]).unlink()
-    assert not long_guard.short_ladder_complete(status)
+    with replace_retained_bytes(source["patch_stage_report"], None):
+        assert not long_guard.short_ladder_complete(status)
     assert path.read_bytes() == original
 
 
@@ -158,19 +161,18 @@ def test_hidden_long_guard_revalidates_exact_source_and_patch_bytes(tmp: Path) -
     assert not long_guard.validate_long_report(evaluation)[0]
     path.write_bytes(original)
     assert long_guard.validate_long_report(evaluation)[0]
-    patch_path = Path(source["patch_stage_report"])
-    patch_original = patch_path.read_bytes()
-    patch_path.write_bytes(patch_original + b"\n")
-    assert not long_guard.validate_long_report(evaluation)[0]
-    patch_path.write_bytes(patch_original)
+    patch_path = source["patch_stage_report"]
+    patch_original = retained_bytes(patch_path)
+    with replace_retained_bytes(patch_path, patch_original + b"\n"):
+        assert not long_guard.validate_long_report(evaluation)[0]
     assert long_guard.validate_long_report(evaluation)[0]
-    patch_path.unlink()
-    assert not long_guard.validate_long_report(evaluation)[0]
+    with replace_retained_bytes(patch_path, None):
+        assert not long_guard.validate_long_report(evaluation)[0]
     path.unlink()
     assert not long_guard.validate_long_report(evaluation)[0]
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     with tempfile.TemporaryDirectory(prefix="clash-hidden-soak-integration-") as directory:
         tmp = Path(directory)
         test_full_hidden_pipeline_and_long_route_join(tmp / "pipeline")
@@ -178,6 +180,13 @@ def run_tests() -> None:
         test_refresh_classifies_failed_hidden_sentinel_and_locks_short_step(tmp / "failed-refresh")
         test_lost_patch_provenance_revokes_saved_ladder_without_mutating_it(tmp / "lost-provenance")
         test_hidden_long_guard_revalidates_exact_source_and_patch_bytes(tmp / "long-source-binding")
+
+
+def run_tests() -> None:
+    from test_hidden_soak_artifact_fixtures import run_tests as artifact_fixture_tests
+    artifact_fixture_tests()
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 if __name__ == "__main__":

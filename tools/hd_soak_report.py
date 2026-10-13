@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import sys
@@ -14,6 +15,9 @@ from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from hidden_soak_artifact_layout import validate_hidden_artifact_layout
+from hidden_soak_binary_artifacts import read_retained_patch, validate_retained_binaries
+from hidden_soak_log_observations import validate_retained_log
+from hidden_soak_retained_files import validate_retained_frames
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -325,6 +329,28 @@ def timestamp_span_seconds(rows: list[Any]) -> tuple[float | None, int]:
     return (max(parsed) - min(parsed)).total_seconds(), invalid_count
 
 
+def hidden_parse_timestamp(value: Any) -> datetime | None:
+    """Reject UTC conversion overflow without changing legacy host/guest parsing."""
+    try:
+        return parse_timestamp(value)
+    except (ValueError, OverflowError):
+        return None
+
+
+def hidden_timestamp_span_seconds(rows: list[Any]) -> tuple[float | None, int]:
+    parsed: list[datetime] = []
+    invalid_count = 0
+    for row in rows:
+        timestamp = hidden_parse_timestamp(row.get("Timestamp") if isinstance(row, dict) else None)
+        if timestamp is None:
+            invalid_count += 1
+        else:
+            parsed.append(timestamp)
+    if len(parsed) < 2:
+        return None, invalid_count
+    return (max(parsed) - min(parsed)).total_seconds(), invalid_count
+
+
 def hidden_sample_coverage_failures(
     rows: list[Any], *, duration_sec: int | None, interval_sec: int | None, label: str
 ) -> list[str]:
@@ -349,7 +375,7 @@ def hidden_sample_coverage_failures(
         )
     previous: datetime | None = None
     for index, row in enumerate(rows):
-        current = parse_timestamp(row.get("Timestamp") if isinstance(row, dict) else None)
+        current = hidden_parse_timestamp(row.get("Timestamp") if isinstance(row, dict) else None)
         if current is None:
             failures.append(f"{label} sample {index} has a missing or invalid timestamp")
             previous = None
@@ -377,8 +403,12 @@ def hidden_process_sample_failures(rows: list[Any]) -> list[str]:
             failures.append(f"process sample {index}.HasExited is missing or is not false")
         for field in ("WorkingSet64", "PrivateMemorySize64", "HandleCount"):
             value = row.get(field)
-            if type(value) is not int or value < 0:
-                failures.append(f"process sample {index}.{field} is missing or is not a nonnegative integer")
+            bits = 32 if field == "HandleCount" else 64
+            if type(value) is not int or not 0 <= value < (1 << (bits - 1)):
+                failures.append(
+                    f"process sample {index}.{field} is missing or is not a nonnegative integer "
+                    f"in the producer's signed Int{bits} range"
+                )
     return failures
 
 
@@ -474,6 +504,7 @@ def hidden_route_end_failures(
     """Bind the terminal row to the requested route and its last scroll state."""
     if not isinstance(start, dict) or not isinstance(end, dict):
         return []  # The marker-presence checks retain these separate failures.
+    integer_or_none = hidden_integer_or_none
     failures: list[str] = []
     if integer_or_none(end.get("route_ticks")) != duration_ticks or duration_ticks is None:
         failures.append("route_end_marker.route_ticks does not match the requested duration")
@@ -1928,6 +1959,39 @@ def evaluate_guest_report(
     }
 
 
+def hidden_integer_or_none(value: Any) -> int | None:
+    """Only original JSON integers fitting the producer's signed Int64 schema."""
+    return value if type(value) is int and -(1 << 63) <= value < (1 << 63) else None
+
+
+def hidden_float_or_none(value: Any) -> float | None:
+    if type(value) not in (int, float):
+        return None
+    try:
+        number = float(value)
+    except (ValueError, OverflowError):
+        return None
+    return number if math.isfinite(number) else None
+
+
+def hidden_mismatched_number(reported: Any, computed: Any, *, tolerance: float = 0.0) -> bool:
+    if reported is None or computed is None:
+        return reported is not computed
+    if type(reported) is int and type(computed) is int and tolerance == 0:
+        return reported != computed
+    left, right = hidden_float_or_none(reported), hidden_float_or_none(computed)
+    return left is None or right is None or abs(left - right) > tolerance
+
+
+def hidden_array(payload: dict[str, Any], name: str, failures: list[str]) -> list[Any]:
+    """Keep malformed hidden inventories as explicit rejection diagnostics."""
+    value = payload.get(name)
+    if type(value) is not list:
+        failures.append(f"{name} must be an array")
+        return []
+    return list(value)
+
+
 def evaluate_hidden_report(
     report: dict[str, Any],
     *,
@@ -1968,11 +2032,18 @@ def evaluate_hidden_report(
     * Protected-stage and candidate-SHA/patch-evidence checks are identical to
       the host variant.
     """
-    raw_frame_samples = list(report.get("frame_samples") or [])
-    raw_process_samples = list(report.get("process_samples") or [])
+    # Keep visible-host/guest coercion behavior untouched. This lane consumes
+    # typed JSON from the producer and rejects nonfinite/coercible values.
+    integer_or_none = hidden_integer_or_none
+    float_or_none = hidden_float_or_none
+    mismatched_number = hidden_mismatched_number
+    timestamp_span_seconds = hidden_timestamp_span_seconds
+    inventory_failures: list[str] = []
+    raw_frame_samples = hidden_array(report, "frame_samples", inventory_failures)
+    raw_process_samples = hidden_array(report, "process_samples", inventory_failures)
     frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
     process_samples = [row if isinstance(row, dict) else {} for row in raw_process_samples]
-    capture_errors = list(report.get("capture_errors") or [])
+    capture_errors = hidden_array(report, "capture_errors", inventory_failures)
     raw_artifact_bytes = report.get("artifact_bytes")
     artifact_bytes = raw_artifact_bytes if type(raw_artifact_bytes) is int else None
     reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
@@ -1995,7 +2066,8 @@ def evaluate_hidden_report(
     checks["executed"] = check_record(executed, {"executed": report.get("executed")}, failures)
 
     failures = []
-    source_failures = list(report.get("failures") or [])
+    source_failures = hidden_array(report, "failures", inventory_failures)
+    failures.extend(inventory_failures)
     source_passed = report.get("passed") is True
     if executed and not source_passed:
         failures.append("source hidden soak report did not mark itself passed")
@@ -2087,7 +2159,7 @@ def evaluate_hidden_report(
         failures,
     )
 
-    # Patch evidence / candidate SHA: identical to the host variant. The hidden
+    # Patch evidence / candidate SHA: hidden-only retained-byte loader. The hidden
     # run patches the same protected base into a C:\ClashTests candidate, so
     # provenance requirements do not weaken.
     failures = []
@@ -2096,7 +2168,7 @@ def evaluate_hidden_report(
     patch_report: dict[str, Any] | None = None
     patch_error: str | None = None
     if executed:
-        patch_report, patch_error = load_optional_json(report.get("patch_stage_report"))
+        patch_report, patch_error = read_retained_patch(report)
         if input_sha != EXPECTED_BASE_SHA256:
             failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
         if not is_sha256(candidate_sha):
@@ -2104,12 +2176,25 @@ def evaluate_hidden_report(
         if patch_error:
             failures.append(patch_error)
     if patch_report is not None:
-        status_counts = patch_report.get("status_counts") or {}
-        patch_count = int(patch_report.get("patch_count") or 0)
-        patched_count = int(status_counts.get("patched") or 0)
-        original_count = int(status_counts.get("original") or 0)
-        unexpected_count = int(status_counts.get("unexpected") or 0)
-        gate = patch_report.get("current_hd_map_gate") or {}
+        status_counts = patch_report.get("status_counts")
+        if type(status_counts) is not dict:
+            failures.append("patch_stage_report.status_counts must be an object")
+            status_counts = {}
+        counts = {}
+        for name, value in (("patch_count", patch_report.get("patch_count")),
+                            ("patched", status_counts.get("patched", 0)),
+                            ("original", status_counts.get("original", 0)),
+                            ("unexpected", status_counts.get("unexpected", 0))):
+            if type(value) is not int or value < 0:
+                failures.append(f"patch_stage_report.{name} must be a nonnegative integer")
+                value = 0
+            counts[name] = value
+        patch_count, patched_count = counts["patch_count"], counts["patched"]
+        original_count, unexpected_count = counts["original"], counts["unexpected"]
+        gate = patch_report.get("current_hd_map_gate")
+        if type(gate) is not dict:
+            failures.append("patch_stage_report.current_hd_map_gate must be an object")
+            gate = {}
         if patch_report.get("stage") != PROTECTED_STABLE_STAGE:
             failures.append("patch_stage_report stage does not match the protected stable stage")
         if normalize_sha(patch_report.get("expected_base_sha256")) != EXPECTED_BASE_SHA256:
@@ -2137,9 +2222,11 @@ def evaluate_hidden_report(
         },
         failures,
     )
-    patch_digest, patch_binding_errors = matching_json_file_sha256(
-        report.get("patch_stage_report"), patch_report,
-    ) if patch_report is not None else (None, ["patch report is unavailable"])
+    binary_summary, binary_failures = validate_retained_binaries(report)
+    checks["retained_binary_bytes"] = check_record(not binary_failures, binary_summary, binary_failures)
+    patch_artifact = binary_summary.get("artifacts", {}).get("patch_stage_report", {})
+    patch_digest = patch_artifact.get("sha256") if patch_report is not None else None
+    patch_binding_errors = [patch_error] if patch_error else []
     checks["patch_evidence"]["summary"].update(
         patch_stage_report_sha256=patch_digest,
         patch_stage_report_binding_errors=patch_binding_errors,
@@ -2171,6 +2258,12 @@ def evaluate_hidden_report(
     # remain separate requirements. Visible and guest path policies are intact.
     layout_summary, failures = validate_hidden_artifact_layout(report)
     checks["artifact_locations"] = check_record(not failures, layout_summary, failures)
+    for name, validator in (
+        ("retained_frame_bytes", validate_retained_frames),
+        ("retained_log_bytes", validate_retained_log),
+    ):
+        retained_summary, retained_failures = validator(report)
+        checks[name] = check_record(not retained_failures, retained_summary, retained_failures)
 
     # Capture integrity, adapted to surface-read frames: the frames are host
     # ReadProcessMemory reads of the DirectDraw surface base that
@@ -2258,7 +2351,7 @@ def evaluate_hidden_report(
         if not isinstance(ready_marker, dict):
             failures.append("ready_marker is missing or malformed")
         else:
-            if ready_marker.get("source") not in {"SOAK_SURFDUMP_READY", "SURFDUMP_READY"}:
+            if ready_marker.get("source") not in ("SOAK_SURFDUMP_READY", "SURFDUMP_READY"):
                 failures.append("ready_marker.source is not an anchored surface-ready marker")
             marker_base = parse_cdb_pointer(ready_marker.get("base"))
             if marker_base is None or marker_base != surface_base_value:
@@ -2413,11 +2506,15 @@ def evaluate_hidden_report(
     )
 
     failures = []
-    frame_count = int(report.get("frame_sample_count") or len(frame_samples))
+    frame_count = report.get("frame_sample_count")
+    if type(frame_count) is not int or frame_count < 0:
+        failures.append("frame_sample_count must be a nonnegative integer")
+        frame_count = len(frame_samples)
     size_bad = [
         frame
         for frame in frame_samples
-        if int(frame.get("Width") or 0) != expected_width or int(frame.get("Height") or 0) != expected_height
+        if type(frame.get("Width")) is not int or frame["Width"] != expected_width
+        or type(frame.get("Height")) is not int or frame["Height"] != expected_height
     ]
     bad_hashes = [frame for frame in frame_samples if not is_sha256(frame.get("Hash"))]
     if executed:
@@ -2428,7 +2525,7 @@ def evaluate_hidden_report(
         if bad_hashes:
             failures.append(f"{len(bad_hashes)} frame samples have missing or invalid SHA-256 hashes")
     checks["frame_inventory"] = check_record(
-        (not executed) or (frame_count >= min_frames and not size_bad and not bad_hashes),
+        (not executed) or not failures,
         {
             "frame_sample_count": frame_count,
             "expected_size": [expected_width, expected_height],
@@ -2453,7 +2550,16 @@ def evaluate_hidden_report(
         float(frame["NonblackPercent"]) for frame in evidence_frames
         if type(frame.get("NonblackPercent")) in (int, float) and 0 <= frame["NonblackPercent"] <= 100
     ]
-    luma_values = numbers([frame.get("MeanLuma") for frame in evidence_frames])
+    luma_values = []
+    for index, frame in enumerate(evidence_frames):
+        value = frame.get("MeanLuma")
+        if value is None:
+            continue
+        number = hidden_float_or_none(value)
+        if number is None:
+            failures.append(f"frame sample {index}.MeanLuma must be a finite numeric value when present")
+        else:
+            luma_values.append(number)
     unique_values = [
         float(frame["UniqueSampleColors"]) for frame in evidence_frames
         if type(frame.get("UniqueSampleColors")) is int and 0 <= frame["UniqueSampleColors"] <= 256
@@ -2622,7 +2728,10 @@ def evaluate_hidden_report(
     )
 
     failures = []
-    process_sample_count = int(report.get("process_sample_count") or computed_process_sample_count)
+    process_sample_count = report.get("process_sample_count")
+    if type(process_sample_count) is not int or process_sample_count < 0:
+        failures.append("process_sample_count must be a nonnegative integer")
+        process_sample_count = computed_process_sample_count
     working_set_growth = integer_or_none(report.get("working_set_growth_bytes"))
     private_memory_growth = integer_or_none(report.get("private_memory_growth_bytes"))
     handle_growth = integer_or_none(report.get("handle_growth"))

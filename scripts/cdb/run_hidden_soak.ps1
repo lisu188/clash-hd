@@ -138,6 +138,29 @@ function Get-FileSha256 {
     }
 }
 
+function Get-RetainedFileReceipt {
+    param([string]$Path)
+    # A collection-time byte receipt only, not loaded-image/producer proof.
+    # Hold one read-only stream for both size and digest; later grading reopens
+    # and independently checks the actual retained bytes and physical path.
+    $stream = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open,
+        [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+    $hasher = $null
+    try {
+        $size = $stream.Length
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        $sha = [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '')
+        if ($stream.Length -ne $size -or $stream.Position -ne $size) {
+            throw "Retained file size changed while collecting its receipt: $Path"
+        }
+        return [ordered]@{ sha256 = $sha; size = $size }
+    }
+    finally {
+        try { if ($hasher) { $hasher.Dispose() } }
+        finally { $stream.Dispose() }
+    }
+}
+
 function Test-PathEqual {
     param([string]$Left, [string]$Right)
     [string]::Equals(
@@ -1567,8 +1590,13 @@ if (-not (Test-Path -LiteralPath $proxyBuildLogPath -PathType Leaf)) {
 if (Test-Path -LiteralPath $proxyLogPath) {
     throw "Fresh per-run proxy log unexpectedly already exists: $proxyLogPath"
 }
+$patchReceipt = Get-RetainedFileReceipt -Path $patchStageJson
+$proxyManifestReceipt = Get-RetainedFileReceipt -Path $proxyManifestPath
+$proxyBuildLogReceipt = Get-RetainedFileReceipt -Path $proxyBuildLogPath
 
 # --- Probe composition (base surface-dump template + hidden soak extra) ------
+$probeTemplateReceipt = Get-RetainedFileReceipt -Path $ProbeTemplate
+$soakTemplateReceipt = Get-RetainedFileReceipt -Path $SoakProbeTemplate
 $durationTicks = [int64]$DurationSec * 64
 $panIntervalTicks = [int64]$PanIntervalSec * 64
 $panFlag = if ($Route -eq 'map-pan') { '1' } else { '0' }
@@ -1628,6 +1656,16 @@ if (@($leftoverPlaceholders).Count -gt 0) {
 }
 Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
 Set-Content -LiteralPath $generatedProbe -Value $probeText -Encoding ASCII
+$generatedProbeReceipt = Get-RetainedFileReceipt -Path $generatedProbe
+foreach ($binding in @(
+    @{ Path = $ProbeTemplate; Receipt = $probeTemplateReceipt },
+    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt }
+)) {
+    $currentReceipt = Get-RetainedFileReceipt -Path $binding.Path
+    if ($currentReceipt.sha256 -ne $binding.Receipt.sha256 -or $currentReceipt.size -ne $binding.Receipt.size) {
+        throw "Probe template changed during composition: $($binding.Path)"
+    }
+}
 
 # --- Hidden-desktop launch + sampling loop -----------------------------------
 $runStart = Get-Date
@@ -1931,6 +1969,31 @@ $requiredElapsed = [math]::Max(0, $DurationSec - $FrameIntervalSec - 2)
 $startMarker = $observations.RouteStarts | Select-Object -First 1
 $endMarker = $observations.RouteEnds | Select-Object -First 1
 
+# Keep the original pre-launch receipts. Post-run drift is a failure, not a new
+# seal of changed inputs. Logs receive their first receipt only after cleanup.
+foreach ($binding in @(
+    @{ Path = $patchStageJson; Receipt = $patchReceipt },
+    @{ Path = $proxyManifestPath; Receipt = $proxyManifestReceipt },
+    @{ Path = $proxyBuildLogPath; Receipt = $proxyBuildLogReceipt },
+    @{ Path = $generatedProbe; Receipt = $generatedProbeReceipt },
+    @{ Path = $ProbeTemplate; Receipt = $probeTemplateReceipt },
+    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt }
+)) {
+    try {
+        $currentReceipt = Get-RetainedFileReceipt -Path $binding.Path
+        if ($currentReceipt.sha256 -ne $binding.Receipt.sha256 -or $currentReceipt.size -ne $binding.Receipt.size) {
+            throw "Retained input changed during the run: $($binding.Path)"
+        }
+    }
+    catch { $runnerFailures += "retained input receipt failed: $($_.Exception.Message)" }
+}
+$cdbLogReceipt = $null
+$proxyLogReceipt = $null
+try { $cdbLogReceipt = Get-RetainedFileReceipt -Path $logPath }
+catch { $runnerFailures += "CDB log receipt failed: $($_.Exception.Message)" }
+try { $proxyLogReceipt = Get-RetainedFileReceipt -Path $proxyLogPath }
+catch { $runnerFailures += "proxy log receipt failed: $($_.Exception.Message)" }
+
 # --- Samples payload for the tested pure-python assembler --------------------
 # HONESTY: input_responsiveness is the sentinel and nothing else. This runner
 # never measures, imports, or fabricates input metrics on a hidden desktop.
@@ -1951,13 +2014,23 @@ $samples = [ordered]@{
     candidate = $candidateFull
     candidate_sha256 = $candidateSha
     patch_stage_report = $patchStageJson
+    patch_stage_report_sha256 = $patchReceipt.sha256
+    patch_stage_report_size = $patchReceipt.size
     workdir = (Get-FullPath -Path $WorkDir)
     output_directory = $runDir
     load_slot = $LoadSlot
     probe_template = (Get-FullPath -Path $ProbeTemplate)
+    probe_template_sha256 = $probeTemplateReceipt.sha256
+    probe_template_size = $probeTemplateReceipt.size
     soak_probe_template = (Get-FullPath -Path $SoakProbeTemplate)
+    soak_probe_template_sha256 = $soakTemplateReceipt.sha256
+    soak_probe_template_size = $soakTemplateReceipt.size
     generated_probe = $generatedProbe
+    generated_probe_sha256 = $generatedProbeReceipt.sha256
+    generated_probe_size = $generatedProbeReceipt.size
     cdb_log = $logPath
+    cdb_log_sha256 = if ($cdbLogReceipt) { $cdbLogReceipt.sha256 } else { $null }
+    cdb_log_size = if ($cdbLogReceipt) { $cdbLogReceipt.size } else { $null }
     launch_mode = 'hidden-desktop'
     desktop_name = $desktopName
     frame_read_method = 'host_readprocessmemory'
@@ -2004,6 +2077,10 @@ $samples = [ordered]@{
         used = $presentRows.Count -eq 1
         path = $proxyDllPath; sha256 = $proxySha; build_manifest = $proxyManifestPath
         build_log = $proxyBuildLogPath; log = $proxyLogPath; present_enabled = $proxyPresentEnabled
+        build_manifest_sha256 = $proxyManifestReceipt.sha256; build_manifest_size = $proxyManifestReceipt.size
+        build_log_sha256 = $proxyBuildLogReceipt.sha256; build_log_size = $proxyBuildLogReceipt.size
+        log_sha256 = if ($proxyLogReceipt) { $proxyLogReceipt.sha256 } else { $null }
+        log_size = if ($proxyLogReceipt) { $proxyLogReceipt.size } else { $null }
     }
     cleanup = [ordered]@{
         game_stopped = $cleanup.GameStopped; cdb_stopped = $cleanup.CdbStopped

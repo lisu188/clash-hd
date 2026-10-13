@@ -85,6 +85,14 @@ acceptance. The [tracked handoff](AGENT_HANDOFF.md#hidden-soak-integrity-checkpo
 names the remaining producer/provenance work. Do not overwrite the retained
 failed/interrupted long attempts or automatically repeat the visible menu run.
 
+The assembler, public hidden grader and hidden long guard now require current
+retained-byte consistency checks for the actual candidate/patch, proxy/build
+inputs, probes, CDB log observations and every raw frame. Saved summaries cannot
+replace those reads. These checks are not immutable-file, whole-original,
+canonical-probe, loaded-image, native-producer, coherent-frame, cleanup-lifecycle
+or running-time proof; those prerequisites remain separate. Source fixtures
+cannot restore missing historical evidence or unlock runtime by themselves.
+
 Visible composition and human-operated manual DirectInput require their own
 matching observations and fresh approval under [AGENTS.md](../../AGENTS.md).
 Automated injection and hidden soak reports cannot satisfy the human-input

@@ -18,6 +18,7 @@ import hidden_soak_report_assembler as hidden_assembler
 from test_hd_soak_short_validation_refresh import soak_report as visible_soak_report
 from test_hd_soak_short_validation_refresh import write_patch_stage_fixture
 from test_hidden_soak_report_assembler import frame_rows, make_samples, process_rows
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, seal_fixture, replace_retained_bytes
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
@@ -58,7 +59,7 @@ def hidden_soak_report(step: dict[str, Any], *, passed: bool = True) -> dict[str
     interval = 15
     count = duration // interval + 1
     samples = make_samples(
-        step["route"], duration_sec=duration, duration_ticks=duration * 64,
+        step["route"], _seal=False, duration_sec=duration, duration_ticks=duration * 64,
         frame_interval_sec=interval, report_json=step["paths"]["report_json"],
         frame_samples=frame_rows(count, interval, unique_hashes=3 if step["route"] == "map-pan" else 1),
         process_samples=process_rows(count, interval),
@@ -79,11 +80,7 @@ def hidden_soak_report(step: dict[str, Any], *, passed: bool = True) -> dict[str
         samples["pan_event_count"] = len(samples["pan_events"])
         samples["route_end_marker"]["hits"] = samples["pan_events"][-1]["hits"] + 1
         samples["route_end_marker"]["line_number"] = 13 + len(samples["pan_events"])
-    samples["patch_stage_report"] = str(write_patch_stage_fixture(
-        Path(step["paths"]["report_json"]).parent / f"{step['id']}-patch-stage.json",
-        samples["candidate_sha256"],
-    ))
-    report = hidden_assembler.assemble_report(samples)
+    report = hidden_assembler.assemble_report(seal_fixture(samples))
     assert report["passed"], report["failures"]
     if not passed:
         report.update(passed=False, failures=["fixture retained runtime failure"])
@@ -315,14 +312,18 @@ def test_lost_patch_evidence_invalidates_saved_passing_guards_without_rewrites()
             before = status.build_report(args)
             assert before["passed"], before["failures"]
             retained = {path: path.read_bytes() for path in (source_path, guard_path)}
-            Path(source["patch_stage_report"]).unlink()
-            report = status.build_report(args)
+            if index == 0:
+                Path(source["patch_stage_report"]).unlink()
+                report = status.build_report(args)
+            else:
+                with replace_retained_bytes(source["patch_stage_report"], None):
+                    report = status.build_report(args)
             assert not report["passed"]
             assert report["counts"]["passed"] == 0
             assert not report["ladder_complete"]
             assert report["locks"]["long_tiers_locked"]
             assert report["steps"][index]["status"] == "invalid_guard_stale"
-            assert any("patch_stage_report does not exist" in failure for failure in report["failures"])
+            assert any("patch_stage_report" in failure for failure in report["failures"])
             assert all(path.read_bytes() == data for path, data in retained.items())
 
 
@@ -459,7 +460,7 @@ def test_cli_writes_outputs() -> None:
         assert md_out.exists()
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_current_pending_status_passes()
     test_passing_first_step_advances_current_step()
     test_passing_first_step_labels_host_environment()
@@ -477,6 +478,11 @@ def run_tests() -> None:
     test_failed_report_with_mismatched_triage_fails_closed()
     test_apphang_triage_exposes_window_health_rerun_readiness()
     test_cli_writes_outputs()
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 if __name__ == "__main__":

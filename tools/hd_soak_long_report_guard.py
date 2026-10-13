@@ -52,6 +52,7 @@ HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 HIDDEN_REQUIRED_CHECKS = (
     "schema", "environment", "wrapper_provenance", "marker_provenance",
     "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
+    "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes",
 )
 
 

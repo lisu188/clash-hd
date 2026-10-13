@@ -28,7 +28,7 @@ def extracted_fixture(names: tuple[str, ...], body: str) -> object:
     allowed = {
         "Get-FullPath", "Assert-SoakPlainPaths", "Assert-SoakDiskReserve", "Parse-SoakLog", "Get-RouteValidationFailures",
         "Get-HiddenRawRetentionBudget", "Get-FileSha256", "Write-HiddenRawFrame",
-        "Get-DirectorySizeBytes",
+        "Get-DirectorySizeBytes", "Get-RetainedFileReceipt",
     }
     if not set(names) <= allowed:
         raise AssertionError("Runtime helper extraction is forbidden")
@@ -83,6 +83,24 @@ def pan_log() -> list[str]:
 
 
 class HiddenSoakHarnessSourceTests(unittest.TestCase):
+    def test_collection_pins_are_not_resealed_after_runtime(self):
+        source = RUNNER.read_text(encoding="ascii")
+        launch = source.index("$launch = Start-CdbOnHiddenDesktop")
+        for receipt in ("$patchReceipt", "$proxyManifestReceipt", "$proxyBuildLogReceipt",
+                        "$generatedProbeReceipt", "$probeTemplateReceipt", "$soakTemplateReceipt"):
+            self.assertLess(source.index(receipt + " = Get-RetainedFileReceipt"), launch)
+            self.assertEqual(source.count(receipt + " = Get-RetainedFileReceipt"), 1)
+        self.assertGreater(source.index("$cdbLogReceipt = Get-RetainedFileReceipt"), launch)
+        self.assertGreater(source.index("$proxyLogReceipt = Get-RetainedFileReceipt"), launch)
+        self.assertIn("retained input receipt failed:", source)
+        for role in ("patch_stage_report", "generated_probe", "probe_template", "soak_probe_template", "cdb_log"):
+            self.assertIn(role + "_sha256 =", source)
+            self.assertIn(role + "_size =", source)
+        builder = (ROOT / "scripts/build/build_ddraw_surfdump_proxy.ps1").read_text(encoding="ascii")
+        for role in ("def_file", "def_sha256", "build_script", "build_script_sha256"):
+            self.assertIn(role + " =", builder)
+        self.assertIn("changed during the build", builder)
+
     def test_disk_preflight_precedes_execute_and_all_initial_mutations(self):
         source = RUNNER.read_text(encoding="ascii")
         gate = source.index("if (-not $Execute) {")
@@ -129,6 +147,23 @@ class HiddenSoakHarnessSourceTests(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == "win32" and POWERSHELL.exists(), "pure storage fixtures need Windows")
 class HiddenSoakRawRetentionTests(unittest.TestCase):
+    def test_collection_receipt_matches_tiny_held_file_and_rejects_missing(self):
+        with tempfile.TemporaryDirectory(prefix="clash-soak-receipt-") as directory:
+            path = Path(directory) / "tiny-input.txt"
+            raw = b"tiny receipt fixture\r\n"
+            path.write_bytes(raw)
+            escaped = str(path).replace("'", "''")
+            result = extracted_fixture(("Get-RetainedFileReceipt",), f"""
+$receipt = Get-RetainedFileReceipt -Path '{escaped}'
+$missingRejected = $false
+try {{ Get-RetainedFileReceipt -Path '{escaped}.missing' | Out-Null }}
+catch {{ $missingRejected = $true }}
+@{{ receipt = $receipt; missing_rejected = $missingRejected }} | ConvertTo-Json -Depth 4 -Compress
+""")
+            self.assertEqual(result["receipt"]["sha256"].lower(), hashlib.sha256(raw).hexdigest())
+            self.assertEqual(result["receipt"]["size"], len(raw))
+            self.assertIs(result["missing_rejected"], True)
+
     @classmethod
     def setUpClass(cls):
         with tempfile.TemporaryDirectory(prefix="clash-soak-raw-storage-") as directory:

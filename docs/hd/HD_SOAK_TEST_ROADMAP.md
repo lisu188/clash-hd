@@ -52,6 +52,17 @@ render/process portions of the ordered short and long soak ladders, but cannot
 replace the visible `short2_menu_idle` evidence, the five manual DirectInput
 targets, final-composition evidence, or any promotion decision.
 
+The hidden assembler and public environment grader always re-read bounded
+retained candidate/patch, proxy/build, probe, CDB-log and raw-frame bytes. They
+compare collection-time hashes/sizes, actual selected patch observations, full
+indexed8 metrics and anchored marker inventories. Hidden long guards require all
+three retained-byte check records and freshly regrade their source. A missing
+file, changed receipt or saved consistency summary cannot stand in for backing.
+These checks supply observed byte consistency only: native producer, loaded
+target, coherent capture, canonical probe generation, independent cleanup and
+running-time authentication remain separate prerequisites. Historical missing
+evidence and failed attempts stay missing or failed.
+
 ## Harness
 
 Dry-run the first short tier:
