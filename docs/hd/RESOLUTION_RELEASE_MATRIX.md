@@ -657,6 +657,19 @@ lack independent authority here. No native hook, PE candidate, provider/RLE
 cancellation, healthy native return, battle installation or release pass is
 supplied; the remaining full integration and all runtime gates stay open.
 
+The separate uninstalled `src/patcher/battle_profile_tile_replay.py` emits eleven
+Tile MOVSX destination/scalar-tail adapters after the fresh field-loss join.
+Complete Content V2 blocks and actual intrinsic CALL receipts replace the old
+640-byte helper/payload assumptions. The closed byte/operand contract preserves
+the single selected HIGHLOW and exact original/relayout windows. Denial and
+fault stop UD2; no unchecked native cleanup or fake empty value is permitted.
+Authored scalar CPU oracles are not original-body or native runtime proof.
+The 784-byte frame/868-byte checked interval establishes no mapped/native or
+whole-chain capacity, and the adapters are not installed. Seventeen content
+sites, post-return/Count, primitive/line, provider/RLE, clipping, native ABI,
+camera/input/presentation/results/quit and healthy return remain unfinished.
+All thirty-six release cells and every runtime gate retain their requirements.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
