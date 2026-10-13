@@ -93,6 +93,12 @@ canonical-probe, loaded-image, native-producer, coherent-frame, cleanup-lifecycl
 or running-time proof; those prerequisites remain separate. Source fixtures
 cannot restore missing historical evidence or unlock runtime by themselves.
 
+The user-requested [replacement-evidence plan](HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13)
+is prepared only. Capacity and production admission, a verified canonical
+snapshot, and the separately authenticated visible-menu prerequisite still
+precede replacement acceptance. Do not treat plan preparation as approval to
+launch a visible session or overwrite historical canonical receipts.
+
 Visible composition and human-operated manual DirectInput require their own
 matching observations and fresh approval under [AGENTS.md](../../AGENTS.md).
 Automated injection and hidden soak reports cannot satisfy the human-input

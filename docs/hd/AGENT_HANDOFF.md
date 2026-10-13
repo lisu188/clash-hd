@@ -88,6 +88,17 @@ The bounded cleanup removed only 31 reproducible Python caches (742,531 logical
 bytes) and an empty test scratch directory. Two unreproduced stale caches and all
 evidence were retained. Measured C: free space changed from 48,440,086,528 to
 48,440,958,976 bytes; the reserve still fails and large writes remain deferred.
+The user requested a replacement-evidence plan on 2026-10-13. See the
+[prepared strategy](HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13).
+It grants no replacement execution or visible-session approval. The missing
+visible menu prerequisite remains separate from the four proposed hidden map
+replacements, and the complete old canonical namespace must be archived before
+any canonical refresh or replacement write.
+Replacement admission also needs a fail-closed short source-report binding:
+the dispatcher currently records source binding errors separately from
+`overall`, and short fresh revalidation checks `overall` alone. Require the
+production repair and alias/external byte-identity regressions in the prepared
+plan before using its working manifest or publishing canonical replacements.
 
 ## Public repository state
 

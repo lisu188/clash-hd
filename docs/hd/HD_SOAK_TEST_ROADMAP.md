@@ -63,6 +63,122 @@ target, coherent capture, canonical probe generation, independent cleanup and
 running-time authentication remain separate prerequisites. Historical missing
 evidence and failed attempts stay missing or failed.
 
+### Replacement-evidence plan requested 2026-10-13
+
+Status: **prepared, not executed**. The user requested preparation of this
+strategy after the read-only regrade found fresh short acceptance `0/5`.
+Preparation grants no replacement-run or visible-session approval, restores no
+missing artifact, and does not unlock runtime or long tiers.
+
+1. **Finish admission prerequisites.** Complete the remaining production gaps
+   named in `AGENT_HANDOFF.md`, including canonical probe/source-samples binding,
+   owned loaded-target/coherent reads, native cleanup verification and genuine
+   running-time coverage. Pass public/source and focused checks without treating
+   fixtures as native proof. Recheck disk reserve on every relevant volume,
+   including archive, build, raw-frame, log and unknown-output allowances. At
+   the latest approximately 48.4 GB free, C: needs over 51.5 GB additional free
+   space just to cross below 90%, before pending allowances. The bounded cache
+   cleanup and already-removed duplicate static inputs cannot supply that space.
+   Preserve evidence and request capacity recovery outside the audited disposable
+   subset; do not expand cleanup or reduce the guard.
+2. **Snapshot before canonical mutation.** After capacity admission, exclusively
+   copy the complete existing canonical soak namespace to a unique external
+   archive: reports, guards, triages, ladder/status, relevant manifests, long
+   proof/guards and the compact revalidation conclusion. Include every existing
+   consumer output that a short refresh or aggregate can overwrite. Inventory
+   original logical paths, sizes and SHA-256s; verify every copied byte before
+   recording archive completion. Keep original payloads and embedded paths
+   unchanged. Archived receipts remain historical, not newly live proof. Leave
+   current originals intact until a deliberate accepted replacement is ready;
+   never run a canonical refresh first and archive its rewritten outputs later.
+3. **Fix the replacement cohort.** Pin one authenticated candidate SHA for the
+   unpublished diagnostic, four hidden map rungs and both long routes. Use
+   independently named immediate run directories under the exact hidden roots.
+   Pin the relevant source/template/build recipe and toolchain identities;
+   record and check each run's actual proxy SHA and configuration-specific probe
+   bytes. Different routes/durations legitimately produce different probes;
+   their expected recipe must not change silently. Current short guards do not
+   enforce cross-rung SHA equality, so a cohort manifest plus fresh comparison
+   is an additional acceptance prerequisite, not an existing guard guarantee.
+   Prepare a separately validated external working manifest with the same five
+   rung IDs, durations and prerequisites, scoped to the replacement cohort.
+   Require focused consumer tests before using that manifest. It must not import
+   unbacked historical passes, omit a rung, or relax a guard. This keeps the old
+   canonical failures visible and untouched while not misclassifying them as
+   newly failed replacement attempts; future replacement rungs remain pending.
+   Consumer fixtures must cover working manifest -> byte-identical canonical
+   copies -> normal refresh/status -> long-prerequisite regrade. Verify both the
+   manifest-selected alias and the retained external `report_json` byte binding;
+   changing a guard's source alias must not rewrite or replace its source payload.
+   Current short admission accepts the dispatcher's `overall` flag without
+   enforcing its separate `source_report_binding_errors`. Repair that production
+   consumer path and add regressions before execution: every selected source and
+   canonical copy must have zero binding errors and matching actual SHA-256s.
+   A passing short regrade alone does not yet establish that byte identity.
+4. **Run the diagnostic, then resolve the menu prerequisite.** After exact
+   original SHA, stage, workdir, x86 CDB, save slot, proxy and physical-root
+   preflight, run the unpublished hidden diagnostic below. Separately restore
+   and freshly grade the exact original `short2_menu_idle` backing, or request
+   fresh approval for a specific new visible menu session. Hidden map evidence
+   cannot replace that rung or its evidence class. A prepared plan, an approved
+   hidden lane or four passing map rungs does not authorize visible operation
+   or establish `5/5`. The new visible alternative remains outside this hidden
+   execution lane and must use its normal exact approval packet.
+5. **Advance only on fresh cumulative evidence.** Execute the replacement map
+   steps in the table sequentially after the menu prerequisite passes. Retain
+   each complete external attempt first, without canonical destination switches.
+   An accepted replacement requires assembler, environment dispatcher and all
+   applicable fresh checks to pass. Refresh its guard, triage and short status
+   through the validated cohort working manifest and external output paths,
+   using matching environment/evidence class. Preserve exact report identity; do not
+   rewrite `report_json` or provenance fields merely to match an alias. Failed
+   or interrupted attempts stay separate with their diagnostics and never
+   replace accepted evidence. Any failed gate stops the cohort; a new attempt
+   requires explicit disposition, not an automatic retry.
+6. **Close long proof and refresh.** Once all five cohort rungs genuinely pass,
+   deliberately publish the complete accepted short canonical set, retaining
+   the verified old snapshot and explicit supersession mapping. Freshly regrade
+   the complete canonical `5/5` ladder and candidate cohort through the normal
+   consumers before either long route. Run idle then pan on the
+   pinned candidate, checking original/candidate hashes and owned cleanup again
+   after each route. Require complete periodic coverage, ordered genuine route
+   rows, safe inward pan plans, exact retained backing and the shared endpoint
+   bound `duration - interval - 2`. Preserve scheduling-gap limits and distinguish
+   actual running time from debugger holds and host sleep. Publish the accepted
+   compact long reports/guards as `hd-soak-long-map-{idle,pan}-current.*`, create
+   `hd-soak-long-proof-current.json`, and require the combined long-report guard
+   to freshly accept both routes. Complete and inspect two full aggregate
+   refreshes. Soak acceptance must pass; unrelated genuine failures stay explicit
+   rather than being changed into release approval.
+
+| Order | Route / purpose | Duration | Frame interval | Pan interval |
+| --- | --- | ---: | ---: | ---: |
+| D0 | unpublished hidden `map-idle` diagnostic | 60 s | 10 s | inactive |
+| M0 | authenticated visible `short2_menu_idle` prerequisite | 120 s if replaced | approval packet | inactive |
+| S1 | hidden `short2` `map-idle` | 120 s | 15 s | inactive |
+| S2 | hidden `short10` `map-idle` | 600 s | 15 s | inactive |
+| S3 | hidden `short10` `map-pan` | 600 s | 15 s | 10 s |
+| S4 | hidden `short30` `map-pan` | 1,800 s | 15 s | 10 s |
+| L1 | hidden long `map-idle`, after fresh `5/5` | 7,200 s | 30 s | inactive |
+| L2 | hidden long `map-pan`, after L1 pass | 7,200 s | 30 s | 10 s |
+
+The seven hidden runs total at least 4 h 53 min of runtime, excluding startup,
+cleanup and validation; a separately approved replacement menu adds two minutes.
+Full attempts and archive snapshots remain outside public Git. Canonical compact
+local aliases do not authorize force-adding captures; publish only permitted
+concise conclusions. No historical failing receipt is deleted or rehabilitated.
+
+State transitions require exact artifact identities and fresh checks:
+`prepared -> preflight_ready -> diagnostic_pass -> replacement_short_partial ->
+fresh_short_5of5 -> long_idle_pass -> long_pair_pass -> refreshed_twice`.
+Capacity, menu approval and production gaps remain explicit blockers rather than
+implied completed states. Throughout the plan, retain
+`environment=hidden_cdb_host`, `input_responsiveness=not_applicable_hidden` and
+`present_enabled=0`. Manual DirectInput remains unproved at `0/5`; final visible
+composition, release completion and protected-stage promotion remain unresolved.
+The historical local merge and descendants must not be pushed; publication still
+requires reviewed content-only integration based on sanitized `origin/main`.
+
 ## Harness
 
 Dry-run the first short tier:

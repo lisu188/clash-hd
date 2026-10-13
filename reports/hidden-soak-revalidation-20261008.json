@@ -64,10 +64,24 @@
     "coherent held full-frame reads rather than unpaused ReadProcessMemory through a newly opened PID handle",
     "immutable-file and original-derived whole-candidate authentication rather than observed retained-byte consistency alone",
     "independent exact source-samples JSON byte binding and canonical generated-probe reconstruction",
+    "fail-closed hidden short admission on external source-report binding errors and canonical alias byte divergence",
     "loaded-image authentication rather than on-disk hash receipts alone",
     "running-time coverage excluding debugger holds and host sleep"
   ],
-  "required_next_decision": "restore the original authenticated external artifacts or explicitly choose a new evidence strategy; free capacity before artifact-producing work",
+  "required_next_decision": "review the user-requested prepared replacement strategy; recover capacity and resolve the separate authenticated visible-menu prerequisite before replacement acceptance",
+  "replacement_evidence_plan": {
+    "requested_date": "2026-10-13",
+    "status": "prepared",
+    "reference": "docs/hd/HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13",
+    "replacement_execution_authorized": false,
+    "visible_session_approved": false,
+    "canonical_snapshot_created": false,
+    "short_source_binding_admission_repair_required": true,
+    "fresh_short_passes": 0,
+    "visible_menu_prerequisite": "exact original backing or separately approved fresh visible session required",
+    "hidden_replacement_cohort": "diagnostic, four map rungs and both long routes must share one authenticated candidate SHA",
+    "historical_failures_preserved": true
+  },
   "bounded_source_cache_cleanup": {
     "observed_date": "2026-10-13",
     "removed_reproducible_cache_files": 31,
