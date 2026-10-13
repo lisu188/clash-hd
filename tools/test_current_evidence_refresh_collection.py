@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mocked refresh collection only; no aggregate suites, runtime or outputs."""
+"""Mocked collection and actual source-only matrix registration; no aggregate or runtime."""
 from __future__ import annotations
 
 import ast
@@ -10,6 +10,7 @@ from io import StringIO
 import json
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -76,17 +77,23 @@ class CollectionTests(unittest.TestCase):
         return error
 
     def test_all_original_dispatches_order_arguments_and_names_preserved(self):
-        # Fixed oracle from the pre-repair coordinator: 169 calls, 167 keys.
+        # Preserve the original 169-call/167-key oracle and admit only the
+        # explicitly registered matrix-context suite in this checkpoint.
         # It includes both repeated dependent calls and the zero-argument runner.
         tree = ast.parse(inspect.getsource(refresh.build_refresh))
         calls = sorted((n for n in ast.walk(tree) if isinstance(n, ast.Call)
                         and isinstance(n.func, ast.Name) and n.func.id == "collect"),
                        key=lambda n: (n.lineno, n.col_offset))
         rows = [(n.args[0].value, n.args[1].id, [a.id for a in n.args[2:]]) for n in calls]
-        digest = hashlib.sha256(json.dumps(rows, separators=(",", ":")).encode()).hexdigest()
+        original_rows = [row for row in rows if row[0] != "matrix_cell_release_tests"]
+        digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
-        self.assertEqual(len(rows), 169)
-        self.assertEqual(len({row[0] for row in rows}), 167)
+        self.assertEqual(len(original_rows), 169)
+        self.assertEqual(len({row[0] for row in original_rows}), 167)
+        self.assertEqual([row for row in rows if row[0] == "matrix_cell_release_tests"], [
+            ("matrix_cell_release_tests", "build_matrix_cell_release_tests", ["args"]),
+        ])
+        self.assertEqual(len(rows), 170)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -94,8 +101,48 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 167)
+        self.assertEqual(len(report["checks"]), 168)
         self.assertIs(report["passed"], True)
+
+    def test_simple_test_policy_default_preserves_legacy_result(self):
+        runner = SimpleNamespace(run_tests=lambda: None)
+        with patch.object(refresh, "write_json") as writer, patch.object(refresh, "write_simple_tests_markdown"):
+            result = refresh.simple_test_check(
+                test_runner=runner, tests=["bounded helper fixture"], title="Legacy policy",
+                json_path=Path("not-written.json"), md_path=Path("not-written.md"), guard_policy="unchanged guard",
+            )
+        payload = writer.call_args.args[1]
+        self.assertIs(result["passed"], True)
+        self.assertEqual(payload["runtime_policy"], (
+            "repo-only fixture tests; launches only Python child processes for CLI coverage; "
+            "does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
+        ))
+        self.assertEqual(payload["guard_policy"], "unchanged guard")
+        self.assertEqual(result["summary"]["runtime_policy"], payload["runtime_policy"])
+
+    def test_registered_matrix_cell_release_actual_entrypoint(self):
+        import resolution_release_matrix as matrix
+        import complete_hd_evidence as evidence
+        slots = ((matrix, "ROOT"), (matrix, "CANDIDATE_ROOT"), (matrix, "_rebuild"),
+                 (matrix, "MAX_JSON_BYTES"), (matrix, "MAX_ARTIFACT_BYTES"), (evidence, "BASE_SHA256"))
+        originals = [getattr(module, name) for module, name in slots]
+        # Run the registered suite itself. Only publication is mocked; no
+        # runner, validator, source reader or authentication policy is replaced
+        # by this registration test.
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ) as markdown:
+            result = refresh.build_matrix_cell_release_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        write_json.assert_called_once()
+        markdown.assert_called_once()
+        payload = write_json.call_args.args[1]
+        self.assertEqual(len(payload["tests"]), 2)
+        self.assertIn("synthetic reconstruction and tiny private JSON files", payload["runtime_policy"])
+        self.assertIn("no runtime or release acceptance", payload["guard_policy"])
+        self.assertFalse(payload["failures"])
+        for (module, name), original in zip(slots, originals):
+            self.assertIs(getattr(module, name), original, f"leaked matrix fixture patch: {module.__name__}.{name}")
 
     def test_early_missing_input_keeps_completed_and_later_results(self):
         message = "captures/current/patch-stage-current-hd-map.json is missing"
@@ -106,7 +153,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 169)
+        self.assertEqual(len(self.calls), 170)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -152,7 +199,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 169)
+                self.assertEqual(len(self.calls), 170)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

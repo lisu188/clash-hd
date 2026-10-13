@@ -30,6 +30,16 @@ resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable
 identity and old bytes before applying changes.
 
+The full completion target remains all four profiles at all nine presets.
+The separate versioned matrix-cell release context in
+`tools/matrix_release_evidence.py` freshly authenticates each selected candidate
+and binds the actual launcher/catalog, typed features and source closure.
+It replays resolution metadata only; fifteen matrix-context runtime lanes
+(including the legacy-only panel adapter), installed expanded battle and
+promotion remain unsupported. This does not change the legacy 1920x1080
+context, advertise any missing preset or promote a recipe. See the
+[matrix contract](RESOLUTION_RELEASE_MATRIX.md#versioned-matrix-cell-release-context).
+
 The four all-preset source constructors are
 [`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),
 [`framed_all_presets_candidate.py`](../../src/patcher/framed_all_presets_candidate.py),
@@ -726,6 +736,7 @@ python -B tools/test_classic_all_presets_candidate.py
 python -B tools/test_framed_all_presets_candidate.py
 python -B tools/test_modal_widgets_all_presets_candidate.py
 python -B tools/test_resolution_release_matrix.py
+python -B tools/test_matrix_release_evidence.py
 python -B tools/test_resolution_recipe_authentication.py SourceTests
 python -B tools/test_battle_profile_context.py
 python -B tools/test_battle_profile_context_v2.py
