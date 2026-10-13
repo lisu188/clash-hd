@@ -12,7 +12,8 @@
   "source_methods": 5,
   "cpu_model_methods": 8,
   "skipped_methods": 0,
-  "final_registered_suite_elapsed_seconds": 410.534,
+  "final_registered_suite_elapsed_seconds": 838.601,
+  "prior_registered_suite_elapsed_seconds": 410.534,
   "source_closure_unchanged": true,
   "source_geometry_cells": 36,
   "cpu_model_geometry_scope": {
@@ -20,7 +21,8 @@
     "full_and_incremental_at_two_bases": "all four profiles at 800x600 only"
   },
   "sanitized_collection_methods": 20,
-  "sanitized_collection_elapsed_seconds": 450.615,
+  "sanitized_collection_elapsed_seconds": 888.399,
+  "prior_sanitized_collection_elapsed_seconds": 450.615,
   "actual_registered_matrix_methods": 26,
   "aggregate_collection_calls": 171,
   "aggregate_collection_keys": 169,
@@ -40,6 +42,7 @@
     "native_executed": false
   },
   "initial_failed_oracle": "reports/battle-field-loss-local-fixture-failure-20261013.json",
+  "subsequent_ci_dependency_failure": "reports/battle-field-loss-ci-failure-20261013.json",
   "limitations": [
     "The joined field and planned CALL edits are uninstalled. Only emitted bytes and synthetic callbacks/pixels were executed in CPU models.",
     "The live Thread callback RET/ESP and paired descriptor/outer controls already changed before gate admission have no independent authority here.",

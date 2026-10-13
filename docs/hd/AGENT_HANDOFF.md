@@ -254,6 +254,14 @@ genuine-original Modal Widgets/1920x1080 reconstruction passed in RAM only;
 it wrote no candidate and executed no native code. These observations do not
 complete any release cell or full aggregate evidence refresh.
 
+The first hosted Framed Windows registration failed because that workflow had
+not installed the required pinned CPU interpreter. The
+[CI diagnostic](../../reports/battle-field-loss-ci-failure-20261013.json)
+retains the exact failed head/job. The workflow correction installs the same
+`unicorn==2.1.4` as the dedicated CPU jobs and gives the enlarged source batch
+a bounded 45-minute allowance. The actual no-skip suite and every acceptance
+threshold remain unchanged; fresh exact-head CI is required for this correction.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,

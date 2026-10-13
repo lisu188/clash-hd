@@ -1098,3 +1098,4 @@
 /tools/test_battle_profile_field_loss.py text eol=lf
 /reports/battle-field-loss-local-fixture-failure-20261013.json text eol=lf
 /reports/battle-field-loss-source-20261013.json text eol=lf
+/reports/battle-field-loss-ci-failure-20261013.json text eol=lf

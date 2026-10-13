@@ -147,6 +147,11 @@ class CollectionTests(unittest.TestCase):
             self.assertIs(getattr(module, name), original, f"leaked matrix fixture patch: {module.__name__}.{name}")
 
     def test_registered_battle_field_loss_actual_entrypoint(self):
+        workflow = (TOOLS.parent / ".github/workflows/framed-offline.yml").read_text(encoding="utf-8")
+        dependency = "python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4"
+        self.assertIn(dependency, workflow)
+        self.assertLess(workflow.index(dependency), workflow.index("python -B tools/test_current_evidence_refresh_collection.py"))
+        self.assertIn("timeout-minutes: 45", workflow)
         # Invoke the actual suite; only report serializers are replaced.
         with patch.object(refresh, "write_json") as write_json, patch.object(refresh, "write_simple_tests_markdown") as markdown:
             result = refresh.build_battle_field_loss_tests(self.args)
