@@ -1,0 +1,23 @@
+{
+  "schema": "local_source_fixture_failure_v1",
+  "date": "2026-10-13",
+  "evidence_class": "synthetic_cpu_fixture_only",
+  "test_file": "tools/test_battle_profile_field_loss.py",
+  "failed_method": "CPUTests.test_healthy_full_incremental_two_bases_and_outer_abi",
+  "initial_batch_methods": 3,
+  "initial_batch_elapsed_seconds": 50.081,
+  "initial_batch_exit_code": 1,
+  "failed_subtests": 16,
+  "observed_renderer": 536875008,
+  "incorrect_fixture_expected_renderer": 536879104,
+  "diagnosis": "The new test assumed the private surface instead of measuring the actual pre-invocation render target. Tile counts, return status and outer ABI checks had passed before that assertion. The two loss methods in the same batch passed.",
+  "correction": "Capture the actual renderer after prepare and before begin; require exact restoration of that independently observed value only on healthy completion. Loss still requires the scoped physical target to remain and no next Tile.",
+  "initial_producer_source_receipt_retained": false,
+  "source_receipt_limit": "This compact failure conclusion does not authenticate the earlier uncommitted emitter bytes. Subsequent complete batches must record their own unchanged source closure.",
+  "complete_suite_pass": false,
+  "native_executed": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

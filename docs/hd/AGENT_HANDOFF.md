@@ -160,8 +160,9 @@ The lease, helper and field retain explicit 192-, 512- and 1280-byte frames.
 The helper's authored numeric interval is `[EBP-44, EBP+552)`; it establishes
 no mapped/native or complete-chain stack capacity. Seven native families use
 modeled callbacks, and genuine receiver/argument validity remains unproved.
-Field V3 does not consume latched lease loss, so next-Tile and intra-Tile
-cancellation remain unfinished. Content/continuation/primitive/line joins,
+Frozen Field V3 does not consume latched lease loss. The separate field-loss
+join below supplies an uninstalled post-normal-Tile successor; native next-Tile
+and intra-Tile cancellation remain unfinished. Content/continuation/primitive/line joins,
 provider/RLE ownership, clipping, atomic installation, quit and healthy map
 return are still required. No hook, provider or candidate is installed, and
 source or CPU results supply no runtime, release or stable-promotion acceptance.
@@ -214,6 +215,52 @@ original bytes unchanged. Only this optional method changed; all seventeen
 default method ASTs remain identical to the passing source/model batch. The
 historical failure remains in the diagnostic. No candidate file or native
 runtime was produced by either RAM check.
+
+[`battle_profile_field_loss.py`](../../src/patcher/battle_profile_field_loss.py)
+adds a separate source-authenticated join after fresh Content V2. It verifies
+and replaces only the two actual post-Tile receipt CALLs in an in-memory
+Field V3 emission. Native Tile CALLs, their return PCs, all frozen emitters and
+the original executable remain unchanged. A bounded stack-only gate consumes
+latched lease loss/status two before another Tile or renderer restoration.
+
+The earlier pre-Tile admission supplies the invocation receipt. Complete fixed
+records, globals, pointer/control bindings, exact-zero tails, descriptor and
+ancestor-control shadows surround one fixed owning-thread query. Only afterward
+does the callback-free full field receipt read cached objects. The frozen
+combined routing/same-invocation guards cannot be reused at this boundary:
+they can reread cached headers before a new lease-only loss is checked.
+Detected helper/ancestor-control mismatches reach a declared UD2 endpoint,
+not an unchecked healthy unwind. The live Thread CALL return word and ESP
+cannot be validated by this caller before a corrupted callback RET executes;
+native callback ABI/control remains explicitly unproved. Callback-time paired descriptor/outer-control changes have
+independent shadows; pairs already present at post-Tile admission still lack
+an independent pre-Tile receipt and remain unproved.
+
+The first new healthy fixture incorrectly expected the private renderer rather
+than the actual pre-invocation renderer. Its honest failure is retained in
+[`battle-field-loss-local-fixture-failure-20261013.json`](../../reports/battle-field-loss-local-fixture-failure-20261013.json).
+The corrected oracle measures the renderer before the invocation. Tests and
+aggregate registration supply source/CPU observations only, not a full native
+or release pass. The 512-byte helper has a numeric `[EBP-44, EBP+552)` checked
+interval, not mapped/native or whole-chain capacity proof. No PE candidate or
+native hook is installed; intra-Tile/provider/RLE cancellation, native ABI,
+clipping, remaining content/continuation/primitive/line adapters, camera/input,
+presentation, dialog/results, quit and healthy map return remain open.
+
+The [2026-10-13 source checkpoint](../../reports/battle-field-loss-source-20261013.json)
+records the exact producer/fixture hashes and passing 13-method source/CPU
+suite, exercised through the 20-method sanitized collection suite. A separate
+genuine-original Modal Widgets/1920x1080 reconstruction passed in RAM only;
+it wrote no candidate and executed no native code. These observations do not
+complete any release cell or full aggregate evidence refresh.
+
+The first hosted Framed Windows registration failed because that workflow had
+not installed the required pinned CPU interpreter. The
+[CI diagnostic](../../reports/battle-field-loss-ci-failure-20261013.json)
+retains the exact failed head/job. The workflow correction installs the same
+`unicorn==2.1.4` as the dedicated CPU jobs and gives the enlarged source batch
+a bounded 45-minute allowance. The actual no-skip suite and every acceptance
+threshold remain unchanged; fresh exact-head CI is required for this correction.
 
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome

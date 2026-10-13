@@ -1094,3 +1094,8 @@
 /tools/complete_hd_paused_surface_recorder_v2.py text eol=lf
 /tools/test_complete_hd_paused_surface_recorder_v2.py text eol=lf
 /.github/workflows/paused-surface-recorder-source-contracts.yml text eol=lf
+/src/patcher/battle_profile_field_loss.py text eol=lf
+/tools/test_battle_profile_field_loss.py text eol=lf
+/reports/battle-field-loss-local-fixture-failure-20261013.json text eol=lf
+/reports/battle-field-loss-source-20261013.json text eol=lf
+/reports/battle-field-loss-ci-failure-20261013.json text eol=lf
