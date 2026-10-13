@@ -76,9 +76,11 @@ missing artifact, and does not unlock runtime or long tiers.
    running-time coverage. Pass public/source and focused checks without treating
    fixtures as native proof. Recheck disk reserve on every relevant volume,
    including archive, build, raw-frame, log and unknown-output allowances. At
-   the latest approximately 48.4 GB free, C: needs over 51.5 GB additional free
-   space just to cross below 90%, before pending allowances. The bounded cache
-   cleanup and already-removed duplicate static inputs cannot supply that space.
+   the recorded cleanup-time approximately 48.4 GB free, C: needed over 51.5 GB
+   additional free space just to cross below 90%, before pending allowances.
+   Recompute admission from live capacity rather than that transient observation.
+   The bounded cache cleanup and already-removed duplicate static inputs cannot
+   supply that space.
    Preserve evidence and request capacity recovery outside the audited disposable
    subset; do not expand cleanup or reduce the guard.
 2. **Snapshot before canonical mutation.** After capacity admission, exclusively

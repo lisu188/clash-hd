@@ -80,8 +80,9 @@ Manual DirectInput, final visible composition, release and promotion remain
 unresolved; the protected stable stage and launcher defaults are unchanged.
 
 The 2026-10-13 source follow-up again regraded all five canonical short reports
-without writing them: fresh acceptance remains 0/5. C: remains above 95% used;
-the hidden external roots are absent. The original executable and all 3,382
+without writing them: fresh acceptance remains 0/5. At the cleanup observation
+C: exceeded 95% used; remeasure capacity before admission. The hidden external
+roots are absent. The original executable and all 3,382
 preservation-baseline files still match their recorded hashes. Focused source
 checks and fixture results do not satisfy either runtime prerequisite.
 The bounded cleanup removed only 31 reproducible Python caches (742,531 logical

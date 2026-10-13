@@ -34,7 +34,7 @@
     "combined_proof": "missing"
   },
   "runtime_blockers": [
-    "C volume usage remains above 95 percent at the source follow-up; strict greater-than-ten-percent free reserve plus pending allowance is not met",
+    "at the recorded source-cleanup observation C volume usage exceeded 95 percent; fresh greater-than-ten-percent reserve plus pending allowance admission remains required",
     "original authenticated external soak artifacts are absent; historical pass flags cannot unlock new long runs"
   ],
   "source_integrity_repairs": [
