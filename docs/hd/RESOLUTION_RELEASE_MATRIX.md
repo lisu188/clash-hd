@@ -642,6 +642,21 @@ remain separate from native ABI, receiver/argument and provider/RLE validity,
 continuation/primitive/line integration, clipping, healthy return and atomic
 installation. No candidate is installed and every runtime gate remains open.
 
+The separate `src/patcher/battle_profile_field_loss.py` join consumes latched
+lease loss only after a normally returning modeled Tile. It verifies old bytes
+for the two actual post-Tile receipt CALLs without moving native Tile CALLs.
+Complete fixed, descriptor and caller-control checks surround one direct fixed
+thread query before callback-free full receipt reads; combined frozen guards
+cannot safely interpose lease-only loss at that callback boundary. Tests cover
+all 36 source geometries and base-zero incremental pixel models, plus both
+draw modes at two synthetic image bases for each profile at 800x600. They do
+not claim that full cross-product as native or runtime evidence.
+Detected control mismatches stop at a declared UD2 endpoint. Pre-existing
+paired descriptor/outer-control changes and the live Thread callback RET/ESP
+lack independent authority here. No native hook, PE candidate, provider/RLE
+cancellation, healthy native return, battle installation or release pass is
+supplied; the remaining full integration and all runtime gates stay open.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle

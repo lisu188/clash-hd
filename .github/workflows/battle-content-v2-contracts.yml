@@ -74,6 +74,8 @@ jobs:
           print('uninstalled=True native_callbacks=modeled runtime_executed=False')
           raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 17 and not result.skipped else 1)
           PY
+      - name: Verify the uninstalled fresh post-Tile loss join without skips
+        run: python -B tools/test_battle_profile_field_loss.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -84,6 +86,7 @@ jobs:
               output.write('The fresh content successor reconstructs the pinned fresh field and lease and checks complete typed operands and 28 actual body receipts. It installs no hook, section, provider record or candidate.\n\n')
               output.write('The required seventeen-method source and CPU suite covers all 36 geometries at two synthetic bases, five modeled native content families, value/status/flags/stack observations, bounded arrays and rejection paths. This describes scope, not a pass receipt; all methods must pass without skips. Original-backed RAM reconstruction remains a separate optional private lane.\n\n')
               output.write('Complete fixed/tail/pointer/control and descriptor-shadow checks surround modeled callbacks. Every captured ancestry span excludes the complete RX/RW/modal allocations before its first read. Unknown private-control corruption reaches an unsafe terminal, which proves no healthy native unwind.\n\n')
+              output.write('The separate fresh field-loss join replaces only two post-Tile receipt CALLs in a synthetic emitted field. It consumes modeled lease loss before the next Tile, not within native Tile/provider bodies. Frozen content and field producers remain unchanged and the joined field is not installed.\n\n')
               output.write('The 784-byte helper and numeric interval [EBP-44, EBP+824) establish no mapped/native or whole-chain capacity. Native callback ABI, receiver/argument validity, provider/RLE lifetime, continuation/primitive/line joins, arena clipping, atomic installation, quit and healthy map return remain unfinished.\n\n')
               output.write('No game, native debugger/compiler, live capture, human input, endurance, release acceptance or stable promotion occurs in this job.\n')
           PY
