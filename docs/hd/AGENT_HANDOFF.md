@@ -262,6 +262,50 @@ retains the exact failed head/job. The workflow correction installs the same
 a bounded 45-minute allowance. The actual no-skip suite and every acceptance
 threshold remain unchanged; fresh exact-head CI is required for this correction.
 
+[`battle_profile_tile_replay.py`](../../src/patcher/battle_profile_tile_replay.py)
+adds eleven uninstalled native-destination/scalar-tail adapters after the fresh
+field-loss join: nine Tile occupancy reads and two Tile type reads. It clones
+complete source-authenticated Content V2 blocks using actual body receipts,
+not frozen 640-byte helper or payload-prefix assumptions. The new intrinsic
+admission CALL return is checked before entering the canonical parent guard.
+Valid values restore the native EAX/EDI destination, all other registers and
+incoming flags before the exact displaced scalar instructions execute. The
+single selected HIGHLOW at `0x430462` moves into the A1 scalar replay.
+
+The independent byte/operand contract covers all cloned blocks, finish/guard
+instructions, native resume targets and planned windows. A scalar cannot be
+reclassified as an absolute relocation. Both the exact original and the
+authenticated relayout parent must retain the complete old windows and selected
+HIGHLOW inventory. Planned patches are receipts only; no hook or candidate is
+installed, and frozen predecessors remain unchanged.
+
+Denied admission, malformed payload and unknown control/status reach UD2.
+No native early epilogue is borrowed: the four Tile epilogue pop words lack a
+complete cleanup receipt. The 784-byte frame and `[EBP-44, EBP+824)` interval
+remain numeric model bounds, not native mappings or whole-chain capacity.
+The remaining seventeen content sites, post-normal-return/Count admission,
+primitive and line successors, provider/RLE ownership, clipping, native ABI,
+input/camera/presentation/results/quit and healthy return remain required.
+Source and scalar CPU fixtures establish no native installation, runtime,
+manual-input, endurance, release-cell acceptance or promotion.
+The [2026-10-14 source checkpoint](../../reports/battle-tile-replay-source-20261014.json)
+records all ten strict methods passing through the actual aggregate registration:
+all 36 source cells and eleven scalar replays across four profiles, two bases
+and both draw modes at 800x600 only. The genuine-original Modal Widgets/1080p
+public reconstruction is a separate RAM-only result. Neither observation is
+a full aggregate evidence refresh or full 36-cell CPU/runtime matrix.
+The first full collection exposed two stale total-dispatch assertions in older
+failure-retention fixtures after adding the new runner. The
+[count diagnostic](../../reports/battle-tile-replay-collection-count-failure-20261014.json)
+retains the failed checkpoint and exact `172 != 171` assertions. Updating those
+two counts preserves the original golden order and all failure-retention
+checks; it does not convert that batch into a pass.
+That full batch completed with 21 methods and three count failures; its actual
+13-method field-loss, 10-method Tile and 26-method matrix runners all passed.
+The corrected complete collection then passed all 21 methods, including those
+same actual component runners, without changing their producer or fixture
+bytes. This repairs source-suite registration, not aggregate/runtime acceptance.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -793,6 +837,7 @@ python -B tools/test_battle_profile_routing_v2.py
 python -B tools/test_battle_profile_field_v3.py --require-machine-tools
 python -B tools/test_battle_profile_stack_lease_v2.py --require-machine-tools
 python -B tools/test_battle_profile_content_v2.py
+python -B tools/test_battle_profile_tile_replay.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

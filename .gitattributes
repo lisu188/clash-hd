@@ -1099,3 +1099,7 @@
 /reports/battle-field-loss-local-fixture-failure-20261013.json text eol=lf
 /reports/battle-field-loss-source-20261013.json text eol=lf
 /reports/battle-field-loss-ci-failure-20261013.json text eol=lf
+/src/patcher/battle_profile_tile_replay.py text eol=lf
+/tools/test_battle_profile_tile_replay.py text eol=lf
+/reports/battle-tile-replay-source-20261014.json text eol=lf
+/reports/battle-tile-replay-collection-count-failure-20261014.json text eol=lf
