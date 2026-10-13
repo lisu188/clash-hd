@@ -156,6 +156,7 @@ import test_hd_soak_intro_skip_rerun_readiness
 import test_hd_soak_long_report_guard
 import test_hd_soak_report
 import test_hidden_soak_report_assembler
+import test_matrix_release_evidence
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -641,6 +642,8 @@ DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_JSON = Path(
 DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_MD = Path(
     "captures/current/hidden-soak-report-assembler-tests-current.md"
 )
+DEFAULT_MATRIX_CELL_RELEASE_TESTS_JSON = Path("captures/current/matrix-cell-release-tests-current.json")
+DEFAULT_MATRIX_CELL_RELEASE_TESTS_MD = Path("captures/current/matrix-cell-release-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5142,6 +5145,10 @@ def simple_test_check(
     json_path: Path,
     md_path: Path,
     guard_policy: str,
+    runtime_policy: str = (
+        "repo-only fixture tests; launches only Python child processes for CLI coverage; "
+        "does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
+    ),
 ) -> dict[str, Any]:
     failures: list[str] = []
     try:
@@ -5151,10 +5158,7 @@ def simple_test_check(
     result = {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "passed": not failures,
-        "runtime_policy": (
-            "repo-only fixture tests; launches only Python child processes for CLI coverage; "
-            "does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
-        ),
+        "runtime_policy": runtime_policy,
         "guard_policy": guard_policy,
         "tests": tests,
         "failures": failures,
@@ -5660,6 +5664,19 @@ def build_hidden_soak_report_assembler_tests(args: argparse.Namespace) -> dict[s
             "markers, real host process and ReadProcessMemory telemetry, a non-presenting memory proxy, "
             "explicit forced-entry disclosure, and input_responsiveness=not_applicable_hidden"
         ),
+    )
+
+
+def build_matrix_cell_release_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_matrix_release_evidence,
+        tests=["versioned matrix-cell context reauthenticates exact candidate, source and launcher inputs",
+               "resolution replay cannot replace unsupported runtime, expanded battle or promotion evidence"],
+        title="Matrix Cell Release Context Tests",
+        json_path=args.matrix_cell_release_tests_json,
+        md_path=args.matrix_cell_release_tests_md,
+        guard_policy="source-only matrix context and metadata checks; no runtime or release acceptance",
+        runtime_policy="source-only synthetic reconstruction and tiny private JSON files; no original, game, debugger or compiler",
     )
 
 
@@ -7992,6 +8009,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hd_soak_report_guard"] = collect("hd_soak_report_guard", build_hd_soak_report_guard, args)
     checks["hd_soak_report_guard_tests"] = collect("hd_soak_report_guard_tests", build_hd_soak_report_guard_tests, args)
     checks["hidden_soak_report_assembler_tests"] = collect("hidden_soak_report_assembler_tests", build_hidden_soak_report_assembler_tests, args)
+    checks["matrix_cell_release_tests"] = collect("matrix_cell_release_tests", build_matrix_cell_release_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9373,6 +9391,8 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_MD,
     )
+    parser.add_argument("--matrix-cell-release-tests-json", type=Path, default=DEFAULT_MATRIX_CELL_RELEASE_TESTS_JSON)
+    parser.add_argument("--matrix-cell-release-tests-md", type=Path, default=DEFAULT_MATRIX_CELL_RELEASE_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(

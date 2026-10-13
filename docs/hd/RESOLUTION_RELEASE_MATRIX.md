@@ -27,6 +27,40 @@ Wide Classic uses its actual resolved menu-widget recipe rather than borrowing
 the narrow Classic identity. A candidate or source change invalidates the
 matching acceptance evidence.
 
+### Versioned matrix-cell release context
+
+Rows can also reference `matrix_cell_release_manifest_v1`. This separate index
+requires exactly `schema`, `cell_id`, `candidate`, `launcher_manifest` and
+`lanes`; the lane inventory remains all sixteen fixed release requirements.
+`tools/matrix_release_evidence.py` obtains the actual launcher inventory and
+freshly authenticates the complete candidate bundle itself. A caller-supplied
+authenticated context or checker cannot replace those reads. Its versioned
+identity additionally binds the profile, launcher features and catalog hash,
+and canonical reconstructed source-closure hash. The original legacy index,
+identity and 1920x1080 replay contract remain unchanged.
+
+Only `resolution_coverage` currently has source-artifact replay for this new
+context. It checks the actual selected profile/recipe, typed feature values,
+advertisement and protected Classic/800x600 policy; source-authenticated but
+unregistered successors cannot satisfy launcher coverage. A candidate's preset
+appearing in the catalog does not register its different recipe. Classic wide
+menus use their actual resolved recipe and retain minimap disabled.
+
+All fifteen runtime lanes in the new context remain unsupported, including
+`panel_command`: its legacy adapter is not authority for a different matrix
+identity. This count is separate from the legacy evaluator's fourteen missing
+verifiers. Expanded-battle and promotion acceptance also remain false. Neither
+metadata replay nor the registered synthetic context suite establishes a cell
+pass, native execution, input, endurance or a full release.
+
+Matrix JSON envelopes and object references are limited to 2 MiB and 64
+container levels, including dispatch when candidate authentication has failed.
+Initial raw artifact references are limited to 32 MiB; final matrix-cell source
+and candidate rereads retain their separate bounds. Malformed, oversized or
+deep inputs return structured failures. These limits do not make files
+immutable or establish a native producer. Inherited canonical source-code
+inventory reads are not yet covered by a uniform IO-bound guarantee.
+
 The fixed source registry also admits `classic_all_presets_v1`,
 `framed_all_presets_v1`, `complete_hd_all_presets_v1` and
 `modal_widgets_all_presets_v1` for candidate reconstruction under their exact

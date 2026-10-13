@@ -33,8 +33,14 @@ PRESETS = ("800x600", "1024x768", "1280x720", "1280x960", "1366x768",
 REQUIRED_IDS = tuple(f"{profile}/{resolution}" for profile in PROFILES for resolution in PRESETS)
 CUSTOM_REGRESSION = "802x602"
 CANDIDATE_ROOT = Path("C:/ClashTests")
+MAX_JSON_BYTES = 2 * 1024 * 1024
+MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
 RUNTIME_POLICY = "read-only candidate/evidence checks; no runtime, capture, input, status or promotion writes"
 REQUIRED_ACCEPTANCE = (*evidence.LANES, "candidate_bound_expanded_battle")
+# These describe the additive cell schema, not the legacy 1920x1080 registry.
+# In particular the legacy native panel adapter is not matrix-context proof.
+MATRIX_CONTEXT_LANE_VERIFIERS = ("resolution_coverage",)
+MATRIX_CONTEXT_UNIMPLEMENTED_LANES = tuple(name for name in evidence.LANES if name not in MATRIX_CONTEXT_LANE_VERIFIERS)
 # Repository code selects recipes.
 RECIPE_MODULES = {
     "classic-frozen-800-v1": "patch_clash95_hd",
@@ -105,10 +111,20 @@ def json_object(data: bytes, label: str) -> dict:
         if not math.isfinite(number):
             raise ValueError("nonfinite JSON number is invalid")
         return number
-    value = json.loads(data.decode("utf-8-sig"), object_pairs_hook=unique_object,
-                       parse_constant=finite_number, parse_float=finite_number)
+    try:
+        value = json.loads(data.decode("utf-8-sig"), object_pairs_hook=unique_object,
+                           parse_constant=finite_number, parse_float=finite_number)
+    except RecursionError as exc:
+        raise ValueError(f"{label} exceeds JSON parser capacity") from exc
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an object")
+    pending = [(value, 1)]
+    while pending:
+        container, depth = pending.pop()
+        if depth > evidence.MAX_JSON_CONTAINER_DEPTH:
+            raise ValueError(f"{label} JSON container nesting exceeds {evidence.MAX_JSON_CONTAINER_DEPTH}")
+        children = container.values() if isinstance(container, dict) else container
+        pending.extend((child, depth + 1) for child in children if isinstance(child, (dict, list)))
     return value
 
 
@@ -126,6 +142,19 @@ def _plain_path(path: Path) -> Path:
     return absolute.resolve()
 
 
+def _bounded_bytes(path: Path, label: str, maximum: int) -> bytes:
+    with path.open("rb") as source:
+        data = source.read(maximum + 1)
+    if not data or len(data) > maximum:
+        raise ValueError(f"{label} must contain bounded nonempty bytes")
+    return data
+
+
+def _json_bytes(path: Path, label: str) -> bytes:
+    """Reference envelopes/metadata are bounded even on failure paths."""
+    return _bounded_bytes(path, label, MAX_JSON_BYTES)
+
+
 def read_reference(ref: Any, base: Path, *, object_required=False) -> tuple[Path, Any]:
     if (not isinstance(ref, dict) or set(ref) != {"path", "sha256"}
             or not evidence._text(ref.get("path"))
@@ -133,7 +162,7 @@ def read_reference(ref: Any, base: Path, *, object_required=False) -> tuple[Path
         raise ValueError("immutable reference requires only a real path and 64-hex sha256")
     given = Path(ref["path"])
     path = _plain_path(given if given.is_absolute() else base / given)
-    data = path.read_bytes()
+    data = _bounded_bytes(path, str(path), MAX_JSON_BYTES if object_required else MAX_ARTIFACT_BYTES)
     if sha(data) != ref["sha256"].lower():
         raise ValueError(f"artifact SHA-256 mismatch: {path}")
     return path, json_object(data, str(path)) if object_required else data
@@ -385,7 +414,25 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
 
 
 def _replay_release(ref: Any, base: Path, context: dict) -> dict:
-    path, release = read_reference(ref, base, object_required=True)
+    # Both supported indexes contain only small reference envelopes. Parse the
+    # schema through the bounded strict reader before either dispatch branch.
+    from matrix_release_evidence import _json_reference, RELEASE_SCHEMA as CELL_RELEASE_SCHEMA
+    path, _, release = _json_reference(ref, base, "release index")
+    # The additive matrix schema reauthenticates through its public evaluator;
+    # the outer candidate context cannot stand in for current source bytes.
+    if release.get("schema") == CELL_RELEASE_SCHEMA:
+        from matrix_release_evidence import evaluate_release_manifest
+        result = evaluate_release_manifest(path)
+        expected = context["identity"]
+        measured = result.get("candidate_context", {})
+        if result.get("cell_id") != f"{expected['profile']}/{expected['resolution']}":
+            raise ValueError("matrix-cell release differs from the selected matrix cell")
+        if (canonical(measured.get("artifact_refs")) != canonical(context["artifact_refs"])
+                or canonical({key: measured.get("identity", {}).get(key) for key in expected}) != canonical(expected)
+                or canonical(measured.get("source_hashes")) != canonical(context["source_hashes"])):
+            raise ValueError("matrix-cell release rebinds the authenticated matrix candidate or source closure")
+        _json_reference(ref, base, "release index recheck")
+        return result
     if release.get("schema") != evidence.RELEASE_SCHEMA:
         raise ValueError("no production adapter exists for this release index schema")
     supplied = release.get("candidate")
@@ -414,7 +461,7 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
     failures, matrix, cells, raw_sha, input_path = [], {}, {}, None, None
     try:
         manifest, cells = _inventory(repo_root)
-    except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError) as exc:
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, OverflowError, RecursionError) as exc:
         failures.append(f"launcher inventory: {exc}")
         manifest = {}
         cells = {key: {"id": key, "profile": key.split("/")[0], "resolution": key.split("/")[1],
@@ -425,7 +472,7 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
         if path is None:
             raise ValueError("matrix manifest is missing; readiness inventory is not runtime acceptance")
         input_path = _plain_path(Path(path))
-        raw = input_path.read_bytes()
+        raw = _json_bytes(input_path, "matrix index")
         raw_sha = sha(raw)
         matrix = json_object(raw, "matrix index")
         if matrix.get("schema") != MATRIX_SCHEMA or set(matrix) != {"schema", "rows"}:
@@ -443,7 +490,7 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
             rows[cell_id] = row
         if set(rows) != set(REQUIRED_IDS):
             failures.append("matrix index must contain exactly all 36 required profile/preset cells")
-    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError, RecursionError) as exc:
         failures.append(str(exc))
         rows = {}
     missing_verifiers = [name for name in evidence.LANES if name not in evidence.LANE_VERIFIERS]
@@ -459,17 +506,18 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
             base = input_path.parent
             try:
                 context = authenticate_candidate(cell_id, row["candidate"], base, manifest, repo_root=repo_root)
-            except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError) as exc:
+            except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, OverflowError, RecursionError) as exc:
                 errors.append(f"candidate authentication: {exc}")
             try:
                 if not context:
-                    read_reference(row["release_index"], base, object_required=True)
+                    from matrix_release_evidence import _json_reference
+                    _json_reference(row["release_index"], base, "release index without candidate authority")
                     raise ValueError("release acceptance requires authenticated candidate bytes first")
                 release_result = _replay_release(row["release_index"], base, context)
                 if release_result.get("evidence_ready") is not True:
                     errors.extend(f"release acceptance: {item}" for item in release_result.get("failures", []))
                     errors.append("release acceptance did not affirmatively establish every production lane")
-            except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError) as exc:
+            except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, OverflowError, RecursionError) as exc:
                 errors.append(f"release acceptance: {exc}")
         errors.extend(f"production lane verifier is not implemented: {name}" for name in missing_verifiers)
         errors.append("candidate-bound expanded-battle production acceptance verifier is not implemented")
@@ -479,7 +527,7 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
         failures.extend(f"{cell_id}: {item}" for item in cell["failures"])
     if input_path is not None and raw_sha is not None:
         try:
-            if sha(input_path.read_bytes()) != raw_sha:
+            if sha(_json_bytes(input_path, "matrix index recheck")) != raw_sha:
                 raise ValueError("matrix index changed during evaluation")
         except (OSError, ValueError) as exc:
             failures.append(str(exc))
@@ -492,6 +540,8 @@ def evaluate_matrix(path: Path | None = None, *, repo_root: Path = ROOT) -> dict
             "authenticated_candidate_count": sum(cell["candidate_authentication_passed"] for cell in cells.values()),
             "custom_regression_resolution": CUSTOM_REGRESSION, "custom_resolutions_promoted": False,
             "unimplemented_lane_verifiers": missing_verifiers,
+            "matrix_context_lane_verifiers": list(MATRIX_CONTEXT_LANE_VERIFIERS),
+            "matrix_context_unimplemented_lane_verifiers": list(MATRIX_CONTEXT_UNIMPLEMENTED_LANES),
             "unimplemented_acceptance_requirements": ["candidate_bound_expanded_battle"],
             "passed": False, "evidence_ready": False, "promotion_approved": False, "promotion_ready": False,
             "stable_stage_should_change": False, "checklist_updated": None, "full_game_complete": False,

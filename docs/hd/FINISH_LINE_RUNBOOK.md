@@ -2,6 +2,13 @@
 
 Release validation that requires the original game is **local-only**.
 
+Full HD completion requires the [36-cell profile/preset matrix](RESOLUTION_RELEASE_MATRIX.md).
+The versioned matrix-cell release context replays source-bound resolution
+metadata only. Its fifteen runtime lanes, installed expanded battle and
+promotion remain separate unfinished requirements; do not reuse the narrow
+legacy 1920x1080 panel proof for another context. Source fixtures establish
+neither a release nor a new runtime pass.
+
 ## Public prerequisites
 
 Before any local runtime work:

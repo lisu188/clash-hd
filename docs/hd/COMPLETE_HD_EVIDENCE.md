@@ -9,6 +9,17 @@ references for the base executable, candidate, exact builder metadata, probe,
 and all 16 lane reports. The shared candidate context rebuilds actual candidate
 bytes and the probe with the complete builder; identity text alone is rejected.
 
+The separate `matrix_cell_release_manifest_v1` path in
+`tools/matrix_release_evidence.py` prepares profile/preset-specific release
+contexts for the full [36-cell matrix](RESOLUTION_RELEASE_MATRIX.md). It freshly
+reconstructs the actual candidate and binds its launcher features/catalog and
+source closure, rather than extending this legacy identity or trusting a
+supplied authenticated context. Its only implemented lane is resolution
+metadata; all fifteen matrix-context runtime lanes, expanded battle and
+promotion remain unsupported. In particular, the legacy panel adapter below
+is not reused for those new identities. Source fixtures do not establish
+runtime or release acceptance, and unregistered recipes stay unregistered.
+
 The release index cannot choose validation code. A lane must have a fixed
 repository verifier that recomputes its required checks from original artifacts.
 A report containing passing booleans, a pinned arbitrary log, and the hash of a
