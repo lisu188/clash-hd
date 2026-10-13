@@ -169,6 +169,7 @@ import test_hidden_soak_cleanup
 import test_hidden_soak_retained_files
 import test_hidden_soak_binary_artifacts
 import test_hidden_soak_log_observations
+import test_hidden_soak_report_binding
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -680,6 +681,8 @@ DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_JSON = Path("captures/current/hidden-
 DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD = Path("captures/current/hidden-soak-binary-artifacts-tests-current.md")
 DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON = Path("captures/current/hidden-soak-log-observations-tests-current.json")
 DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD = Path("captures/current/hidden-soak-log-observations-tests-current.md")
+DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON = Path("captures/current/hidden-soak-report-binding-tests-current.json")
+DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD = Path("captures/current/hidden-soak-report-binding-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5597,7 +5600,9 @@ def build_hd_soak_report_guard(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
     if report_path.exists():
-        evaluation = hd_soak_report.evaluate_report_for_environment(hd_soak_report.load_json(report_path))
+        evaluation = hd_soak_report.evaluate_report_for_environment(
+            hd_soak_report.load_json(report_path), source_report_path=report_path,
+        )
         evaluation["source_report"] = str(report_path)
         evaluation["source_report_selection"] = report_source
     else:
@@ -5894,6 +5899,20 @@ def build_hidden_soak_log_observations_tests(args: argparse.Namespace) -> dict[s
         guard_policy="retained log byte/observation consistency only; no native producer or runtime acceptance",
         runtime_policy=("source-only synthetic log fixtures and isolated source-extracted PowerShell parser; "
                         "no runtime harness, game, debugger or compiler execution"),
+    )
+
+
+def build_hidden_soak_report_binding_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_report_binding,
+        tests=["bounded strict retained source JSON binds typed observations without caller skip policies",
+               "selected copies require exact external source bytes and observed read failures remain failures"],
+        title="Hidden-CDB Source Report Binding Tests",
+        json_path=args.hidden_soak_report_binding_tests_json,
+        md_path=args.hidden_soak_report_binding_tests_md,
+        guard_policy="observed source/copy byte consistency only; no native producer or runtime acceptance",
+        runtime_policy=("source-only actual tiny private JSON files, RAM-only synthetic artifacts and reader faults; "
+                        "no game, debugger or compiler"),
     )
 
 
@@ -8239,6 +8258,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hidden_soak_retained_files_tests"] = collect("hidden_soak_retained_files_tests", build_hidden_soak_retained_files_tests, args)
     checks["hidden_soak_binary_artifacts_tests"] = collect("hidden_soak_binary_artifacts_tests", build_hidden_soak_binary_artifacts_tests, args)
     checks["hidden_soak_log_observations_tests"] = collect("hidden_soak_log_observations_tests", build_hidden_soak_log_observations_tests, args)
+    checks["hidden_soak_report_binding_tests"] = collect("hidden_soak_report_binding_tests", build_hidden_soak_report_binding_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9647,6 +9667,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden-soak-binary-artifacts-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD)
     parser.add_argument("--hidden-soak-log-observations-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON)
     parser.add_argument("--hidden-soak-log-observations-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD)
+    parser.add_argument("--hidden-soak-report-binding-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON)
+    parser.add_argument("--hidden-soak-report-binding-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(
         "--hd-soak-failure-triage-tests-json",

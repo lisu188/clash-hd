@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -17,8 +18,11 @@ import hd_soak_short_step_status as status
 import hidden_soak_report_assembler as hidden_assembler
 from test_hd_soak_short_validation_refresh import soak_report as visible_soak_report
 from test_hd_soak_short_validation_refresh import write_patch_stage_fixture
+from test_hd_soak_short_validation_refresh import write_hidden_report_alias
 from test_hidden_soak_report_assembler import frame_rows, make_samples, process_rows
-from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, seal_fixture, replace_retained_bytes
+from test_hidden_soak_artifact_fixtures import (
+    fixture_artifact_reads, publish_fixture_report, seal_fixture, replace_retained_bytes,
+)
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
@@ -82,6 +86,7 @@ def hidden_soak_report(step: dict[str, Any], *, passed: bool = True) -> dict[str
         samples["route_end_marker"]["line_number"] = 13 + len(samples["pan_events"])
     report = hidden_assembler.assemble_report(seal_fixture(samples))
     assert report["passed"], report["failures"]
+    report = publish_fixture_report(report, Path(step["paths"]["report_json"]).parent)
     if not passed:
         report.update(passed=False, failures=["fixture retained runtime failure"])
     return report
@@ -96,6 +101,15 @@ def guard_report(step: dict[str, Any], *, overall: bool) -> dict[str, Any]:
         "route": step["route"],
         "failures": [] if overall else ["frame sample count 0 is below 2"],
     }
+
+
+def hidden_guard_report(step: dict[str, Any], source: dict[str, Any]) -> dict[str, Any]:
+    """Grade the already-published report through its actual selected alias."""
+    guard = status.hd_soak_report.evaluate_report_for_environment(
+        source, source_report_path=Path(step["paths"]["report_json"]),
+    )
+    assert guard["overall"], guard["failures"]
+    return guard
 
 
 def triage_report(step: dict[str, Any]) -> dict[str, Any]:
@@ -185,10 +199,8 @@ def test_hidden_step_report_counts_and_labels_environment() -> None:
         write_json(Path(first["paths"]["guard_json"]), guard_report(first, overall=True))
         map_step = manifest_data["step_reports"][1]
         hidden = hidden_soak_report(map_step)
-        hidden_guard = guard_report(map_step, overall=True)
-        hidden_guard.update(environment=hidden["environment"], evidence_class=hidden["evidence_class"])
-        write_json(Path(map_step["paths"]["report_json"]), hidden)
-        write_json(Path(map_step["paths"]["guard_json"]), hidden_guard)
+        write_hidden_report_alias(Path(map_step["paths"]["report_json"]), hidden)
+        write_json(Path(map_step["paths"]["guard_json"]), hidden_guard_report(map_step, hidden))
         report = status.build_report(args_for(tmp, manifest_data))
     assert report["passed"] is True, report["failures"]
     assert report["counts"]["passed"] == 2
@@ -240,9 +252,9 @@ def test_later_passing_report_stays_locked_without_prerequisites() -> None:
         tmp = Path(directory)
         manifest_data = manifest_fixture(tmp)
         step = manifest_data["step_reports"][1]
-        binding = {"environment": "hidden_cdb_host", "evidence_class": "approved_hidden_cdb_host_soak"}
-        write_json(Path(step["paths"]["report_json"]), hidden_soak_report(step))
-        write_json(Path(step["paths"]["guard_json"]), dict(guard_report(step, overall=True), **binding))
+        source = hidden_soak_report(step)
+        write_hidden_report_alias(Path(step["paths"]["report_json"]), source)
+        write_json(Path(step["paths"]["guard_json"]), hidden_guard_report(step, source))
         report = status.build_report(args_for(tmp, manifest_data))
     assert report["passed"], report
     assert report["counts"]["passed"] == 0
@@ -284,10 +296,11 @@ def test_full_ladder_regrades_genuine_visible_and_hidden_reports() -> None:
         manifest_data = manifest_fixture(tmp)
         for index, step in enumerate(manifest_data["step_reports"]):
             source = soak_report(step, passed=True) if index == 0 else hidden_soak_report(step)
-            guard = guard_report(step, overall=True)
             if index:
-                guard.update(environment=source["environment"], evidence_class=source["evidence_class"])
-            write_json(Path(step["paths"]["report_json"]), source)
+                write_hidden_report_alias(Path(step["paths"]["report_json"]), source)
+            else:
+                write_json(Path(step["paths"]["report_json"]), source)
+            guard = hidden_guard_report(step, source) if index else guard_report(step, overall=True)
             write_json(Path(step["paths"]["guard_json"]), guard)
         report = status.build_report(args_for(tmp, manifest_data))
     assert report["passed"], report["failures"]
@@ -303,10 +316,8 @@ def test_lost_patch_evidence_invalidates_saved_passing_guards_without_rewrites()
             manifest_data = manifest_fixture(tmp)
             step = manifest_data["step_reports"][index]
             source = soak_report(step, passed=True) if index == 0 else hidden_soak_report(step)
-            guard = guard_report(step, overall=True)
-            if index:
-                guard.update(environment=source["environment"], evidence_class=source["evidence_class"])
-            source_path = write_json(Path(step["paths"]["report_json"]), source)
+            source_path = (write_hidden_report_alias if index else write_json)(Path(step["paths"]["report_json"]), source)
+            guard = hidden_guard_report(step, source) if index else guard_report(step, overall=True)
             guard_path = write_json(Path(step["paths"]["guard_json"]), guard)
             args = args_for(tmp, manifest_data)
             before = status.build_report(args)
@@ -335,14 +346,14 @@ def test_hidden_source_drift_and_malformed_rows_invalidate_saved_pass() -> None:
             step = manifest_data["step_reports"][1]
             source = hidden_soak_report(step)
             assert status.hd_soak_report.evaluate_report_for_environment(source)["overall"]
+            write_hidden_report_alias(Path(step["paths"]["report_json"]), source)
+            guard = hidden_guard_report(step, source)
             if mutation == "input_sentinel":
                 source["input_responsiveness"] = True
             elif mutation == "short_coverage":
                 source["frame_samples"][-1]["Timestamp"] = source["frame_samples"][0]["Timestamp"]
             else:
                 source["frame_samples"] = [None]
-            guard = dict(guard_report(step, overall=True), environment=source["environment"],
-                         evidence_class=source["evidence_class"])
             source_path = write_json(Path(step["paths"]["report_json"]), source)
             guard_path = write_json(Path(step["paths"]["guard_json"]), guard)
             retained = {path: path.read_bytes() for path in (source_path, guard_path)}
@@ -352,6 +363,95 @@ def test_hidden_source_drift_and_malformed_rows_invalidate_saved_pass() -> None:
             assert not report["steps"][1]["summary"]["revalidation_overall"]
             assert report["steps"][1]["summary"]["revalidation_failures"]
             assert all(path.read_bytes() == data for path, data in retained.items())
+
+
+def test_hidden_selected_alias_and_external_source_bytes_are_both_required() -> None:
+    """Saved guards cannot substitute for either actual report file's bytes."""
+    for mutation in ("missing_external", "external_bytes", "alias_bytes", "alias_payload"):
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            manifest_data = manifest_fixture(tmp)
+            first, step = manifest_data["step_reports"][:2]
+            write_json(Path(first["paths"]["report_json"]), soak_report(first, passed=True))
+            write_json(Path(first["paths"]["guard_json"]), guard_report(first, overall=True))
+            source = hidden_soak_report(step)
+            external_path = Path(source["report_json"])
+            alias_path = write_hidden_report_alias(Path(step["paths"]["report_json"]), source)
+            guard_path = write_json(
+                Path(step["paths"]["guard_json"]),
+                hidden_guard_report(step, source),
+            )
+            assert alias_path != external_path
+            original = external_path.read_bytes()
+            assert alias_path.read_bytes() == original
+            args = args_for(tmp, manifest_data)
+            accepted = status.build_report(args)
+            assert accepted["counts"]["passed"] == 2, accepted["failures"]
+            evaluation = status.hd_soak_report.evaluate_report_for_environment(
+                source, source_report_path=alias_path,
+            )
+            assert evaluation["overall"], evaluation["failures"]
+            assert evaluation["checks"]["source_report_binding"]["passed"]
+            assert evaluation["source_report_sha256"] == hashlib.sha256(original).hexdigest()
+
+            if mutation == "missing_external":
+                missing_external = external_path.with_name("missing-" + external_path.name)
+                assert not missing_external.exists()
+                write_json(alias_path, dict(source, report_json=str(missing_external)))
+            elif mutation == "external_bytes":
+                external_path.write_bytes(original + b"\n")
+            elif mutation == "alias_bytes":
+                alias_path.write_bytes(original + b"\n")
+            else:
+                altered = dict(source, generated_at="2026-06-17T12:00:00+00:00")
+                write_json(alias_path, altered)
+            retained = {path: path.read_bytes() for path in (alias_path, guard_path)}
+            if external_path.exists():
+                retained[external_path] = external_path.read_bytes()
+            result = status.build_report(args)
+            assert not result["passed"], mutation
+            assert result["counts"]["passed"] == 1, mutation
+            assert result["steps"][1]["status"] == "invalid_guard_stale", mutation
+            assert result["locks"]["long_tiers_locked"], mutation
+            assert not result["ladder_complete"], mutation
+            assert any("source" in failure.casefold() for failure in result["failures"]), result["failures"]
+            assert all(path.read_bytes() == data for path, data in retained.items()), mutation
+            if mutation == "missing_external":
+                assert not missing_external.exists()
+                assert external_path.read_bytes() == original
+
+
+def test_hidden_saved_source_binding_must_match_actual_alias_selection() -> None:
+    for mutation in ("missing_check", "external_default_check", "wrong_sha", "retained_errors"):
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            manifest_data = manifest_fixture(tmp)
+            first, step = manifest_data["step_reports"][:2]
+            write_json(Path(first["paths"]["report_json"]), soak_report(first, passed=True))
+            write_json(Path(first["paths"]["guard_json"]), guard_report(first, overall=True))
+            source = hidden_soak_report(step)
+            alias_path = write_hidden_report_alias(Path(step["paths"]["report_json"]), source)
+            guard = hidden_guard_report(step, source)
+            if mutation == "missing_check":
+                del guard["checks"]["source_report_binding"]
+            elif mutation == "external_default_check":
+                external_guard = status.hd_soak_report.evaluate_report_for_environment(source)
+                assert external_guard["overall"], external_guard["failures"]
+                guard["checks"]["source_report_binding"] = external_guard["checks"]["source_report_binding"]
+            elif mutation == "wrong_sha":
+                guard["source_report_sha256"] = "0" * 64
+            else:
+                guard["source_report_binding_errors"] = ["fixture retained source failure"]
+            guard_path = write_json(Path(step["paths"]["guard_json"]), guard)
+            external_path = Path(source["report_json"])
+            retained = {path: path.read_bytes() for path in (alias_path, external_path, guard_path)}
+            result = status.build_report(args_for(tmp, manifest_data))
+            assert not result["passed"], mutation
+            assert result["counts"]["passed"] == 1, mutation
+            assert result["steps"][1]["status"] == "invalid_guard_stale", mutation
+            assert any("source_report binding" in failure for failure in result["failures"]), result["failures"]
+            assert result["locks"]["long_tiers_locked"], mutation
+            assert all(path.read_bytes() == data for path, data in retained.items()), mutation
 
 
 def test_canonical_report_with_mismatched_guard_fails_closed() -> None:
@@ -473,6 +573,8 @@ def _run_tests() -> None:
     test_full_ladder_regrades_genuine_visible_and_hidden_reports()
     test_lost_patch_evidence_invalidates_saved_passing_guards_without_rewrites()
     test_hidden_source_drift_and_malformed_rows_invalidate_saved_pass()
+    test_hidden_selected_alias_and_external_source_bytes_are_both_required()
+    test_hidden_saved_source_binding_must_match_actual_alias_selection()
     test_canonical_report_with_mismatched_guard_fails_closed()
     test_failed_report_with_triage_is_classified_status()
     test_failed_report_with_mismatched_triage_fails_closed()

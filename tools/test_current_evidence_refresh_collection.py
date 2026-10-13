@@ -92,7 +92,8 @@ class CollectionTests(unittest.TestCase):
                  "battle_content_replay_tests", "battle_count_entry_tests", "battle_count_body_v2_tests",
                  "battle_native_count_authoring_tests",
                  "hidden_soak_integration_tests", "hidden_soak_harness_preflight_tests", "hidden_soak_cleanup_tests",
-                 "hidden_soak_retained_files_tests", "hidden_soak_binary_artifacts_tests", "hidden_soak_log_observations_tests"}
+                 "hidden_soak_retained_files_tests", "hidden_soak_binary_artifacts_tests", "hidden_soak_log_observations_tests",
+                 "hidden_soak_report_binding_tests"}
         original_rows = [row for row in rows if row[0] not in added]
         digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
@@ -112,8 +113,9 @@ class CollectionTests(unittest.TestCase):
             ("hidden_soak_retained_files_tests", "build_hidden_soak_retained_files_tests", ["args"]),
             ("hidden_soak_binary_artifacts_tests", "build_hidden_soak_binary_artifacts_tests", ["args"]),
             ("hidden_soak_log_observations_tests", "build_hidden_soak_log_observations_tests", ["args"]),
+            ("hidden_soak_report_binding_tests", "build_hidden_soak_report_binding_tests", ["args"]),
         ])
-        self.assertEqual(len(rows), 182)
+        self.assertEqual(len(rows), 183)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -121,7 +123,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 180)
+        self.assertEqual(len(report["checks"]), 181)
         self.assertIs(report["passed"], True)
 
     def test_simple_test_policy_default_preserves_legacy_result(self):
@@ -341,7 +343,8 @@ class CollectionTests(unittest.TestCase):
     def assert_registered_retained_entrypoint(self, builder_name, runtime_fragment, guard_fragment):
         reader_slots = (("hidden_soak_retained_files", "_read_retained_file"),
                         ("hidden_soak_binary_artifacts", "_read_retained_file"),
-                        ("hidden_soak_log_observations", "_reader"))
+                        ("hidden_soak_log_observations", "_reader"),
+                        ("hidden_soak_report_binding", "_read_retained_file"))
         originals = [(importlib.import_module(module), name) for module, name in reader_slots]
         readers = [getattr(module, name) for module, name in originals]
         # These are the actual registered suite entrypoints. Only output
@@ -373,6 +376,11 @@ class CollectionTests(unittest.TestCase):
     def test_registered_log_observations_actual_entrypoint(self):
         self.assert_registered_retained_entrypoint(
             "build_hidden_soak_log_observations_tests", "source-only synthetic log", "no native producer",
+        )
+
+    def test_registered_report_binding_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_report_binding_tests", "actual tiny private JSON files", "no native producer",
         )
 
     def test_next_actual_production_builder_cannot_use_prior_fixture_readers(self):
@@ -410,7 +418,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 182)
+        self.assertEqual(len(self.calls), 183)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -456,7 +464,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 182)
+                self.assertEqual(len(self.calls), 183)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

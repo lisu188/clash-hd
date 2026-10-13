@@ -137,7 +137,8 @@ class RetainedFileReaderTests(unittest.TestCase):
 
     def test_after_read_path_and_ancestor_drift_are_rejected(self):
         real_lstat = os.lstat
-        for changed in (self.directory, self.path):
+        for changed, field in ((self.directory, "st_ino"), (self.path, "st_ino"),
+                               (self.directory, "st_mtime_ns"), (self.directory, "st_ctime_ns")):
             seen = 0
 
             def inspect(path):
@@ -146,12 +147,14 @@ class RetainedFileReaderTests(unittest.TestCase):
                 if Path(path) == changed:
                     seen += 1
                     if seen == 2:
-                        return changed_stat(info, st_ino=info.st_ino + 1)
+                        return changed_stat(info, **{field: getattr(info, field) + 1})
                 return info
 
             with self.subTest(changed=changed), mock.patch.object(retained.os, "lstat", side_effect=inspect):
-                with self.assertRaises(retained.RetainedFileError):
+                with self.assertRaises(retained.RetainedFileError) as raised:
                     retained.read_retained_file(str(self.path), 100)
+                self.assertIn(repr(str(changed)), str(raised.exception))
+                self.assertIn(f"{field}=", str(raised.exception))
 
     def test_actual_growth_and_truncation_are_rejected(self):
         real_read = os.read

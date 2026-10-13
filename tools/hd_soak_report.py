@@ -18,6 +18,7 @@ from hidden_soak_artifact_layout import validate_hidden_artifact_layout
 from hidden_soak_binary_artifacts import read_retained_patch, validate_retained_binaries
 from hidden_soak_log_observations import validate_retained_log
 from hidden_soak_retained_files import validate_retained_frames
+from hidden_soak_report_binding import validate_hidden_report_binding
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -2950,6 +2951,7 @@ def evaluate_hidden_report(
 def evaluate_report_for_environment(
     report: dict[str, Any],
     *,
+    source_report_path: str | Path | None = None,
     min_frames: int = 2,
     min_nonblack_percent: float = 10.0,
     min_unique_sample_colors: int = 8,
@@ -2984,9 +2986,16 @@ def evaluate_report_for_environment(
     }
     if environment == HIDDEN_ENVIRONMENT:
         evaluation = evaluate_hidden_report(report, **common, **host_process)
-        source_digest, source_errors = matching_json_file_sha256(report.get("report_json"), report)
-        evaluation["source_report_sha256"] = source_digest
+        source_summary, source_errors = validate_hidden_report_binding(report, selected_path=source_report_path)
+        evaluation["checks"]["source_report_binding"] = check_record(not source_errors, source_summary, source_errors)
+        evaluation["source_report_sha256"] = (
+            source_summary["external_source"].get("sha256") if source_summary["payload_matches"] else None
+        )
         evaluation["source_report_binding_errors"] = source_errors
+        evaluation["failures"].extend(f"source_report binding: {error}" for error in source_errors)
+        evaluation["overall"] = evaluation["overall"] and not source_errors
+        if source_report_path is not None:
+            evaluation["source_report"] = str(source_report_path)
         return evaluation
     if environment == GUEST_ENVIRONMENT:
         return evaluate_guest_report(report, **common, min_guest_status_samples=min_guest_status_samples)
@@ -3119,7 +3128,9 @@ def main() -> int:
     elif args.guest and report_data.get("environment") != GUEST_ENVIRONMENT:
         evaluation = evaluate_guest_report(report_data)
     else:
-        evaluation = evaluate_report_for_environment(report_data, max_input_drift_px=args.max_input_drift_px)
+        evaluation = evaluate_report_for_environment(
+            report_data, source_report_path=args.report, max_input_drift_px=args.max_input_drift_px,
+        )
     evaluation.setdefault("source_report", str(args.report))
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)

@@ -95,11 +95,16 @@ It grants no replacement execution or visible-session approval. The missing
 visible menu prerequisite remains separate from the four proposed hidden map
 replacements, and the complete old canonical namespace must be archived before
 any canonical refresh or replacement write.
-Replacement admission also needs a fail-closed short source-report binding:
-the dispatcher currently records source binding errors separately from
-`overall`, and short fresh revalidation checks `overall` alone. Require the
-production repair and alias/external byte-identity regressions in the prepared
-plan before using its working manifest or publishing canonical replacements.
+The source follow-up makes `source_report_binding` mandatory in the public
+hidden dispatcher and folds its failures into `overall`. It reopens the
+unchanged embedded external `report_json`; an explicitly selected canonical
+copy must have exactly the same bytes. Strict typed JSON comparison rejects
+duplicate/nonfinite data and boolean/numeric substitutions. Short status,
+intro completion and hidden long admission compare saved binding records and
+source SHA against a fresh grade, so even matching changes to both copies
+invalidate a stale guard. The CLI, refresh and triage forward their actual
+selected path. The registered bounded source/alias fixtures are not runtime,
+native-producer or immutable-file proof and restore no missing evidence.
 
 ## Public repository state
 

@@ -23,6 +23,7 @@ _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 _FRAME_BYTES = 800 * 600
 _FRAME_NAME = re.compile(r"frame-([0-9]{4,10})\Z")
 _SHA256 = re.compile(r"[0-9a-fA-F]{64}\Z")
+_STAMP_FIELDS = ("st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns", "st_file_attributes")
 
 
 class RetainedFileError(ValueError):
@@ -58,6 +59,23 @@ def _path_snapshot(path: Path) -> tuple[tuple[int, ...], ...]:
             raise ValueError(f"retained-file path has unavailable identity or invalid size: {component}")
         snapshots.append(_stamp(info))
     return tuple(snapshots)
+
+
+def _path_drift_detail(path: Path, before: tuple, after: tuple) -> str:
+    """Bounded diagnostics only; every snapshot mismatch remains a rejection."""
+    chain = [*reversed(path.parents), path]
+    if len(before) != len(chain) or len(after) != len(chain):
+        return f"snapshot component counts before={len(before)}, after={len(after)}, expected={len(chain)}"
+    changes = []
+    for component, original, current in zip(chain, before, after):
+        if original == current:
+            continue
+        fields = [f"{name}={old}->{new}" for name, old, new in zip(_STAMP_FIELDS, original, current) if old != new]
+        changes.append(f"{str(component)!r}: {', '.join(fields)}")
+        if len(changes) == 4:
+            changes.append("remaining component diagnostics omitted")
+            break
+    return "; ".join(changes)
 
 
 def read_retained_file(path: str, max_bytes: int) -> bytes:
@@ -105,8 +123,10 @@ def read_retained_file(path: str, max_bytes: int) -> bytes:
             raise ValueError("retained file ended before its admitted byte count")
         if _stamp(os.fstat(descriptor)) != before[-1]:
             raise ValueError("held retained-file identity/metadata changed during read")
-        if _path_snapshot(target) != before:
-            raise ValueError("retained-file path or ancestor identity/metadata changed during read")
+        after = _path_snapshot(target)
+        if after != before:
+            raise ValueError("retained-file path or ancestor identity/metadata changed during read: "
+                             + _path_drift_detail(target, before, after))
         data = b"".join(chunks)
     except Exception as error:
         errors.append(error)

@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import json
+import io
 import subprocess
 import sys
 import tempfile
+from contextlib import redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -135,7 +138,7 @@ def test_hidden_long_provenance_cannot_be_dropped_or_failed(fixture: Path) -> No
     for name in (
         "schema", "environment", "wrapper_provenance", "marker_provenance",
         "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
-        "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes",
+        "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes", "source_report_binding",
     ):
         for missing in (True, False):
             report = hidden_long_report(fixture, "map-pan")
@@ -309,17 +312,57 @@ def test_hidden_long_regrades_exact_source_and_preserves_saved_receipts(fixture:
 
 
 def test_hidden_long_source_identity_and_checks_cannot_be_substituted(fixture: Path) -> None:
-    for mutation in ("identity", "check", "foreign_source"):
+    for mutation in ("identity", "check", "typed_check", "missing_binding_errors", "foreign_source"):
         report = hidden_long_report(fixture / mutation, "map-idle")
         if mutation == "identity":
             report["candidate_sha256"] = "e" * 64
         elif mutation == "check":
             report["checks"]["frame_inventory"]["summary"]["frame_sample_count"] += 1
+        elif mutation == "typed_check":
+            inventory = report["checks"]["frame_inventory"]["summary"]
+            inventory["frame_sample_count"] = float(inventory["frame_sample_count"])
+        elif mutation == "missing_binding_errors":
+            report.pop("source_report_binding_errors")
         else:
             foreign = hidden_long_report(fixture / "foreign", "map-pan")
             report["source_report"] = foreign["source_report"]
             report["source_report_sha256"] = foreign["source_report_sha256"]
         assert not guard.validate_long_report(report)[0], mutation
+
+
+def test_hidden_long_cli_selected_alias_requires_exact_external_bytes(fixture: Path) -> None:
+    saved = hidden_long_report(fixture, "map-idle")
+    external = Path(saved["source_report"])
+    original = external.read_bytes()
+    alias = fixture / "canonical-current.json"
+    alias.write_bytes(original)
+    compact = fixture / "canonical-guard.json"
+    argv = ["hd_soak_report.py", str(alias), "--write-json", str(compact), "--require-pass"]
+    with mock.patch.object(sys, "argv", argv), redirect_stdout(io.StringIO()):
+        assert soak.main() == 0
+    evaluation = json.loads(compact.read_bytes())
+    assert evaluation["source_report"] == str(alias)
+    assert evaluation["checks"]["source_report_binding"]["passed"] is True
+    valid, failures, _ = guard.validate_long_report(evaluation)
+    assert valid, failures
+    original_guard = compact.read_bytes()
+
+    alias.write_bytes(original + b"\n")
+    valid, failures, _ = guard.validate_long_report(evaluation)
+    assert not valid and any("binding" in item for item in failures), failures
+    assert external.read_bytes() == original
+
+    # Even mutually byte-identical copies cannot reuse a stale saved digest.
+    external.write_bytes(original + b"\n")
+    valid, failures, _ = guard.validate_long_report(evaluation)
+    assert not valid and any("SHA-256" in item for item in failures), failures
+
+    external.unlink()
+    alias.write_bytes(original)
+    valid, failures, _ = guard.validate_long_report(evaluation)
+    assert not valid and any("binding" in item for item in failures), failures
+    assert compact.read_bytes() == original_guard
+    assert alias.read_bytes() == original
 
 
 def test_hidden_long_requires_thirty_second_samples_and_complete_end_ticks(fixture: Path) -> None:
@@ -577,6 +620,7 @@ def _run_tests() -> None:
         test_saved_ladder_malformed_sources_and_paths_fail_closed(fixture / "malformed-short")
         test_hidden_long_regrades_exact_source_and_preserves_saved_receipts(fixture / "source-regrade")
         test_hidden_long_source_identity_and_checks_cannot_be_substituted(fixture / "source-identity")
+        test_hidden_long_cli_selected_alias_requires_exact_external_bytes(fixture / "selected-alias")
         test_hidden_long_requires_thirty_second_samples_and_complete_end_ticks(fixture / "canonical-coverage")
         test_hidden_long_requires_ten_second_pan_intervals(fixture / "canonical-pan")
         test_visible_labels_cannot_erase_explicit_foreign_evidence(fixture / "foreign-class")

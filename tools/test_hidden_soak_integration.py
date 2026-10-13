@@ -21,7 +21,7 @@ import hidden_soak_report_assembler as assembler
 import test_hd_soak_short_validation_refresh as short_fixtures
 import test_hidden_soak_report_assembler as samples_fixtures
 from test_hidden_soak_artifact_fixtures import (
-    fixture_artifact_reads, seal_fixture, retained_bytes, replace_retained_bytes,
+    fixture_artifact_reads, publish_fixture_report, seal_fixture, retained_bytes, replace_retained_bytes,
 )
 
 
@@ -57,7 +57,7 @@ def hidden_report(tmp: Path, route: str, duration: int, interval: int, *, candid
         samples["pan_event_count"] = len(samples["pan_events"])
     report = assembler.assemble_report(seal_fixture(samples, candidate_variant=candidate_variant))
     assert report["passed"], report["failures"]
-    return report
+    return publish_fixture_report(report, tmp)
 
 
 def write_json(path: Path, payload: dict) -> Path:
@@ -69,10 +69,17 @@ def completed_short_pipeline(tmp: Path) -> tuple[dict, Path]:
     for step in manifest["step_reports"]:
         if step["id"] == "short2_menu_idle":
             report = short_fixtures.soak_report(step, passed=True)
+            report["report_json"] = step["paths"]["report_json"]
         else:
             report = hidden_report(tmp / step["id"], step["route"], step["duration_sec"], 15)
-        report["report_json"] = step["paths"]["report_json"]
-        write_json(Path(report["report_json"]), report)
+        # Hidden canonical aliases retain the actual external source identity
+        # and exactly the same bytes, matching the production publisher.
+        alias = Path(step["paths"]["report_json"])
+        if report.get("environment") == "hidden_cdb_host":
+            alias.parent.mkdir(parents=True, exist_ok=True)
+            alias.write_bytes(Path(report["report_json"]).read_bytes())
+        else:
+            write_json(alias, report)
     manifest_path = write_json(tmp / "manifest.json", manifest)
     refreshed = refresh.build_report(argparse.Namespace(manifest_json=manifest_path))
     assert refreshed["passed"], refreshed["failures"]
@@ -127,8 +134,8 @@ def test_refresh_classifies_failed_hidden_sentinel_and_locks_short_step(tmp: Pat
     manifest = short_fixtures.manifest_fixture(tmp)
     step = manifest["step_reports"][1]
     report = hidden_report(tmp, "map-idle", 120, 15)
-    report.update(report_json=step["paths"]["report_json"], input_responsiveness=True)
-    path = write_json(Path(report["report_json"]), report)
+    report.update(input_responsiveness=True)
+    path = write_json(Path(step["paths"]["report_json"]), report)
     original = path.read_bytes()
     record, failures = refresh.refresh_step(step)
     assert not failures

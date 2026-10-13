@@ -278,9 +278,20 @@ def step_status(
         # claimed pass can unlock the next rung or the long tiers. This reads
         # provenance only; it never rewrites the report or its saved guard.
         try:
-            revalidation = hd_soak_report.evaluate_report_for_environment(report)
+            revalidation = hd_soak_report.evaluate_report_for_environment(report, source_report_path=report_path)
             revalidation_failures = list(revalidation.get("failures") or [])
             revalidation_passed = revalidation.get("overall") is True
+            if report_environment == HIDDEN_ENVIRONMENT:
+                saved_binding = (guard.get("checks") or {}).get("source_report_binding")
+                fresh_binding = (revalidation.get("checks") or {}).get("source_report_binding")
+                if (not isinstance(saved_binding, dict) or saved_binding.get("passed") is not True
+                        or saved_binding.get("failures")
+                        or json.dumps(saved_binding, sort_keys=True, allow_nan=False)
+                        != json.dumps(fresh_binding, sort_keys=True, allow_nan=False)
+                        or guard.get("source_report_binding_errors") != []
+                        or guard.get("source_report_sha256") != revalidation.get("source_report_sha256")):
+                    revalidation_passed = False
+                    revalidation_failures.append("hidden saved guard source_report binding is missing, changed or stale")
         except (OSError, ValueError, TypeError, AttributeError, KeyError, OverflowError) as exc:
             revalidation_passed = False
             revalidation_failures = [f"{type(exc).__name__}: {exc}"]

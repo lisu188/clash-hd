@@ -14,7 +14,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 import hd_soak_report as soak
-from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, retained_bytes, seal_fixture
+from test_hidden_soak_artifact_fixtures import (
+    fixture_artifact_reads, publish_fixture_report, retained_bytes, seal_fixture,
+)
 
 
 def patch_stage_report(candidate_sha: str) -> dict:
@@ -373,7 +375,7 @@ def passing_hidden_report(tmp: Path, *, _seal: bool = True) -> dict:
         for index in range(9)
     ]
     report["frame_sample_count"] = report["process_sample_count"] = 9
-    return seal_fixture(report) if _seal else report
+    return publish_fixture_report(seal_fixture(report), tmp) if _seal else report
 
 
 def passing_hidden_pan_report(tmp: Path, *, _seal: bool = True) -> dict:
@@ -397,7 +399,7 @@ def passing_hidden_pan_report(tmp: Path, *, _seal: bool = True) -> dict:
     ]
     report["pan_event_count"] = len(report["pan_events"])
     report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11, line_number=24)
-    return seal_fixture(report) if _seal else report
+    return publish_fixture_report(seal_fixture(report), tmp) if _seal else report
 
 
 def test_hidden_artifact_inventory_cannot_be_missing_or_coerced() -> None:
@@ -487,11 +489,12 @@ def test_hidden_artifact_layout_rejects_unbound_or_ambiguous_paths() -> None:
 
 def test_hidden_artifact_layout_accepts_case_and_slashes_without_claiming_physical_authentication() -> None:
     with tempfile.TemporaryDirectory() as directory:
-        report = passing_hidden_report(Path(directory))
+        report = copy.deepcopy(passing_hidden_report(Path(directory)))
         for field in ("input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe"):
             report[field] = report[field].upper().replace("\\", "/")
         for field in ("path", "build_manifest", "log", "build_log"):
             report["proxy"][field] = report["proxy"][field].upper().replace("\\", "/")
+        report = publish_fixture_report(report, Path(directory))
         evaluated = soak.evaluate_report_for_environment(report)
     assert evaluated["overall"], evaluated["failures"]
     summary = evaluated["checks"]["artifact_locations"]["summary"]
@@ -1361,15 +1364,17 @@ def test_dispatch_forwards_every_applicable_threshold() -> None:
         (soak.GUEST_ENVIRONMENT, "evaluate_guest_report", dict(common, min_guest_status_samples=6)),
     ):
         report = {"environment": environment}
-        with patch.object(soak, grader, return_value={"grader": grader}) as grading:
+        result_record = {"grader": grader, "overall": True, "checks": {}, "failures": []}
+        with patch.object(soak, grader, return_value=result_record) as grading:
             result = soak.evaluate_report_for_environment(report, **supplied)
             if environment == soak.HIDDEN_ENVIRONMENT:
-                assert result == {
-                    "grader": grader, "source_report_sha256": None,
-                    "source_report_binding_errors": ["JSON source path is missing or invalid"],
-                }
+                assert result["grader"] == grader
+                assert result["overall"] is False
+                assert result["source_report_sha256"] is None
+                assert result["source_report_binding_errors"]
+                assert not result["checks"]["source_report_binding"]["passed"]
             else:
-                assert result == {"grader": grader}
+                assert result == result_record
         grading.assert_called_once_with(report, **expected)
 
 
@@ -1481,7 +1486,7 @@ def test_hidden_periodic_count_and_max_gap_share_one_jitter_contract() -> None:
             for index in range(119)
         ]
         report["frame_sample_count"] = report["process_sample_count"] = 119
-        report = seal_fixture(report)
+        report = publish_fixture_report(seal_fixture(report), Path(directory))
         evaluated = soak.evaluate_report_for_environment(report)
         assert evaluated["overall"], evaluated["failures"]
         assert evaluated["checks"]["elapsed_coverage"]["summary"]["required_elapsed_sec"] == 1783
@@ -1524,13 +1529,22 @@ def test_hidden_dispatcher_binds_only_matching_written_source_bytes() -> None:
         for raw in (b"{}", b"{", b"\xff"):
             source_path.write_bytes(raw)
             unbound = soak.evaluate_report_for_environment(source)
+            assert unbound["overall"] is False
+            assert not unbound["checks"]["source_report_binding"]["passed"]
             assert unbound["source_report_sha256"] is None
             assert unbound["source_report_binding_errors"]
         source_path.unlink()
         missing = soak.evaluate_report_for_environment(source)
+        assert missing["overall"] is False
+        assert not missing["checks"]["source_report_binding"]["passed"]
         assert missing["source_report_sha256"] is None and missing["source_report_binding_errors"]
-        with patch.object(Path, "read_bytes", side_effect=PermissionError("retained read failure")):
+        # Restore exactly the original fixture bytes before exercising the
+        # distinct held-read failure; a missing path fails before os.open.
+        source_path.write_bytes(original)
+        with patch("os.open", side_effect=PermissionError("retained read failure")):
             denied = soak.evaluate_report_for_environment(source)
+            assert denied["overall"] is False
+            assert not denied["checks"]["source_report_binding"]["passed"]
             assert denied["source_report_sha256"] is None
             assert any("retained read failure" in error for error in denied["source_report_binding_errors"])
         for visible_or_guest in (passing_report(tmp), passing_guest_report()):

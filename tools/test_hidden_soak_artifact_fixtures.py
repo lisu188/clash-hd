@@ -14,7 +14,8 @@ adapter. Each baseline gets unique canonical run paths; its immutable bytes
 are registered once. The only mocks are the three private retained-file reader
 aliases. Production validators, hashing and the actual patch reporter remain
 active. Full indexed8 frames and synthetic binaries stay in RAM. Source-report
-JSON may still be written to tiny task-owned temporary files by the caller.
+JSON is explicitly published to tiny task-owned temporary files before positive
+dispatch, with no additional reader mock or grader-time publication adapter.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import importlib
+import json
 import math
 import re
 import tempfile
@@ -58,6 +60,8 @@ class _FixtureRegistry:
         self._sealed: dict[int, dict[str, Any]] = {}
         self._frames: dict[tuple[Any, ...], bytes] = {}
         self._counter = 0
+        self._publication_counter = 0
+        self._published: dict[int, dict[str, Any]] = {}
         self._reads: list[tuple[str, int]] = []
 
     @property
@@ -130,6 +134,39 @@ def retained_bytes(path: str) -> bytes:
     if key not in registry._inventory:
         raise KeyError(f"artifact has no sealed baseline: {path}")
     return registry._inventory[key]
+
+
+def publish_fixture_report(payload: dict[str, Any], directory: Path) -> dict[str, Any]:
+    """Publish one completed positive report to a real, tiny private JSON file.
+
+    This is an explicit fixture-authoring step, never a grader wrapper. It
+    copies the report without repairing observations or retained artifacts,
+    assigns one fresh source path, and exclusively writes the exact bytes.
+    Call before negative mutations; never republish a mutated baseline to make
+    its source binding pass. The file is owned by the caller's temporary scope.
+    """
+    registry = _registry()
+    if (type(payload) is not dict or payload.get("schema") != "hidden_cdb_host_soak_report_v1"
+            or payload.get("environment") != "hidden_cdb_host" or payload.get("passed") is not True
+            or payload.get("failures") != []):
+        raise ValueError("publish only a completed positive hidden report baseline")
+    if id(payload) in registry._published:
+        raise ValueError("a fixture report baseline may only be published once")
+    registry._publication_counter += 1
+    destination = Path(directory).resolve() / f"hidden-source-{registry._publication_counter:06d}.json"
+    report = copy.deepcopy(payload)
+    report["report_json"] = str(destination)
+    raw = (json.dumps(report, indent=2, allow_nan=False) + "\n").encode("ascii")
+    if len(raw) > 2 * 1024 * 1024:
+        raise ValueError("private source-report fixture exceeds its tiny-file allowance")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("xb") as stream:
+        if stream.write(raw) != len(raw):
+            raise OSError("private source-report fixture write was incomplete")
+    # Strong references enforce once-only issuance even after object-id reuse.
+    registry._published[id(payload)] = payload
+    registry._published[id(report)] = report
+    return report
 
 
 @contextmanager
@@ -296,6 +333,12 @@ class ArtifactFixtureRegistryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="hidden-registry-tiny-") as directory, fixture_artifact_reads():
             original = self.baseline(directory)
             baseline = seal_fixture(original)
+            published = publish_fixture_report(baseline, Path(directory))
+            self.assertEqual(json.loads(Path(published["report_json"]).read_bytes()), published)
+            self.assertNotEqual(baseline["report_json"], published["report_json"])
+            for value in (baseline, published):
+                with self.assertRaises(ValueError):
+                    publish_fixture_report(value, Path(directory))
             for value in (original, baseline, copy.deepcopy(baseline)):
                 value["frame_samples"][0]["Hash"] = "0" * 64
                 with self.assertRaises(ValueError):
@@ -338,6 +381,7 @@ class ArtifactFixtureRegistryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="hidden-registry-tiny-") as directory:
             with fixture_artifact_reads():
                 baseline = seal_fixture(self.baseline(directory))
+                baseline = publish_fixture_report(baseline, Path(directory))
                 inside = evaluate_report_for_environment(baseline)
                 self.assertTrue(inside["overall"], inside["failures"])
             for (module, attribute), original in zip(modules, original_readers):

@@ -25,7 +25,7 @@ RUNNER = ROOT / "scripts" / "cdb" / "run_hidden_soak.ps1"
 sys.path.insert(0, str(ROOT / "tools"))
 
 import hidden_soak_report_assembler as assembler  # noqa: E402
-from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, seal_fixture
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, publish_fixture_report, seal_fixture
 
 
 SHA = "a" * 64
@@ -504,7 +504,7 @@ def test_reports_pass_shared_hidden_grader(fixture: Path) -> None:
 
     fixture.mkdir(parents=True, exist_ok=True)
     for route in ("map-idle", "map-pan"):
-        report = assembler.assemble_report(make_samples(route))
+        report = publish_fixture_report(assembler.assemble_report(make_samples(route)), fixture)
         guard = evaluate_report_for_environment(report)
         assert guard["overall"], guard["failures"]
 
@@ -514,7 +514,7 @@ def test_every_hidden_frame_requires_strict_metrics_and_surface_provenance(fixtu
 
     fixture.mkdir(parents=True, exist_ok=True)
     samples = make_samples()
-    baseline = assembler.assemble_report(samples)
+    baseline = publish_fixture_report(assembler.assemble_report(samples), fixture)
     assert baseline["passed"]
     assert evaluate_report_for_environment(baseline)["overall"]
     cases = [
@@ -555,6 +555,9 @@ def test_every_hidden_frame_requires_strict_metrics_and_surface_provenance(fixtu
     for row in legacy["frame_samples"]:
         row.pop("RenderEvidence")
         row["CaptureMode"] = "host_readprocessmemory_surface"
+    # A distinct valid compatibility baseline gets its own source publication;
+    # never overwrite the canonical baseline used by the negative mutations.
+    legacy = publish_fixture_report(legacy, fixture / "legacy-positive")
     assert evaluate_report_for_environment(legacy)["overall"]
     raw_legacy = copy.deepcopy(samples)
     raw_legacy["frame_samples"] = legacy["frame_samples"]
@@ -579,7 +582,7 @@ def test_pan_count_uses_the_same_bounded_jitter_as_each_gap(fixture: Path) -> No
     samples["pan_event_count"] = len(samples["pan_events"])
     samples["route_end_marker"].update(scroll_x=4, scroll_y=6)
     samples = seal_fixture(samples)
-    report = assembler.assemble_report(samples)
+    report = publish_fixture_report(assembler.assemble_report(samples), fixture)
     assert report["passed"], report["failures"]
     assert evaluate_report_for_environment(report)["overall"]
     samples["pan_events"][0]["tick_delta"] += 1
@@ -600,7 +603,7 @@ def test_terminal_redraw_hits_must_advance_after_the_final_pan(fixture: Path) ->
     assert samples["route_end_marker"]["tick_delta"] > samples["pan_events"][-1]["tick_delta"]
     samples["route_end_marker"]["hits"] = final_pan_hits + 1
     samples = seal_fixture(samples)
-    baseline = assembler.assemble_report(samples)
+    baseline = publish_fixture_report(assembler.assemble_report(samples), fixture)
     assert baseline["passed"], baseline["failures"]
     assert evaluate_report_for_environment(baseline)["overall"]
     for hits in (0, 1, final_pan_hits - 1, final_pan_hits):
@@ -652,10 +655,10 @@ def test_pan_coordinates_require_one_genuine_exact_four_phase_cycle(fixture: Pat
     for dx, dy in ((1, 1), (-1, -1), (1, -1), (-1, 1), (1, 0), (-1, 0), (0, 1), (0, -1)):
         for declared in (False, True):
             samples = cycle(dx, dy, declared=declared)
-            report = assembler.assemble_report(samples)
+            report = publish_fixture_report(assembler.assemble_report(samples), fixture)
             assert report["passed"], (dx, dy, declared, report["failures"])
             assert evaluate_report_for_environment(report)["overall"], (dx, dy, declared)
-    baseline = assembler.assemble_report(cycle(1, 1))
+    baseline = publish_fixture_report(assembler.assemble_report(cycle(1, 1)), fixture)
     for mutation in ("zero_pan", "wrong_phase_zero", "wrong_phase_y", "inconsistent_x", "inconsistent_y",
                      "declared_zero", "declared_inconsistent", "declared_partial", "fractional_coordinate"):
         invalid = cycle(1, 1)
@@ -697,7 +700,7 @@ def test_live_pan_plan_receipts_are_retained_and_independently_regraded(fixture:
 
     fixture.mkdir(parents=True, exist_ok=True)
     samples = make_samples("map-pan")
-    baseline = assembler.assemble_report(samples)
+    baseline = publish_fixture_report(assembler.assemble_report(samples), fixture)
     assert baseline["passed"], baseline["failures"]
     assert baseline["pan_plans"] == samples["pan_plans"]
     assert evaluate_report_for_environment(baseline)["overall"]
@@ -921,7 +924,7 @@ foreach ($field in @('ready_marker', 'route_start_marker', 'route_end_marker', '
     parsed_samples = make_samples("map-pan", _seal=False)
     parsed_samples.update(parsed["serialized"])
     parsed_samples = seal_fixture(parsed_samples)
-    report = assembler.assemble_report(parsed_samples)
+    report = publish_fixture_report(assembler.assemble_report(parsed_samples), fixture)
     assert report["passed"], report["failures"]
     assert evaluate_report_for_environment(report)["overall"]
     missing = copy.deepcopy(report)

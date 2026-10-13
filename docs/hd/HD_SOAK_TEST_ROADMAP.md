@@ -58,6 +58,12 @@ compare collection-time hashes/sizes, actual selected patch observations, full
 indexed8 metrics and anchored marker inventories. Hidden long guards require all
 three retained-byte check records and freshly regrade their source. A missing
 file, changed receipt or saved consistency summary cannot stand in for backing.
+The public hidden dispatcher additionally requires `source_report_binding`:
+the supplied typed JSON must match the actual retained external report, and a
+selected canonical copy must match its bytes exactly. Binding failures fail
+`overall`; short status, intro completion and long admission reject stale saved
+binding records and source hashes. The external `report_json` is not rewritten
+to manufacture canonical identity. These source-only checks restore no artifacts.
 These checks supply observed byte consistency only: native producer, loaded
 target, coherent capture, canonical probe generation, independent cleanup and
 running-time authentication remain separate prerequisites. Historical missing
@@ -112,11 +118,11 @@ missing artifact, and does not unlock runtime or long tiers.
    copies -> normal refresh/status -> long-prerequisite regrade. Verify both the
    manifest-selected alias and the retained external `report_json` byte binding;
    changing a guard's source alias must not rewrite or replace its source payload.
-   Current short admission accepts the dispatcher's `overall` flag without
-   enforcing its separate `source_report_binding_errors`. Repair that production
-   consumer path and add regressions before execution: every selected source and
-   canonical copy must have zero binding errors and matching actual SHA-256s.
-   A passing short regrade alone does not yet establish that byte identity.
+   The source follow-up now enforces this through mandatory
+   `source_report_binding`, zero binding errors, matching actual SHA-256s and
+   fresh saved-guard comparisons. Preserve those checks in the working-manifest
+   consumer path; a saved pass or semantic-only copy cannot establish byte
+   identity. Passing source fixtures do not satisfy replacement runtime admission.
 4. **Run the diagnostic, then resolve the menu prerequisite.** After exact
    original SHA, stage, workdir, x86 CDB, save slot, proxy and physical-root
    preflight, run the unpublished hidden diagnostic below. Separately restore

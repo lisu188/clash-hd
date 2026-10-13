@@ -93,6 +93,14 @@ canonical-probe, loaded-image, native-producer, coherent-frame, cleanup-lifecycl
 or running-time proof; those prerequisites remain separate. Source fixtures
 cannot restore missing historical evidence or unlock runtime by themselves.
 
+The public hidden dispatcher also fails `overall` on missing or divergent
+source-report bytes. Its mandatory `source_report_binding` compares the selected
+canonical copy to the unchanged embedded external report; CLI, refresh and
+triage pass their actual selected path. Short status, intro completion and long
+admission require fresh matching saved binding records and source hashes.
+Byte-identical aliases are supported; stale guards are not. The registered
+source-binding fixtures are source-only, not replacement endurance evidence.
+
 The user-requested [replacement-evidence plan](HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13)
 is prepared only. Capacity and production admission, a verified canonical
 snapshot, and the separately authenticated visible-menu prerequisite still

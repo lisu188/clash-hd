@@ -52,7 +52,7 @@ HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 HIDDEN_REQUIRED_CHECKS = (
     "schema", "environment", "wrapper_provenance", "marker_provenance",
     "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
-    "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes",
+    "retained_binary_bytes", "retained_frame_bytes", "retained_log_bytes", "source_report_binding",
 )
 
 
@@ -151,8 +151,9 @@ def revalidate_hidden_source(report: dict[str, Any]) -> list[str]:
     failures = [f"hidden source_report: {failure}" for failure in read_failures]
     if not isinstance(source, dict):
         return failures + [f"hidden source_report is missing or is not an object: {source_path}"]
-    if hd_soak_report.normalized_path_text(source.get("report_json")) != hd_soak_report.normalized_path_text(source_ref):
-        failures.append("hidden source_report identity does not match its report_json reference")
+    # source_ref can select an exact canonical copy. The public grader must
+    # bind its bytes to the unchanged embedded external report_json; lexical
+    # path equality would reject that supported publication workflow.
     if source.get("route") == "map-pan":
         pan_interval = source.get("pan_interval_sec")
         detail = source.get("pan_mechanism_detail")
@@ -161,7 +162,7 @@ def revalidate_hidden_source(report: dict[str, Any]) -> list[str]:
         if pan_interval != 10:
             failures.append("hidden source_report requires canonical pan_interval_sec=10 for map-pan")
     try:
-        fresh = hd_soak_report.evaluate_report_for_environment(source)
+        fresh = hd_soak_report.evaluate_report_for_environment(source, source_report_path=source_ref)
     except (OSError, ValueError, TypeError, AttributeError, KeyError, OverflowError) as exc:
         return failures + [f"hidden source_report revalidation raised {type(exc).__name__}: {exc}"]
     if fresh.get("overall") is not True:
@@ -173,7 +174,7 @@ def revalidate_hidden_source(report: dict[str, Any]) -> list[str]:
     if (not isinstance(recorded_digest, str) or not SHA256_RE.fullmatch(recorded_digest)
             or fresh.get("source_report_sha256") != recorded_digest):
         failures.append("hidden source_report exact byte SHA-256 is missing or changed")
-    if report.get("source_report_binding_errors"):
+    if report.get("source_report_binding_errors") != []:
         failures.append("hidden source_report compact guard retained binding errors")
     if fresh.get("source_report_binding_errors"):
         failures.extend(f"hidden source_report binding: {error}" for error in fresh["source_report_binding_errors"])
@@ -188,8 +189,12 @@ def revalidate_hidden_source(report: dict[str, Any]) -> list[str]:
     ):
         if report.get(field) != fresh.get(field):
             failures.append(f"hidden source_report {field} no longer matches the compact guard")
-    if report.get("checks") != fresh.get("checks"):
-        failures.append("hidden source_report checks no longer match the compact guard")
+    try:
+        if (json.dumps(report.get("checks"), sort_keys=True, allow_nan=False)
+                != json.dumps(fresh.get("checks"), sort_keys=True, allow_nan=False)):
+            failures.append("hidden source_report checks no longer match the compact guard")
+    except (ValueError, TypeError, OverflowError, RecursionError):
+        failures.append("hidden source_report compact guard checks are not finite typed JSON")
     return failures
 
 
