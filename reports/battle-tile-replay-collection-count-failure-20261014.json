@@ -1,0 +1,48 @@
+{
+  "schema": "battle_tile_replay_collection_count_failure_v1",
+  "date": "2026-10-14",
+  "evidence_class": "source_fixture_diagnostic_not_runtime",
+  "failed_checkpoint": "a952d232da1003b8f9be915e73e79fedd1e90bc4",
+  "failed_checkpoint_scope": "local_source_checkpoint",
+  "suite": "tools/test_current_evidence_refresh_collection.py",
+  "failed_collection_fixture_sha256": "87a1b4b9f0923f7bbc9de6154518ccf353e99091012a5f7c572bd4d69fbd8c30",
+  "full_collection_batch_state": "completed_failed",
+  "full_collection_final_result_observed": true,
+  "full_collection_methods": 21,
+  "full_collection_elapsed_seconds": 557.575,
+  "full_collection_exit_code": 1,
+  "full_collection_failed_assertions": 3,
+  "completed_registered_component_suites": {
+    "field_loss": {"methods": 13, "passed": true, "elapsed_seconds": 430.152},
+    "tile_replay": {"methods": 10, "passed": true, "elapsed_seconds": 80.626},
+    "matrix_cell": {"methods": 26, "passed": true, "elapsed_seconds": 46.548}
+  },
+  "failed_policy_methods": [
+    "test_early_missing_input_keeps_completed_and_later_results",
+    "test_missing_middle_and_final_inputs_do_not_abort_collection"
+  ],
+  "confirmed_failed_assertions": 3,
+  "expected_error": "AssertionError: 172 != 171",
+  "stale_expected_calls": 171,
+  "actual_allowlisted_calls": 172,
+  "new_check": "battle_tile_replay_tests",
+  "focused_reproduction": {
+    "methods": 2,
+    "elapsed_seconds": 0.018,
+    "exit_code": 1,
+    "failed_assertions": 3
+  },
+  "component_suite_before_failure": {
+    "passed": true,
+    "methods": 10,
+    "elapsed_seconds": 279.649,
+    "source_closure_unchanged": true
+  },
+  "correction": "Update only the two stale total-dispatch assertions to 172 for the new explicit registration; retain every failure-retention and downstream-completion assertion and the original 169-call/167-key golden order digest.",
+  "original_collection_order_sha256": "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e",
+  "native_executed": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

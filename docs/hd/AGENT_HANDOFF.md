@@ -294,6 +294,17 @@ all 36 source cells and eleven scalar replays across four profiles, two bases
 and both draw modes at 800x600 only. The genuine-original Modal Widgets/1080p
 public reconstruction is a separate RAM-only result. Neither observation is
 a full aggregate evidence refresh or full 36-cell CPU/runtime matrix.
+The first full collection exposed two stale total-dispatch assertions in older
+failure-retention fixtures after adding the new runner. The
+[count diagnostic](../../reports/battle-tile-replay-collection-count-failure-20261014.json)
+retains the failed checkpoint and exact `172 != 171` assertions. Updating those
+two counts preserves the original golden order and all failure-retention
+checks; it does not convert that batch into a pass.
+That full batch completed with 21 methods and three count failures; its actual
+13-method field-loss, 10-method Tile and 26-method matrix runners all passed.
+The corrected complete collection then passed all 21 methods, including those
+same actual component runners, without changing their producer or fixture
+bytes. This repairs source-suite registration, not aggregate/runtime acceptance.
 
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome

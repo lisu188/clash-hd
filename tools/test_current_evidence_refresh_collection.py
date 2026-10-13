@@ -191,7 +191,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 171)
+        self.assertEqual(len(self.calls), 172)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -237,7 +237,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 171)
+                self.assertEqual(len(self.calls), 172)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):
