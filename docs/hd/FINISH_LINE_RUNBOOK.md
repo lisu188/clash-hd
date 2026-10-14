@@ -12,7 +12,8 @@ neither a release nor a new runtime pass.
 Expanded-battle preparation now includes separate uninstalled fresh field-loss,
 eleven-site Tile replay and seventeen-site content replay successors. Their
 source/CPU checks do not make expanded battle an installed feature. Count's
-earlier record reads still need a fresh entry guard; post-return gates,
+earlier record reads have a separate uninstalled entry-guard prototype below;
+post-return gates,
 primitive/line successors, provider/RLE lifetime, clipping, native ABI and healthy
 return remain unfinished. Use [the tracked handoff](AGENT_HANDOFF.md) and exact
 component reports for these boundaries. Do not use modeled scalar outcomes as
@@ -25,6 +26,9 @@ The separate [final Adjacent-to-Unit audit](../../reports/battle-adjacent-unit-e
 also excludes five Unit body hooks: this signed-negative caller's saved EBP is
 not admitted TileY. Correct its own source-bound caller contract and prove the
 genuine final route separately; Count-only correction is insufficient.
+The separate Count-entry checkpoint now checks draw-only input-record bounds
+against an authored normal-RET stub. Its source/model pass neither executes the
+original Count body nor repairs those downstream or final-caller blockers.
 
 ## Public prerequisites
 

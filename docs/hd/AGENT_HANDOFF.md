@@ -377,6 +377,28 @@ proof; do not weaken the guard to accept arbitrary negative values. Tile-only
 replay remains unaffected. No native execution or new runtime pass was produced
 by either static audit.
 
+The separate uninstalled [`battle_profile_count_entry.py`](../../src/patcher/battle_profile_count_entry.py)
+prepares the draw-only CALL `0x42F956` before Count's early `+4/+6/+2` reads.
+It clones the complete actual Unit prefix and private admission closure, then
+requires a current numeric unit-record pointer and in-range unsigned16 record
+coordinates. Native registers/flags and the real `0x42F95B` CALL word survive;
+the adapter jumps to Count without discarding the word or fabricating a result.
+Its [strict eleven-method checkpoint](../../reports/battle-count-entry-source-20261014.json)
+passed all 36 source geometries and 96 authored-stub calls across four profiles,
+two bases, both modes, initial Tile/Adjacent ancestry and records 0/7/21 at
+800x600 only. All 23 registration-collection methods also passed, including
+the actual strict Count-entry, content, field-loss, Tile and matrix runners.
+The collection extends to 174 calls / 172 keys while preserving the original
+169-call / 167-key golden order. This is not a full evidence refresh or release pass.
+The initial no-op negative-hook fixture failure is retained separately.
+
+No original Count body executes in those fixtures. Exact-original public
+Modal Widgets/1080p construction passed in RAM without a candidate, but supplies
+no native ABI/runtime proof. The downstream Count live-DY blocker and final
+Adjacent saved-EBP blocker remain; the Count-entry clone inherits the latter.
+Non-draw/sentinel input, installation, healthy return and all release gates
+remain unfinished. Frozen content and Tile producers are unchanged.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -910,6 +932,7 @@ python -B tools/test_battle_profile_stack_lease_v2.py --require-machine-tools
 python -B tools/test_battle_profile_content_v2.py
 python -B tools/test_battle_profile_tile_replay.py
 python -B tools/test_battle_profile_content_replay.py
+python -B tools/test_battle_profile_count_entry.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

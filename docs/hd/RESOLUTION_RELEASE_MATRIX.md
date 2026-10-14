@@ -710,6 +710,14 @@ this final caller's saved-EBP rejection. A Count-only live-DY correction cannot
 establish this route's compatibility.
 Static instruction analysis is not genuine-body execution or release acceptance.
 
+The separate uninstalled Count-entry adapter checks the draw-only current input
+record before native `+4/+6/+2` reads, preserving the actual native CALL word.
+Its eleven-method source/CPU-model suite passes all 36 source geometries and
+96 authored normal-RET stub calls at 800x600, not genuine Count instructions.
+The two downstream Count live-DY checks and the final Adjacent-to-Unit saved-EBP
+contract remain incompatible. Non-draw/sentinel authority, native integration,
+full-matrix runtime and every release-cell acceptance remain unfinished.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
