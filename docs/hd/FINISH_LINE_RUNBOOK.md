@@ -17,6 +17,10 @@ primitive/line successors, provider/RLE lifetime, clipping, native ABI and healt
 return remain unfinished. Use [the tracked handoff](AGENT_HANDOFF.md) and exact
 component reports for these boundaries. Do not use modeled scalar outcomes as
 runtime, manual input, endurance, release-cell or promotion proof.
+The [Count live-EBP audit](../../reports/battle-count-native-ebp-blocker-20261014.json)
+also excludes the current two Count-body hooks from installation. A separate
+fresh successor must replace the inherited Unit-EBP assumption with Count's
+authenticated live neighbor-Y authority; preserving old model passes is not a fix.
 
 ## Public prerequisites
 

@@ -1,0 +1,54 @@
+{
+  "schema": "battle_count_native_ebp_contract_blocker_v1",
+  "date": "2026-10-14",
+  "evidence_class": "exact_original_read_only_instruction_contract_audit",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "count_span": {
+    "start_va": "0x426EF0",
+    "end_va": "0x426F75",
+    "bytes": 133,
+    "sha256": "a97ca326a029c59233d0e8881e5eed3004c8e168d24fd7248a5a78c48c65cf90",
+    "instructions": 51,
+    "internal_branches": 7,
+    "calls": 0,
+    "external_branches": 0,
+    "ret0_va": "0x426F74",
+    "highlow_operands": [
+      {"va": "0x426F0D", "target": "0x514500"},
+      {"va": "0x426F19", "target": "0x532048"},
+      {"va": "0x426F29", "target": "0x514504"}
+    ]
+  },
+  "neighbor_table_sha256": "f5c6bbbf5f45749649807f7d447f200806adb5055b4af1fcb2738ba8786dd59c",
+  "native_live_ebp": {
+    "load_va": "0x426F27",
+    "meaning": "neighbor-Y delta from the authenticated table at0x514504 plus the live EAX byte offset",
+    "restore_va": "0x426F6E",
+    "body_sites": ["0x426F44", "0x426F54"],
+    "saved_count_ebp_remains": "CountSP-24 equals UnitSP-12 and must still be checked"
+  },
+  "incompatible_frozen_admission": {
+    "producer": "src/patcher/battle_profile_content_v2.py",
+    "ancestry_count_requires_live_ebp": "CountSP+56",
+    "shared_count_requires_live_ebp": "UnitSP-12",
+    "problem": "Both require inherited Unit EBP instead of genuine Count neighbor-Y. Healthy modeled Count inputs used the inherited value and did not establish native composition."
+  },
+  "affected_source_checkpoint": {
+    "content_replay_producer_sha256": "bafc8fd0cdd8350a85b3ca0cd0d91005d603d6db99b10359c401b50d083248f3",
+    "content_replay_fixture_sha256": "f285dea2525bd2ad796391f8d53eebaf4d206e20660e9de5e862c815aa4afd86",
+    "native_count_body_admission_compatible": false,
+    "count_body_hooks_must_not_be_installed": true,
+    "tile_only_checkpoint_affected": false,
+    "new_count_entry_adapter_affected": false
+  },
+  "required_fix": "Separate fresh Count-body successor: require live EAX eight-aligned and unsigned below64, bind captured live EBP to the source-authenticated neighbor-Y for that offset, preserve saved-EBP/ancestor/control receipts, and independently verify genuine occupied central and edge paths. Do not reset native EBP or reuse the inherited value.",
+  "execution_note": "Read-only exact-original and source-contract audit. This records a statically established incompatibility, not an observed runtime crash or emulated result. An all-outside neighbor route could miss both body sites and is insufficient verification.",
+  "native_count_emulation_performed": false,
+  "candidate_written": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "manual_input_proof": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

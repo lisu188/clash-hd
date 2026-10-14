@@ -4,6 +4,9 @@
   "evidence_class": "uninstalled_source_and_synthetic_scalar_cpu_models",
   "source_parent_git_commit": "924d77759d536e462249c9d2c2dd7914f3cd9c89",
   "parent_pull_request": 186,
+  "parent_pull_request_merge_commit": "f7c94f7b5dae3fa2a50424d1588174c1da8a8d88",
+  "published_integration_base_git_commit": "f7c94f7b5dae3fa2a50424d1588174c1da8a8d88",
+  "merged_parent_tree_equals_tested_parent": true,
   "producer": "src/patcher/battle_profile_content_replay.py",
   "producer_sha256": "bafc8fd0cdd8350a85b3ca0cd0d91005d603d6db99b10359c401b50d083248f3",
   "source_checks_passed": true,
@@ -38,6 +41,9 @@
   "registered_matrix_methods": 26,
   "registered_matrix_elapsed_seconds": 42.082,
   "source_closure_unchanged": true,
+  "native_count_body_admission_compatible": false,
+  "native_count_body_hooks_must_not_be_installed": true,
+  "native_count_body_blocker_report": "reports/battle-count-native-ebp-blocker-20261014.json",
   "cpu_model_scope": {
     "profiles": ["classic", "framed", "completehd", "modalwidgets"],
     "resolution": "800x600",
@@ -49,6 +55,7 @@
     "full_36_cell_cpu_matrix_verified": false,
     "native_game_body_executed": false
   },
+  "count_model_limit": "The32 Count-body cases in the272 modeled cross-product used inherited Unit EBP. Exact-original audit establishes genuine live EBP is neighbor-Y; those model passes do not establish native Count composition.",
   "observed_rejections": [
     "changed complete Tile fields, earlier field/lease/content/loss/joined bytes and relocation receipts",
     "changed original/relayout whole windows, missing/extra selected HIGHLOW, changed ledger and forged operand roles",
@@ -103,8 +110,9 @@
     "hash_mismatches": 0,
     "primary_unrelated_untracked_files_retained": 11
   },
-  "independent_review": "no functional producer or oracle defect; full-prefix substitutions and unchanged-Tile rejection assertions were added before the final collection",
+  "independent_review": "Historical source/model review found no defect within its authored inputs and added full-prefix/unchanged-Tile assertions. The subsequent exact-original Count audit supersedes that conclusion for native Count composition: the inherited live-EBP contract is incompatible and the two Count-body hooks must not be installed.",
   "limitations": [
+    "The two Count body hooks are statically native-incompatible: inherited ContentV2 admission expects Unit EBP while genuine Count uses neighbor-Y. They must not be installed until a separately verified successor corrects that authority. The original model passes remain model-only.",
     "Seventeen Vertical/Unit/Adjacent/Count adapters are emitted in RAM only. No hook, candidate, provider or release lane is installed.",
     "Late Count hooks do not protect native early +4/+6/+2 reads. A fresh entry gate at42F956/42F95B, non-draw426F95/431D7A and WORLD+821 sentinel authority remain required.",
     "Post-normal-return, primitive/line, provider/RLE ownership/capacity/lifetime/cancellation, clipping, native ABI/mappings, camera/input/animation/presentation/dialog/results/quit and healthy return remain unfinished.",

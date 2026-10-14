@@ -692,6 +692,14 @@ runtime matrix. Post-normal-return gates, primitive/line successors, provider/RL
 ownership/capacity/lifetime/cancellation, clipping, native ABI/mappings, healthy
 return and all runtime/input/endurance/promotion gates still require completion.
 
+The exact-original Count audit additionally establishes that the two current
+Count-body adapters must not be installed: genuine live EBP is neighbor-Y,
+whereas the inherited Content V2 guard requires Unit EBP. Keep the saved Count
+EBP receipt, but require a separately verified live-offset/neighbor-Y successor.
+Existing Count model passes used the inherited value, not native Count's live
+register contract. This does not affect the Tile-only or Count-entry adapter;
+no release cell is accepted by either source checkpoint.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle

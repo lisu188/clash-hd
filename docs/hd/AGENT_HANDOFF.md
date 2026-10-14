@@ -348,6 +348,19 @@ a pass. Genuine-original Modal Widgets/1080p construction passed in RAM with
 mutable aliases disabled and no candidate written; none of these results is a
 full aggregate evidence refresh, full 36-cell CPU/runtime matrix or release pass.
 
+The subsequent [exact-original Count audit](../../reports/battle-count-native-ebp-blocker-20261014.json)
+found an inherited admission incompatibility: at both Count body sites, genuine
+live EBP contains neighbor-Y from `0x514504+EAX`, not the Unit frame pointer.
+Frozen Content V2 checks the inherited Unit EBP twice. The saved Count EBP at
+Count SP-24 remains a valid separate ancestor receipt. The 32 Count model cases
+above used the inherited live value and are not native composability proof.
+Do not install the current two Count-body hooks. A separate fresh successor
+must bind the aligned, bounded live EAX table offset to the authenticated
+neighbor-Y value while retaining all saved-EBP and control receipts. The new
+entry-only guard runs before Count changes EBP and is not affected. Tile-only
+replay is also unaffected. An all-outside neighbor case can bypass both body
+sites; require occupied central and edge cases in later original-backed proof.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
