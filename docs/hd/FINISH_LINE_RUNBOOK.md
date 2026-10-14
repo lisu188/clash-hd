@@ -29,6 +29,10 @@ genuine final route separately; Count-only correction is insufficient.
 The separate Count-entry checkpoint now checks draw-only input-record bounds
 against an authored normal-RET stub. Its source/model pass neither executes the
 original Count body nor repairs those downstream or final-caller blockers.
+The separate Count-only body successor now corrects the live-DY source/model
+contract and retains the native input-X local across Thread. Its uninstalled
+scalar checks still do not execute the original Count or fix the final Unit
+caller; genuine native composition and healthy return remain required.
 
 ## Public prerequisites
 

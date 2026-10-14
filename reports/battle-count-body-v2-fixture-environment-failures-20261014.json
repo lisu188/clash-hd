@@ -1,0 +1,56 @@
+{
+  "schema": "battle_count_body_v2_fixture_environment_failures_v1",
+  "date": "2026-10-14",
+  "producer_sha256": "223510d1a3f1b2e112d66989de5b49e6bb6c761ba995d20818efea2a9b648020",
+  "fixture_sha256": "0112f115b2ff871fa25b8cbc0cf8e1ae526742521fbf7a717bcda64ac08b7e3e",
+  "evidence_class": "source_fixture_environment_failures_not_game_behavior",
+  "interpreter": "existing bundled Python",
+  "arguments": [
+    "-B", "tools/test_battle_profile_count_body_v2.py",
+    "SourceTests.test_closed_model_adapter_bytes_receipts_and_scalar_roles",
+    "SourceTests.test_authored_span_table_highlow_both_images_not_original_execution",
+    "CPUTests.test_actual_foreign_native_and_intrinsic_return_stack_fail_before_callback",
+    "CPUTests.test_count_local_x_and_paired_shadow_loss_deny_before_post_thread_caches"
+  ],
+  "failed_attempts": [
+    {
+      "status": "completed_failed",
+      "exit_code": 1,
+      "sandbox": "default",
+      "wall_seconds": 2.0276383,
+      "tool_chunk": "f93bff",
+      "exception_type": "PermissionError",
+      "exception_message": "[WinError 5] Access is denied",
+      "location": "producer Path.resolve(strict=True), line838, managed source path",
+      "unittest_collection_performed": false,
+      "cpu_cases_executed": 0
+    },
+    {
+      "status": "completed_failed",
+      "exit_code": 1,
+      "sandbox": "normal_escalated",
+      "wall_seconds": 9.2036927,
+      "unittest_elapsed_seconds": 8.250,
+      "tool_chunk": "fbafbc",
+      "exception_type": "ModuleNotFoundError",
+      "exception_message": "No module named 'unicorn'",
+      "chained_exception": "ImportError: Unicorn x86 API unavailable",
+      "location": "CPUTests.setUpClass; existing lifecycle tool discovery and fixture line524",
+      "source_methods_run": 2,
+      "source_methods_passed": 2,
+      "cpu_cases_executed": 0,
+      "unittest_errors": 1
+    }
+  ],
+  "correction": "Use normal managed-worktree sandbox escalation and point PYTHONPATH at the already-existing pinned unicorn2.1.4 toolchain. Do not install dependencies, skip cases or modify source assertions.",
+  "failed_results_reclassified_as_pass": false,
+  "source_or_fixture_changed_to_hide_failure": false,
+  "full_source_closure_wrapper_executed": false,
+  "candidate_written": false,
+  "original_count_instructions_executed": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "manual_input_proof": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

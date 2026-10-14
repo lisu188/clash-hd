@@ -1110,5 +1110,9 @@
 /tools/test_battle_profile_count_entry.py text eol=lf
 /reports/battle-count-entry-fixture-failure-20261014.json text eol=lf
 /reports/battle-count-entry-source-20261014.json text eol=lf
+/src/patcher/battle_profile_count_body_v2.py text eol=lf
+/tools/test_battle_profile_count_body_v2.py text eol=lf
+/reports/battle-count-body-v2-fixture-environment-failures-20261014.json text eol=lf
+/reports/battle-count-body-v2-source-20261014.json text eol=lf
 /reports/battle-tile-replay-source-20261014.json text eol=lf
 /reports/battle-tile-replay-collection-count-failure-20261014.json text eol=lf

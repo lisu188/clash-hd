@@ -399,6 +399,33 @@ Adjacent saved-EBP blocker remain; the Count-entry clone inherits the latter.
 Non-draw/sentinel input, installation, healthy return and all release gates
 remain unfinished. Frozen content and Tile producers are unchanged.
 
+The separate uninstalled [`battle_profile_count_body_v2.py`](../../src/patcher/battle_profile_count_body_v2.py)
+corrects both inherited Count live-EBP checks using captured, bounded table
+offset EAX and authenticated neighbor-DY. Saved Count EBP at `CountS-24`
+remains a separate Unit ancestry receipt. A native-local audit also added
+explicit before/after bounds and a shadowed scalar receipt for Count's input-X
+local at `CountS-28`; callback mutation rejects before cached-object reads.
+The two exact ECX/DL scalar adapters, six retained source ranges and ten
+transform receipts have independent full byte/operand contracts. Frame784 and
+the sixteen-row capacity are unchanged; those are numeric model limits, not
+mapped/native stack or whole-chain proof.
+
+The [Count-body source checkpoint](../../reports/battle-count-body-v2-source-20261014.json)
+records all eleven methods passing across selected batches, 36 source cells,
+228 healthy authored adapter calls and 32 rejection cases. The strict default
+eleven-method run on the initial hash also passed without skips; its 37-file
+source closure matched before and after. A subsequent one-byte EOF repair and
+dependent literal-pin update preserve the producer AST, but fresh strict
+registration revalidation is still pending. The initial smallest source RX
+headroom is 66,304 bytes at 4K, not native stack capacity. Environment failures
+and the formatting-gate failure remain retained, not relabeled as passes.
+Exact-original Modal Widgets/1080p construction passed in RAM without a
+candidate or original Count instruction execution. The final `0x42FFA4`
+Adjacent-to-Unit ancestry blocker remains; this Count-only correction does
+not fix or establish that caller's compatibility. Native composition,
+installation, provider/RLE lifetime, healthy return and all release gates remain
+unfinished. Never install the frozen incompatible predecessor Count hooks.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -933,6 +960,7 @@ python -B tools/test_battle_profile_content_v2.py
 python -B tools/test_battle_profile_tile_replay.py
 python -B tools/test_battle_profile_content_replay.py
 python -B tools/test_battle_profile_count_entry.py
+python -B tools/test_battle_profile_count_body_v2.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
