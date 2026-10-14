@@ -19,12 +19,12 @@ return remain unfinished. Use [the tracked handoff](AGENT_HANDOFF.md) and exact
 component reports for these boundaries. Do not use modeled scalar outcomes as
 runtime, manual input, endurance, release-cell or promotion proof.
 The [Count live-EBP audit](../../reports/battle-count-native-ebp-blocker-20261014.json)
-also excludes the current two Count-body hooks from installation. A separate
-fresh successor must replace the inherited Unit-EBP assumption with Count's
+also excludes the frozen predecessor's two Count-body hooks from installation.
+A separate fresh successor must replace the inherited Unit-EBP assumption with Count's
 authenticated live neighbor-Y authority; preserving old model passes is not a fix.
 The separate [final Adjacent-to-Unit audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
-also excludes five Unit body hooks: this signed-negative caller's saved EBP is
-not admitted TileY. Correct its own source-bound caller contract and prove the
+also excludes the frozen predecessor's five Unit body hooks: this signed-negative
+caller's saved EBP is not admitted TileY. Correct its own source-bound caller contract and prove the
 genuine final route separately; Count-only correction is insufficient.
 The separate Count-entry checkpoint now checks draw-only input-record bounds
 against an authored normal-RET stub. Its source/model pass neither executes the
@@ -33,6 +33,10 @@ The separate Count-only body successor now corrects the live-DY source/model
 contract and retains the native input-X local across Thread. Its uninstalled
 scalar checks still do not execute the original Count or fix the final Unit
 caller; genuine native composition and healthy return remain required.
+Its current-hash eleven-method strict source/model suite and the complete
+24-method registration collection now pass. The earlier EOF-gate failure and
+initial-hash results remain separately recorded; these passes still supply no
+installed feature, full evidence refresh, runtime or release acceptance.
 
 ## Public prerequisites
 

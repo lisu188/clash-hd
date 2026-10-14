@@ -415,9 +415,14 @@ records all eleven methods passing across selected batches, 36 source cells,
 228 healthy authored adapter calls and 32 rejection cases. The strict default
 eleven-method run on the initial hash also passed without skips; its 37-file
 source closure matched before and after. A subsequent one-byte EOF repair and
-dependent literal-pin update preserve the producer AST, but fresh strict
-registration revalidation is still pending. The initial smallest source RX
-headroom is 66,304 bytes at 4K, not native stack capacity. Environment failures
+dependent literal-pin update preserve the producer AST. Fresh revalidation on
+the current hashes passed all eleven strict methods without skips in 322.876
+seconds, with the same 37-file closure before and after. All 24 collection
+methods passed in 1362.060 seconds, including the actual strict content, Count
+entry, field-loss, Tile and matrix runners. The original 169-call / 167-key
+order remains intact within the extended 175-call / 173-key collection. This
+is not a full aggregate evidence refresh. The smallest source RX headroom
+remains 66,304 bytes at 4K, not native stack capacity. Environment failures
 and the formatting-gate failure remain retained, not relabeled as passes.
 Exact-original Modal Widgets/1080p construction passed in RAM without a
 candidate or original Count instruction execution. The final `0x42FFA4`

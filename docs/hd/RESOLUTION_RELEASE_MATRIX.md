@@ -723,8 +723,11 @@ retains the native input-X local across the modeled Thread callback, preserving
 saved Count EBP and the sixteen-row/784-byte shape. Its selected source/scalar
 fixtures cover 36 source geometries and 228 healthy calls at 800x600 only.
 Its initial strict eleven-method run passed with unchanged 37-file closure and
-no skips. A subsequent one-byte EOF repair preserves the AST but requires
-fresh strict registration revalidation, which remains pending at this checkpoint.
+no skips. After a one-byte EOF repair and dependent literal-pin update, fresh
+strict registration passed all eleven current-hash methods in 322.876 seconds
+with the same closure. All 24 collection methods also passed in 1362.060
+seconds, including the actual component runners. This is source-suite
+registration, not a full aggregate evidence refresh or a release-cell pass.
 Original Count execution, native unwind and installation remain
 unproved; the distinct final Adjacent caller remains incompatible.
 
