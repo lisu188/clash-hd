@@ -47,6 +47,16 @@
   "final_adjacent_unit_route_native_compatible": false,
   "unit_body_hooks_must_not_be_installed": true,
   "adjacent_unit_blocker_report": "reports/battle-adjacent-unit-ebp-blocker-20261014.json",
+  "fresh_count_entry_adapter_supplied_by_checkpoint": false,
+  "early_count_record_reads_protected_by_checkpoint": false,
+  "hosted_review_documentation_correction": {
+    "pull_request": 187,
+    "reviewed_head": "1c0f46bc6ecf3ae7e30a3e9aa932d8c03ac6842f",
+    "inline_comment_id": 4265536316,
+    "finding": "The active handoff referred to a new Count-entry guard although the seventeen-site fresh source checkpoint excludes that producer.",
+    "correction": "Keep the fresh guard and early-read protection explicitly pending in this checkpoint; qualify future cloned-ancestry implications without claiming a supplied adapter or entry pass.",
+    "production_source_or_fixture_changed": false
+  },
   "cpu_model_scope": {
     "profiles": ["classic", "framed", "completehd", "modalwidgets"],
     "resolution": "800x600",
