@@ -1,0 +1,86 @@
+{
+  "schema": "battle_count_native_original_fixture_failure_v1",
+  "date": "2026-10-14",
+  "status": "completed_failed_before_genuine_count_execution",
+  "evidence_class": "opt_in_original_backed_cpu_fixture_setup_failure_not_game_behavior",
+  "original_path": "C:/Clash/clash95.exe",
+  "original_sha256_before_and_after": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "failed_fixture": "tools/test_battle_profile_native_count_original.py",
+  "failed_fixture_sha256": "63f99bec4cd229c21df833e40b7b818f15655dab075f19b5701d773863f84688",
+  "frozen_dependency_sha256": {
+    "src/patcher/battle_profile_count_entry.py": "50bf7d588bd41102ba7170f6a53ff9f65a22496b5d9ea13586496196a7cc2ac4",
+    "tools/test_battle_profile_count_entry.py": "b927ee3d1a0bf55f6ca46dfe4915adf9b60d783aec7c2a6d4f95cf75462da73c",
+    "src/patcher/battle_profile_count_body_v2.py": "b42d1724edb3eb6ba1a393884a8ceff0f590d61368fe438c4b003ad2997b1d8d",
+    "tools/test_battle_profile_count_body_v2.py": "80ebeb87f50959890b6eb8d6df6bb2dfc398c750419137f9e51c7a4b14505ecc"
+  },
+  "command": "python -B tools/test_battle_profile_native_count_original.py --original-backed C:/Clash/clash95.exe --test test_true_count_two_bases_modes_and_modeled_initial_ancestry",
+  "pythonpath": "C:/Users/andrz/git/clash-hd/.codex-loop/toolchain/unicorn-2.1.4",
+  "sandbox": "normal_escalated",
+  "tool_chunk": "c878b2",
+  "exit_code": 1,
+  "wall_seconds": 9.7787298,
+  "unittest_elapsed_seconds": 8.847,
+  "methods_run": 4,
+  "authoring_methods_passed": 3,
+  "original_backed_methods_errored": 1,
+  "completed_genuine_count_cases": 0,
+  "failure": {
+    "method": "OriginalTests.test_true_count_two_bases_modes_and_modeled_initial_ancestry",
+    "exception_type": "TypeError",
+    "exception_message": "machine_class.<locals>.OriginalMachine.invoke() got an unexpected keyword argument 'eax'",
+    "stack": [
+      "native_count_original.py:582 test -> pair:555 -> make:551 -> setup:260",
+      "field_v3.py:365 prepare -> routing_v2.py:370 prepare",
+      "lifecycle.py:297 enter -> self.invoke('try_enter', eax=self.ROOT_SP)"
+    ],
+    "cause": "The new Count-only invoke(regs, flags, fault) method shadowed inherited lifecycle invoke(name, eax, edx, flags, stops, sp), so prepare failed before the first genuine Count CALL.",
+    "proposed_correction": "Rename only the Count-specific method and direct callers to invoke_original, preserving inherited lifecycle invocation; add a default AST dispatch regression without importing dependencies."
+  },
+  "second_selected_method": "test_empty_owner_extremes_and_occupied_edges_with_genuine_access_bounds",
+  "second_selected_method_run": false,
+  "automatic_retry_performed": false,
+  "diagnosed_fixture_only_repair": {
+    "fixture_sha256": "ea9313f195f24039c32399460f9ad946c788f9a76cf41dbc70e62505984ae142",
+    "producer_changes": false,
+    "changes": [
+      "Rename Count-specific invoke method to invoke_original.",
+      "Rename exactly five direct Count invocation callers.",
+      "Add stdlib ast import and one default source-only lifecycle-dispatch regression."
+    ],
+    "deterministic_reverse_recipe": [
+      "Parse current fixture source with stdlib ast; remove AuthoringTests.test_count_invocation_does_not_shadow_inherited_lifecycle_dispatch source lines and its immediately following blank line.",
+      "Remove the single import ast line while preserving all other bytes and line endings.",
+      "Replace def invoke_original( with def invoke( once and .invoke_original( with .invoke( exactly five times."
+    ],
+    "reverse_result_sha256": "63f99bec4cd229c21df833e40b7b818f15655dab075f19b5701d773863f84688",
+    "reverse_hash_verified_in_ram": true,
+    "reversed_ast_identical": true,
+    "default_authoring_methods_passed": 4,
+    "default_authoring_elapsed_seconds": 0.015,
+    "default_original_or_cpu_dependency_access": false,
+    "original_backed_rerun_result": "not_recorded_here_pending_separate_authorized_attempt"
+  },
+  "original_authentication_and_ram_decoder_completed": true,
+  "genuine_count_semantic_instructions_executed": false,
+  "full_source_closure_before_and_after_verified": true,
+  "explicit_original_and_dependency_pins_unchanged": true,
+  "collection_isolation": "The concurrent test_current_evidence_refresh_collection.py uses explicit registered source closures; neither this new report nor the unregistered native fixture is included.",
+  "disk_after": {
+    "volume": "C:",
+    "used_bytes": 920259739648,
+    "free_bytes": 79336222720
+  },
+  "producer_changed_for_failure": false,
+  "failed_result_reclassified_as_pass": false,
+  "candidate_written": false,
+  "proprietary_bytes_exported": false,
+  "game_executed": false,
+  "debugger_executed": false,
+  "native_count_cpu_parity_proved": false,
+  "native_outer_abi_proved": false,
+  "mapping_or_lifetime_proved": false,
+  "windows_runtime_verified": false,
+  "manual_input_proof": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

@@ -162,6 +162,7 @@ import test_battle_profile_tile_replay
 import test_battle_profile_content_replay
 import test_battle_profile_count_entry
 import test_battle_profile_count_body_v2
+import test_battle_profile_native_count_original
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -659,6 +660,8 @@ DEFAULT_BATTLE_COUNT_ENTRY_TESTS_JSON = Path("captures/current/battle-count-entr
 DEFAULT_BATTLE_COUNT_ENTRY_TESTS_MD = Path("captures/current/battle-count-entry-tests-current.md")
 DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_JSON = Path("captures/current/battle-count-body-v2-tests-current.json")
 DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_MD = Path("captures/current/battle-count-body-v2-tests-current.md")
+DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_JSON = Path("captures/current/battle-native-count-authoring-tests-current.json")
+DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_MD = Path("captures/current/battle-native-count-authoring-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5760,6 +5763,19 @@ def build_battle_count_body_v2_tests(args: argparse.Namespace) -> dict[str, Any]
     )
 
 
+def build_battle_native_count_authoring_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_battle_profile_native_count_original,
+        tests=["exact source and native Count metadata contracts with independent bounded neighbor oracle",
+               "authoring-only API retains source identity and cannot invoke original-backed CPU setup"],
+        title="Original Count Fixture Authoring Tests",
+        json_path=args.battle_native_count_authoring_tests_json,
+        md_path=args.battle_native_count_authoring_tests_md,
+        guard_policy="four authoring checks only; original_opcode_cpu_verified remains false; no runtime or release acceptance",
+        runtime_policy="authoring-only source checks; no original file, CPU interpreter, game, debugger, compiler or capture",
+    )
+
+
 def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
@@ -8095,6 +8111,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["battle_content_replay_tests"] = collect("battle_content_replay_tests", build_battle_content_replay_tests, args)
     checks["battle_count_entry_tests"] = collect("battle_count_entry_tests", build_battle_count_entry_tests, args)
     checks["battle_count_body_v2_tests"] = collect("battle_count_body_v2_tests", build_battle_count_body_v2_tests, args)
+    checks["battle_native_count_authoring_tests"] = collect("battle_native_count_authoring_tests", build_battle_native_count_authoring_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9488,6 +9505,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--battle-count-entry-tests-md", type=Path, default=DEFAULT_BATTLE_COUNT_ENTRY_TESTS_MD)
     parser.add_argument("--battle-count-body-v2-tests-json", type=Path, default=DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_JSON)
     parser.add_argument("--battle-count-body-v2-tests-md", type=Path, default=DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_MD)
+    parser.add_argument("--battle-native-count-authoring-tests-json", type=Path, default=DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_JSON)
+    parser.add_argument("--battle-native-count-authoring-tests-md", type=Path, default=DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(

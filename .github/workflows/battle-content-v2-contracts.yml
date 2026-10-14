@@ -84,6 +84,8 @@ jobs:
         run: python -B tools/test_battle_profile_count_entry.py
       - name: Verify uninstalled Count-body live-DY and saved-local correction without skips
         run: python -B tools/test_battle_profile_count_body_v2.py
+      - name: Verify original Count fixture authoring only without a retail runtime
+        run: python -B tools/test_battle_profile_native_count_original.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -102,4 +104,5 @@ jobs:
               output.write('The separate Count-only body successor binds live EBP to authenticated neighbor-DY, preserves saved Count EBP and retains CountS-28 across the modeled Thread callback. ECX/DL scalar adapters remain uninstalled; their model pass does not execute original Count or repair the final Adjacent-to-Unit saved-EBP contract.\n\n')
               output.write('The 784-byte helper and numeric interval [EBP-44, EBP+824) establish no mapped/native or whole-chain capacity. Native callback ABI, receiver/argument validity, provider/RLE lifetime, continuation/primitive/line joins, arena clipping, atomic installation, quit and healthy map return remain unfinished.\n\n')
               output.write('No game, native debugger/compiler, live capture, human input, endurance, release acceptance or stable promotion occurs in this job.\n')
+              output.write('The original Count fixture runs only four default authoring checks in public CI. Its separately opt-in original-backed CPU comparison is local-only and is never invoked here.\n')
           PY
