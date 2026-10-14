@@ -40,7 +40,8 @@
     "native_count_body_admission_compatible": false,
     "count_body_hooks_must_not_be_installed": true,
     "tile_only_checkpoint_affected": false,
-    "new_count_entry_adapter_affected": false
+    "new_count_entry_adapter_affected_by_count_live_dy_timing_issue": false,
+    "separate_final_adjacent_unit_ancestry_blocker": "reports/battle-adjacent-unit-ebp-blocker-20261014.json"
   },
   "required_fix": "Separate fresh Count-body successor: require live EAX eight-aligned and unsigned below64, bind captured live EBP to the source-authenticated neighbor-Y for that offset, preserve saved-EBP/ancestor/control receipts, and independently verify genuine occupied central and edge paths. Do not reset native EBP or reuse the inherited value.",
   "execution_note": "Read-only exact-original and source-contract audit. This records a statically established incompatibility, not an observed runtime crash or emulated result. An all-outside neighbor route could miss both body sites and is insufficient verification.",

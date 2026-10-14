@@ -697,13 +697,15 @@ Count-body adapters must not be installed: genuine live EBP is neighbor-Y,
 whereas the inherited Content V2 guard requires Unit EBP. Keep the saved Count
 EBP receipt, but require a separately verified live-offset/neighbor-Y successor.
 Existing Count model passes used the inherited value, not native Count's live
-register contract. This does not affect the Tile-only or Count-entry adapter;
+register contract. The Count-live-DY timing issue does not affect Tile-only
+replay or the earlier Count-entry adapter;
 no release cell is accepted by either source checkpoint.
 
 The [final Adjacent-to-Unit saved-EBP audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
 separately excludes the five current Unit body hooks. The `0x42FFA4` caller
 requires negative motion-derived EBP, not the nonnegative TileY expected by
 frozen admission. A caller-specific authenticated successor remains required;
+the Count-entry clone also inherits this final caller's saved-EBP rejection.
 the Count-only live-DY correction cannot establish this route's compatibility.
 Static instruction analysis is not genuine-body execution or release acceptance.
 

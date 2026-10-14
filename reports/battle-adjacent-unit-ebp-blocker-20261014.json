@@ -36,7 +36,8 @@
     "final_adjacent_unit_route_native_compatible": false,
     "unit_body_hooks_must_not_be_installed": true,
     "tile_only_checkpoint_affected": false,
-    "count_entry_before_count_live_ebp_change_affected": false,
+    "count_entry_affected_by_count_live_dy_timing_issue": false,
+    "count_entry_inherits_final_adjacent_saved_ebp_rejection": true,
     "broader_count_entry_chain_native_compatibility_proved": false,
     "count_only_live_dy_successor_repairs_this_contract": false
   },

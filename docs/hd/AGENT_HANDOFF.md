@@ -357,7 +357,8 @@ above used the inherited live value and are not native composability proof.
 Do not install the current two Count-body hooks. A separate fresh successor
 must bind the aligned, bounded live EAX table offset to the authenticated
 neighbor-Y value while retaining all saved-EBP and control receipts. The new
-entry-only guard runs before Count changes EBP and is not affected. Tile-only
+entry-only guard runs before Count changes EBP and is not affected by that
+Count-live-DY timing issue. Tile-only
 replay is also unaffected. An all-outside neighbor case can bypass both body
 sites; require occupied central and edge cases in later original-backed proof.
 
@@ -368,6 +369,8 @@ and calls Unit only when that value is signed negative. Unit saves it at
 `UnitS[-12]`; frozen admission instead requires the nonnegative TileY.
 The modeled TileY ancestry does not establish this final caller's compatibility.
 A Count-only live-DY correction does not fix this separate saved-EBP contract.
+The Count-entry clone also inherits that final caller's saved-EBP rejection;
+its entry-only model pass is not whole-chain native compatibility.
 Require a source-authenticated, caller-specific successor and genuine final-call
 proof; do not weaken the guard to accept arbitrary negative values. Tile-only
 replay remains unaffected. No native execution or new runtime pass was produced
