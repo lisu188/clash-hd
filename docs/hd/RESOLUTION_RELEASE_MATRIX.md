@@ -728,8 +728,19 @@ strict registration passed all eleven current-hash methods in 322.876 seconds
 with the same closure. All 24 collection methods also passed in 1362.060
 seconds, including the actual component runners. This is source-suite
 registration, not a full aggregate evidence refresh or a release-cell pass.
-Original Count execution, native unwind and installation remain
-unproved; the distinct final Adjacent caller remains incompatible.
+Those source/scalar fixtures execute no original Count and establish no native
+unwind or installation; the distinct final Adjacent caller remains incompatible.
+
+The separate opt-in original Count CPU fixture passed all eleven final methods
+in 161.503 seconds with the exact original and 38-file source closure unchanged.
+It compares the original Count prologue/loop/RET0 with RAM-only guarded CALL
+windows, including complete register/flag/stack and semantic-read oracles.
+Outer Unit/Tile/Field ancestry and Thread are modeled; final `0x42FFA4` is
+excluded. Its 800x600 Classic and separate Modal Widgets cases establish no
+all-36-cell native/runtime or full outer-ABI acceptance. Default/public CI and
+aggregate run only four authoring checks, never the original-backed lane.
+All runtime verifiers, installed battle, input, endurance and release cells
+remain separate requirements. See the [CPU-only checkpoint](../../reports/battle-count-native-original-cpu-checks-20261014.json).
 
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and

@@ -37,6 +37,12 @@ Its current-hash eleven-method strict source/model suite and the complete
 24-method registration collection now pass. The earlier EOF-gate failure and
 initial-hash results remain separately recorded; these passes still supply no
 installed feature, full evidence refresh, runtime or release acceptance.
+The separate local-only original Count CPU fixture now passes all eleven
+methods with the original and 38-file source closure unchanged. It executes
+the genuine Count body/RET against modeled outer ancestry and Thread, not the
+final Adjacent caller or a Windows game process. Public CI/aggregate runs only
+four authoring checks; native lifetime, installed battle and healthy return
+remain unfinished. See its [exact scoped checkpoint](../../reports/battle-count-native-original-cpu-checks-20261014.json).
 
 ## Public prerequisites
 
