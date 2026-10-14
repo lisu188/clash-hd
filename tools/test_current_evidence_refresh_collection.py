@@ -78,14 +78,15 @@ class CollectionTests(unittest.TestCase):
 
     def test_all_original_dispatches_order_arguments_and_names_preserved(self):
         # Preserve the original 169-call/167-key oracle and admit only the
-        # explicitly registered matrix-context, field-loss and Tile-replay suites.
+        # explicitly registered matrix-context, field-loss, Tile and content-replay suites.
         # It includes both repeated dependent calls and the zero-argument runner.
         tree = ast.parse(inspect.getsource(refresh.build_refresh))
         calls = sorted((n for n in ast.walk(tree) if isinstance(n, ast.Call)
                         and isinstance(n.func, ast.Name) and n.func.id == "collect"),
                        key=lambda n: (n.lineno, n.col_offset))
         rows = [(n.args[0].value, n.args[1].id, [a.id for a in n.args[2:]]) for n in calls]
-        added = {"matrix_cell_release_tests", "battle_field_loss_tests", "battle_tile_replay_tests"}
+        added = {"matrix_cell_release_tests", "battle_field_loss_tests", "battle_tile_replay_tests",
+                 "battle_content_replay_tests"}
         original_rows = [row for row in rows if row[0] not in added]
         digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
@@ -95,8 +96,9 @@ class CollectionTests(unittest.TestCase):
             ("matrix_cell_release_tests", "build_matrix_cell_release_tests", ["args"]),
             ("battle_field_loss_tests", "build_battle_field_loss_tests", ["args"]),
             ("battle_tile_replay_tests", "build_battle_tile_replay_tests", ["args"]),
+            ("battle_content_replay_tests", "build_battle_content_replay_tests", ["args"]),
         ])
-        self.assertEqual(len(rows), 172)
+        self.assertEqual(len(rows), 173)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -104,7 +106,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 170)
+        self.assertEqual(len(report["checks"]), 171)
         self.assertIs(report["passed"], True)
 
     def test_simple_test_policy_default_preserves_legacy_result(self):
@@ -182,6 +184,23 @@ class CollectionTests(unittest.TestCase):
         self.assertIn("no runtime or release acceptance", payload["guard_policy"])
         self.assertFalse(payload["failures"])
 
+    def test_registered_battle_content_replay_actual_entrypoint(self):
+        workflow = (TOOLS.parent / ".github/workflows/battle-content-v2-contracts.yml").read_text(encoding="utf-8")
+        dependency = "python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4"
+        command = "python -B tools/test_battle_profile_content_replay.py"
+        self.assertLess(workflow.index(dependency), workflow.index(command))
+        # Invoke the strict actual runner. Only output serializers are mocked.
+        with patch.object(refresh, "write_json") as write_json, patch.object(refresh, "write_simple_tests_markdown") as markdown:
+            result = refresh.build_battle_content_replay_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        write_json.assert_called_once()
+        markdown.assert_called_once()
+        payload = write_json.call_args.args[1]
+        self.assertEqual(len(payload["tests"]), 2)
+        self.assertIn("partial-register scalar instruction oracles", payload["runtime_policy"])
+        self.assertIn("no runtime or release acceptance", payload["guard_policy"])
+        self.assertFalse(payload["failures"])
+
     def test_early_missing_input_keeps_completed_and_later_results(self):
         message = "captures/current/patch-stage-current-hd-map.json is missing"
         def missing(args):
@@ -191,7 +210,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 172)
+        self.assertEqual(len(self.calls), 173)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -237,7 +256,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 172)
+                self.assertEqual(len(self.calls), 173)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

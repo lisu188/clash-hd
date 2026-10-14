@@ -283,8 +283,9 @@ Denied admission, malformed payload and unknown control/status reach UD2.
 No native early epilogue is borrowed: the four Tile epilogue pop words lack a
 complete cleanup receipt. The 784-byte frame and `[EBP-44, EBP+824)` interval
 remain numeric model bounds, not native mappings or whole-chain capacity.
-The remaining seventeen content sites, post-normal-return/Count admission,
-primitive and line successors, provider/RLE ownership, clipping, native ABI,
+The seventeen remaining content sites have a separate uninstalled successor
+below. Post-normal-return/Count admission, primitive and line successors,
+provider/RLE ownership, clipping, native ABI,
 input/camera/presentation/results/quit and healthy return remain required.
 Source and scalar CPU fixtures establish no native installation, runtime,
 manual-input, endurance, release-cell acceptance or promotion.
@@ -305,6 +306,76 @@ That full batch completed with 21 methods and three count failures; its actual
 The corrected complete collection then passed all 21 methods, including those
 same actual component runners, without changing their producer or fixture
 bytes. This repairs source-suite registration, not aggregate/runtime acceptance.
+
+[`battle_profile_content_replay.py`](../../src/patcher/battle_profile_content_replay.py)
+appends the remaining seventeen Vertical/Unit/Adjacent/Count native-destination
+adapters after the complete pinned Tile replay chain. Full EAX/ECX and partial
+AX/BL/DL destinations preserve all unaffected native register bits; incoming
+flags are restored before the exact scalar tails. Independent whole-byte and
+typed-operand reconstruction binds source blocks, receipts, hooks and the sole
+selected HIGHLOW at `0x42F9CC`. The indexed neighbor-table tail checks captured
+native EDI is eight-aligned and unsigned below 64 before the rebased table read.
+The Unit owner tail checks captured native EDX against WORLD plus the captured
+self offset from `UnitS[-28]`, separately from the neighboring payload index.
+The Count owner tail relies on the parent draw-only numeric EDI receipt.
+
+These late body adapters do not protect Count's earlier record reads at
+`+4/+6/+2`. A separate entry guard at CALL `0x42F956` / return `0x42F95B`,
+unsupported non-draw callers `0x426F95` / `0x431D7A`, and the WORLD+821 sentinel
+still require explicit authority. All detected denial, malformed payload and
+control/status loss terminate at real UD2 without native cleanup or loss writes.
+The helper bounds are numeric CPU-model bounds, not native stack/mapping or
+whole-chain capacity. No hook, candidate, provider or release lane is installed.
+Post-return gates, primitive/line successors, provider/RLE lifetime/cancellation,
+clipping, native ABI, input/camera/presentation/results/quit and healthy return
+remain required. Live Thread RET/ESP, pre-existing paired controls, transient
+writes and cross-thread mutation retain their explicit unproved limits.
+
+The separate strict `tools/test_battle_profile_content_replay.py` runner is
+registered in the aggregate and pinned-Unicorn Ubuntu/Windows workflow. Its
+source geometries cover all 36 cells; its authored scalar CPU cross-product is
+seventeen sites by four profiles, two bases and both modes at 800x600 only.
+Additional tests separate self unit 21 from neighbor 7 and reject unsafe table,
+owner and Count tails. These are synthetic instruction/receipt checks, never
+native runtime, manual input, endurance, release acceptance or promotion.
+The [2026-10-14 content checkpoint](../../reports/battle-content-replay-source-20261014.json)
+records all twelve strengthened methods passing through the actual registration,
+and all 22 collection methods passing, including the inherited 13-method
+field-loss, ten-method Tile and 26-method matrix runners. The original 169-call /
+167-key dispatch order stays unchanged within the extended 173-call / 171-key
+collection. A separately retained mistyped test-selector failure is not relabeled
+a pass. Genuine-original Modal Widgets/1080p construction passed in RAM with
+mutable aliases disabled and no candidate written; none of these results is a
+full aggregate evidence refresh, full 36-cell CPU/runtime matrix or release pass.
+
+The subsequent [exact-original Count audit](../../reports/battle-count-native-ebp-blocker-20261014.json)
+found an inherited admission incompatibility: at both Count body sites, genuine
+live EBP contains neighbor-Y from `0x514504+EAX`, not the Unit frame pointer.
+Frozen Content V2 checks the inherited Unit EBP twice. The saved Count EBP at
+Count SP-24 remains a valid separate ancestor receipt. The 32 Count model cases
+above used the inherited live value and are not native composability proof.
+Do not install the current two Count-body hooks. A separate fresh successor
+must bind the aligned, bounded live EAX table offset to the authenticated
+neighbor-Y value while retaining all saved-EBP and control receipts. This
+seventeen-body-site checkpoint supplies no fresh Count-entry guard; protection
+of the early `+4/+6/+2` reads remains pending in this fresh chain. Tile-only
+replay is unaffected. An all-outside neighbor case can bypass both body
+sites; require occupied central and edge cases in later original-backed proof.
+
+The separate [Adjacent-to-Unit audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
+also excludes the five current Unit body hooks from installation. The final
+native caller at `0x42FF9F` / return `0x42FFA4` loads EBP from `0x523F70`
+and calls Unit only when that value is signed negative. Unit saves it at
+`UnitS[-12]`; frozen admission instead requires the nonnegative TileY.
+The modeled TileY ancestry does not establish this final caller's compatibility.
+A Count-only live-DY correction does not fix this separate saved-EBP contract.
+Any future Count-entry clone reusing the frozen Unit admission would also
+inherit that final caller's saved-EBP rejection. No fresh Count-entry adapter
+or entry-only pass is provided by this checkpoint.
+Require a source-authenticated, caller-specific successor and genuine final-call
+proof; do not weaken the guard to accept arbitrary negative values. Tile-only
+replay remains unaffected. No native execution or new runtime pass was produced
+by either static audit.
 
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
@@ -838,6 +909,7 @@ python -B tools/test_battle_profile_field_v3.py --require-machine-tools
 python -B tools/test_battle_profile_stack_lease_v2.py --require-machine-tools
 python -B tools/test_battle_profile_content_v2.py
 python -B tools/test_battle_profile_tile_replay.py
+python -B tools/test_battle_profile_content_replay.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools

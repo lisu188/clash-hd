@@ -665,10 +665,50 @@ the single selected HIGHLOW and exact original/relayout windows. Denial and
 fault stop UD2; no unchecked native cleanup or fake empty value is permitted.
 Authored scalar CPU oracles are not original-body or native runtime proof.
 The 784-byte frame/868-byte checked interval establishes no mapped/native or
-whole-chain capacity, and the adapters are not installed. Seventeen content
-sites, post-return/Count, primitive/line, provider/RLE, clipping, native ABI,
+whole-chain capacity, and the adapters are not installed. The remaining seventeen
+content sites have the separate uninstalled successor below. Post-return/Count,
+primitive/line, provider/RLE, clipping, native ABI,
 camera/input/presentation/results/quit and healthy return remain unfinished.
 All thirty-six release cells and every runtime gate retain their requirements.
+
+The subsequent `src/patcher/battle_profile_content_replay.py` emits seventeen
+Vertical/Unit/Adjacent/Count destination/scalar-tail adapters after the complete
+pinned Tile replay. Partial AX/BL/DL retain their unaffected native bits; all
+other registers and incoming flags are restored before exact scalar tails.
+The full byte/operand/source-receipt closure authenticates original/relayout
+windows and the single selected table HIGHLOW at `0x42F9CC`. Captured EDI must
+be eight-aligned and unsigned below 64 before that table ADD. The Unit owner
+comparison separately binds native EDX to WORLD plus authenticated SELF,
+not the neighbor's payload index. Count remains bound to the parent's draw-only
+numeric EDI receipt. Denial, malformed payload and changed controls/status stop
+UD2 without native unwind or descriptor writes.
+
+The late Count adapters do not protect earlier `+4/+6/+2` record reads. A separate
+entry gate at CALL `0x42F956` / return `0x42F95B`, non-draw `0x426F95`/`0x431D7A`
+admission and WORLD+821 sentinel authority remain unproved. No hook or candidate
+is installed. Source checks across all 36 geometries and scalar CPU checks across
+four profiles, two bases and both modes at 800x600 are not a full 36-cell CPU or
+runtime matrix. Post-normal-return gates, primitive/line successors, provider/RLE
+ownership/capacity/lifetime/cancellation, clipping, native ABI/mappings, healthy
+return and all runtime/input/endurance/promotion gates still require completion.
+
+The exact-original Count audit additionally establishes that the two current
+Count-body adapters must not be installed: genuine live EBP is neighbor-Y,
+whereas the inherited Content V2 guard requires Unit EBP. Keep the saved Count
+EBP receipt, but require a separately verified live-offset/neighbor-Y successor.
+Existing Count model passes used the inherited value, not native Count's live
+register contract. Tile-only replay is unaffected. This seventeen-body-site
+checkpoint supplies no fresh Count-entry adapter; early record-read protection
+remains pending. No release cell is accepted by these source checkpoints.
+
+The [final Adjacent-to-Unit saved-EBP audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
+separately excludes the five current Unit body hooks. The `0x42FFA4` caller
+requires negative motion-derived EBP, not the nonnegative TileY expected by
+frozen admission. A caller-specific authenticated successor remains required;
+any future Count-entry clone retaining frozen Unit admission would inherit
+this final caller's saved-EBP rejection. A Count-only live-DY correction cannot
+establish this route's compatibility.
+Static instruction analysis is not genuine-body execution or release acceptance.
 
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
