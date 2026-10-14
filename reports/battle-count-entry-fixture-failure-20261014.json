@@ -1,0 +1,39 @@
+{
+  "schema": "battle_count_entry_fixture_failure_v1",
+  "date": "2026-10-14",
+  "status": "completed_failed",
+  "exit_code": 1,
+  "evidence_class": "uninstalled_source_and_synthetic_count_stub_cpu_models",
+  "producer": "src/patcher/battle_profile_count_entry.py",
+  "producer_sha256": "50bf7d588bd41102ba7170f6a53ff9f65a22496b5d9ea13586496196a7cc2ac4",
+  "failed_fixture": "tools/test_battle_profile_count_entry.py",
+  "failed_fixture_sha256": "dd54c4d8a4abea423b113923e4a4a0ce8bf288c9255ff85b81d120900af2f8a5",
+  "methods_run": 4,
+  "elapsed_seconds": 56.254,
+  "failed_methods": 1,
+  "passed_methods": 3,
+  "failure": {
+    "method": "SourceTests.test_closed_receipts_native_pc_and_scalar_roles_cannot_be_forged",
+    "subtest": "field=planned_hooks",
+    "line": 369,
+    "assertion": "AssertionError: ValueError not raised",
+    "cause": "Reversing the exactly one-element planned hook inventory did not change it; the test expected rejection of unchanged valid input.",
+    "correction": "Remove the hook for this negative case and assert every negative mutation actually differs; preserve all producer validation."
+  },
+  "passed_scope": [
+    "explicit synthetic native-window/span authentication adapter, not original proof",
+    "96 healthy authored Count-stub calls across four profiles, two bases, both modes, both Unit ancestries and records0/7/21 at800x600",
+    "actual intrinsic return and ESP corruption denied before callbacks"
+  ],
+  "healthy_flag_scope": "Tile ancestry uses DF-on0xed7; Adjacent ancestry uses DF-off0x246; not another cross-product",
+  "producer_changed_for_failure": false,
+  "full_source_closure_recheck_performed": false,
+  "scope_note": "The selected-method batch did not invoke the strict full-run source-closure wrapper; producer and fixture hashes were checked separately.",
+  "candidate_written": false,
+  "native_count_instructions_executed": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "manual_input_proof": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}
