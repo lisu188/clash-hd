@@ -3,6 +3,8 @@
   "date": "2026-10-14",
   "evidence_class": "uninstalled_source_and_synthetic_count_stub_cpu_models",
   "source_parent_git_commit": "1c0f46bc6ecf3ae7e30a3e9aa932d8c03ac6842f",
+  "publication_parent_git_commit": "46544e10ef9dcaa3c222309a216b3fc200a122da",
+  "publication_parent_docs_only_correction_source_pins_unchanged": true,
   "parent_pull_request": 187,
   "parent_pull_request_merge_verified": false,
   "producer": "src/patcher/battle_profile_count_entry.py",
@@ -104,6 +106,14 @@
   "public_cloud_checks_passed": 8,
   "powershell_parse_errors": 0,
   "python_source_files_ast_parsed": 4,
+  "preservation": {
+    "baseline_manifest_sha256": "465599752a0e930e64570bedd7d3cc75d1d69f7be02c7e9f331367eb09d84e45",
+    "checked_records": 3382,
+    "untracked_records": 165,
+    "evidence_records": 3217,
+    "hash_mismatches": 0,
+    "primary_unrelated_untracked_files_retained": 11
+  },
   "expanded_battle_installed": false,
   "native_count_instructions_executed": false,
   "game_executed": false,
