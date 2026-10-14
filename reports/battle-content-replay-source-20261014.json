@@ -44,6 +44,9 @@
   "native_count_body_admission_compatible": false,
   "native_count_body_hooks_must_not_be_installed": true,
   "native_count_body_blocker_report": "reports/battle-count-native-ebp-blocker-20261014.json",
+  "final_adjacent_unit_route_native_compatible": false,
+  "unit_body_hooks_must_not_be_installed": true,
+  "adjacent_unit_blocker_report": "reports/battle-adjacent-unit-ebp-blocker-20261014.json",
   "cpu_model_scope": {
     "profiles": ["classic", "framed", "completehd", "modalwidgets"],
     "resolution": "800x600",
@@ -56,6 +59,7 @@
     "native_game_body_executed": false
   },
   "count_model_limit": "The32 Count-body cases in the272 modeled cross-product used inherited Unit EBP. Exact-original audit establishes genuine live EBP is neighbor-Y; those model passes do not establish native Count composition.",
+  "unit_ancestry_model_limit": "The modeled TileY ancestry did not reproduce the final Adjacent-to-Unit caller at42FFA4. That native caller saves a signed-negative EBP while frozen admission requires nonnegative TileY; the five current Unit body hooks must not be installed. Count-only live-DY correction does not fix that separate saved-EBP contract.",
   "observed_rejections": [
     "changed complete Tile fields, earlier field/lease/content/loss/joined bytes and relocation receipts",
     "changed original/relayout whole windows, missing/extra selected HIGHLOW, changed ledger and forged operand roles",
@@ -110,9 +114,10 @@
     "hash_mismatches": 0,
     "primary_unrelated_untracked_files_retained": 11
   },
-  "independent_review": "Historical source/model review found no defect within its authored inputs and added full-prefix/unchanged-Tile assertions. The subsequent exact-original Count audit supersedes that conclusion for native Count composition: the inherited live-EBP contract is incompatible and the two Count-body hooks must not be installed.",
+  "independent_review": "Historical source/model review found no defect within its authored inputs and added full-prefix/unchanged-Tile assertions. Subsequent exact-original audits supersede native-composition assumptions: Count live EBP and the final Adjacent-to-Unit saved EBP violate inherited admission. The two Count and five Unit body hooks must not be installed.",
   "limitations": [
     "The two Count body hooks are statically native-incompatible: inherited ContentV2 admission expects Unit EBP while genuine Count uses neighbor-Y. They must not be installed until a separately verified successor corrects that authority. The original model passes remain model-only.",
+    "The five Unit body hooks reject the genuine final Adjacent-to-Unit signed-motion caller because saved EBP is negative, not admitted TileY. Correct this separate caller-bound authority before installation; source-only Count correction does not repair it.",
     "Seventeen Vertical/Unit/Adjacent/Count adapters are emitted in RAM only. No hook, candidate, provider or release lane is installed.",
     "Late Count hooks do not protect native early +4/+6/+2 reads. A fresh entry gate at42F956/42F95B, non-draw426F95/431D7A and WORLD+821 sentinel authority remain required.",
     "Post-normal-return, primitive/line, provider/RLE ownership/capacity/lifetime/cancellation, clipping, native ABI/mappings, camera/input/animation/presentation/dialog/results/quit and healthy return remain unfinished.",

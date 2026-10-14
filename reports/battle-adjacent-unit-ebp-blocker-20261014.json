@@ -1,0 +1,61 @@
+{
+  "schema": "battle_adjacent_unit_native_ebp_contract_blocker_v1",
+  "date": "2026-10-14",
+  "evidence_class": "exact_original_read_only_instruction_contract_audit",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "authenticated_spans": [
+    {"start_va": "0x42FC30", "end_va": "0x42FFB0", "role": "Adjacent", "sha256": "fa35bb975c69093e4a0e0af71943d54edbb12af250821f4b462b0dae4052dfc8"},
+    {"start_va": "0x42F820", "end_va": "0x42FC30", "role": "Unit", "sha256": "1927416dbe66ccbee6bf8c22a7f874f5c1ee6f08feaff551985b0ae4b93d6c0e"},
+    {"start_va": "0x42FF7A", "end_va": "0x42FFA4", "role": "final Adjacent Unit call admission", "sha256": "455371cdb73867ea54a97c41442702a4bd2bd88135af9c2a2b2585c2a684c9fa"}
+  ],
+  "native_caller_contract": {
+    "ebp_load_va": "0x42FF7A",
+    "ebp_source_va": "0x523F70",
+    "test_va": "0x42FF80",
+    "signed_jge_va": "0x42FF82",
+    "signed_jge_target_va": "0x42FED6",
+    "call_va": "0x42FF9F",
+    "call_target_va": "0x42F820",
+    "return_va": "0x42FFA4",
+    "required_live_caller_ebp": "signed negative; no intervening EBP write or CALL",
+    "saved_unit_ebp": "UnitS[-12] saves this negative caller EBP; live Unit EBP becomes UnitS-12"
+  },
+  "incompatible_frozen_admission": {
+    "template": "src/patcher/battle_profile_content.py",
+    "template_sha256": "52f9ac7f8d52cb40638e91868910d6487cea083be0cc32e622d8fe4a3f8cf3d7",
+    "producer": "src/patcher/battle_profile_content_v2.py",
+    "producer_sha256": "681fbf96f79e9c1fa9c64ab70f27057ade97bc4a109f79562c65a383067372c6",
+    "whitelisted_unit_return_va": "0x42FFA4",
+    "saved_unit_ebp_required": "TileS[-24], the nonnegative admitted TileY",
+    "contradiction": "The native final caller can reach Unit only with saved EBP negative, whereas the frozen saved-EBP guard requires the admitted nonnegative TileY. The first Unit body hook rejects this genuine route."
+  },
+  "affected_source_checkpoint": {
+    "content_replay_producer_sha256": "bafc8fd0cdd8350a85b3ca0cd0d91005d603d6db99b10359c401b50d083248f3",
+    "unit_body_sites": ["0x42F84A", "0x42F9AF", "0x42F9C3", "0x42F9D7", "0x42F9EC"],
+    "final_adjacent_unit_route_native_compatible": false,
+    "unit_body_hooks_must_not_be_installed": true,
+    "tile_only_checkpoint_affected": false,
+    "count_entry_before_count_live_ebp_change_affected": false,
+    "broader_count_entry_chain_native_compatibility_proved": false,
+    "count_only_live_dy_successor_repairs_this_contract": false
+  },
+  "other_static_observations": {
+    "audited_non_count_sites": 15,
+    "body_sp_deltas": {"vertical": -8, "unit": -64, "adjacent": -16},
+    "live_ebp_roles": {"vertical": "inherited Tile EBP", "unit": "UnitS-12", "adjacent_own_body_sites": "TileY"},
+    "neighbor_table_vas": ["0x513334", "0x514500"],
+    "complete_neighbor_table_bytes": 64,
+    "neighbor_table_sha256": "f5c6bbbf5f45749649807f7d447f200806adb5055b4af1fcb2738ba8786dd59c",
+    "claim_limit": "Static stack/register and table observations are not complete native ABI, payload, callback or lifetime verification."
+  },
+  "required_fix": "A separate fresh successor must distinguish the final signed-motion caller from ordinary Adjacent callers, authenticate its true saved-EBP source and control receipts, and exercise genuine final-call native instructions. Do not reset EBP, accept an arbitrary negative value, remove saved-frame checks or fabricate a TileY equality.",
+  "execution_note": "This is a statically established sign contradiction, not an observed runtime or emulation failure. Existing modeled TileY ancestries did not exercise the genuine final caller. Count-only live-DY correction does not repair this separate Unit admission problem.",
+  "native_game_body_emulation_performed": false,
+  "candidate_written": false,
+  "game_executed": false,
+  "runtime_verified": false,
+  "manual_input_proof": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

@@ -21,6 +21,10 @@ The [Count live-EBP audit](../../reports/battle-count-native-ebp-blocker-2026101
 also excludes the current two Count-body hooks from installation. A separate
 fresh successor must replace the inherited Unit-EBP assumption with Count's
 authenticated live neighbor-Y authority; preserving old model passes is not a fix.
+The separate [final Adjacent-to-Unit audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
+also excludes five Unit body hooks: this signed-negative caller's saved EBP is
+not admitted TileY. Correct its own source-bound caller contract and prove the
+genuine final route separately; Count-only correction is insufficient.
 
 ## Public prerequisites
 

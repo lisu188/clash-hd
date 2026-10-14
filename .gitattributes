@@ -1105,5 +1105,6 @@
 /tools/test_battle_profile_content_replay.py text eol=lf
 /reports/battle-content-replay-source-20261014.json text eol=lf
 /reports/battle-count-native-ebp-blocker-20261014.json text eol=lf
+/reports/battle-adjacent-unit-ebp-blocker-20261014.json text eol=lf
 /reports/battle-tile-replay-source-20261014.json text eol=lf
 /reports/battle-tile-replay-collection-count-failure-20261014.json text eol=lf

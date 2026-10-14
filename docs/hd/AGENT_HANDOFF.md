@@ -361,6 +361,18 @@ entry-only guard runs before Count changes EBP and is not affected. Tile-only
 replay is also unaffected. An all-outside neighbor case can bypass both body
 sites; require occupied central and edge cases in later original-backed proof.
 
+The separate [Adjacent-to-Unit audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
+also excludes the five current Unit body hooks from installation. The final
+native caller at `0x42FF9F` / return `0x42FFA4` loads EBP from `0x523F70`
+and calls Unit only when that value is signed negative. Unit saves it at
+`UnitS[-12]`; frozen admission instead requires the nonnegative TileY.
+The modeled TileY ancestry does not establish this final caller's compatibility.
+A Count-only live-DY correction does not fix this separate saved-EBP contract.
+Require a source-authenticated, caller-specific successor and genuine final-call
+proof; do not weaken the guard to accept arbitrary negative values. Tile-only
+replay remains unaffected. No native execution or new runtime pass was produced
+by either static audit.
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,

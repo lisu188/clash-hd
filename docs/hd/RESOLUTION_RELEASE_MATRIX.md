@@ -700,6 +700,13 @@ Existing Count model passes used the inherited value, not native Count's live
 register contract. This does not affect the Tile-only or Count-entry adapter;
 no release cell is accepted by either source checkpoint.
 
+The [final Adjacent-to-Unit saved-EBP audit](../../reports/battle-adjacent-unit-ebp-blocker-20261014.json)
+separately excludes the five current Unit body hooks. The `0x42FFA4` caller
+requires negative motion-derived EBP, not the nonnegative TileY expected by
+frozen admission. A caller-specific authenticated successor remains required;
+the Count-only live-DY correction cannot establish this route's compatibility.
+Static instruction analysis is not genuine-body execution or release acceptance.
+
 Each final candidate needs actual native acquisition/read, selection/movement,
 scrolling and focus recovery; map frame/footer, all six action cells, panel and
 minimap alignment; castle and every supported building route; expanded battle
