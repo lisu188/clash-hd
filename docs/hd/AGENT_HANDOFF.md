@@ -431,6 +431,48 @@ not fix or establish that caller's compatibility. Native composition,
 installation, provider/RLE lifetime, healthy return and all release gates remain
 unfinished. Never install the frozen incompatible predecessor Count hooks.
 
+The separate [`test_battle_profile_native_count_original.py`](../../tools/test_battle_profile_native_count_original.py)
+adds an explicit local-only original-instruction CPU fixture. It authenticates
+the exact user-owned original, complete 133-byte Count body, 64-byte neighbor
+table, draw CALL and three HIGHLOW operands in RAM. Baseline untouched Count
+is compared with the same Count instructions around the uninstalled entry and
+two corrected body CALL windows. The original prologue, eight-neighbor loop
+and RET0 execute without an inherited Count stub, result callback or native-read
+shortcut. Unit/Tile/Field ancestry and Thread remain authored models.
+
+The [compact CPU checkpoint](../../reports/battle-count-native-original-cpu-checks-20261014.json)
+records all eleven final methods passing in 161.503 seconds: four authoring
+and seven opt-in original-backed methods, with the exact 38-file source closure
+and original unchanged. Healthy baseline/joined comparisons check GPRs,
+EFLAGS, EIP, natural CALL/RET/ESP, independent semantic reads, all eight offsets
+and world/owner/lease/stack/code/table canaries. Owner cases cover 0/1/254/255,
+not every byte value. CPU geometry is 800x600: Classic supplies two bases, both
+modes and direct/initial Adjacent ancestry; Modal Widgets supplies separate
+allocation cases. This is not all-profile or all-36-cell native acceptance.
+
+The retained setup and local-write oracle failures remain failures. The final
+oracle distinguishes entry-helper scratch from native Count-local ownership,
+requires exactly the original X initialization after authenticated Count entry,
+then prohibits post-fault local writes and requires X xor 1 to survive at real
+UD2. Cache/shadow/reread and no-native-return assertions remain enforced.
+The final `0x42FFA4` caller is excluded; genuine Unit argument authority,
+native mappings/lifetime/full ABI, healthy full-battle return and installation
+remain unproved. No game/debugger, candidate, capture or proprietary export is
+created by this CPU lane.
+
+Default CLI, public `run_tests()`, aggregate registration and public CI run only
+four stdlib authoring checks without opening the original or importing a CPU
+interpreter. Four focused registration checks passed, including that actual
+authoring runner, CLI output overrides and the unchanged original 169-call /
+167-key order within 176 calls / 174 keys. The complete new 25-method collection
+has not been run locally; the prior 24-method collection result remains separate.
+No production runtime verifier or release cell is accepted by this registration.
+The original-backed command is an explicit, separate local opt-in:
+
+```powershell
+python -B tools/test_battle_profile_native_count_original.py --original-backed C:/Clash/clash95.exe
+```
+
 [`battle_profile_routing.py`](../../src/patcher/battle_profile_routing.py)
 prepares admission checks, private HUD target routing and native-size chrome
 copies for those authenticated parents. It snapshots owner records, headers,
@@ -966,6 +1008,7 @@ python -B tools/test_battle_profile_tile_replay.py
 python -B tools/test_battle_profile_content_replay.py
 python -B tools/test_battle_profile_count_entry.py
 python -B tools/test_battle_profile_count_body_v2.py
+python -B tools/test_battle_profile_native_count_original.py
 python -B tools/test_battle_profile_routing.py --require-machine-tools
 python -B tools/test_battle_profile_field.py --require-machine-tools
 python -B tools/test_battle_profile_field_v2.py --require-machine-tools
