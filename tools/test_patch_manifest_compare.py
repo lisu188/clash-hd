@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -80,10 +80,10 @@ def run_compare(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def main() -> int:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "patch-manifest-compare-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    fixture_parent = ROOT / ".codex-loop" / "tmp-tests"
+    fixture_parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="patch-manifest-compare-fixture-", dir=fixture_parent) as raw:
+        fixture = Path(raw)
         left_path = fixture / "left.json"
         same_path = fixture / "same.json"
         right_path = fixture / "right.json"
@@ -151,8 +151,6 @@ def main() -> int:
         assert out_md.is_file(), out_md
         written = json.loads(out_json.read_text(encoding="utf-8"))
         assert written["counts"]["changed_records"] == 1, written
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
     print("patch_manifest_compare tests passed")
     return 0
 
