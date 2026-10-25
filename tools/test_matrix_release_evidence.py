@@ -103,7 +103,7 @@ class MatrixReleaseTests(unittest.TestCase):
         self.assertEqual(len(release.REQUIRED_LANES), 16)
         self.assertEqual(len(release.UNIMPLEMENTED_LANES), 15)
 
-    def test_real_replay_accepts_all_28_advertised_canonical_source_contexts_only(self):
+    def test_real_replay_accepts_all_32_advertised_canonical_source_contexts_only(self):
         manifest = json.loads(CATALOG_BYTES)
         checked = 0
         for profile in matrix.PROFILES:
@@ -119,7 +119,7 @@ class MatrixReleaseTests(unittest.TestCase):
                     self.assertTrue(report["lanes"]["resolution_coverage"]["passed"], report["failures"])
                     self.assertEqual(report["candidate_context"]["identity"], fixture.identity)
                     checked += 1
-        self.assertEqual(checked, 28)
+        self.assertEqual(checked, 32)
 
     def test_classic_stable_and_wide_features_are_not_complete_hd_defaults(self):
         for resolution in ("800x600", "1280x720"):

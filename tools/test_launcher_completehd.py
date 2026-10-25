@@ -47,7 +47,7 @@ class CompleteHdLauncherTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(completehd, "_builder", return_value=self.recipe).start()
         patch.object(completehd, "CANDIDATE_ROOT", self.root / "candidates").start()
-        self.plan = completehd.plan_candidate(resolution="1920x1080", clash_dir=self.game,
+        self.plan = completehd.plan_candidate(stage=builder.STAGE, resolution="1920x1080", clash_dir=self.game,
             candidates_root=self.root / "candidates", expected_base_sha=self.recipe.BASE_SHA256)
 
     def deploy(self):
@@ -148,10 +148,10 @@ class CompleteHdLauncherTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             core.launch_game(self.plan, confirmed=False)
 
-    def test_manifest_advertises_only_six_experimental_complete_resolutions(self):
+    def test_manifest_advertises_legacy_and_selected_experimental_complete_resolutions(self):
         manifest = presets.load_manifest()
         options = presets.load_options(manifest, "completehd")
-        self.assertEqual({option.key for option in options}, set(builder.RESOLUTIONS))
+        self.assertEqual({option.key for option in options}, set(builder.RESOLUTIONS) | {"2560x1440", "3840x2160"})
         self.assertTrue(all(option.is_experimental for option in options))
         self.assertEqual(presets.default_key(manifest, "completehd"), "800x600")
         self.assertEqual(presets.default_key(manifest), "800x600")
@@ -172,8 +172,8 @@ class SourceOnlyCompleteHdTests(unittest.TestCase):
         status = completehd.source_status()
         self.assertTrue(status["passed"], status)
         for resolution in builder.RESOLUTIONS:
-            complete = resolve_display_plan(renderer="completehd", resolution=resolution)
-            reference = resolve_display_plan(renderer="framed", resolution=resolution)
+            complete = resolve_display_plan(renderer="completehd", resolution=resolution, stage=builder.STAGE)
+            reference = resolve_display_plan(renderer="framed", resolution=resolution, stage=framed.STAGE)
             self.assertEqual((complete.terrain, complete.full_tiles, complete.coverage_tiles, complete.action_cells),
                              (reference.terrain, reference.full_tiles, reference.coverage_tiles, reference.action_cells))
             self.assertEqual(complete.stage, builder.STAGE)

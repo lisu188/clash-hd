@@ -1,0 +1,108 @@
+name: HD multiresolution launcher contracts
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hd-multires-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source:
+    name: HD source and guard contracts (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install the authored guard CPU dependency
+        run: python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4
+      - name: Enforce the public source boundary
+        run: python -B tools/check-public-boundary.py
+      - name: Verify candidate bytes and private source authentication
+        run: |
+          python -B tools/test_hd_multires_candidate.py -v
+          python -B tools/test_hd_multires_issuer.py -v
+          python -B tools/test_hd_multires_classic_bounded.py
+      - name: Verify the shared launcher and selected qualification report
+        run: |
+          python -B tools/test_launcher_hd_multires.py -v
+          python -B tools/test_launcher_package_resources.py -v
+          python -B tools/test_hd_multires_qualification.py -v
+          python -B tools/test_hd_multires_matrix.py -v
+      - name: State the evidence boundary
+        shell: bash
+        run: |
+          echo 'Source reconstruction, authored x86 guards and standalone packaging do not establish native gameplay, human input, endurance, expanded battle or release acceptance.' >> "$GITHUB_STEP_SUMMARY"
+
+  windows-package:
+    name: Standalone Windows launcher
+    needs: source
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install the pinned packaging tool
+        run: python -m pip install --disable-pip-version-check --only-binary=:all: pyinstaller==6.16.0
+      - name: Build the source-only launcher outside the checkout
+        shell: pwsh
+        run: |
+          $taskPython = (Get-Command python).Source
+          & .\scripts\launcher\build_launcher_exe.ps1 -Python $taskPython -OutputDir C:\ClashTests\launcher\ci-build -Execute
+          if ($LASTEXITCODE -ne 0) { throw 'Launcher build failed.' }
+      - name: Inspect all twelve plans from a clean folder without Python
+        shell: pwsh
+        run: |
+          $taskExe = Get-ChildItem -LiteralPath C:\ClashTests\launcher\ci-build -Filter ClashHDLauncher.exe -Recurse -File
+          if (@($taskExe).Count -ne 1) { throw 'Expected one built launcher.' }
+          $taskClean = Join-Path $env:RUNNER_TEMP 'clash-hd-clean-launcher'
+          New-Item -ItemType Directory -Path $taskClean | Out-Null
+          $taskTarget = Join-Path $taskClean 'ClashHDLauncher.exe'
+          Copy-Item -LiteralPath $taskExe.FullName -Destination $taskTarget
+          $taskReport = Join-Path $taskClean 'package-selftest.json'
+          $taskSavedPath = $env:PATH
+          $taskSavedPythonPath = $env:PYTHONPATH
+          $taskSavedPythonHome = $env:PYTHONHOME
+          try {
+            $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+            $env:PYTHONPATH = $null
+            $env:PYTHONHOME = $null
+            $taskProcess = Start-Process -FilePath $taskTarget -ArgumentList @('--package-selftest', $taskReport) -WorkingDirectory $taskClean -WindowStyle Hidden -Wait -PassThru
+            if ($taskProcess.ExitCode -ne 0) { throw 'Clean launcher self-test failed.' }
+          } finally {
+            $env:PATH = $taskSavedPath
+            $env:PYTHONPATH = $taskSavedPythonPath
+            $env:PYTHONHOME = $taskSavedPythonHome
+          }
+          $taskResult = Get-Content -LiteralPath $taskReport -Raw | ConvertFrom-Json
+          if ($taskResult.passed -ne $true -or @($taskResult.cells).Count -ne 12 -or $taskResult.game_runtime_executed -ne $false) { throw 'Incomplete standalone launcher proof.' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: experimental-hd-launcher
+          path: |
+            C:\ClashTests\launcher\ci-build\**\dist\ClashHDLauncher.exe
+            ${{ runner.temp }}\clash-hd-clean-launcher\package-selftest.json
+          if-no-files-found: error
+          retention-days: 7

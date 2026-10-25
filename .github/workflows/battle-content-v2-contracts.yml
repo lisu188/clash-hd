@@ -86,6 +86,12 @@ jobs:
         run: python -B tools/test_battle_profile_count_body_v2.py
       - name: Verify original Count fixture authoring only without a retail runtime
         run: python -B tools/test_battle_profile_native_count_original.py
+      - name: Verify uninstalled caller-specific Unit and Count source models without skips
+        run: python -B tools/test_battle_profile_adjacent_unit_v2.py
+      - name: Verify final-caller prefix fixture authoring only without a retail runtime
+        run: python -B tools/test_battle_profile_native_adjacent_prefix_original.py
+      - name: Verify bounded Unit-return fixture authoring only without a retail runtime
+        run: python -B tools/test_battle_profile_native_adjacent_unit_return_original.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -105,4 +111,6 @@ jobs:
               output.write('The 784-byte helper and numeric interval [EBP-44, EBP+824) establish no mapped/native or whole-chain capacity. Native callback ABI, receiver/argument validity, provider/RLE lifetime, continuation/primitive/line joins, arena clipping, atomic installation, quit and healthy map return remain unfinished.\n\n')
               output.write('No game, native debugger/compiler, live capture, human input, endurance, release acceptance or stable promotion occurs in this job.\n')
               output.write('The original Count fixture runs only four default authoring checks in public CI. Its separately opt-in original-backed CPU comparison is local-only and is never invoked here.\n')
+              output.write('The caller-specific Unit/Count successor retains the exact final signed-motion source, phase-specific self-record witnesses and Count live-DY/local checks. Its thirteen source/scalar model methods do not establish native caller history, lifetime or installed battle.\n\n')
+              output.write('Both final-caller prefix and bounded Unit-return fixtures run only their four authoring checks here. Local original-backed Unit-return comparison uses valid-index type-minus-one records on a provider-free route; it is not all Unit routes, sprite/RLE ownership, Windows runtime or release acceptance. No original-backed option is invoked in public CI.\n')
           PY

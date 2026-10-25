@@ -15,6 +15,7 @@ import tkinter as tk
 from tkinter import filedialog, font as tkfont, messagebox, ttk
 
 import core
+import bootstrap
 import framed
 import classic
 import completehd
@@ -52,8 +53,8 @@ class LauncherApp:
     def __init__(self, root: tk.Tk, initial_profile: str = "classic") -> None:
         if initial_profile not in PROFILE_NAMES:
             raise core.LauncherError("Unknown launcher profile.")
-        if initial_profile != "classic" and getattr(sys, "frozen", False):
-            raise core.LauncherError("Experimental renderer profiles require the source-tree launcher.")
+        if initial_profile != "classic" and getattr(sys, "frozen", False) and not bootstrap.bundled_sources_verified():
+            raise core.LauncherError("Experimental renderer profiles require verified bundled sources.")
         self.root = root
         self.settings = settings_mod.load_settings()
         self.manifest = presets.load_manifest()
@@ -203,7 +204,8 @@ class LauncherApp:
         graphics.grid(row=1, column=0, sticky="nsew", padx=(0, gap))
         graphics.columnconfigure(1, weight=1)
         self.renderer_choice = tk.StringVar(value=PROFILE_NAMES[self.profile_var.get()])
-        names = (PROFILE_NAMES["classic"],) if getattr(sys, "frozen", False) else tuple(PROFILE_NAMES.values())
+        names = (tuple(PROFILE_NAMES.values()) if not getattr(sys, "frozen", False)
+                 or bootstrap.bundled_sources_verified() else (PROFILE_NAMES["classic"],))
         self.renderer_combo = ttk.Combobox(graphics, textvariable=self.renderer_choice, values=names, state="readonly", width=21)
         self.renderer_combo.bind("<<ComboboxSelected>>", self._choose_renderer)
         self.resolution_combo = ttk.Combobox(graphics, textvariable=self.resolution_var, state="readonly", width=21)
@@ -462,6 +464,10 @@ class LauncherApp:
                       f"{display.full_tiles[0]}x{display.full_tiles[1]}; coverage "
                       f"{display.coverage_tiles[0]}x{display.coverage_tiles[1]}. "
                       f"Current full renderer needs a world of at least {display.full_tiles[0]}x{display.full_tiles[1]} tiles.")
+            if getattr(display, "bounded_world_renderer", False):
+                detail = (f"Terrain {right-left+1}x{bottom-top+1} pixels; coverage "
+                          f"{display.coverage_tiles[0]}x{display.coverage_tiles[1]} tiles. "
+                          "This experimental recipe supports maps smaller than the selected view.")
             if not display.map_geometry_available:
                 detail = "Diagnostic stage: expanded map geometry is not established by this patch selection."
             self.display_label.configure(text=f"Next launch: {renderer} {plan.resolution} [{info['status']}]. " + detail)
@@ -472,7 +478,10 @@ class LauncherApp:
                     f"Coverage: {display.coverage_tiles[0]} x {display.coverage_tiles[1]} (with edges)")
                 badge, color = STATUS_BADGES[info["status"]]
                 self.profile_badge.configure(text=f"{PROFILE_NAMES[renderer]}  /  {badge}", foreground=color)
-                self.validation_label.configure(text=f"Minimum map: {display.full_tiles[0]} x {display.full_tiles[1]} tiles.\n"
+                world_detail = ("Small maps supported by this experimental recipe.\n"
+                                if getattr(display, "bounded_world_renderer", False)
+                                else f"Minimum map: {display.full_tiles[0]} x {display.full_tiles[1]} tiles.\n")
+                self.validation_label.configure(text=world_detail
                     + ("Runtime and input checks are still pending." if info["status"] == "experimental" else "Existing Classic evidence; not rechecked."))
                 if not display.map_geometry_available:
                     self.viewport_label.configure(text="Diagnostic recipe: no expanded-map contract.")

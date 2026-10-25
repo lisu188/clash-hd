@@ -11,6 +11,8 @@ from typing import Any, Mapping
 PLAN_SCHEMA = 1
 RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1",
                    "completehd": "complete_hd_v1", "modalwidgets": "owned_modal_widget_bounds_v1"}
+HD_MULTIRES_REVISION = "hd_multires_v1"
+HD_MULTIRES_RESOLUTIONS = ("1920x1080", "2560x1440", "3840x2160")
 DEFAULT_BOUNDS = ((800, 600), (3840, 2160))
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 RESOLUTION_RE = re.compile(r"[1-9][0-9]{2,4}x[1-9][0-9]{2,4}")
@@ -73,6 +75,17 @@ def _rect_tuple(rect: Any) -> tuple[int, int, int, int]:
     return tuple(rect.as_tuple())
 
 
+def multires_stage(renderer: str) -> str:
+    _require(renderer in RECIPE_REVISION, "unknown_profile", "Unknown renderer profile.")
+    patcher = importlib.import_module("patch_clash95_hd")
+    return patcher.DEFAULT_STAGE + f"-{renderer}-hd-multires-validation"
+
+
+def is_multires_selection(renderer: str, resolution: str, stage: str | None = None) -> bool:
+    return (renderer in RECIPE_REVISION and resolution in HD_MULTIRES_RESOLUTIONS
+            and stage in (None, multires_stage(renderer)))
+
+
 @dataclass(frozen=True)
 class DisplayPlan:
     renderer: str
@@ -94,17 +107,25 @@ class DisplayPlan:
     scalar_patch_count: int
     scalar_patch_sha256: str
     map_geometry_available: bool = True
+    bounded_world_renderer: bool = False
 
     def to_dict(self) -> dict[str, Any]:
-        return json.loads(json.dumps({"schema": PLAN_SCHEMA, **asdict(self),
+        state = asdict(self)
+        if not self.bounded_world_renderer:
+            state.pop("bounded_world_renderer")
+        return json.loads(json.dumps({"schema": PLAN_SCHEMA, **state,
             "recipe_eligible": True, "candidate_built": False,
             "game_runtime_executed": False, "manual_input_proof": False, "promotion_ready": False,
-            "map_policy": "native full loop requires world >= full_tiles; smaller worlds remain blocked",
-            "coverage_policy": "clipped ceiling cells" if self.renderer != "classic" else "native full-tile grid; legacy strips unchanged"}))
+            "map_policy": ("bounded world cells and empty exterior" if self.bounded_world_renderer else
+                           "native full loop requires world >= full_tiles; smaller worlds remain blocked"),
+            "coverage_policy": ("clipped ceiling cells; native Classic UI" if self.renderer == "classic" and self.bounded_world_renderer
+                else "clipped ceiling cells" if self.renderer != "classic" else "native full-tile grid; legacy strips unchanged")}))
 
     def build_identity(self, original_sha256: str, sources: Mapping[str, str]) -> str:
         state = asdict(self)
         state.pop("scaling_mode")
+        if not self.bounded_world_renderer:
+            state.pop("bounded_world_renderer")
         return _digest({"schema": PLAN_SCHEMA, "display": state,
                         "original_sha256": _sha(original_sha256), "source_sha256": _source_hashes(sources)})
 
@@ -131,6 +152,16 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
     _require(renderer not in ("completehd", "modalwidgets") or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
     try:
         patcher = importlib.import_module("patch_clash95_hd")
+        successor = is_multires_selection(renderer, resolution, stage)
+        bounded_world = False
+        if successor:
+            component = importlib.import_module("src.patcher.hd_multires_candidate")
+            _require(component.REVISION == HD_MULTIRES_REVISION and
+                     tuple(component.RESOLUTIONS) == HD_MULTIRES_RESOLUTIONS and
+                     component.stage(renderer) == multires_stage(renderer),
+                     "unsupported_recipe", "HD multiresolution constructor identity differs.")
+            capability = getattr(component, "bounded_small_world", None)
+            bounded_world = callable(capability) and capability(renderer) is True
         selected_stage = patcher.DEFAULT_STAGE if stage is None else stage
         selected_revision = RECIPE_REVISION[renderer]
         scalar_stage = selected_stage
@@ -141,9 +172,9 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
                 complete = importlib.import_module("src.patcher.complete_hd_candidate" if renderer == "completehd"
                                                   else "tools.build_framed_modal_widgets_candidate")
                 required_stage = complete.STAGE
-                _require(resolution in (complete.RESOLUTIONS if renderer == "completehd" else complete.complete.RESOLUTIONS), "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
+                _require(successor or resolution in (complete.RESOLUTIONS if renderer == "completehd" else complete.complete.RESOLUTIONS), "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions or selected HD successor presets.")
                 _require(complete.REVISION == RECIPE_REVISION[renderer], "unsupported_recipe", "Complete-HD recipe revision differs from display planning.")
-            _require(stage in (None, required_stage), "unsupported_stage", "A framed renderer cannot use another recipe's stage.")
+            _require(successor or stage in (None, required_stage), "unsupported_stage", "A framed renderer cannot use another recipe's stage.")
             selected_stage = required_stage
             recipe = importlib.import_module("src.patcher.framed_recipe")
             viewport = importlib.import_module("src.patcher.framed_viewport").FramedViewport(width, height)
@@ -152,6 +183,9 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
             bands, cells = tuple(map(_rect_tuple, viewport.frame_bands)), tuple(map(_rect_tuple, viewport.action_cells))
             minimap_anchor = viewport.minimap_right_anchor
         else:
+            if successor:
+                selected_stage = patcher.DEFAULT_STAGE
+                scalar_stage = selected_stage
             menu_stage = patcher.DEFAULT_STAGE + "-menuwidgets-validation"
             if selected_stage == menu_stage:
                 menu = importlib.import_module("src.patcher.classic_menu_candidate")
@@ -167,12 +201,19 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
             partial = profile.partial_col_px, profile.partial_row_px
             bands, cells = (), ()
             minimap_anchor = width if "minimap-hd-right-anchor" in patcher.STAGE_GROUPS[scalar_stage] else None
+            if bounded_world:
+                terrain = (patcher.TILE_ORIGIN_X, patcher.TILE_ORIGIN_Y, width - 1, height - 1)
+                coverage = ((width - patcher.TILE_ORIGIN_X + 63) // 64,
+                            (height - patcher.TILE_ORIGIN_Y + 63) // 64)
         encoded = [{"group": p.group, "offset": p.offset, "old": p.old.hex(), "new": p.new.hex()} for p in patches]
         _require(bool(encoded), "unsupported_stage", "The selected recipe contains no patches.")
+        if successor:
+            selected_stage, selected_revision = multires_stage(renderer), HD_MULTIRES_REVISION
         return DisplayPlan(renderer, resolution, selected_stage, selected_revision, width, height,
                            scaling_mode, minimap, (profile.off_x, profile.off_y), terrain, full, coverage, partial,
                            bands, cells, minimap_anchor, len(encoded), _digest(encoded),
-                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[scalar_stage]))
+                            renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[scalar_stage]),
+                            bounded_world)
     except DisplayPlanError:
         raise
     except ImportError as exc:
@@ -214,6 +255,10 @@ class WorldPlan:
                  f"{self.display.full_tiles[0]}x{self.display.full_tiles[1]} world tiles for the current full renderer. "
                  "A bounded small-world renderer has not been installed.")
 
+    def require_world_rendering(self) -> None:
+        if not self.display.bounded_world_renderer:
+            self.require_native_full_loop()
+
     def cells(self) -> tuple[WorldCell, ...]:
         left, top, right, bottom = self.display.terrain
         return tuple(WorldCell(col, row, self.scroll[0] + col, self.scroll[1] + row,
@@ -238,7 +283,7 @@ class WorldPlan:
                 "native_full_loop_safe": self.native_full_loop_safe,
                 "valid_cell_count": sum(cell.in_world for cell in cells),
                 "outside_world_cell_count": sum(not cell.in_world for cell in cells),
-                "bounded_renderer_installed": False}
+                "bounded_renderer_installed": self.display.bounded_world_renderer}
 
 
 def _validate_rect(rect: tuple[int, int, int, int]) -> None:

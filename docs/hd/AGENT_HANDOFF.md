@@ -25,6 +25,23 @@ This file intentionally contains only source-level project state.
 
 ## Engineering state
 
+### Selected multi-resolution launcher batch
+
+The versioned `hd_multires_v1` launcher route now covers Classic, Framed,
+Complete HD and Modal Widgets at 1920x1080, 2560x1440 and 3840x2160.
+Source and standalone Windows launchers share exact recipe/provenance checks.
+Separate bounded map/input integration preserves Classic style and the three
+framed profile identities. All twelve cells remain experimental; this does
+not install expanded battle or accept native gameplay, input or endurance.
+See [the multi-resolution launcher](MULTIRES_LAUNCHER.md) for usage, packaging,
+current verification boundaries and the selected-cell qualification tool.
+
+The separately versioned Adjacent/Unit caller successor has source/scalar
+coverage and a local original-backed CPU fixture through real Unit RET4 on a
+valid-index/type-minus-one provider-free route. It does not establish normal
+sprite-bearing Unit routes or a full installed battle. The compact retained
+report is `reports/battle-adjacent-unit-bounded-return-cpu-20261025.json`.
+
 The source tree remains the authority for implemented patch stages and
 resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable
