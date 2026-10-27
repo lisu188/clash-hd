@@ -42,6 +42,26 @@ valid-index/type-minus-one provider-free route. It does not establish normal
 sprite-bearing Unit routes or a full installed battle. The compact retained
 report is `reports/battle-adjacent-unit-bounded-return-cpu-20261025.json`.
 
+The fresh continuation successor now checks 43 post-return windows and two
+field-loss joins at the current allocation addresses, without installing hooks.
+The retained `reports/battle-continuation-v2-source-cpu-20261025.json` separates
+modeled callback/CPU checks from the provider-free real Count RET0 and Unit RET4
+path. Sprite/resource ownership, RLE interruption and the complete atomic battle
+installer remain unfinished. The installed-map CPU receipt for the portable
+launcher metadata is `reports/hd-multires-installed-cpu-20261027-portable.json`.
+Hidden Classic 1080p initial-image and Acquire diagnostics remain local; they
+do not establish visible input, map endurance or release acceptance.
+
+`battle_profile_primitive_request_v2.py` recomposes one fresh shared guard for
+the 43 normal-return windows and 13 query frames (eleven sprite requests and
+two line requests). Saved Effect identity and native argument shadows are
+checked before and after modeled Thread callbacks. The selected twelve-cell
+source/CPU suite and original-authenticated RAM construction passed; the compact
+receipt is `reports/battle-primitive-request-v2-source-cpu-20261027.json`.
+Its minimum unallocated RX remainder is 2,990 bytes. These queries call no native
+sprite/line primitive and install no hooks or provider records. Fresh line
+replay, resource/RLE lifetime and complete atomic installation remain open.
+
 The source tree remains the authority for implemented patch stages and
 resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable
