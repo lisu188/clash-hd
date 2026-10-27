@@ -1,0 +1,185 @@
+{
+  "schema": "battle_unit_count_native_cpu_v1",
+  "date": "2026-10-27",
+  "publication_parent_git_commit": "f9fff881cd8bc64b2cc3d63e426814e7d935b84b",
+  "fixture": {
+    "path": "tools/test_battle_profile_native_unit_count_original.py",
+    "sha256": "646a23c95c64897897f64a494d9c1267e30accdd384938bd3e4f3e943d9aff32",
+    "default_authoring_methods": 5,
+    "opt_in_original_methods": 8,
+    "original_opt_in": "--original-backed",
+    "original_path": "C:/Clash/clash95.exe",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+  },
+  "result": {
+    "passed": true,
+    "tests_run": 13,
+    "seconds": 131.49,
+    "log": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\unit-count-original-full-final.log",
+      "bytes": 2303,
+      "sha256": "fcfef013389b2d3619898a9110f07988aa9232422fd441245cf73865a839aa0b"
+    }
+  },
+  "dependency_fixture_fresh_result": {
+    "passed": true,
+    "tests_run": 13,
+    "seconds": 628.293,
+    "log": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\atomic-dependency-full.log",
+      "bytes": 2195,
+      "sha256": "2736b80fadd0c395c59b8415db669000fc1ded7e303a80c753a2adf7b99001d3"
+    },
+    "status": "passed_source_and_authored_cpu_models_only"
+  },
+  "frozen_prefix_selected_baseline": {
+    "passed": true,
+    "tests_run": 5,
+    "seconds": 16.933,
+    "log": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\frozen-prefix-original-baseline.log",
+      "bytes": 996,
+      "sha256": "17ac4f362c581e039023d386d1629058b17daf2fa22ed389a53a87dc4d476be8"
+    }
+  },
+  "frozen_prefix_full_result": {
+    "passed": true,
+    "tests_run": 9,
+    "seconds": 62.315,
+    "log": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\frozen-prefix-original-full.log",
+      "bytes": 1577,
+      "sha256": "4e6656decbe5a7c7a3bdb50dca0455d3b27c12717ee79928d3f2428b825556f3"
+    }
+  },
+  "scope": {
+    "resolution": "800x600",
+    "profiles": [
+      "classic",
+      "modalwidgets"
+    ],
+    "image_base_deltas": [
+      0,
+      196608
+    ],
+    "draw_modes": [
+      0,
+      1
+    ],
+    "selected_identity_boundaries": [
+      0,
+      7,
+      21
+    ],
+    "selected_motion_boundaries": [
+      -63,
+      -64,
+      -65
+    ],
+    "genuine_saved_ecx_values": [
+      1,
+      0,
+      4294967295
+    ],
+    "full_cartesian_coverage": false,
+    "start_va": "0x42FF7A",
+    "stop_before_va": "0x42F95B",
+    "override_vas": [
+      "0x42F84A",
+      "0x42F956",
+      "0x426F44",
+      "0x426F54"
+    ],
+    "authenticated_parent_instruction_slices": true,
+    "helper_allocation": "synthetic fixture allocation",
+    "outer_history": "modeled Field/Tile/Adjacent",
+    "thread_callback": "modeled",
+    "original_target_started_as_windows_process": false
+  },
+  "retained_failed_attempt": {
+    "result": {
+      "passed": false,
+      "tests_run": 6,
+      "seconds": 20.608,
+      "log": {
+        "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\unit-count-original-full-first.log",
+        "bytes": 1942,
+        "sha256": "9eacb4fed68faa05de317e53af81657f2c7450c2ee6b7009495db3c83d000f49"
+      }
+    },
+    "tested_fixture": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\fixture-before-scope-correction.py",
+      "bytes": 49476,
+      "sha256": "8a94aaab84f780e8082d53204509200650fbd751449838178b09baaf0b4945f4"
+    },
+    "diagnostic": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\saved-ecx-scope-diagnostic.json",
+      "bytes": 2585,
+      "sha256": "b77452215a74c022988e5d64958bf46177dc1a240da54c0bf74aedf70c7333ba"
+    },
+    "mutation": "occupant callback changes CountS-8 saved ECX from 1 to 0",
+    "observed_failure": "UC_ERR_READ_PROT at 0x10042C1E; physical descriptor read attempted; no UD2",
+    "interpretation": "The first fixture demanded an unsupported saved-ECX integrity guarantee. The pinned producer explicitly leaves native_ecx_pop_slot_authority_verified false. This failed observation is preserved unchanged. The corrected rejection case targets guarded CountS-24 saved-EBP ancestry; healthy saved-ECX parity remains separately checked."
+  },
+  "checks": {
+    "public_boundary": true,
+    "cloud_source_checks": true,
+    "workflow_yaml_parsed": true,
+    "native_fixtures_in_public_ci": "default authoring only; no original supplied",
+    "github_ci_verified": false,
+    "github_review_verified": false,
+    "scoped_independent_source_review": "No blocking issue found in producer, atomic fixture, frozen prefix dependency, corrected Unit/Count fixture, workflow and documentation."
+  },
+  "rea_ida": {
+    "provider": "ida",
+    "kernel": "9.0",
+    "gui_pid": 74352,
+    "unit_assembly_evidence": "ev_417e7936522101f14bd8bfaa9718fc94374a0f380f8bce56ea2aae6c6fe2775a",
+    "count_assembly_evidence": "ev_e30309b2c2a1a43c3a30a6565688e5b85a58bc93d9e5e87d5e700762ffd9f791",
+    "count_assembly_export": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\rea-count-assembly.json",
+      "bytes": 24293,
+      "sha256": "ccd0d5353db5f45a92d6f4ed882c4352023c95be933d1438c4b0c44c794dd3a5"
+    },
+    "analysis_session_closed": true,
+    "gui_left_open": true,
+    "target_executed": false
+  },
+  "cleanup": {
+    "removed_paths": [],
+    "retained": "Unique diagnostics, original failed test/source, REA evidence, active IDA database and unreproduced caches retained. Dry-run candidates do not establish disposability.",
+    "dry_run": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\compaction-dry-run.json",
+      "bytes": 146058,
+      "sha256": "c91a6cbc41f718ab9ec63ea134f5faee631debfb970ebd5cdf363d4f4ff8188c"
+    },
+    "reproduced_cache_audit": {
+      "path": "C:\\ClashTests\\rea-ida-unit-count-proof-20261027-4a9aebdf\\completed-cache-audit.json",
+      "bytes": 3669,
+      "sha256": "6a92f365cf01c49be39b36d3d11de69def8d9ee53edff0b82ee74e03ff2f779b"
+    },
+    "reproduced_cache_count": 8,
+    "reproduced_cache_logical_bytes": 198604,
+    "cache_deletion": "Automatic approval review rejected the scoped cleanup command before it ran; reason: blocked by policy. All eight caches remain.",
+    "large_writes_paused_at_90_percent": true
+  },
+  "acceptance": {
+    "bounded_original_unit_count_cpu_verified": true,
+    "native_ecx_pop_slot_authority_verified": false,
+    "historical_callee_preservation_verified": false,
+    "whole_unit_verified": false,
+    "all_eight_overrides_verified": false,
+    "legal_live_game_record_verified": false,
+    "production_allocation_executed": false,
+    "native_callback_abi_verified": false,
+    "provider_lifetime_verified": false,
+    "installed": false,
+    "windows_runtime_verified": false,
+    "game_runtime_verified": false,
+    "input_verified": false,
+    "endurance_verified": false,
+    "release_accepted": false,
+    "promotion_ready": false
+  },
+  "protected_stable_stage_unchanged": true
+}

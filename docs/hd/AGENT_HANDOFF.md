@@ -1046,3 +1046,16 @@ and capture outside the repository and preserve the disk reserve before use.
 Historical runtime experiments, screenshots, raw debugger sessions, and
 workstation-specific evidence that formerly accompanied this project are not
 part of the public repository. Do not recreate them in public source control.
+
+
+The separate [Unit-to-Count CPU slice](BATTLE_UNIT_COUNT_CPU.md) authenticates
+selected canonical parent instructions and executes the genuine final caller,
+Unit type-minus-one branch, Count argument preparation, body and RET in an
+explicit opt-in RAM fixture. The 2026-10-27 local suite passes all 13 methods;
+it stops before `0x42F95B` and exercises four override locations with synthetic
+helper allocation and modeled outer ancestry/Thread. Its default five authoring
+checks and the frozen prefix's four checks need no original executable.
+The retained saved-ECX corruption counterexample remains failed; native ECX
+pop-slot authority, historical callee preservation, later Unit continuation,
+installation, Windows/runtime, input, endurance and promotion remain unproved.
+See the [bounded result](../../reports/battle-unit-count-native-cpu-20261027.json).
