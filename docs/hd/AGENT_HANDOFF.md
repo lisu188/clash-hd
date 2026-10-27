@@ -62,6 +62,15 @@ Its minimum unallocated RX remainder is 2,990 bytes. These queries call no nativ
 sprite/line primitive and install no hooks or provider records. Fresh line
 replay, resource/RLE lifetime and complete atomic installation remain open.
 
+The separately versioned `battle_profile_line_replay_v2.py` now has an
+authoring-only successor for the two whole Line windows, with exact overlap
+removal, literal vtable admission and pre/post native helper phase checks.
+Four tiny source/assembly checks and read-only original span authentication
+passed. Full canonical emission, the twelve-cell RAM/CPU matrix, native Line
+ABI/pixels and installation remain unverified under the current capacity hold.
+See `reports/battle-line-replay-v2-authoring-20261027.json`; its 390-byte RX
+upper bound is a source capacity plan, not a full-emission receipt.
+
 The source tree remains the authority for implemented patch stages and
 resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable

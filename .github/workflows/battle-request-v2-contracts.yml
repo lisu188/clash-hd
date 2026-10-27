@@ -45,6 +45,8 @@ jobs:
           python -m pip install --disable-pip-version-check --only-binary=:all: unicorn==2.1.4 capstone==5.0.6
       - name: Require all six fresh request source and authored CPU methods without skips
         run: python -B tools/test_battle_profile_primitive_request_v2.py
+      - name: Verify four small Line source and assembly authoring checks only
+        run: python -B tools/test_battle_profile_line_replay_v2.py
       - name: Record evidence limits
         if: always()
         run: |
@@ -55,4 +57,5 @@ jobs:
               output.write('This job exercises only independently authored source/model fixtures. It fetches and opens no retail executable or runtime.\n\n')
               output.write('One fresh shared guard retains 43 scalar post-return windows and emits 13 owning query frames across 12 selected profile/resolution cells, two virtual bases and both field modes. EffectS saved Unit identity/EBP and native argument shadows are checked around modeled Thread calls; malformed/lost control reaches a real UD2.\n\n')
               output.write('Eleven sprite requests and two line requests are queries. No native primitive is called, no hook/provider record is installed and no candidate is written. Native sprite/RLE storage, callback ABI, mapped stack, lifetime, Windows runtime, input, full battle and release acceptance remain unproved.\n')
+              output.write('The separate LineV2 step runs four small source/assembly authoring checks with synthetic symbols. It creates no canonical profile/RAM bundle or pixel arena and executes no CPU/native line. Its byte-size bound is a capacity plan; full Line emission, original-backed CPU, pixel bounds and installed behavior remain unverified.\n')
           PY

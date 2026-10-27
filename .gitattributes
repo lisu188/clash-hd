@@ -1148,3 +1148,6 @@
 /tools/test_battle_profile_primitive_request_v2.py text eol=lf
 /reports/battle-primitive-request-v2-source-cpu-20261027.json text eol=lf
 /.github/workflows/battle-request-v2-contracts.yml text eol=lf
+/src/patcher/battle_profile_line_replay_v2.py text eol=lf
+/tools/test_battle_profile_line_replay_v2.py text eol=lf
+/reports/battle-line-replay-v2-authoring-20261027.json text eol=lf
