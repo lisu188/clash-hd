@@ -41,12 +41,16 @@ jobs:
           python -B tools/test_hd_multires_candidate.py -v
           python -B tools/test_hd_multires_issuer.py -v
           python -B tools/test_hd_multires_classic_bounded.py
+          python -B tools/test_hd_multires_installed_cpu.py
       - name: Verify the shared launcher and selected qualification report
         run: |
           python -B tools/test_launcher_hd_multires.py -v
           python -B tools/test_launcher_package_resources.py -v
+          python -B tools/test_launcher_profile_settings.py -v
           python -B tools/test_hd_multires_qualification.py -v
           python -B tools/test_hd_multires_matrix.py -v
+          python -B tools/test_hd_multires_hidden_session.py
+          python -B tools/test_hd_multires_visible_session.py
       - name: State the evidence boundary
         shell: bash
         run: |

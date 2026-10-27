@@ -17,6 +17,9 @@ The supported original SHA-256 remains
 `500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae`.
 Generated candidates are isolated under
 `C:/ClashTests/launcher/multires/hd_multires_v1/<profile>/<resolution>/`.
+The GUI remembers its selected profile and each profile's resolution separately.
+The historical Classic setting and the Classic default for headless commands
+are preserved. An explicit `--profile` overrides the remembered GUI profile.
 
 The existing source CLI uses the same recipe registry:
 
@@ -45,6 +48,9 @@ custom dimensions have not been qualified by this first batch.
 - The package contains a fixed allowlist of exact source resources because
   those constructors authenticate their own source. A compiled inventory
   identity checks the extracted resources before exposing HD backends.
+- The successor records checked predecessor source bindings as canonical
+  relative paths. Historical recipes retain their metadata; temporary one-file
+  extraction directories do not become part of the new candidate identity.
 
 These are installed source/byte capabilities. They are not fresh native input,
 screen composition, save/load or endurance acceptance.
@@ -57,6 +63,7 @@ original without executing the game:
 
 ```powershell
 python -B tools/test_hd_multires_candidate.py --original-backed C:/Clash/clash95.exe
+python -B tools/test_hd_multires_installed_cpu.py --original-backed C:/Clash/clash95.exe
 ```
 
 `tools/hd_multires_qualification.py` prepares immutable candidate bundles or
@@ -70,6 +77,23 @@ prove only the valid-index/type-minus-one provider-free route through real
 Count and Unit returns. Normal sprite-bearing Unit routes, provider/RLE
 ownership, complete battle installation, native lifetime and healthy full-game
 continuity remain separate work. A source or emulator pass is not gameplay proof.
+
+The installed-candidate CPU fixture loads actual reconstructed candidate bytes
+at two image bases. It covers small and tall worlds, partial cells, camera
+clamping, full/incremental paint and ordinary-map targeting in both presentation
+modes. Its drawing/input callbacks remain models. The fresh portable-metadata
+receipt is `reports/hd-multires-installed-cpu-20261027-portable.json`; the earlier
+source closure's receipt is preserved separately.
+
+`tools/hd_multires_hidden_session.py` authenticates an exact selected bundle
+before creating an isolated hidden desktop and owned process job. It implements
+initial loaded-byte and natural-menu/acquisition diagnostics. Map-idle/map-pan
+collection remains unavailable and fails closed. The old Classic 800x600 runner
+is separate. A local Classic 1080p hidden attempt observed a genuine mouse
+Acquire denial; its failed report is retained as a diagnostic, not acceptance.
+`tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
+five-minute acquisition/menu plan. Execution requires a fresh approval bound to
+the exact plan, sources, candidate, assets and scope. It injects no input.
 
 Each cell still requires real map/controls, castle and building routes, battle
 entry/command/return, save/load and turn continuity, final-wrapper composition,
@@ -87,6 +111,8 @@ ClashHDLauncher.exe --package-selftest C:/ClashTests/package-selftest.json
 ```
 
 The self-test opens neither the GUI nor game. It records four source preflights,
-twelve plans, defaults and false runtime/input acceptance flags. The build
+twelve plans, twelve temporary settings roundtrips, defaults and false
+runtime/input acceptance flags. It never reads or changes the user's saved
+launcher settings. The build
 checks its inputs before and after compilation. Any packaged-source change
 requires a new executable and clean-folder verification.
