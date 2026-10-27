@@ -16,14 +16,40 @@ from typing import Any, Callable
 
 
 SETTINGS_SCHEMA = 1
+PROFILES = ("classic", "framed", "completehd", "modalwidgets")
 DEFAULT_SETTINGS: dict[str, Any] = {
     "schema": SETTINGS_SCHEMA,
+    "last_profile": "classic",
     "last_resolution": "800x600",
+    "profile_resolutions": {profile: "800x600" for profile in PROFILES},
     "scaling_mode": "integer",
     "clash_dir": "C:\\Clash",
     "candidates_root": "C:\\ClashTests\\launcher",
     "window_geometry": "",
 }
+
+
+def defaults() -> dict[str, Any]:
+    return {**DEFAULT_SETTINGS, "profile_resolutions": dict(DEFAULT_SETTINGS["profile_resolutions"])}
+
+
+def resolution_for_profile(data: dict[str, Any], profile: str) -> str:
+    if profile not in PROFILES:
+        raise ValueError("Unknown launcher profile.")
+    # The historical Classic field remains authoritative for existing settings.
+    if profile == "classic":
+        return data.get("last_resolution", "800x600")
+    return data.get("profile_resolutions", {}).get(profile, "800x600")
+
+
+def remember_selection(data: dict[str, Any], profile: str, resolution: str) -> None:
+    if profile not in PROFILES or type(resolution) is not str or not resolution:
+        raise ValueError("A known profile and resolution are required.")
+    data["last_profile"] = profile
+    data["profile_resolutions"] = {**DEFAULT_SETTINGS["profile_resolutions"],
+                                   **data.get("profile_resolutions", {}), profile: resolution}
+    if profile == "classic":
+        data["last_resolution"] = resolution
 
 
 def settings_dir() -> Path:
@@ -43,7 +69,7 @@ def lock_path() -> Path:
 
 def load_settings(path: Path | None = None) -> dict[str, Any]:
     path = path if path is not None else settings_path()
-    data = dict(DEFAULT_SETTINGS)
+    data = defaults()
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, ValueError):
@@ -51,14 +77,21 @@ def load_settings(path: Path | None = None) -> dict[str, Any]:
     if not isinstance(raw, dict) or raw.get("schema") != SETTINGS_SCHEMA:
         return data
     for key in DEFAULT_SETTINGS:
-        if key in raw and isinstance(raw[key], type(DEFAULT_SETTINGS[key])):
+        if key != "profile_resolutions" and key in raw and type(raw[key]) is type(DEFAULT_SETTINGS[key]):
             data[key] = raw[key]
+    if data["last_profile"] not in PROFILES:
+        data["last_profile"] = "classic"
+    stored = raw.get("profile_resolutions")
+    if type(stored) is dict:
+        data["profile_resolutions"].update({profile: stored[profile] for profile in PROFILES
+            if type(stored.get(profile)) is str and stored[profile]})
+    data["profile_resolutions"]["classic"] = data["last_resolution"]
     return data
 
 
 def save_settings(data: dict[str, Any], path: Path | None = None) -> None:
     path = path if path is not None else settings_path()
-    payload = dict(DEFAULT_SETTINGS)
+    payload = defaults()
     payload.update({key: data[key] for key in DEFAULT_SETTINGS if key in data})
     payload["schema"] = SETTINGS_SCHEMA
     path.parent.mkdir(parents=True, exist_ok=True)

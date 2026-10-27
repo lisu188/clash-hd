@@ -25,6 +25,52 @@ This file intentionally contains only source-level project state.
 
 ## Engineering state
 
+### Selected multi-resolution launcher batch
+
+The versioned `hd_multires_v1` launcher route now covers Classic, Framed,
+Complete HD and Modal Widgets at 1920x1080, 2560x1440 and 3840x2160.
+Source and standalone Windows launchers share exact recipe/provenance checks.
+Separate bounded map/input integration preserves Classic style and the three
+framed profile identities. All twelve cells remain experimental; this does
+not install expanded battle or accept native gameplay, input or endurance.
+See [the multi-resolution launcher](MULTIRES_LAUNCHER.md) for usage, packaging,
+current verification boundaries and the selected-cell qualification tool.
+
+The separately versioned Adjacent/Unit caller successor has source/scalar
+coverage and a local original-backed CPU fixture through real Unit RET4 on a
+valid-index/type-minus-one provider-free route. It does not establish normal
+sprite-bearing Unit routes or a full installed battle. The compact retained
+report is `reports/battle-adjacent-unit-bounded-return-cpu-20261025.json`.
+
+The fresh continuation successor now checks 43 post-return windows and two
+field-loss joins at the current allocation addresses, without installing hooks.
+The retained `reports/battle-continuation-v2-source-cpu-20261025.json` separates
+modeled callback/CPU checks from the provider-free real Count RET0 and Unit RET4
+path. Sprite/resource ownership, RLE interruption and the complete atomic battle
+installer remain unfinished. The installed-map CPU receipt for the portable
+launcher metadata is `reports/hd-multires-installed-cpu-20261027-portable.json`.
+Hidden Classic 1080p initial-image and Acquire diagnostics remain local; they
+do not establish visible input, map endurance or release acceptance.
+
+`battle_profile_primitive_request_v2.py` recomposes one fresh shared guard for
+the 43 normal-return windows and 13 query frames (eleven sprite requests and
+two line requests). Saved Effect identity and native argument shadows are
+checked before and after modeled Thread callbacks. The selected twelve-cell
+source/CPU suite and original-authenticated RAM construction passed; the compact
+receipt is `reports/battle-primitive-request-v2-source-cpu-20261027.json`.
+Its minimum unallocated RX remainder is 2,990 bytes. These queries call no native
+sprite/line primitive and install no hooks or provider records. Fresh line
+replay, resource/RLE lifetime and complete atomic installation remain open.
+
+The separately versioned `battle_profile_line_replay_v2.py` now has an
+authoring-only successor for the two whole Line windows, with exact overlap
+removal, literal vtable admission and pre/post native helper phase checks.
+Four tiny source/assembly checks and read-only original span authentication
+passed. Full canonical emission, the twelve-cell RAM/CPU matrix, native Line
+ABI/pixels and installation remain unverified under the current capacity hold.
+See `reports/battle-line-replay-v2-authoring-20261027.json`; its 390-byte RX
+upper bound is a source capacity plan, not a full-emission receipt.
+
 The source tree remains the authority for implemented patch stages and
 resolution behavior. `src/launcher/resolutions.json` is the user-facing
 resolution registry. The patcher must verify the expected input executable

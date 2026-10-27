@@ -31,6 +31,7 @@ import process_hygiene_guard  # noqa: E402
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
 from src.display_plan import DisplayPlan, DisplayPlanError, deployment_identity, resolve_display_plan
+from src.display_plan import is_multires_selection, multires_stage
 
 
 LAUNCHER_VERSION = "0.1.0"
@@ -252,8 +253,11 @@ def plan_candidate(
 ) -> CandidatePlan:
     manifest = manifest if manifest is not None else presets.load_manifest()
     if renderer == "classic":
+        selected_successor = (stage == multires_stage(renderer) and
+            bool(manifest.get("profiles", {}).get("classic", {}).get("multires_recipe")) and
+            is_multires_selection(renderer, resolution, stage))
         stage = presets.stable_stage(manifest) if stage is None else stage
-        if type(stage) is not str or stage not in patch_clash95_hd.STAGE_GROUPS:
+        if type(stage) is not str or (stage not in patch_clash95_hd.STAGE_GROUPS and not selected_successor):
             raise LauncherError(f"Unknown patch stage: {stage}")
     try:
         display = presets.resolve_plan(renderer=renderer, resolution=resolution, stage=stage,

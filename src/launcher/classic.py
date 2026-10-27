@@ -4,6 +4,7 @@ from dataclasses import replace
 import core
 import completehd
 import presets
+import multires
 
 WARNING = completehd.CLASSIC_MENU_WARNING
 STAGE = completehd.CLASSIC_MENU_STAGE
@@ -15,6 +16,8 @@ def source_status():
 
 def plan_candidate(*, stage=None, **kwargs):
     manifest = kwargs.get("manifest") or presets.load_manifest()
+    if multires.selected("classic", kwargs.get("resolution", "800x600"), stage, manifest):
+        return multires.plan_candidate(profile="classic", stage=stage, **kwargs)
     try:
         display = presets.resolve_plan(renderer="classic", resolution=kwargs.get("resolution", "800x600"),
                                        stage=stage, scaling_mode=kwargs.get("scaling_mode", "integer"), manifest=manifest)
@@ -34,6 +37,8 @@ def plan_candidate(*, stage=None, **kwargs):
 
 
 def _backend(plan):
+    if multires.is_plan(plan):
+        return multires
     return completehd if plan.stage == STAGE else core
 
 
@@ -46,5 +51,7 @@ def deploy_runtime_files(plan, candidate_result=None, progress=None):
 
 
 def verify_launch(plan):
-    if plan.stage == STAGE:
+    if multires.is_plan(plan):
+        multires.verify_launch(plan)
+    elif plan.stage == STAGE:
         completehd.verify_launch(plan)

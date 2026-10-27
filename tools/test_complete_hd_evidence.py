@@ -391,6 +391,14 @@ def test_actual_resolution_manifest_is_replayed(root):
     report = fixture.reports["resolution_coverage"]
     source = write(fixture.repo / "tools/complete_hd_evidence.py", b"fixture-only validator source")
     manifest = json.loads((evidence.ROOT / "src/launcher/resolutions.json").read_text(encoding="utf-8"))
+    # This fixture authenticates the frozen legacy stage and its metadata
+    # predicates. The registered successor has a separate, stricter twelve-
+    # cell promotion policy; do not attach it to synthetic legacy promotion.
+    for profile, config in manifest["profiles"].items():
+        config.pop("multires_recipe", None)
+        if profile in ("completehd", "modalwidgets"):
+            for resolution in ("2560x1440", "3840x2160"):
+                config["resolutions"].pop(resolution, None)
     report["producer"] = source
     manifest_path = fixture.repo / "src/launcher/resolutions.json"
     context = {"identity": fixture.identity, "byte_rebuild_passed": True}

@@ -35,6 +35,10 @@ CUSTOM_REGRESSION = "802x602"
 CANDIDATE_ROOT = Path("C:/ClashTests")
 MAX_JSON_BYTES = 2 * 1024 * 1024
 MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
+MULTIRES_REVISION = "hd_multires_v1"
+MULTIRES_PRESETS = ("1920x1080", "2560x1440", "3840x2160")
+MULTIRES_METADATA_BYTES = 16 * 1024 * 1024
+MULTIRES_PROBE_BYTES = 64 * 1024 * 1024
 RUNTIME_POLICY = "read-only candidate/evidence checks; no runtime, capture, input, status or promotion writes"
 REQUIRED_ACCEPTANCE = (*evidence.LANES, "candidate_bound_expanded_battle")
 # These describe the additive cell schema, not the legacy 1920x1080 registry.
@@ -52,6 +56,7 @@ RECIPE_MODULES = {
     "modal_widgets_all_presets_v1": "src.patcher.modal_widgets_all_presets_candidate",
     "classic_all_presets_v1": "src.patcher.classic_all_presets_candidate",
     "framed_all_presets_v1": "src.patcher.framed_all_presets_candidate",
+    MULTIRES_REVISION: "src.patcher.hd_multires_candidate",
 }
 # Source authentication is available before launcher registration. These fixed
 # validation recipes never replace the launcher-resolved recipes above; an
@@ -71,10 +76,10 @@ VALIDATION_RECIPES = {
     },
 }
 PROFILE_RECIPES = {
-    "classic": ("classic-frozen-800-v1", "classic_menu_widgets_v1"),
-    "framed": ("four-border-partial-initial-v1",),
-    "completehd": ("complete_hd_v1",),
-    "modalwidgets": ("owned_modal_widget_bounds_v1",),
+    "classic": ("classic-frozen-800-v1", "classic_menu_widgets_v1", MULTIRES_REVISION),
+    "framed": ("four-border-partial-initial-v1", MULTIRES_REVISION),
+    "completehd": ("complete_hd_v1", MULTIRES_REVISION),
+    "modalwidgets": ("owned_modal_widget_bounds_v1", MULTIRES_REVISION),
 }
 RECIPE_SOURCES = {
     "classic-frozen-800-v1": ("patch_clash95_hd.py", "src/patcher/patch_clash95_hd.py", "src/display_plan.py"),
@@ -87,6 +92,7 @@ RECIPE_SOURCES = {
         "src/patcher/modal_widgets_all_presets_candidate.py", "src/patcher/owned_modal_all_presets_emit.py"),
     "classic_all_presets_v1": ("src/patcher/classic_all_presets_candidate.py",),
     "framed_all_presets_v1": ("src/patcher/framed_all_presets_candidate.py",),
+    MULTIRES_REVISION: ("src/patcher/hd_multires_candidate.py", "src/patcher/hd_multires_issuer.py"),
 }
 COMPLETE_AUTH_SOURCE = "tools/resolution_recipe_authentication.py"
 COMPLETE_AUTH_SHA256 = "60157b38b6ba2975b2c0cdd3e24e5221ac4a122b42f3ac5a52373ddcc1840a82"
@@ -155,17 +161,36 @@ def _json_bytes(path: Path, label: str) -> bytes:
     return _bounded_bytes(path, label, MAX_JSON_BYTES)
 
 
-def read_reference(ref: Any, base: Path, *, object_required=False) -> tuple[Path, Any]:
+def read_reference(ref: Any, base: Path, *, object_required=False, maximum=None) -> tuple[Path, Any]:
     if (not isinstance(ref, dict) or set(ref) != {"path", "sha256"}
             or not evidence._text(ref.get("path"))
             or not isinstance(ref.get("sha256"), str) or not evidence.SHA_RE.fullmatch(ref["sha256"])):
         raise ValueError("immutable reference requires only a real path and 64-hex sha256")
     given = Path(ref["path"])
     path = _plain_path(given if given.is_absolute() else base / given)
-    data = _bounded_bytes(path, str(path), MAX_JSON_BYTES if object_required else MAX_ARTIFACT_BYTES)
+    limit = MAX_JSON_BYTES if object_required else MAX_ARTIFACT_BYTES
+    data = _bounded_bytes(path, str(path), limit if maximum is None else maximum)
     if sha(data) != ref["sha256"].lower():
         raise ValueError(f"artifact SHA-256 mismatch: {path}")
     return path, json_object(data, str(path)) if object_required else data
+
+
+def _multires_identity(identity: dict) -> bool:
+    profile, resolution = identity.get("profile"), identity.get("resolution")
+    return (profile in PROFILES and resolution in MULTIRES_PRESETS
+            and identity.get("recipe_revision") == MULTIRES_REVISION
+            and identity.get("stage") == evidence.STABLE_STAGE + f"-{profile}-hd-multires-validation")
+
+
+def candidate_artifact_limit(identity: dict, name: str, *, json_default=None, binary_default=None) -> int:
+    """Large sidecars belong only to the exact twelve-cell source recipe."""
+    if _multires_identity(identity):
+        if name == "metadata":
+            return MULTIRES_METADATA_BYTES
+        if name == "probe":
+            return MULTIRES_PROBE_BYTES
+    return (MAX_ARTIFACT_BYTES if binary_default is None else binary_default) if name in (
+        "base_executable", "executable") else (MAX_JSON_BYTES if json_default is None else json_default)
 
 
 def _source_hashes(names, repo_root: Path) -> dict[str, str]:
@@ -199,6 +224,10 @@ def _inventory(repo_root: Path) -> tuple[dict, dict]:
             display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
             if display.recipe_revision not in PROFILE_RECIPES[profile]:
                 raise ValueError("resolved recipe is not in the fixed profile registry")
+            if display.recipe_revision == MULTIRES_REVISION and not _multires_identity({
+                    "profile": profile, "resolution": resolution, "stage": display.stage,
+                    "recipe_revision": display.recipe_revision}):
+                raise ValueError("multiresolution recipe requires its exact profile, preset and stage")
             row.update(recipe_eligible=True, source_recipe={"stage": display.stage,
                        "recipe_revision": display.recipe_revision,
                        "features": {"minimap_viewport": display.minimap_viewport}})
@@ -329,6 +358,73 @@ def _bind_complete_rebuild(legacy):
 _rebuild = _bind_complete_rebuild(_rebuild)
 
 
+def _multires_recipe_reconstructor():
+    """Capture canonical raw issuance before mutable public aliases exist."""
+    root = ROOT
+    path = root / "src/patcher/hd_multires_issuer.py"
+    plain, bounded, digest = _plain_path, _bounded_bytes, sha
+    compiler, execute = compile, exec
+    profiles, presets, revision = tuple(PROFILES), tuple(MULTIRES_PRESETS), MULTIRES_REVISION
+    stable_stage = evidence.STABLE_STAGE
+
+    def read_source():
+        if plain(path) != path or not path.is_relative_to(root):
+            raise ValueError("HD issuer must retain its fixed canonical source path")
+        before = path.stat()
+        raw = bounded(path, "HD issuer source", 4 * 1024 * 1024)
+        after = path.stat()
+        stamp = lambda row: (row.st_dev, row.st_ino, row.st_size, row.st_mtime_ns)
+        if stamp(before) != stamp(after) or len(raw) != before.st_size:
+            raise ValueError("HD issuer source changed while reading")
+        return raw, stamp(after)
+
+    captured = read_source()
+    issuer_sha = digest(captured[0])
+    values = {"__file__": str(path), "__name__": "_matrix_hd_multires_source_issuer", "__package__": None}
+    execute(compiler(captured[0], str(path), "exec"), values)
+    issuer, _ = values["create_issuer"]()
+    if read_source() != captured:
+        raise ValueError("HD issuer source changed during capture")
+
+    def rebuild(original, *, profile, resolution, recipe_revision, stage):
+        if (profile not in profiles or resolution not in presets or recipe_revision != revision
+                or stage != stable_stage + f"-{profile}-hd-multires-validation"):
+            raise ValueError("HD recipe requires its exact fixed profile, preset and stage")
+        if read_source() != captured:
+            raise ValueError("captured HD issuer source differs")
+        try:
+            image, metadata, probe = issuer(original, resolution, profile=profile)
+            if (type(image) is not bytes or type(metadata) is not dict or type(probe) is not str
+                    or metadata.get("profile") != profile or metadata.get("resolution") != resolution
+                    or metadata.get("stage") != stage or metadata.get("recipe_revision") != recipe_revision
+                    or metadata.get("candidate_sha256") != digest(image)
+                    or metadata.get("probe_sha256") != digest(probe.encode("utf-8"))
+                    or metadata.get("source_hashes", {}).get("src/patcher/hd_multires_issuer.py") != issuer_sha):
+                raise ValueError("canonical HD source bundle identity differs")
+            return {"image": image, "metadata": metadata, "probe": probe, "projection": False,
+                    "source_hashes": metadata["source_hashes"]}
+        finally:
+            if read_source() != captured:
+                raise ValueError("HD issuer source changed during reconstruction")
+    return rebuild
+
+
+def _bind_multires_rebuild(legacy):
+    canonical, root = _multires_recipe_reconstructor(), ROOT
+    revision = MULTIRES_REVISION
+    def rebuild(profile, resolution, original, display, repo_root):
+        if display.recipe_revision == revision:
+            if repo_root.resolve() != root.resolve():
+                raise ValueError("production reconstruction requires the fixed repository ROOT")
+            return canonical(original, profile=profile, resolution=resolution,
+                recipe_revision=display.recipe_revision, stage=display.stage)
+        return legacy(profile, resolution, original, display, repo_root)
+    return rebuild
+
+
+_rebuild = _bind_multires_rebuild(_rebuild)
+
+
 def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
                            *, repo_root: Path = ROOT) -> dict:
     """Reconstruct candidate bytes without runtime."""
@@ -338,9 +434,27 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
         raise ValueError("candidate requires base_executable, executable, metadata and recipe-specific probe references")
     profile, resolution = cell_id.split("/")
     from src.launcher import presets
+    try:
+        selected = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+    except (ValueError, OSError, ImportError):
+        selected = None
+    selected_hd = selected is not None and _multires_identity({"profile": profile, "resolution": resolution,
+        "stage": selected.stage, "recipe_revision": selected.recipe_revision})
     paths, values, refs = {}, {}, {}
-    for name, reference in spec.items():
-        path, value = read_reference(reference, base, object_required=name == "metadata")
+    for name in ("base_executable", "executable", "metadata", "probe"):
+        if name not in spec:
+            continue
+        reference = spec[name]
+        maximum = MULTIRES_METADATA_BYTES if selected_hd and name == "metadata" else None
+        if name == "probe" and selected_hd and values["metadata"].get("recipe_revision") == MULTIRES_REVISION:
+            maximum = MULTIRES_PROBE_BYTES
+        path, value = read_reference(reference, base, object_required=name == "metadata", maximum=maximum)
+        if name == "metadata" and value.get("recipe_revision") != MULTIRES_REVISION and path.stat().st_size > MAX_JSON_BYTES:
+            raise ValueError("legacy candidate metadata exceeds its unchanged JSON bound")
+        if name == "metadata" and value.get("recipe_revision") == MULTIRES_REVISION and (
+                not selected_hd or value.get("profile") != profile or value.get("resolution") != resolution
+                or value.get("stage") != selected.stage):
+            raise ValueError("HD producer metadata differs from the exact selected profile, preset or stage")
         paths[name], values[name] = path, value
         refs[name] = {"path": str(path), "sha256": reference["sha256"].lower()}
     candidate_path = paths["executable"]
@@ -357,6 +471,8 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     if sha(original) != evidence.BASE_SHA256:
         raise ValueError("unknown original executable SHA-256; matrix has no override")
     revision = metadata.get("recipe_revision")
+    if revision == MULTIRES_REVISION and not selected_hd:
+        raise ValueError("HD recipe is not selected by this exact launcher profile/preset")
     validation = VALIDATION_RECIPES.get(revision) if isinstance(revision, str) else None
     advertised = resolution in manifest["profiles"][profile]["resolutions"]
     if validation is not None:
@@ -367,8 +483,18 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     else:
         if not advertised:
             raise ValueError("candidate preset is not advertised by the actual launcher profile")
-        display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
-        selection_scope = "launcher_resolved_recipe"
+        if revision in PROFILE_RECIPES[profile] and revision != MULTIRES_REVISION and selected is not None and selected.recipe_revision != revision:
+            try:
+                display = presets.resolve_plan(renderer=profile, resolution=resolution,
+                    stage=metadata.get("stage"), manifest=manifest)
+            except (ValueError, OSError, ImportError) as error:
+                raise ValueError("candidate producer metadata differs from its fixed legacy stage") from error
+            if display.recipe_revision != revision:
+                raise ValueError("legacy recipe revision differs from its fixed explicit stage")
+            selection_scope = "legacy_source_recipe"
+        else:
+            display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+            selection_scope = "launcher_resolved_recipe"
     try:
         rebuilt = _rebuild(profile, resolution, original, display, repo_root)
     except SystemExit as exc:
@@ -382,7 +508,7 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
     else:
         observed = dict(metadata)
         expected_metadata = dict(expected_metadata)
-        if profile == "framed" and validation is None:
+        if profile == "framed" and display.recipe_revision == "four-border-partial-initial-v1":
             # Only the legacy Framed recipe emits this wall-clock field.
             observed.pop("generated_at", None)
             expected_metadata.pop("generated_at", None)
@@ -400,8 +526,11 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
         raise ValueError("candidate metadata differs from resolved profile stage or resolution")
     if _source_hashes(rebuilt["source_hashes"], repo_root) != rebuilt["source_hashes"]:
         raise ValueError("candidate sources changed during authentication")
-    for reference in refs.values():
-        read_reference(reference, base)
+    for name, reference in refs.items():
+        maximum = None
+        if revision == MULTIRES_REVISION:
+            maximum = MULTIRES_METADATA_BYTES if name == "metadata" else MULTIRES_PROBE_BYTES if name == "probe" else None
+        read_reference(reference, base, maximum=maximum)
     identity = {"profile": profile, "stage": display.stage, "resolution": resolution,
                 "recipe_revision": display.recipe_revision, "base_sha256": sha(original),
                 "candidate_sha256": sha(actual), "metadata_sha256": refs["metadata"]["sha256"],
