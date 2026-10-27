@@ -50,15 +50,17 @@ TAB_NAMES = ("Main settings", "Launcher settings", "Information", "Diagnostics")
 
 
 class LauncherApp:
-    def __init__(self, root: tk.Tk, initial_profile: str = "classic") -> None:
+    def __init__(self, root: tk.Tk, initial_profile: str | None = None) -> None:
+        self.settings = settings_mod.load_settings()
+        initial_profile = initial_profile or self.settings["last_profile"]
         if initial_profile not in PROFILE_NAMES:
             raise core.LauncherError("Unknown launcher profile.")
         if initial_profile != "classic" and getattr(sys, "frozen", False) and not bootstrap.bundled_sources_verified():
             raise core.LauncherError("Experimental renderer profiles require verified bundled sources.")
         self.root = root
-        self.settings = settings_mod.load_settings()
         self.manifest = presets.load_manifest()
-        self.options = presets.load_options(self.manifest)
+        self.options = presets.load_options(self.manifest, initial_profile)
+        self._active_profile = None
         self.environment: core.EnvironmentReport | None = None
         self.experimental_warned = False
 
@@ -75,9 +77,7 @@ class LauncherApp:
             except tk.TclError:
                 pass
 
-        saved_resolution = self.settings.get(
-            "last_resolution", presets.default_key(self.manifest)
-        )
+        saved_resolution = settings_mod.resolution_for_profile(self.settings, initial_profile)
         if saved_resolution not in {option.key for option in self.options}:
             saved_resolution = presets.default_key(self.manifest)
         self.profile_var = tk.StringVar(value=initial_profile)
@@ -417,6 +417,15 @@ class LauncherApp:
         return {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[self.profile_var.get()]
 
     def on_profile_change(self) -> None:
+        selected = self.profile_var.get()
+        previous = getattr(self, "_active_profile", None)
+        if previous is not None and previous != selected:
+            try:
+                settings_mod.remember_selection(self.settings, previous, self._current_resolution_key())
+            except core.LauncherError:
+                pass
+            self.resolution_var.set(settings_mod.resolution_for_profile(self.settings, selected))
+        self._active_profile = selected
         experimental = self.profile_var.get() != "classic"
         self.experimental_warned = False
         self.profile_label.configure(text=self._backend().WARNING if experimental else "Existing resolution evidence and stable defaults are unchanged.")
@@ -425,7 +434,8 @@ class LauncherApp:
             button.configure(text=f"{option.key}  [{badge}]")
         if hasattr(self, "renderer_choice"):
             self.renderer_choice.set(PROFILE_NAMES[self.profile_var.get()])
-            options = tuple(option.key for option in presets.load_options(self.manifest, self.profile_var.get()))
+            self.options = presets.load_options(self.manifest, self.profile_var.get())
+            options = tuple(option.key for option in self.options)
             self.resolution_combo.configure(values=options + (() if self.profile_var.get() in ("completehd", "modalwidgets") else ("custom",)))
             if self.profile_var.get() in ("completehd", "modalwidgets") and self.resolution_var.get() not in options:
                 self.resolution_var.set("800x600")
@@ -633,12 +643,12 @@ class LauncherApp:
         self.log(f"Removed {len(removed)} candidate file(s).")
 
     def _save_settings(self) -> None:
-        if self.profile_var.get() != "classic":
-            return
+        profile = self.profile_var.get()
         try:
-            self.settings["last_resolution"] = self._current_resolution_key()
+            resolution = self._current_resolution_key()
         except core.LauncherError:
-            self.settings["last_resolution"] = presets.default_key(self.manifest)
+            resolution = presets.default_key(self.manifest, profile)
+        settings_mod.remember_selection(self.settings, profile, resolution)
         self.settings["scaling_mode"] = self.scaling_var.get()
         try:
             self.settings["window_geometry"] = self.root.geometry()
@@ -652,7 +662,7 @@ class LauncherApp:
         self.root.destroy()
 
 
-def start_gui(initial_profile: str = "classic") -> int:
+def start_gui(initial_profile: str | None = None) -> int:
     if not settings_mod.acquire_lock(pid_alive=core.pid_alive):
         print("Another Clash95 HD launcher instance is already running.")
         return 1

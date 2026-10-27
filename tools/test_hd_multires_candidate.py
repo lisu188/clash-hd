@@ -74,6 +74,29 @@ def synthetic_parent(profile="framed", resolution="3840x2160"):
 
 
 class SourceAndByteTests(unittest.TestCase):
+    def test_only_exact_checked_predecessor_source_paths_become_portable(self):
+        bindings = {label: dict(path=str(candidate.ROOT / relative),
+                        sha256=candidate.sha256((candidate.ROOT / relative).read_bytes()))
+                    for label, relative in {
+                        "patcher": "src/patcher/patch_clash95_hd.py",
+                        "framed_recipe": "src/patcher/framed_recipe.py",
+                        "framed_viewport": "src/patcher/framed_viewport.py"}.items()}
+        predecessor = {"predecessor": {"framed_recipe": {"source_bindings": bindings}}}
+        before = deepcopy(predecessor)
+        portable = candidate._portable_predecessor(predecessor)
+        self.assertEqual(predecessor, before)
+        for row in portable["predecessor"]["framed_recipe"]["source_bindings"].values():
+            self.assertTrue(row["path"].startswith("src/patcher/"))
+            self.assertNotIn("\\", row["path"])
+            self.assertFalse(Path(row["path"]).is_absolute())
+        for field, value in (("path", "C:/other/source.py"), ("sha256", "0" * 64)):
+            changed = deepcopy(predecessor)
+            changed["predecessor"]["framed_recipe"]["source_bindings"]["patcher"][field] = value
+            with self.assertRaisesRegex(ValueError, "source binding differs"):
+                candidate._portable_predecessor(changed)
+        with self.assertRaisesRegex(ValueError, "binding inventory"):
+            candidate._portable_predecessor({"source_bindings": {"unknown": {}}})
+
     def test_exact_twelve_cells_and_legacy_default_are_separate(self):
         self.assertEqual(len(candidate.PROFILES) * len(candidate.RESOLUTIONS), 12)
         registry = json.loads((ROOT / "src/launcher/resolutions.json").read_text())

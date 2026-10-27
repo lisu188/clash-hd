@@ -23,7 +23,7 @@ import real_exe_smoke as smoke
 from src.display_plan import resolve_display_plan
 
 SCHEMA = 'clash_launcher_resolution_sweep_v1'
-BACKENDS = {'classic': core, **{name: importlib.import_module(name) for name in ('framed', 'completehd', 'modalwidgets')}}
+BACKENDS = {name: importlib.import_module(name) for name in ('classic', 'framed', 'completehd', 'modalwidgets')}
 REQUIRED_GAMEPLAY = ('map', 'scroll', 'minimap', 'army', 'castle', 'barracks', 'battle', 'save_reload', 'focus_recovery')
 
 
@@ -39,9 +39,10 @@ def inventory(manifest=None):
     cases = []
     for profile, config in manifest['profiles'].items():
         for option in presets.load_options(manifest, profile):
-            display = resolve_display_plan(renderer=profile, resolution=option.key)
-            if display.stage != config['stage']:
-                raise ValueError('Launcher and display stages differ')
+            display = presets.resolve_plan(renderer=profile, resolution=option.key, manifest=manifest)
+            if (display.renderer, display.resolution, display.width, display.height) != (
+                    profile, option.key, option.width, option.height):
+                raise ValueError('Launcher and resolved display identities differ')
             cases.append(dict(id=f'{profile}/{option.key}', profile=profile, resolution=option.key,
                               width=option.width, height=option.height, stage=display.stage,
                               recipe_revision=display.recipe_revision, display_plan=display.to_dict(),

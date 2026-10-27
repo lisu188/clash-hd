@@ -91,6 +91,39 @@ def _source_hashes(profile: str) -> dict[str, str]:
     return dict(sorted(result.items()))
 
 
+def _portable_predecessor(value):
+    """Keep frozen provenance content, with checked location-independent paths.
+
+    The historical scalar Framed recipe reports its local __file__ paths.
+    A standalone one-file launcher extracts into a different directory on every
+    invocation. Only the successor's copy of those three authenticated bindings
+    is canonicalized; frozen builders and historical metadata stay intact.
+    """
+    bindings = {"patcher": "src/patcher/patch_clash95_hd.py",
+                "framed_recipe": "src/patcher/framed_recipe.py",
+                "framed_viewport": "src/patcher/framed_viewport.py"}
+    if type(value) is list:
+        return [_portable_predecessor(item) for item in value]
+    if type(value) is not dict:
+        return value
+    result = {}
+    for key, item in value.items():
+        if key != "source_bindings":
+            result[key] = _portable_predecessor(item)
+            continue
+        _require(type(item) is dict and set(item) == set(bindings),
+                 "unknown predecessor source-binding inventory")
+        result[key] = {}
+        for label, relative in bindings.items():
+            record = item[label]
+            _require(type(record) is dict and set(record) == {"path", "sha256"}
+                     and type(record["path"]) is str and Path(record["path"]) == ROOT / relative
+                     and record["sha256"] == sha256(_source(relative)),
+                     "predecessor source binding differs: " + label)
+            result[key][label] = dict(path=relative, sha256=record["sha256"])
+    return result
+
+
 def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dict]:
     """Check initial headers, executable sections and inherited literal reads.
 
@@ -239,7 +272,8 @@ def _build_candidate(original: bytes, resolution: str, *, profile: str):
     metadata = dict(schema="clash95_hd_multires_candidate_v1", profile=profile, resolution=resolution,
         stage=selected_stage, recipe_revision=REVISION, original_sha256=ORIGINAL_SHA256,
         base_sha256=ORIGINAL_SHA256, candidate_sha256=sha256(image), candidate_bytes=len(image),
-        source_hashes=before, patch_records=records, predecessor=predecessor,
+        source_hashes=before, patch_records=records, predecessor=_portable_predecessor(predecessor),
+        predecessor_source_path_scope="canonical_repository_relative_v1",
         predecessor_candidate_sha256=parent_sha, predecessor_probe_sha256=sha256(inherited.encode()),
         bounded_small_world_integrated=capability["bounded_small_world_integrated"],
         small_world_input_enabled=capability["small_world_input_enabled"], bounded_world=capability,

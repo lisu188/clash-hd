@@ -91,9 +91,25 @@ class PlayabilityTests(unittest.TestCase):
 
     def test_current_classic_matrix_routes_the_actual_corrected_launcher(self):
         self.assertEqual(tool.matrix.BACKENDS['classic'],'classic')
-        case=tool.matrix.select_case('classic','3840x2160')
-        self.assertEqual(case['recipe_revision'],'classic_menu_widgets_v1')
-        self.assertTrue(case['stage'].endswith('-menuwidgets-validation'))
+        manifest=tool.matrix.presets.load_manifest()
+        for profile in ('classic','framed','completehd','modalwidgets'):
+            config=manifest['profiles'][profile]
+            for resolution in ('1920x1080','2560x1440','3840x2160'):
+                with self.subTest(profile=profile,resolution=resolution):
+                    case=tool.matrix.select_case(profile,resolution)
+                    self.assertEqual(case['recipe_revision'],'hd_multires_v1')
+                    self.assertEqual(case['stage'],manifest['stable_stage']+f'-{profile}-hd-multires-validation')
+                    legacy=config['wide_menu_recipe'] if profile=='classic' else config
+                    if profile in ('completehd','modalwidgets') and resolution!='1920x1080':
+                        with self.assertRaises(tool.matrix.presets.DisplayPlanError) as rejected:
+                            tool.matrix.presets.resolve_plan(renderer=profile,resolution=resolution,
+                                stage=legacy['stage'],manifest=manifest)
+                        self.assertEqual(rejected.exception.code,'unsupported_resolution')
+                        continue
+                    frozen=tool.matrix.presets.resolve_plan(renderer=profile,resolution=resolution,
+                        stage=legacy['stage'],manifest=manifest)
+                    self.assertEqual((frozen.stage,frozen.recipe_revision),
+                        (legacy['stage'],legacy['recipe_revision']))
 
     def test_selected_unit_requires_live_map_context_and_bounded_index(self):
         state=dict(selected_stack=6,render_hook=0x40ad40,map_active_word=1,world_width=50,world_height=50)

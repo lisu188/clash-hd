@@ -278,6 +278,8 @@ class EntryPointTests(unittest.TestCase):
         app = object.__new__(gui.LauncherApp)
         app.profile_var = SimpleNamespace(get=lambda: "framed")
         app.profile_label = Mock()
+        app.settings = gui.settings_mod.defaults()
+        app.resolution_var = SimpleNamespace(get=lambda: "800x600", set=lambda value: None)
         button = Mock()
         app.resolution_buttons = [(button, SimpleNamespace(key="800x600", status="stable"))]
         app.experimental_warned = True
@@ -294,9 +296,17 @@ class EntryPointTests(unittest.TestCase):
         import gui
         app = object.__new__(gui.LauncherApp)
         app.profile_var = SimpleNamespace(get=lambda: "framed")
+        app.settings = gui.settings_mod.defaults()
+        app.settings["last_resolution"] = "1024x768"
+        app._current_resolution_key = lambda: "1920x1080"
+        app.scaling_var = SimpleNamespace(get=lambda: "integer")
+        app.root = SimpleNamespace(geometry=lambda: "730x650")
         with patch.object(gui.settings_mod, "save_settings") as save:
             app._save_settings()
-        save.assert_not_called()
+        save.assert_called_once()
+        self.assertEqual(app.settings["last_resolution"], "1024x768")
+        self.assertEqual(app.settings["profile_resolutions"]["framed"], "1920x1080")
+        self.assertEqual(app.settings["last_profile"], "framed")
 
     def test_framed_gui_cancel_never_prepares_or_launches_even_at_stable_resolution(self):
         import gui
