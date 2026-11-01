@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 import json
 import subprocess
 import sys
@@ -17,6 +18,7 @@ import hd_endurance_next_actions as next_actions
 import hd_soak_dry_run_plan as soak_plan
 import test_hd_soak_dry_run_plan as plan_fixtures
 import test_hd_soak_intro_skip_rerun_readiness as intro_fixtures
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, replace_retained_bytes
 
 APPROVAL_TOKEN = "1234567890abcdef"
 APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00+00:00"
@@ -1083,14 +1085,22 @@ def test_invalid_completion_cannot_bypass_approval_preflight() -> None:
             tmp = Path(temporary)
             reports = source_reports()
             reports["step_status"] = intro_fixtures.completed_ladder_status(tmp)
-            intro_fixtures.mutate_completed_ladder(reports["step_status"], mutation)
-            report = preflight.build_report(args_for(tmp, reports))
+            artifact_fault = intro_fixtures.mutate_completed_ladder(reports["step_status"], mutation)
+            with replace_retained_bytes(*artifact_fault) if artifact_fault else nullcontext():
+                report = preflight.build_report(args_for(tmp, reports))
         assert not report["passed"], (mutation, report)
         assert report["status"] == "invalid_short_ladder_completion"
         intro_fixtures.assert_terminal_no_authorization(report)
 
 
 def run_tests() -> None:
+    # Completed-ladder fixtures seal retained artifacts that only exist inside
+    # this private reader scope, exactly as in the intro-skip readiness suite.
+    with fixture_artifact_reads():
+        _run_tests()
+
+
+def _run_tests() -> None:
     test_completed_ladder_produces_no_approval_or_runtime_request()
     test_invalid_completion_cannot_bypass_approval_preflight()
     test_hidden_preflight_uses_emitted_plan_without_visible_approval()
