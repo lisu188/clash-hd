@@ -1908,6 +1908,11 @@ $runnerFailures += @(Get-RouteValidationFailures -Observations $observations -Ex
 $avObserved = $avObserved -or $observations.AvObserved
 $surfInvalidObserved = $surfInvalidObserved -or $observations.SurfaceInvalidObserved
 $appRequestQuitObserved = $appRequestQuitObserved -or $observations.AppRequestQuitObserved
+# The proxy keeps the game's DirectDraw palette beside the candidate. Edge PNGs
+# are viewing aids rendered from the retained raw frames, so use that palette
+# for true colour when present; graders never read PNG pixels.
+$paletteDump = Join-Path $candidateRunDir 'ddraw_surfdump_palette.bin'
+$paletteArguments = if (Test-Path -LiteralPath $paletteDump -PathType Leaf) { @('--palette', $paletteDump) } else { @() }
 foreach ($name in ($edgeNames.Keys | Sort-Object)) {
     $rawPath = Join-Path $framesDir ("$name.raw")
     $pngPath = Join-Path $framesDir ("$name.png")
@@ -1928,7 +1933,7 @@ foreach ($name in ($edgeNames.Keys | Sort-Object)) {
         $captureErrors += "edge conversion admission failed for $name`: $($_.Exception.Message)"
         continue
     }
-    & $pythonExe $converter $rawPath --width $ready.Width --height $ready.Height --output $pngPath --metadata $pngMetaPath --log $logPath
+    & $pythonExe $converter $rawPath --width $ready.Width --height $ready.Height --output $pngPath --metadata $pngMetaPath --log $logPath @paletteArguments
     if ($LASTEXITCODE -ne 0) {
         $captureErrors += "cdb_surface_dump_to_png.py failed for $name with exit code $LASTEXITCODE"
     }
