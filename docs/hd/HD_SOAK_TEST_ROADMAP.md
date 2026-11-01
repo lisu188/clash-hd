@@ -407,7 +407,11 @@ python tools\hd_soak_approval_preflight.py --require-pass
    rendering.
 3. `map-pan`: visible runs drive deterministic cursor movement and measure
    input responsiveness; hidden-CDB runs disclose bounded forced scroll writes,
-   require frame progression, and record input as not applicable.
+   follow each write with the native full map repaint used by arrow-key
+   scrolling, require frame progression, and record input as not applicable.
+   Hidden map-pan frames from before 2026-11-01 lack that repaint: after the
+   first pan they mix stale and redrawn cells, so their metrics cannot show
+   coherent panning.
 4. Castle overview enter/exit: require centered input evidence and no modal
    desync.
 5. Barracks/castle centered input: require enter/exit and click-path evidence.
