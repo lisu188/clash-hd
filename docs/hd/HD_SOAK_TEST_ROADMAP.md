@@ -86,7 +86,9 @@ missing artifact, and does not unlock runtime or long tiers.
    additional free space just to cross below 90%, before pending allowances.
    Recompute admission from live capacity rather than that transient observation.
    The bounded cache cleanup and already-removed duplicate static inputs cannot
-   supply that space.
+   supply that space. On 2026-11-01 C: measured 89.68% and then 67.04% used
+   within minutes during unrelated workstation activity; neither reading is
+   admission, so measure again immediately before each write.
    Preserve evidence and request capacity recovery outside the audited disposable
    subset; do not expand cleanup or reduce the guard.
 2. **Snapshot before canonical mutation.** After capacity admission, exclusively
@@ -184,8 +186,6 @@ implied completed states. Throughout the plan, retain
 `environment=hidden_cdb_host`, `input_responsiveness=not_applicable_hidden` and
 `present_enabled=0`. Manual DirectInput remains unproved at `0/5`; final visible
 composition, release completion and protected-stage promotion remain unresolved.
-The historical local merge and descendants must not be pushed; publication still
-requires reviewed content-only integration based on sanitized `origin/main`.
 
 ## Harness
 

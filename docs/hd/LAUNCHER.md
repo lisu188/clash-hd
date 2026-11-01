@@ -134,7 +134,7 @@ evidence capture. Automated runtime and manual/visible validation follow
 
 Keep each lane bound to the selected stage, recipe, resolution, exact candidate
 and source revision. Follow [the current handoff](AGENT_HANDOFF.md) and the
-[owning protocol guide](README.md#evidence-and-release-work) before executing a
+[owning protocol guide](README.md#engineering-guides) before executing a
 lane. Historical Classic 800x600 observations cannot validate Framed, Complete
 HD, Modal widgets or expanded battle by implication.
 

@@ -119,3 +119,5 @@ candidate under its [candidate-bound evaluator](COMPLETE_HD_EVIDENCE.md).
 A profile or resolution is promoted only when its source-level checks and the
 required local runtime validation have both succeeded for the exact candidate.
 A passing public CI job alone never establishes runtime acceptance.
+The protected stable stage and Classic/800x600 default remain unchanged until
+an explicit promotion decision follows the required evidence.

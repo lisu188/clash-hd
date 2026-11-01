@@ -106,6 +106,13 @@ invalidate a stale guard. The CLI, refresh and triage forward their actual
 selected path. The registered bounded source/alias fixtures are not runtime,
 native-producer or immutable-file proof and restore no missing evidence.
 
+This source batch reaches the public history through a content-only integration
+on the sanitized remote; it changes no evidence state. During that integration
+on 2026-11-01, C: measured 89.68% and then 67.04% used within minutes while
+unrelated workstation jobs ran. The earlier >95% observation no longer holds,
+but transient readings are not admission: remeasure every relevant volume with
+all pending allowances immediately before any runtime or large write.
+
 ## Public repository state
 
 - The repository contains independently authored patcher/launcher source,
