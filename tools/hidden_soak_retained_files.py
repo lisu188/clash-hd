@@ -23,7 +23,11 @@ _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 _FRAME_BYTES = 800 * 600
 _FRAME_NAME = re.compile(r"frame-([0-9]{4,10})\Z")
 _SHA256 = re.compile(r"[0-9a-fA-F]{64}\Z")
-_STAMP_FIELDS = ("st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns", "st_file_attributes")
+_STAMP_FIELDS = ("st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns", "st_file_attributes",
+                 "creation_ns")
+_CTIME_INDEX = _STAMP_FIELDS.index("st_ctime_ns")
+_MODE_INDEX = _STAMP_FIELDS.index("st_mode")
+_EXECUTE_BITS = stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
 
 
 class RetainedFileError(ValueError):
@@ -38,10 +42,31 @@ class RetainedFileError(ValueError):
 def _stamp(info: os.stat_result) -> tuple[int, ...]:
     # atime is deliberately excluded: the read itself may update it. Full
     # identity and observed metadata are compared; this is not an atomic lock.
+    # Creation time comes from st_birthtime_ns where Python provides it; older
+    # Windows Pythons report creation time as st_ctime_ns instead.
+    created = getattr(info, "st_birthtime_ns", None)
     return (
         info.st_dev, info.st_ino, info.st_mode, info.st_size,
         info.st_mtime_ns, info.st_ctime_ns, getattr(info, "st_file_attributes", 0),
+        info.st_ctime_ns if created is None else created,
     )
+
+
+def _cross_api_identity(stamp: tuple[int, ...]) -> tuple[int, ...]:
+    """Fields that path lstat and handle fstat report with the same meaning.
+
+    On Windows with Python 3.12+, lstat reports creation time as st_ctime_ns
+    while fstat reports the last metadata change there. On every Windows
+    Python, lstat derives st_mode execute bits from the path's extension (such
+    as .exe) and a nameless handle never reports them. Comparisons between the
+    two APIs therefore drop st_ctime_ns and those execute bits, keeping file
+    type, write permission and creation time; same-API comparisons keep the
+    full stamp.
+    """
+    identity = list(stamp)
+    identity[_MODE_INDEX] &= ~_EXECUTE_BITS
+    del identity[_CTIME_INDEX]
+    return tuple(identity)
 
 
 def _path_snapshot(path: Path) -> tuple[tuple[int, ...], ...]:
@@ -107,7 +132,8 @@ def read_retained_file(path: str, max_bytes: int) -> bytes:
             raise ValueError(f"retained file size {size} exceeds maximum {max_bytes}")
         flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
         descriptor = os.open(target, flags)
-        if _stamp(os.fstat(descriptor)) != before[-1]:
+        held = _stamp(os.fstat(descriptor))
+        if _cross_api_identity(held) != _cross_api_identity(before[-1]):
             raise ValueError("held retained-file identity differs from its admitted path")
         chunks: list[bytes] = []
         read_count = 0
@@ -121,7 +147,7 @@ def read_retained_file(path: str, max_bytes: int) -> bytes:
                 raise ValueError("retained file grew during its bounded read")
         if read_count != size:
             raise ValueError("retained file ended before its admitted byte count")
-        if _stamp(os.fstat(descriptor)) != before[-1]:
+        if _stamp(os.fstat(descriptor)) != held:
             raise ValueError("held retained-file identity/metadata changed during read")
         after = _path_snapshot(target)
         if after != before:

@@ -53,8 +53,15 @@ def changed_stat(info, **updates):
         "st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns",
     )}
     fields["st_file_attributes"] = getattr(info, "st_file_attributes", 0)
+    if hasattr(info, "st_birthtime_ns"):
+        fields["st_birthtime_ns"] = info.st_birthtime_ns
     fields.update(updates)
     return SimpleNamespace(**fields)
+
+
+def creation_ns(info) -> int:
+    created = getattr(info, "st_birthtime_ns", None)
+    return info.st_ctime_ns if created is None else created
 
 
 class RetainedFileReaderTests(unittest.TestCase):
@@ -134,6 +141,76 @@ class RetainedFileReaderTests(unittest.TestCase):
             with self.subTest(change_at=change_at), mock.patch.object(retained.os, "fstat", side_effect=inspect):
                 with self.assertRaises(retained.RetainedFileError):
                     retained.read_retained_file(str(self.path), 100)
+
+    def test_handle_ctime_meaning_may_differ_from_the_path_api(self):
+        # Windows Python 3.12+ reports creation time as lstat st_ctime_ns but the
+        # last metadata change as fstat st_ctime_ns. Emulate that handle view on
+        # every interpreter; an unchanged file with the same creation time reads.
+        real_fstat = os.fstat
+        created = creation_ns(os.lstat(self.path))
+
+        def handle_view(descriptor):
+            info = real_fstat(descriptor)
+            return changed_stat(info, st_ctime_ns=info.st_mtime_ns + 7, st_birthtime_ns=created)
+
+        with mock.patch.object(retained.os, "fstat", side_effect=handle_view):
+            self.assertEqual(retained.read_retained_file(str(self.path), 1023), b"retained fixture\n")
+
+    def test_extension_derived_execute_bits_may_differ_from_the_handle(self):
+        # Windows derives lstat execute bits from a path's extension; a nameless
+        # handle never reports them, on every Python version. Read a real .exe
+        # name, then emulate that handle view on every interpreter.
+        executable = self.directory / "candidate.exe"
+        executable.write_bytes(b"MZ retained fixture\n")
+        self.assertEqual(retained.read_retained_file(str(executable), 100), b"MZ retained fixture\n")
+        real_fstat = os.fstat
+
+        def handle_view(descriptor):
+            info = real_fstat(descriptor)
+            return changed_stat(info, st_mode=info.st_mode & ~0o111)
+
+        with mock.patch.object(retained.os, "fstat", side_effect=handle_view):
+            self.assertEqual(retained.read_retained_file(str(executable), 100), b"MZ retained fixture\n")
+
+    def test_handle_file_type_or_write_permission_drift_is_rejected(self):
+        real_fstat = os.fstat
+        for label, update in (("file type", lambda mode: (mode & ~stat.S_IFMT(mode)) | stat.S_IFDIR),
+                              ("write permission", lambda mode: mode ^ stat.S_IWUSR)):
+            def handle_view(descriptor, update=update):
+                info = real_fstat(descriptor)
+                return changed_stat(info, st_mode=update(info.st_mode))
+
+            with self.subTest(label), mock.patch.object(retained.os, "fstat", side_effect=handle_view):
+                with self.assertRaises(retained.RetainedFileError) as raised:
+                    retained.read_retained_file(str(self.path), 100)
+                self.assertIn("identity differs from its admitted path", str(raised.exception))
+
+    def test_creation_time_drift_between_path_and_handle_is_rejected(self):
+        real_fstat = os.fstat
+
+        def handle_view(descriptor):
+            info = real_fstat(descriptor)
+            return changed_stat(info, st_birthtime_ns=creation_ns(info) + 1)
+
+        with mock.patch.object(retained.os, "fstat", side_effect=handle_view):
+            with self.assertRaises(retained.RetainedFileError) as raised:
+                retained.read_retained_file(str(self.path), 100)
+        self.assertIn("identity differs from its admitted path", str(raised.exception))
+
+    def test_handle_metadata_change_during_read_is_still_rejected(self):
+        real_fstat = os.fstat
+        calls = 0
+
+        def inspect(descriptor):
+            nonlocal calls
+            calls += 1
+            info = real_fstat(descriptor)
+            return changed_stat(info, st_ctime_ns=info.st_ctime_ns + 1) if calls == 2 else info
+
+        with mock.patch.object(retained.os, "fstat", side_effect=inspect):
+            with self.assertRaises(retained.RetainedFileError) as raised:
+                retained.read_retained_file(str(self.path), 100)
+        self.assertIn("changed during read", str(raised.exception))
 
     def test_after_read_path_and_ancestor_drift_are_rejected(self):
         real_lstat = os.lstat
