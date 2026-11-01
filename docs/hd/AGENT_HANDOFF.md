@@ -113,6 +113,19 @@ unrelated workstation jobs ran. The earlier >95% observation no longer holds,
 but transient readings are not admission: remeasure every relevant volume with
 all pending allowances immediately before any runtime or large write.
 
+User-approved hidden map-pan diagnostics on 2026-11-01/02 (stable candidate
+`5E162FA8...`, 800x600) exposed and verified repairs for four defects. The
+retained reader compared path and handle stats that Windows reports differently:
+Python 3.12+ ctime meaning and extension-derived `.exe` execute bits. It rejected
+every real file until it compared only API-stable identity. The forced pan wrote
+scroll fields without the native full repaint, so frames after the first pan
+mixed stale and redrawn cells. The probe now repaints through `00418700` like
+the arrow-key scroll. Edge PNGs now use the retained DirectDraw palette. Two
+fixture suites now build sealed ladders inside the private reader scope. The
+final 120-second run passed its report and shared guard. It is not a ladder rung
+or replacement evidence, and earlier hidden map-pan frame metrics cannot show
+coherent panning. See the [diagnostic record](../../reports/hidden-soak-diagnostic-runs-20261101.json).
+
 ## Public repository state
 
 - The repository contains independently authored patcher/launcher source,
