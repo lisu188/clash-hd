@@ -116,3 +116,15 @@ runtime/input acceptance flags. It never reads or changes the user's saved
 launcher settings. The build
 checks its inputs before and after compilation. Any packaged-source change
 requires a new executable and clean-folder verification.
+
+The standalone restart receipt
+[`reports/hd-multires-standalone-restart-20261102.json`](../../reports/hd-multires-standalone-restart-20261102.json)
+records one build of commit `65dedc6b` and its package self-test. Each of
+the twelve cells was prepared by two separate launcher processes, started
+from two clean folders without Python on PATH. Each process ran on its own
+hidden desktop with its own one-file extraction directory.
+Every cell's executable, metadata and probe were byte-identical across both
+runs and equal to the bundle that `tools/hd_multires_qualification.py`
+prepared and authenticated; the original executable was unchanged. This is
+construction and restart determinism only: no game, GUI, input, rendering or
+release acceptance.
