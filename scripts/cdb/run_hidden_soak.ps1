@@ -1910,9 +1910,11 @@ $surfInvalidObserved = $surfInvalidObserved -or $observations.SurfaceInvalidObse
 $appRequestQuitObserved = $appRequestQuitObserved -or $observations.AppRequestQuitObserved
 # The proxy keeps the game's DirectDraw palette beside the candidate. Edge PNGs
 # are viewing aids rendered from the retained raw frames, so use that palette
-# for true colour when present; graders never read PNG pixels.
+# for true colour when a complete 256-entry dump exists; graders never read PNG
+# pixels. A dump truncated by cleanup during a rewrite falls back to grayscale.
 $paletteDump = Join-Path $candidateRunDir 'ddraw_surfdump_palette.bin'
-$paletteArguments = if (Test-Path -LiteralPath $paletteDump -PathType Leaf) { @('--palette', $paletteDump) } else { @() }
+$paletteArguments = if ((Test-Path -LiteralPath $paletteDump -PathType Leaf) -and
+    (Get-Item -LiteralPath $paletteDump).Length -ge 1024) { @('--palette', $paletteDump) } else { @() }
 foreach ($name in ($edgeNames.Keys | Sort-Object)) {
     $rawPath = Join-Path $framesDir ("$name.raw")
     $pngPath = Join-Path $framesDir ("$name.png")
