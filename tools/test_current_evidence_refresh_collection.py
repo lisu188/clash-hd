@@ -373,6 +373,10 @@ class CollectionTests(unittest.TestCase):
             "build_hidden_soak_binary_artifacts_tests", "fixed file-reader boundary", "no original, loaded-image",
         )
 
+    @unittest.skipUnless(
+        sys.platform == "win32" and refresh.test_hidden_soak_log_observations.POWERSHELL.exists(),
+        "real PowerShell-parity registration needs Windows",
+    )
     def test_registered_log_observations_actual_entrypoint(self):
         self.assert_registered_retained_entrypoint(
             "build_hidden_soak_log_observations_tests", "source-only synthetic log", "no native producer",
@@ -398,7 +402,12 @@ class CollectionTests(unittest.TestCase):
             # Execute the new registrations first, then the actual next
             # production collector in the declared aggregate order. Its only
             # mock is publication; default retained-file reads must fail.
-            for builder in ("build_hidden_soak_retained_files_tests", "build_hidden_soak_binary_artifacts_tests", "build_hidden_soak_log_observations_tests"):
+            builders = ["build_hidden_soak_retained_files_tests", "build_hidden_soak_binary_artifacts_tests"]
+            # The log-observation suite's strict runner counts its Windows-only
+            # PowerShell parity skip as an incomplete pass elsewhere.
+            if sys.platform == "win32" and refresh.test_hidden_soak_log_observations.POWERSHELL.exists():
+                builders.append("build_hidden_soak_log_observations_tests")
+            for builder in builders:
                 with patch.object(refresh, "write_json"), patch.object(refresh, "write_simple_tests_markdown"):
                     result = getattr(refresh, builder)(self.args)
                 self.assertIs(result["passed"], True, result["failures"])
