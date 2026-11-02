@@ -37,14 +37,24 @@
       "clean_stop": true, "av_observed": false,
       "soak_probe_template_sha256": "A480928627D4F4B4A1227606871F2DC9BEA0D17DF46F3F3A85B865A293E20711",
       "report_passed": true, "report_failure_count": 0, "guard_overall": true,
-      "finding": "all retained frames, logs, proxy files, templates, patch report and candidate reopened and matched; every frame coherent after each pan"
+      "finding": "all retained frames, logs, proxy files, templates, patch report and candidate reopened and matched; every frame coherent after each pan; superseded pan mechanism (injected repaint from the redraw entry)"
+    },
+    {
+      "run": "hidden-soak-20261102-143328-102-map-pan",
+      "duration_sec": 120, "frame_interval_sec": 15, "pan_interval_sec": 10,
+      "frames": 9, "pan_events": 11, "heartbeats": 1,
+      "clean_stop": true, "av_observed": false,
+      "soak_probe_template_sha256": "A8D46E0989CBC89EAC6F557B040990D3C3FD0AB6020DA6A9DF36C5B5F8F13D6B",
+      "pan_mechanism": "cdb_forced_native_arrow_key",
+      "report_passed": true, "report_failure_count": 0, "guard_overall": true,
+      "finding": "every pan step taken by the native arrow-key handler landed exactly on the planned four-phase cycle; frames coherent; redraw rate back near the unforced map rate"
     }
   ],
   "defects_repaired": [
     "retained reader compared path lstat with handle fstat st_ctime_ns; on Windows Python 3.12+ these mean creation time and last metadata change, so every real file was rejected; cross-API identity now uses creation time",
     "retained reader compared extension-derived st_mode execute bits that Windows lstat reports for .exe paths and a nameless handle never reports, on every Python version; cross-API identity now ignores only those bits",
-    "forced map-pan wrote the scroll fields without the native full repaint, so the incremental redraw left stale cells; the probe now calls 00418700 with eax=1 and sets 005202f0 like the native arrow-key scroll, failing closed on a stack mismatch",
-    "edge PNGs were rendered from grayscale indices although the proxy retains the DirectDraw palette; they now use that palette",
+    "forced map-pan wrote the scroll fields without the native full repaint, so the incremental redraw left stale cells; a first repair injected the repaint 00418700 from the redraw entry, which left the render-device global changed mid-frame, so each pan step is now taken by the native arrow-key handler 00407D20 at its own main-loop call from CDB-written key state (pan_mechanism cdb_forced_native_arrow_key)",
+    "edge PNGs were rendered from grayscale indices although the proxy retains the DirectDraw palette; they now use that palette when its 1024-byte dump is complete",
     "dry-run plan and approval preflight fixture tests built sealed completed-ladder artifacts outside the private reader scope and ignored the retained patch fault; they now use that scope, apply the fault and assert fresh-process fail-closed behavior"
   ],
   "observations": {
