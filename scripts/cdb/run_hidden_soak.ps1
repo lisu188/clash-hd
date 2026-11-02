@@ -317,7 +317,8 @@ $patchStageReporter = Join-Path $RepoRoot 'tools\patch_stage_report.py'
 $converter = Join-Path $RepoRoot 'tools\cdb_surface_dump_to_png.py'
 $assembler = Join-Path $RepoRoot 'tools\hidden_soak_report_assembler.py'
 $grader = Join-Path $RepoRoot 'tools\hd_soak_report.py'
-foreach ($path in @($patcher, $patchStageReporter, $converter, $assembler, $grader)) {
+$composer = Join-Path $RepoRoot 'tools\hidden_soak_probe_composition.py'
+foreach ($path in @($patcher, $patchStageReporter, $converter, $assembler, $grader, $composer)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Required helper was not found: $path"
     }
@@ -1599,71 +1600,36 @@ $probeTemplateReceipt = Get-RetainedFileReceipt -Path $ProbeTemplate
 $soakTemplateReceipt = Get-RetainedFileReceipt -Path $SoakProbeTemplate
 $durationTicks = [int64]$DurationSec * 64
 $panIntervalTicks = [int64]$PanIntervalSec * 64
-$panFlag = if ($Route -eq 'map-pan') { '1' } else { '0' }
-
-$loadMouseX = 320
-$loadMouseY = 166 + (22 * $LoadSlot)
-$loadMouseRawX = '{0:x8}' -f ($loadMouseX -shl 6)
-$loadMouseRawY = '{0:x8}' -f ($loadMouseY -shl 6)
-
-$extraProbeText = (Get-Content -LiteralPath $SoakProbeTemplate -Raw).Trim()
-foreach ($placeholder in @('__SOAK_DURATION_TICKS__', '__SOAK_PAN__', '__PAN_INTERVAL_TICKS__')) {
-    if ($extraProbeText.IndexOf($placeholder) -lt 0) {
-        throw "Soak probe template is missing the required placeholder ${placeholder}: $SoakProbeTemplate"
-    }
-}
-if ($extraProbeText -match '(?m)^\s*g\s*$') {
-    throw "Soak probe template must not contain a standalone g command: $SoakProbeTemplate"
-}
-$extraProbeText = $extraProbeText.Replace('__SOAK_DURATION_TICKS__', ('0n{0}' -f $durationTicks))
-$extraProbeText = $extraProbeText.Replace('__PAN_INTERVAL_TICKS__', ('0n{0}' -f $panIntervalTicks))
-$extraProbeText = $extraProbeText.Replace('__SOAK_PAN__', $panFlag)
-$extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
-$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', $loadMouseRawX)
-$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__', $loadMouseRawY)
-
-$probeText = Get-Content -LiteralPath $ProbeTemplate -Raw
-$preEntryLoadCoordAction = 'ed 00544cfc __LOAD_MOUSE_RAW_X__; ed 00544d00 __LOAD_MOUSE_RAW_Y__; eb 005451c0 80; ed 00544d04 1; .if (@$t1 < 0n16) { .printf \"SURFDUMP_LOAD_COORD seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; };'
-$probeText = $probeText.Replace('__PRE_ENTRY_LOAD_COORD_ACTION__', $preEntryLoadCoordAction)
-$probeText = $probeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
-$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_X__', $loadMouseRawX)
-$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_Y__', $loadMouseRawY)
-
-$playGamePattern = '(?m)^bp 0040B660 '
-if ($probeText -notmatch $playGamePattern) {
-    throw 'Could not find the PlayGame breakpoint insertion point in the CDB probe template.'
-}
-$probeText = [regex]::Replace($probeText, $playGamePattern, ($extraProbeText + "`r`n`r`n" + 'bp 0040B660 '), 1)
-
-# Fast-forward start animations (the proven -FastForwardStartAnims block).
-$startAnimsBreakpoint = @(
-    '.echo SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED'
-    'bp 0044789a ".printf \"SURFDUMP_SKIP_START_SLEEP ret=004478a1\\n\"; r eip=004478a1; r esp=@esp+4; gc"'
-    'bp 0046e4d0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e4d7; r esp=@esp+4; gc } .else { gc }"'
-    'bp 0046e6df ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e6e6; r esp=@esp+4; gc } .else { gc }"'
-    'bp 0046fd01 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046fd08; r esp=@esp+4; gc } .else { gc }"'
-    'bp 0047BFD0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_TIME_SLEEP ret=%p\\n\", poi(@esp); r @$t12 = @$t12 + 1; }; r eax=0; r eip=poi(@esp); r esp=@esp+4; gc } .else { gc }"'
-) -join "`r`n"
-$probeText = $probeText.Replace('__START_ANIMS_BP__', $startAnimsBreakpoint)
-$probeText = $probeText.Replace('__VISIBILITY_PLAYGAME_ACTION__', '')
-$probeText = $probeText.Replace('__VISIBILITY_PATCH_ACTION__', '')
-# Host-ReadProcessMemory dumping only; the game continues after the base READY.
-$probeText = $probeText.Replace('__SURFACE_DUMP_ACTION__', '.echo SURFDUMP_HOST_READY; gc')
-$probeText = $probeText.Replace('__RAW_PATH__', (((Get-FullPath -Path (Join-Path $framesDir 'surface.raw'))) -replace '\\', '/'))
-$leftoverPlaceholders = [regex]::Matches($probeText, '__[A-Z0-9_]+__') | ForEach-Object { $_.Value } | Sort-Object -Unique
-if (@($leftoverPlaceholders).Count -gt 0) {
-    throw "Probe composition left unsubstituted placeholders: $($leftoverPlaceholders -join ', ')"
-}
+$rawSurfacePath = Get-FullPath -Path (Join-Path $framesDir 'surface.raw')
+# The canonical composer is the only probe producer. Graders rebuild the same
+# bytes from the retained templates and the parameters recorded below; its
+# parity with the former inline composition is in
+# reports/hidden-soak-probe-composition-parity-20261102.json.
+$composerReceipt = Get-RetainedFileReceipt -Path $composer
 Assert-SoakDiskReserve -Paths $diskPaths -PendingBytes $pendingArtifactBytes
-Set-Content -LiteralPath $generatedProbe -Value $probeText -Encoding ASCII
+$compositionRaw = & $pythonExe -B $composer --probe-template (Get-FullPath -Path $ProbeTemplate) `
+    --soak-template (Get-FullPath -Path $SoakProbeTemplate) --route $Route --duration-sec $DurationSec `
+    --pan-interval-sec $PanIntervalSec --load-slot $LoadSlot --raw-path $rawSurfacePath --output $generatedProbe
+if ($LASTEXITCODE -ne 0) {
+    throw "hidden_soak_probe_composition.py failed with exit code $LASTEXITCODE"
+}
+$probeComposition = ($compositionRaw -join [Environment]::NewLine) | ConvertFrom-Json
 $generatedProbeReceipt = Get-RetainedFileReceipt -Path $generatedProbe
+if ($probeComposition.composer_sha256 -ne $composerReceipt.sha256 -or
+    $probeComposition.generated_probe_sha256 -ne $generatedProbeReceipt.sha256 -or
+    $probeComposition.generated_probe_size -ne $generatedProbeReceipt.size -or
+    $probeComposition.probe_template_sha256 -ne $probeTemplateReceipt.sha256 -or
+    $probeComposition.soak_probe_template_sha256 -ne $soakTemplateReceipt.sha256) {
+    throw 'Probe composer receipt differs from the composer, template or generated-probe bytes.'
+}
 foreach ($binding in @(
     @{ Path = $ProbeTemplate; Receipt = $probeTemplateReceipt },
-    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt }
+    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt },
+    @{ Path = $composer; Receipt = $composerReceipt }
 )) {
     $currentReceipt = Get-RetainedFileReceipt -Path $binding.Path
     if ($currentReceipt.sha256 -ne $binding.Receipt.sha256 -or $currentReceipt.size -ne $binding.Receipt.size) {
-        throw "Probe template changed during composition: $($binding.Path)"
+        throw "Probe composition input changed during composition: $($binding.Path)"
     }
 }
 
@@ -1984,7 +1950,8 @@ foreach ($binding in @(
     @{ Path = $proxyBuildLogPath; Receipt = $proxyBuildLogReceipt },
     @{ Path = $generatedProbe; Receipt = $generatedProbeReceipt },
     @{ Path = $ProbeTemplate; Receipt = $probeTemplateReceipt },
-    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt }
+    @{ Path = $SoakProbeTemplate; Receipt = $soakTemplateReceipt },
+    @{ Path = $composer; Receipt = $composerReceipt }
 )) {
     try {
         $currentReceipt = Get-RetainedFileReceipt -Path $binding.Path
@@ -2035,6 +2002,19 @@ $samples = [ordered]@{
     generated_probe = $generatedProbe
     generated_probe_sha256 = $generatedProbeReceipt.sha256
     generated_probe_size = $generatedProbeReceipt.size
+    probe_composition = [ordered]@{
+        schema = 'hidden_soak_probe_composition_v1'
+        composer = (Get-FullPath -Path $composer)
+        composer_sha256 = $composerReceipt.sha256
+        composer_size = $composerReceipt.size
+        parameters = [ordered]@{
+            route = $Route
+            duration_sec = $DurationSec
+            pan_interval_sec = $PanIntervalSec
+            load_slot = $LoadSlot
+            raw_path = $rawSurfacePath
+        }
+    }
     cdb_log = $logPath
     cdb_log_sha256 = if ($cdbLogReceipt) { $cdbLogReceipt.sha256 } else { $null }
     cdb_log_size = if ($cdbLogReceipt) { $cdbLogReceipt.size } else { $null }
