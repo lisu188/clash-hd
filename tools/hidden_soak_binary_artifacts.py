@@ -18,6 +18,7 @@ from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from hidden_soak_artifact_layout import _windows_path, validate_hidden_artifact_layout
+from hidden_soak_probe_composition import ProbeCompositionError, compose_probe, composer_sha256
 from hidden_soak_retained_files import read_retained_file as _read_retained_file
 from patch_stage_report import build_report as _build_patch_report
 
@@ -41,6 +42,7 @@ _MAX_BINARY = 32 * 1024 * 1024
 _MAX_LOG = 32 * 1024 * 1024
 _MAX_JSON = 2 * 1024 * 1024
 _MAX_SOURCE = 2 * 1024 * 1024
+_COMPOSITION_PARAMETERS = ("route", "duration_sec", "pan_interval_sec", "load_slot", "raw_path")
 _SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
 _LOAD_ROW = re.compile(r"^ddraw_surfdump_proxy loaded present_enabled=([01])$")
 
@@ -266,12 +268,13 @@ def _validate_proxy(payload: dict[str, Any], artifacts: dict[str, Any], summary:
 
 def _validate_probes(payload: dict[str, Any], artifacts: dict[str, Any], summary: dict[str, Any], failures: list[str]) -> None:
     # Pins authenticate the bytes currently retained at these fixed source
-    # paths. They do not establish canonical generated-probe construction.
+    # paths; the rebuild below authenticates canonical construction from them.
     summary["canonical_probe_regeneration_authenticated"] = False
     slot = payload.get("load_slot")
     if type(slot) is not int or not 0 <= slot <= 9:
         failures.append("load_slot must be an integer in the normalized range 0..9")
     summary["load_slot"] = slot
+    retained: dict[str, bytes | None] = {}
     for role in ("generated_probe", *_PROBE_PINS):
         path = payload.get(role)
         if role in _PROBE_PINS and not _source_path_matches(path, _PROBE_PINS[role]):
@@ -282,6 +285,41 @@ def _validate_probes(payload: dict[str, Any], artifacts: dict[str, Any], summary
                      expected_size=payload.get(f"{role}_size"), require_receipt=True)
         if data == b"":
             failures.append(f"{role}: retained artifact is empty")
+        retained[role] = data
+    _validate_probe_composition(payload, retained, summary, failures)
+
+
+def _validate_probe_composition(payload: dict[str, Any], retained: dict[str, bytes | None],
+                                summary: dict[str, Any], failures: list[str]) -> None:
+    """Rebuild the generated probe from the retained templates and recorded parameters."""
+    record = payload.get("probe_composition")
+    parameters = record.get("parameters") if isinstance(record, dict) else None
+    if (not isinstance(record, dict) or record.get("schema") != "hidden_soak_probe_composition_v1"
+            or not isinstance(parameters, dict) or set(parameters) != set(_COMPOSITION_PARAMETERS)):
+        failures.append("probe_composition must record the canonical composer parameters")
+        return
+    errors: list[str] = []
+    for field in ("route", "duration_sec", "load_slot"):
+        if type(parameters[field]) is not type(payload.get(field)) or parameters[field] != payload.get(field):
+            errors.append(f"probe_composition {field} differs from the report")
+    if payload.get("route") == "map-pan" and parameters["pan_interval_sec"] != payload.get("pan_interval_sec"):
+        errors.append("probe_composition pan_interval_sec differs from the report")
+    recorded = record.get("composer_sha256")
+    summary["probe_composition"] = {
+        "parameters": dict(parameters), "recorded_composer_sha256": recorded, "grader_composer_sha256": composer_sha256(),
+        "same_composer_source": type(recorded) is str and recorded.casefold() == composer_sha256()}
+    if all(type(retained.get(role)) is bytes and retained[role] for role in ("generated_probe", *_PROBE_PINS)):
+        try:
+            rebuilt = compose_probe(retained["probe_template"], retained["soak_probe_template"], **parameters)
+        except ProbeCompositionError as exc:
+            errors.append(f"probe_composition: {exc}")
+        else:
+            if rebuilt != retained["generated_probe"]:
+                errors.append("generated_probe differs from the canonical composition of the retained templates")
+    else:
+        errors.append("probe_composition: the generated probe and both templates must be retained to rebuild it")
+    failures.extend(errors)
+    summary["canonical_probe_regeneration_authenticated"] = not errors
 
 
 def validate_retained_binaries(payload: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:

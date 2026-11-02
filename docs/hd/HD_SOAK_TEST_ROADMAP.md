@@ -65,9 +65,18 @@ selected canonical copy must match its bytes exactly. Binding failures fail
 binding records and source hashes. The external `report_json` is not rewritten
 to manufacture canonical identity. These source-only checks restore no artifacts.
 These checks supply observed byte consistency only: native producer, loaded
-target, coherent capture, canonical probe generation, independent cleanup and
+target, coherent capture, source-samples binding, independent cleanup and
 running-time authentication remain separate prerequisites. Historical missing
 evidence and failed attempts stay missing or failed.
+
+The generated probe now comes only from the canonical composer
+`tools/hidden_soak_probe_composition.py`. The binary grader rebuilds it from
+the retained templates and the recorded `probe_composition` parameters and
+fails `overall` on any difference. Byte parity with the former inline
+PowerShell composition is pinned in
+`reports/hidden-soak-probe-composition-parity-20261102.json` for all seven
+hidden rung parameter sets and both range boundaries. This is construction
+evidence, not proof that CDB executed the probe.
 
 ### Replacement-evidence plan requested 2026-10-13
 
@@ -77,7 +86,7 @@ Preparation grants no replacement-run or visible-session approval, restores no
 missing artifact, and does not unlock runtime or long tiers.
 
 1. **Finish admission prerequisites.** Complete the remaining production gaps
-   named in `AGENT_HANDOFF.md`, including canonical probe/source-samples binding,
+   named in `AGENT_HANDOFF.md`, including source-samples binding,
    owned loaded-target/coherent reads, native cleanup verification and genuine
    running-time coverage. Pass public/source and focused checks without treating
    fixtures as native proof. Recheck disk reserve on every relevant volume,
