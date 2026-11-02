@@ -20,7 +20,7 @@ contract:
   summary-side from the actual frame rows, never trusted from a summary field.
 - Forced-entry mechanics are DISCLOSED: ``entry_mechanism`` names the
   breakpoint-forced loader map entry, and ``pan_mechanism`` names the forced
-  scroll writes for map-pan. These fields are always present, never hidden.
+  native arrow-key steps for map-pan. These fields are always present, never hidden.
 - Every report is stamped ``environment=hidden_cdb_host`` so it can never be
   mistaken for a visible-runtime or guest soak.
 
@@ -45,13 +45,25 @@ if str(TOOLS_DIR) not in sys.path:
 from hd_soak_report import (  # noqa: E402
     EXPECTED_BASE_SHA256,
     PROTECTED_STABLE_STAGE,
-    integer_or_none,
-    float_or_none,
+    hidden_integer_or_none as integer_or_none,
+    hidden_float_or_none as float_or_none,
     is_sha256,
+    hidden_frame_sample_failures,
+    hidden_array,
+    hidden_pan_coverage_failures,
+    hidden_pan_pattern_failures,
+    hidden_pan_plan_failures,
+    hidden_process_sample_failures,
+    hidden_route_end_failures,
+    hidden_sample_coverage_failures,
     normalize_sha,
     status_text,
-    timestamp_span_seconds,
+    hidden_timestamp_span_seconds as timestamp_span_seconds,
 )
+from hidden_soak_artifact_layout import validate_hidden_artifact_layout  # noqa: E402
+from hidden_soak_binary_artifacts import validate_retained_binaries  # noqa: E402
+from hidden_soak_log_observations import validate_retained_log  # noqa: E402
+from hidden_soak_retained_files import validate_retained_frames  # noqa: E402
 
 HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
@@ -59,7 +71,7 @@ NOT_APPLICABLE_HIDDEN = "not_applicable_hidden"
 HIDDEN_CAPTURE_MODE = "hidden-cdb-host-readprocessmemory"
 HIDDEN_FRAME_READ_METHOD = "host_readprocessmemory"
 ENTRY_MECHANISM = "cdb_breakpoint_forced_loader_entry"
-PAN_MECHANISM = "cdb_forced_scroll_write"
+PAN_MECHANISM = "cdb_forced_native_arrow_key"
 NO_PAN_MECHANISM = "none"
 ELAPSED_COVERAGE_FORMULA = "duration_sec - sample_interval_sec - 2"
 HIDDEN_RUNTIME_POLICY = (
@@ -146,14 +158,22 @@ def assemble_report(
     route = str(samples.get("route") or "")
     duration_sec = integer_or_none(samples.get("duration_sec"))
     frame_interval_sec = integer_or_none(samples.get("frame_interval_sec"))
-    frame_samples = list(samples.get("frame_samples") or [])
-    process_samples = list(samples.get("process_samples") or [])
-    capture_errors = list(samples.get("capture_errors") or [])
-    runner_failures = [str(row) for row in (samples.get("runner_failures") or [])]
+    raw_frame_samples = hidden_array(samples, "frame_samples", failures)
+    raw_process_samples = hidden_array(samples, "process_samples", failures)
+    # Evaluate malformed rows as missing fields without dropping the originals
+    # from the returned diagnostic inventory.
+    frame_samples = [row if isinstance(row, dict) else {} for row in raw_frame_samples]
+    process_samples = [row if isinstance(row, dict) else {} for row in raw_process_samples]
+    for index, row in enumerate(raw_frame_samples):
+        if not isinstance(row, dict):
+            failures.append(f"frame sample {index} is not an object")
+    capture_errors = hidden_array(samples, "capture_errors", failures)
+    runner_failures = [str(row) for row in hidden_array(samples, "runner_failures", failures)]
     ready_marker = samples.get("ready_marker")
     route_start_marker = samples.get("route_start_marker")
     route_end_marker = samples.get("route_end_marker")
     pan_events = samples.get("pan_events")
+    pan_plans = samples.get("pan_plans")
     proxy = samples.get("proxy")
     cleanup = samples.get("cleanup")
 
@@ -166,6 +186,10 @@ def assemble_report(
             f"samples environment is {samples.get('environment')!r}; this assembler only builds "
             f"{HIDDEN_ENVIRONMENT!r} reports"
         )
+
+    # Declared path layout only, not file existence or byte authentication.
+    _, layout_failures = validate_hidden_artifact_layout(samples)
+    failures.extend(layout_failures)
 
     if route not in {"map-idle", "map-pan"}:
         failures.append(f"unknown hidden soak route: {route!r}")
@@ -210,7 +234,7 @@ def assemble_report(
     if not ready_valid:
         failures.append("ready_marker is missing or malformed; the anchored SOAK_SURFDUMP_READY row is required")
     else:
-        if ready_marker.get("source") not in {"SOAK_SURFDUMP_READY", "SURFDUMP_READY"}:
+        if ready_marker.get("source") not in ("SOAK_SURFDUMP_READY", "SURFDUMP_READY"):
             failures.append("ready_marker.source is not an anchored surface-ready marker")
         if ready_redraw_seq is None or ready_redraw_seq < 0:
             failures.append("ready_marker.redraw_seq is missing or invalid")
@@ -334,6 +358,20 @@ def assemble_report(
         failures.append(
             f"map-idle route recorded {pan_event_count} forced-scroll events; an idle route must not pan"
         )
+    if route == "map-pan":
+        failures.extend(hidden_pan_pattern_failures(route_start_marker, pan_events))
+        failures.extend(hidden_pan_coverage_failures(
+            pan_events, duration_ticks=expected_duration_ticks,
+            interval_sec=integer_or_none(samples.get("pan_interval_sec")),
+            end_tick_delta=end_tick_delta,
+        ))
+    failures.extend(hidden_pan_plan_failures(
+        pan_plans, route_start_marker, ready_marker, route_end_marker, pan_events, route=route,
+    ))
+    failures.extend(hidden_route_end_failures(
+        route_start_marker, route_end_marker, pan_events,
+        route=route, duration_ticks=expected_duration_ticks,
+    ))
 
     # The memory-only proxy is part of the hidden capture chain. It must have a
     # SHA-tied build/log trail and presentation must remain disabled.
@@ -379,6 +417,9 @@ def assemble_report(
         failures.append("the base template reported SURFDUMP_INVALID")
     if samples.get("app_request_quit_observed") is True:
         failures.append("the game requested App_RequestQuit during the soak")
+    for field in ("av_observed", "surface_invalid_observed", "app_request_quit_observed"):
+        if type(samples.get(field)) is not bool:
+            failures.append(f"{field} must retain the producer's original boolean failure flag")
     if samples.get("cdb_exit_before_duration") is True:
         failures.append("CDB exited before the soak duration completed")
     if samples.get("game_exit_before_duration") is True:
@@ -394,6 +435,12 @@ def assemble_report(
         failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
 
     # --- frame inventory + render metrics (real reads only) ------------------
+    failures.extend(hidden_frame_sample_failures(
+        raw_frame_samples, min_nonblack_percent=min_nonblack_percent,
+        min_unique_sample_colors=min_unique_sample_colors,
+        expected_width=expected_width, expected_height=expected_height,
+        allowed_capture_modes=(HIDDEN_CAPTURE_MODE,),
+    ))
     frame_count = len(frame_samples)
     if frame_count < min_frames:
         failures.append(f"frame sample count {frame_count} is below {min_frames}")
@@ -417,14 +464,14 @@ def assemble_report(
         )
 
     nonblack_values = [
-        value
-        for value in (float_or_none(frame.get("NonblackPercent")) for frame in frame_samples)
-        if value is not None
+        float(frame["NonblackPercent"])
+        for frame in frame_samples
+        if type(frame.get("NonblackPercent")) in (int, float) and 0 <= frame["NonblackPercent"] <= 100
     ]
     unique_values = [
-        value
-        for value in (integer_or_none(frame.get("UniqueSampleColors")) for frame in frame_samples)
-        if value is not None
+        frame["UniqueSampleColors"]
+        for frame in frame_samples
+        if type(frame.get("UniqueSampleColors")) is int and 0 <= frame["UniqueSampleColors"] <= 256
     ]
     if len(nonblack_values) != frame_count:
         failures.append("one or more frame samples are missing NonblackPercent")
@@ -464,6 +511,7 @@ def assemble_report(
     process_sample_count = len(process_samples)
     if process_sample_count < 2:
         failures.append(f"process sample count {process_sample_count} is below 2")
+    failures.extend(hidden_process_sample_failures(raw_process_samples))
     exited_rows = [row for row in process_samples if row.get("HasExited") is True]
     if exited_rows:
         failures.append(f"{len(exited_rows)} process samples reported HasExited=True")
@@ -518,6 +566,12 @@ def assemble_report(
     # --- elapsed coverage ------------------------------------------------------
     frame_elapsed_sec, invalid_frame_ts = timestamp_span_seconds(frame_samples)
     process_elapsed_sec, invalid_process_ts = timestamp_span_seconds(process_samples)
+    coverage_failures = hidden_sample_coverage_failures(
+        raw_frame_samples, duration_sec=duration_sec, interval_sec=frame_interval_sec, label="frame"
+    ) + hidden_sample_coverage_failures(
+        raw_process_samples, duration_sec=duration_sec, interval_sec=frame_interval_sec, label="process"
+    )
+    failures.extend(coverage_failures)
     if invalid_frame_ts:
         failures.append(f"{invalid_frame_ts} frame samples have missing or invalid timestamps")
     if invalid_process_ts:
@@ -573,15 +627,16 @@ def assemble_report(
             failures.append("elapsed_coverage.passed is not true")
 
     # --- artifact budget -------------------------------------------------------
-    artifact_bytes = integer_or_none(samples.get("artifact_bytes"))
+    raw_artifact_bytes = samples.get("artifact_bytes")
+    artifact_bytes = raw_artifact_bytes if type(raw_artifact_bytes) is int else None
     max_artifact_mb = integer_or_none(samples.get("max_artifact_mb"))
     artifact_limit_bytes = None
     if max_artifact_mb is None or max_artifact_mb <= 0:
         failures.append("max_artifact_mb is missing or not positive")
     else:
         artifact_limit_bytes = max_artifact_mb * 1024 * 1024
-    if artifact_bytes is None:
-        failures.append("artifact_bytes is missing")
+    if artifact_bytes is None or artifact_bytes < 0:
+        failures.append("artifact_bytes must be an explicit nonnegative integer inventory")
     elif artifact_limit_bytes is not None and artifact_bytes > artifact_limit_bytes:
         failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
 
@@ -602,13 +657,16 @@ def assemble_report(
             "mechanism": PAN_MECHANISM,
             "forced": True,
             "disclosure": (
-                "map pan was FORCED by periodic CDB writes of a bounded four-phase "
-                "cycle into the gameData scroll fields gd+140008/gd+140012 "
-                "(SOAK_PAN_SET rows); it was not user input"
+                "map pan was FORCED by periodic CDB writes of one arrow-key state "
+                "byte that the native key-scroll handler 00407D20 consumed at its "
+                "own main-loop call, walking a bounded four-phase cycle of "
+                "single-cell steps (SOAK_PAN_SET rows record the resulting "
+                "gameData scroll fields gd+140008/gd+140012); it was not user input"
             ),
             "pan_interval_sec": pan_interval_sec,
             "pan_event_count": pan_event_count,
             "scroll_fields": ["gd+140008", "gd+140012"],
+            "key_state": "005451cc+DIK",
         }
     else:
         pan_mechanism = NO_PAN_MECHANISM
@@ -631,6 +689,7 @@ def assemble_report(
         "route": route,
         "duration_sec": duration_sec,
         "sample_interval_sec": frame_interval_sec,
+        "pan_interval_sec": pan_interval_sec,
         "stage": stage,
         "protected_stable_stage": PROTECTED_STABLE_STAGE,
         "stable_stage_should_change": False,
@@ -639,12 +698,25 @@ def assemble_report(
         "candidate": samples.get("candidate"),
         "candidate_sha256": samples.get("candidate_sha256"),
         "patch_stage_report": samples.get("patch_stage_report"),
+        "patch_stage_report_sha256": samples.get("patch_stage_report_sha256"),
+        "patch_stage_report_size": samples.get("patch_stage_report_size"),
         "workdir": samples.get("workdir"),
         "output_directory": samples.get("output_directory"),
         "report_json": samples.get("report_json"),
         "report_markdown": samples.get("report_markdown"),
         "cdb_log": samples.get("cdb_log"),
+        "cdb_log_sha256": samples.get("cdb_log_sha256"),
+        "cdb_log_size": samples.get("cdb_log_size"),
         "generated_probe": samples.get("generated_probe"),
+        "generated_probe_sha256": samples.get("generated_probe_sha256"),
+        "generated_probe_size": samples.get("generated_probe_size"),
+        "probe_template": samples.get("probe_template"),
+        "probe_template_sha256": samples.get("probe_template_sha256"),
+        "probe_template_size": samples.get("probe_template_size"),
+        "soak_probe_template": samples.get("soak_probe_template"),
+        "soak_probe_template_sha256": samples.get("soak_probe_template_sha256"),
+        "soak_probe_template_size": samples.get("soak_probe_template_size"),
+        "load_slot": samples.get("load_slot"),
         "launch_mode": samples.get("launch_mode"),
         "entry_mechanism": ENTRY_MECHANISM,
         "entry_mechanism_detail": entry_mechanism_detail,
@@ -662,6 +734,7 @@ def assemble_report(
         "route_start_marker": route_start_marker if isinstance(route_start_marker, dict) else None,
         "route_end_marker": route_end_marker if isinstance(route_end_marker, dict) else None,
         "pan_events": pan_events,
+        "pan_plans": pan_plans,
         "proxy": proxy,
         "cleanup": cleanup,
         "ready_observed": ready_valid,
@@ -669,7 +742,9 @@ def assemble_report(
         "soak_route_end_observed": end_valid,
         "heartbeat_count": heartbeat_count or 0,
         "pan_event_count": pan_event_count,
-        "av_observed": samples.get("av_observed") is True,
+        "av_observed": samples.get("av_observed"),
+        "surface_invalid_observed": samples.get("surface_invalid_observed"),
+        "app_request_quit_observed": samples.get("app_request_quit_observed"),
         "frame_sample_count": frame_count,
         "frame_hash_unique_count": computed_hash_unique_count,
         "frame_progress_expected": frame_progress_expected,
@@ -694,6 +769,7 @@ def assemble_report(
                 and process_elapsed_sec is not None
                 and frame_elapsed_sec >= required_elapsed_sec
                 and process_elapsed_sec >= required_elapsed_sec
+                and not coverage_failures
             ),
         },
         "process_sample_count": process_sample_count,
@@ -712,10 +788,25 @@ def assemble_report(
         "max_artifact_mb": max_artifact_mb,
         "artifact_limit_bytes": artifact_limit_bytes,
         "artifact_bytes": artifact_bytes,
-        "frame_samples": frame_samples,
-        "process_samples": process_samples,
-        "capture_errors": capture_errors,
+        "frame_samples": samples.get("frame_samples"),
+        "process_samples": samples.get("process_samples"),
+        "capture_errors": samples.get("capture_errors"),
     }
+    # No opt-out and no trust in a saved consistency summary. These readers
+    # inspect retained bytes; they supply neither native producer provenance
+    # nor loaded-image, coherent-capture, running-time or input acceptance.
+    report["retained_artifact_checks"] = {}
+    for name, validator in (
+        ("retained_binary_bytes", validate_retained_binaries),
+        ("retained_frame_bytes", validate_retained_frames),
+        ("retained_log_bytes", validate_retained_log),
+    ):
+        summary, retained_failures = validator(report)
+        report["retained_artifact_checks"][name] = {
+            "passed": not retained_failures, "summary": summary, "failures": retained_failures,
+        }
+        failures.extend(retained_failures)
+    report["passed"] = not failures
     return report
 
 
@@ -771,8 +862,12 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Clean stop: `{report.get('clean_stop')}` (`{report.get('clean_stop_mechanism')}`)",
         f"- Artifact bytes: `{report.get('artifact_bytes')}` (limit `{report.get('artifact_limit_bytes')}`)",
     ]
+    # Invalid inventories remain untouched in JSON. A diagnostic renderer must
+    # not abort merely because the rejected producer inventory is malformed.
+    frame_rows = report.get("frame_samples")
     png_frames = [
-        frame for frame in (report.get("frame_samples") or []) if frame.get("PngPath")
+        frame for frame in (frame_rows if type(frame_rows) is list else [])
+        if type(frame) is dict and frame.get("PngPath")
     ]
     if png_frames:
         lines.extend(["", "## Edge frames", ""])

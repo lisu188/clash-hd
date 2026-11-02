@@ -133,7 +133,9 @@ def refresh_step(step: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
         return record, failures
 
     report_environment, report_evidence_class = evidence_binding(report)
-    evaluation = hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
+    evaluation = hd_soak_report.evaluate_report_for_environment(
+        report, source_report_path=report_path, max_input_drift_px=1,
+    )
     evaluation["source_report"] = str(report_path)
     evaluation.setdefault("environment", report_environment)
     evaluation.setdefault("evidence_class", report_evidence_class)

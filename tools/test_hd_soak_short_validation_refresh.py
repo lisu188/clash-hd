@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -15,11 +16,21 @@ import hd_soak_report
 import hd_soak_short_artifact_manifest as manifest
 import hd_soak_short_validation_refresh as refresh
 from test_hd_soak_report import passing_hidden_report
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="ascii")
+    return path
+
+
+def write_hidden_report_alias(path: Path, data: dict[str, Any]) -> Path:
+    """Copy a positive external report exactly; text reserialization is not a copy."""
+    raw = Path(data["report_json"]).read_bytes()
+    assert json.loads(raw.decode("ascii")) == data
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(raw)
     return path
 
 
@@ -212,8 +223,11 @@ def test_hidden_map_report_keeps_environment_and_disclosures_through_refresh() -
         manifest_data = manifest_fixture(tmp)
         step = manifest_data["step_reports"][1]
         payload = passing_hidden_report(tmp)
-        payload["report_json"] = step["paths"]["report_json"]
-        write_json(Path(payload["report_json"]), payload)
+        external_path = Path(payload["report_json"])
+        external_bytes = external_path.read_bytes()
+        alias_path = write_hidden_report_alias(Path(step["paths"]["report_json"]), payload)
+        assert alias_path != external_path
+        assert alias_path.read_bytes() == external_bytes
         result = refresh.build_report(args_for(tmp, manifest_data))
         evaluated = json.loads(Path(step["paths"]["guard_json"]).read_text())
         triage = json.loads(Path(step["paths"]["triage_json"]).read_text())
@@ -222,7 +236,11 @@ def test_hidden_map_report_keeps_environment_and_disclosures_through_refresh() -
         for artifact in (evaluated, triage):
             assert artifact["environment"] == hd_soak_report.HIDDEN_ENVIRONMENT
             assert artifact["evidence_class"] == hd_soak_report.HIDDEN_EVIDENCE_CLASS
-            assert artifact["source_report"] == str(Path(payload["report_json"]))
+            assert artifact["source_report"] == str(alias_path)
+        assert evaluated["checks"]["source_report_binding"]["passed"]
+        assert evaluated["source_report_sha256"] == hashlib.sha256(external_bytes).hexdigest()
+        assert external_path.read_bytes() == external_bytes
+        assert json.loads(alias_path.read_text())["report_json"] == str(external_path)
         assert evaluated["input_responsiveness"] == "not_applicable_hidden"
         assert evaluated["checks"]["wrapper_provenance"]["passed"]
         assert triage["classification"] == "passing_run_no_failure"
@@ -234,9 +252,8 @@ def test_failed_hidden_provenance_is_not_refreshed_as_a_passing_run() -> None:
         manifest_data = manifest_fixture(tmp)
         step = manifest_data["step_reports"][1]
         payload = passing_hidden_report(tmp)
-        payload["report_json"] = step["paths"]["report_json"]
         payload["proxy"]["present_enabled"] = True
-        write_json(Path(payload["report_json"]), payload)
+        write_json(Path(step["paths"]["report_json"]), payload)
         result = refresh.build_report(args_for(tmp, manifest_data))
         evaluated = json.loads(Path(step["paths"]["guard_json"]).read_text())
         triage = json.loads(Path(step["paths"]["triage_json"]).read_text())
@@ -253,12 +270,54 @@ def test_hidden_report_cannot_replace_visible_menu_rung() -> None:
         manifest_data = manifest_fixture(tmp)
         step = manifest_data["step_reports"][0]
         payload = passing_hidden_report(tmp)
-        payload.update(route="menu-idle", report_json=step["paths"]["report_json"])
-        write_json(Path(payload["report_json"]), payload)
+        payload["route"] = "menu-idle"
+        write_json(Path(step["paths"]["report_json"]), payload)
         result = refresh.build_report(args_for(tmp, manifest_data))
         assert not result["passed"]
         assert result["steps"][0]["status"] == "report_mismatch"
         assert not Path(step["paths"]["guard_json"]).exists()
+
+
+def test_hidden_refresh_rejects_missing_or_byte_drifted_alias_and_external_sources() -> None:
+    for mutation in ("missing_external", "external_bytes", "alias_bytes", "alias_payload"):
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            manifest_data = manifest_fixture(tmp)
+            step = manifest_data["step_reports"][1]
+            payload = passing_hidden_report(tmp)
+            external_path = Path(payload["report_json"])
+            alias_path = write_hidden_report_alias(Path(step["paths"]["report_json"]), payload)
+            original = external_path.read_bytes()
+            assert alias_path.read_bytes() == original
+            args = args_for(tmp, manifest_data)
+            accepted = refresh.build_report(args)
+            assert accepted["steps"][1]["status"] == "validated_pass", accepted["failures"]
+            if mutation == "missing_external":
+                missing_external = external_path.with_name("missing-" + external_path.name)
+                assert not missing_external.exists()
+                write_json(alias_path, dict(payload, report_json=str(missing_external)))
+            elif mutation == "external_bytes":
+                external_path.write_bytes(original + b"\n")
+            elif mutation == "alias_bytes":
+                alias_path.write_bytes(original + b"\n")
+            else:
+                write_json(alias_path, dict(payload, generated_at="2026-06-17T12:00:00+00:00"))
+            retained = {alias_path: alias_path.read_bytes()}
+            if external_path.exists():
+                retained[external_path] = external_path.read_bytes()
+            result = refresh.build_report(args)
+            evaluated = json.loads(Path(step["paths"]["guard_json"]).read_text())
+            triage = json.loads(Path(step["paths"]["triage_json"]).read_text())
+            assert result["passed"], result["failures"]  # Failure processing itself succeeded.
+            assert result["steps"][1]["status"] == "validated_failed", mutation
+            assert not evaluated["overall"], mutation
+            assert not evaluated["checks"]["source_report_binding"]["passed"], mutation
+            assert evaluated["source_report"] == str(alias_path), mutation
+            assert triage["classification"] != "passing_run_no_failure", mutation
+            assert all(path.read_bytes() == data for path, data in retained.items()), mutation
+            if mutation == "missing_external":
+                assert not missing_external.exists()
+                assert external_path.read_bytes() == original
 
 
 def test_explicit_invalid_environment_binding_cannot_become_legacy_visible() -> None:
@@ -324,17 +383,23 @@ def test_cli_writes_outputs() -> None:
         assert md_out.exists()
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_no_reports_is_pending_and_passes()
     test_passing_report_writes_guard_and_triage()
     test_failed_report_writes_guard_and_classified_triage()
     test_hidden_map_report_keeps_environment_and_disclosures_through_refresh()
     test_failed_hidden_provenance_is_not_refreshed_as_a_passing_run()
     test_hidden_report_cannot_replace_visible_menu_rung()
+    test_hidden_refresh_rejects_missing_or_byte_drifted_alias_and_external_sources()
     test_explicit_invalid_environment_binding_cannot_become_legacy_visible()
     test_mismatched_report_fails_closed()
     test_missing_manifest_fails_closed()
     test_cli_writes_outputs()
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 if __name__ == "__main__":

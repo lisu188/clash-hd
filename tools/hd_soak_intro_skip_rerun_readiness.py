@@ -126,6 +126,35 @@ def intro_skip_failures(plan: dict[str, Any]) -> list[str]:
     return failures
 
 
+def _hidden_source_binding_current(guard: dict[str, Any], fresh: dict[str, Any]) -> bool:
+    """A saved hidden pass must retain the exact freshly observed binding.
+
+    Two matching current copies alone do not rehabilitate a guard issued for
+    earlier bytes. Compare the complete typed check, its exact original SHA,
+    and explicit empty binding-error inventories without altering either run.
+    """
+    bindings = []
+    digests = []
+    for record in (guard, fresh):
+        checks = record.get("checks")
+        binding = checks.get("source_report_binding") if isinstance(checks, dict) else None
+        digest = record.get("source_report_sha256")
+        if (not isinstance(binding, dict) or binding.get("passed") is not True
+                or binding.get("failures") != [] or record.get("source_report_binding_errors") != []
+                or type(digest) is not str or not hd_soak_report.is_sha256(digest)):
+            return False
+        bindings.append(binding)
+        digests.append(digest)
+    try:
+        return (
+            digests[0] == digests[1]
+            and json.dumps(bindings[0], sort_keys=True, allow_nan=False)
+            == json.dumps(bindings[1], sort_keys=True, allow_nan=False)
+        )
+    except (ValueError, TypeError, OverflowError, RecursionError):
+        return False
+
+
 def prior_step_evidence(step_status: dict[str, Any], *, completed: bool = False) -> tuple[list[dict[str, Any]], list[str]]:
     """Verify canonical executed predecessors before treating intro readiness as historical."""
     failures: list[str] = []
@@ -206,7 +235,7 @@ def prior_step_evidence(step_status: dict[str, Any], *, completed: bool = False)
             # source metrics and patch evidence; cached affirmative flags alone
             # cannot establish completion or hide a subsequently changed source.
             try:
-                evaluation = hd_soak_report.evaluate_report_for_environment(source)
+                evaluation = hd_soak_report.evaluate_report_for_environment(source, source_report_path=source_path)
                 if evaluation.get("overall") is not True:
                     failures.extend(f"completed step {step_id} source recheck: {failure}" for failure in evaluation.get("failures") or ["not passing"])
                 guard_checks = guard.get("checks")
@@ -215,6 +244,9 @@ def prior_step_evidence(step_status: dict[str, Any], *, completed: bool = False)
                     for name in evaluation.get("checks") or {}
                 ):
                     failures.append(f"completed step {step_id} saved guard omits or fails required source checks")
+                if (source.get("environment") == hd_soak_report.HIDDEN_ENVIRONMENT
+                        and not _hidden_source_binding_current(guard, evaluation)):
+                    failures.append(f"completed step {step_id} saved hidden source_report binding is missing, changed or stale")
             except (OSError, ValueError, TypeError, AttributeError, KeyError) as exc:
                 failures.append(f"completed step {step_id} source could not be rechecked: {exc}")
         if source.get("executed") is not True or source.get("passed") is not True:
