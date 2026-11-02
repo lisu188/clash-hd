@@ -257,7 +257,7 @@ def test_artifact_layout_case_and_slashes_are_lexical_only() -> None:
 def test_passing_map_pan_discloses_forced_pan() -> None:
     report = assembler.assemble_report(make_samples("map-pan"))
     assert report["passed"] is True, report["failures"]
-    assert report["pan_mechanism"] == "cdb_forced_scroll_write"
+    assert report["pan_mechanism"] == "cdb_forced_native_arrow_key"
     assert report["pan_mechanism_detail"]["forced"] is True
     assert report["pan_mechanism_detail"]["pan_event_count"] == 11
     assert report["frame_progress_expected"] is True
@@ -1091,8 +1091,13 @@ def test_probe_deadlines_and_observations_share_one_clock_sample() -> None:
     assert ".if (poi(0040004c) == 2) { ed 0040004c poi(7ffe0320);" in redraw
     assert "ed 00400054 poi(0040004c)" in redraw
     assert "poi(0040004c)-poi(00400054)" in redraw
-    # Heartbeat, route deadline/end, and pan observation all use that latch.
-    assert redraw.count("poi(0040004c)-poi(00400044)") == 4
+    # Heartbeat and the route deadline/end use that latch; a due pan stores it
+    # as the step's scheduled tick and the handler reports that same sample.
+    assert redraw.count("poi(0040004c)-poi(00400044)") == 3
+    handler = next(line for line in lines if line.startswith("bp 00407D20 "))
+    assert "poi(7ffe0320)" not in handler
+    assert handler.count("poi(00400054)-poi(00400044)") == 2
+    assert "0n140008 poi" not in redraw + handler and "ed poi(005202e4)" not in redraw + handler
 
 
 def _run_tests() -> None:

@@ -20,7 +20,7 @@ contract:
   summary-side from the actual frame rows, never trusted from a summary field.
 - Forced-entry mechanics are DISCLOSED: ``entry_mechanism`` names the
   breakpoint-forced loader map entry, and ``pan_mechanism`` names the forced
-  scroll writes for map-pan. These fields are always present, never hidden.
+  native arrow-key steps for map-pan. These fields are always present, never hidden.
 - Every report is stamped ``environment=hidden_cdb_host`` so it can never be
   mistaken for a visible-runtime or guest soak.
 
@@ -71,7 +71,7 @@ NOT_APPLICABLE_HIDDEN = "not_applicable_hidden"
 HIDDEN_CAPTURE_MODE = "hidden-cdb-host-readprocessmemory"
 HIDDEN_FRAME_READ_METHOD = "host_readprocessmemory"
 ENTRY_MECHANISM = "cdb_breakpoint_forced_loader_entry"
-PAN_MECHANISM = "cdb_forced_scroll_write"
+PAN_MECHANISM = "cdb_forced_native_arrow_key"
 NO_PAN_MECHANISM = "none"
 ELAPSED_COVERAGE_FORMULA = "duration_sec - sample_interval_sec - 2"
 HIDDEN_RUNTIME_POLICY = (
@@ -657,13 +657,16 @@ def assemble_report(
             "mechanism": PAN_MECHANISM,
             "forced": True,
             "disclosure": (
-                "map pan was FORCED by periodic CDB writes of a bounded four-phase "
-                "cycle into the gameData scroll fields gd+140008/gd+140012 "
-                "(SOAK_PAN_SET rows); it was not user input"
+                "map pan was FORCED by periodic CDB writes of one arrow-key state "
+                "byte that the native key-scroll handler 00407D20 consumed at its "
+                "own main-loop call, walking a bounded four-phase cycle of "
+                "single-cell steps (SOAK_PAN_SET rows record the resulting "
+                "gameData scroll fields gd+140008/gd+140012); it was not user input"
             ),
             "pan_interval_sec": pan_interval_sec,
             "pan_event_count": pan_event_count,
             "scroll_fields": ["gd+140008", "gd+140012"],
+            "key_state": "005451cc+DIK",
         }
     else:
         pan_mechanism = NO_PAN_MECHANISM

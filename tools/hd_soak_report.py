@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import os
@@ -88,7 +87,7 @@ GUEST_RUNTIME_POLICY = (
 #     SURFDUMP_READY), so the report must record the surface base and the
 #     host_readprocessmemory read method.
 #   * Forced-entry mechanics (breakpoint-forced map entry via the loader
-#     route, forced scroll writes for map-pan) must be DISCLOSED through
+#     route, forced native arrow-key steps for map-pan) must be DISCLOSED through
 #     entry_mechanism / pan_mechanism fields naming the forcing -- a missing
 #     disclosure fails.
 #   * Every report is stamped environment=hidden_cdb_host so it can never be
@@ -98,7 +97,7 @@ HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 NOT_APPLICABLE_HIDDEN = "not_applicable_hidden"
 HIDDEN_FRAME_READ_METHOD = "host_readprocessmemory"
 HIDDEN_ENTRY_MECHANISM = "cdb_breakpoint_forced_loader_entry"
-HIDDEN_PAN_MECHANISM = "cdb_forced_scroll_write"
+HIDDEN_PAN_MECHANISM = "cdb_forced_native_arrow_key"
 HIDDEN_NO_PAN_MECHANISM = "none"
 ELAPSED_COVERAGE_FORMULA = "duration_sec - sample_interval_sec - 2"
 HIDDEN_RUNTIME_POLICY = (
@@ -113,25 +112,6 @@ HIDDEN_RUNTIME_POLICY = (
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
-def matching_json_file_sha256(path_text: Any, payload: dict[str, Any]) -> tuple[str | None, list[str]]:
-    """Bind exact current bytes only when the file is the supplied JSON object.
-
-    Hidden producers write the full report before dispatching its grader. An
-    in-memory fixture or an unrelated path gets no invented byte-hash receipt.
-    Read/parse failures remain explicit diagnostics, not uncaught exceptions.
-    """
-    if not isinstance(path_text, (str, Path)) or not str(path_text).strip():
-        return None, ["JSON source path is missing or invalid"]
-    try:
-        raw = Path(path_text).read_bytes()
-        actual = json.loads(raw.decode("utf-8-sig"))
-    except (OSError, ValueError, TypeError) as exc:
-        return None, [f"{type(exc).__name__}: {exc}"]
-    if actual != payload:
-        return None, ["JSON source content does not match the supplied object"]
-    return hashlib.sha256(raw).hexdigest(), []
 
 
 def status_text(passed: bool) -> str:

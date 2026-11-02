@@ -119,12 +119,15 @@ retained reader compared path and handle stats that Windows reports differently:
 Python 3.12+ ctime meaning and extension-derived `.exe` execute bits. It rejected
 every real file until it compared only API-stable identity. The forced pan wrote
 scroll fields without the native full repaint, so frames after the first pan
-mixed stale and redrawn cells. The probe now repaints through `00418700` like
-the arrow-key scroll. Edge PNGs now use the retained DirectDraw palette. Two
-fixture suites now build sealed ladders inside the private reader scope. The
-final 120-second run passed its report and shared guard. It is not a ladder rung
-or replacement evidence, and earlier hidden map-pan frame metrics cannot show
-coherent panning. See the [diagnostic record](../../reports/hidden-soak-diagnostic-runs-20261101.json).
+mixed stale and redrawn cells. Each pan step is now taken by the native
+arrow-key handler `00407D20` at its own main-loop call from CDB-written key
+state (`pan_mechanism=cdb_forced_native_arrow_key`), so clamping, repaint and
+render-device state follow native code. Edge PNGs use the retained DirectDraw
+palette only when the dump is complete. Two fixture suites now build sealed
+ladders inside the private reader scope. The final runs passed their report and
+shared guard. They are not ladder rungs or replacement evidence, and earlier
+hidden map-pan frame metrics cannot show coherent panning. See the
+[diagnostic record](../../reports/hidden-soak-diagnostic-runs-20261101.json).
 
 ## Public repository state
 
