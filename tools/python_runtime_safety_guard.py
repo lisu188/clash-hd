@@ -69,6 +69,11 @@ OFFLINE_REPORT_IMPORTS = {
     "tools/hidden_soak_report_assembler.py": {
         "__future__", "argparse", "json", "sys", "datetime", "pathlib", "typing",
         "hd_soak_report",
+        # Reviewed read-only validators: lexical layout checks, bounded
+        # retained-file reads, retained-log parsing and in-memory patch-report
+        # recomputation. None launches a process or touches a live target.
+        "hidden_soak_artifact_layout", "hidden_soak_binary_artifacts",
+        "hidden_soak_log_observations", "hidden_soak_retained_files",
     },
 }
 DYNAMIC_CODE_NAMES = {"__import__", "eval", "exec", "compile", "getattr", "setattr"}
