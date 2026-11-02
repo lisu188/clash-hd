@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext, redirect_stdout
+from io import StringIO
 import json
 import subprocess
 import sys
@@ -20,6 +22,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import hd_soak_dry_run_plan as dry_run_plan  # noqa: E402
 import test_hd_soak_intro_skip_rerun_readiness as intro_fixtures  # noqa: E402
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, replace_retained_bytes  # noqa: E402
 
 
 STEP_ID = "short2_menu_idle"
@@ -493,10 +496,11 @@ def test_invalid_completion_never_falls_back_to_runtime_planning() -> None:
         with tempfile.TemporaryDirectory() as temporary:
             tmp = Path(temporary)
             status = intro_fixtures.completed_ladder_status(tmp)
-            intro_fixtures.mutate_completed_ladder(status, mutation)
+            artifact_fault = intro_fixtures.mutate_completed_ladder(status, mutation)
             args = args_for(tmp, {}, status)
             args.read_plan_json = None
-            with patch.object(dry_run_plan, "run_harness_plan", side_effect=AssertionError("invalid completion must fail closed")) as run:
+            with replace_retained_bytes(*artifact_fault) if artifact_fault else nullcontext(), \
+                    patch.object(dry_run_plan, "run_harness_plan", side_effect=AssertionError("invalid completion must fail closed")) as run:
                 report = dry_run_plan.build_report(args)
             run.assert_not_called()
         assert not report["passed"], (mutation, report)
@@ -509,14 +513,28 @@ def test_completed_ladder_cli_writes_only_terminal_packet() -> None:
         tmp = Path(temporary)
         status_path = write_json(tmp / "status.json", intro_fixtures.completed_ladder_status(tmp))
         output_json, output_md = tmp / "terminal.json", tmp / "terminal.md"
-        result = subprocess.run([sys.executable, "-B", str(SCRIPT), "--step-status-json", str(status_path),
-                                 "--write-json", str(output_json), "--write-markdown", str(output_md), "--require-pass"],
-                                capture_output=True, text=True, check=False)
-        assert result.returncode == 0, result.stdout + result.stderr
+        argv = ["hd_soak_dry_run_plan.py", "--step-status-json", str(status_path),
+                "--write-json", str(output_json), "--write-markdown", str(output_md), "--require-pass"]
+        # The sealed retained artifacts are readable only inside this process's
+        # fixture scope, so the passing CLI path runs in-process.
+        with patch.object(sys, "argv", argv), redirect_stdout(StringIO()):
+            assert dry_run_plan.main() == 0
         report = json.loads(output_json.read_text(encoding="utf-8"))
         intro_fixtures.assert_terminal_no_authorization(report)
         assert report["status"] == "not_applicable_short_ladder_complete"
         assert "Approval-Gated Execute Command" not in output_md.read_text(encoding="utf-8")
+        # A fresh process cannot reopen that private retained backing: the same
+        # status must fail closed there and still write only a terminal packet.
+        fresh_json, fresh_md = tmp / "fresh.json", tmp / "fresh.md"
+        result = subprocess.run([sys.executable, "-B", str(SCRIPT), "--step-status-json", str(status_path),
+                                 "--write-json", str(fresh_json), "--write-markdown", str(fresh_md), "--require-pass"],
+                                capture_output=True, text=True, check=False)
+        assert result.returncode == 1, result.stdout + result.stderr
+        fresh = json.loads(fresh_json.read_text(encoding="utf-8"))
+        intro_fixtures.assert_terminal_no_authorization(fresh)
+        assert fresh["status"] == "invalid_short_ladder_completion"
+        assert any("retained" in failure for failure in fresh["failures"]), fresh["failures"]
+        assert "Approval-Gated Execute Command" not in fresh_md.read_text(encoding="utf-8")
 
 
 def test_missing_harness_runner_fails_closed_without_a_plan() -> None:
@@ -534,6 +552,13 @@ def test_missing_harness_runner_fails_closed_without_a_plan() -> None:
 
 
 def run_tests() -> None:
+    # Completed-ladder fixtures seal retained artifacts that only exist inside
+    # this private reader scope, exactly as in the intro-skip readiness suite.
+    with fixture_artifact_reads():
+        _run_tests()
+
+
+def _run_tests() -> None:
     test_missing_harness_runner_fails_closed_without_a_plan()
     test_completed_ladder_never_invokes_a_harness_or_reads_a_plan()
     test_invalid_completion_never_falls_back_to_runtime_planning()

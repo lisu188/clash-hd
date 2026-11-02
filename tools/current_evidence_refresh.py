@@ -163,6 +163,13 @@ import test_battle_profile_content_replay
 import test_battle_profile_count_entry
 import test_battle_profile_count_body_v2
 import test_battle_profile_native_count_original
+import test_hidden_soak_integration
+import test_hidden_soak_harness_preflight
+import test_hidden_soak_cleanup
+import test_hidden_soak_retained_files
+import test_hidden_soak_binary_artifacts
+import test_hidden_soak_log_observations
+import test_hidden_soak_report_binding
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -662,6 +669,20 @@ DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_JSON = Path("captures/current/battle-count-bo
 DEFAULT_BATTLE_COUNT_BODY_V2_TESTS_MD = Path("captures/current/battle-count-body-v2-tests-current.md")
 DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_JSON = Path("captures/current/battle-native-count-authoring-tests-current.json")
 DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_MD = Path("captures/current/battle-native-count-authoring-tests-current.md")
+DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_JSON = Path("captures/current/hidden-soak-integration-tests-current.json")
+DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_MD = Path("captures/current/hidden-soak-integration-tests-current.md")
+DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_JSON = Path("captures/current/hidden-soak-harness-preflight-tests-current.json")
+DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD = Path("captures/current/hidden-soak-harness-preflight-tests-current.md")
+DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON = Path("captures/current/hidden-soak-cleanup-tests-current.json")
+DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD = Path("captures/current/hidden-soak-cleanup-tests-current.md")
+DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_JSON = Path("captures/current/hidden-soak-retained-files-tests-current.json")
+DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_MD = Path("captures/current/hidden-soak-retained-files-tests-current.md")
+DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_JSON = Path("captures/current/hidden-soak-binary-artifacts-tests-current.json")
+DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD = Path("captures/current/hidden-soak-binary-artifacts-tests-current.md")
+DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON = Path("captures/current/hidden-soak-log-observations-tests-current.json")
+DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD = Path("captures/current/hidden-soak-log-observations-tests-current.md")
+DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON = Path("captures/current/hidden-soak-report-binding-tests-current.json")
+DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD = Path("captures/current/hidden-soak-report-binding-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5579,7 +5600,9 @@ def build_hd_soak_report_guard(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
     if report_path.exists():
-        evaluation = hd_soak_report.evaluate_report_for_environment(hd_soak_report.load_json(report_path))
+        evaluation = hd_soak_report.evaluate_report_for_environment(
+            hd_soak_report.load_json(report_path), source_report_path=report_path,
+        )
         evaluation["source_report"] = str(report_path)
         evaluation["source_report_selection"] = report_source
     else:
@@ -5773,6 +5796,123 @@ def build_battle_native_count_authoring_tests(args: argparse.Namespace) -> dict[
         md_path=args.battle_native_count_authoring_tests_md,
         guard_policy="four authoring checks only; original_opcode_cpu_verified remains false; no runtime or release acceptance",
         runtime_policy="authoring-only source checks; no original file, CPU interpreter, game, debugger, compiler or capture",
+    )
+
+
+def build_hidden_soak_integration_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_integration,
+        tests=[
+            "assembler, environment dispatcher, short refresh/status and two-route long guard join end to end",
+            "compact long guards reject relabeling, short coverage and missing hidden provenance",
+            "short refresh retains and classifies invalid hidden input sentinel without rewriting source",
+            "lost exact patch provenance revokes a saved completed short ladder",
+            "hidden long guards revalidate the exact retained source bytes and patch provenance",
+        ],
+        title="Hidden-CDB Soak Integration Tests",
+        json_path=args.hidden_soak_integration_tests_json,
+        md_path=args.hidden_soak_integration_tests_md,
+        guard_policy="synthetic source-only integration; supplies no actual runtime, input, endurance or promotion proof",
+    )
+
+
+def build_hidden_soak_harness_preflight_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_harness_preflight,
+        tests=[
+            "strict disk reserve rejects exactly ten percent and pending allowance exhaustion",
+            "reserve checks precede all hidden execution mutations and repeat before artifact growth",
+            "complete pan coverage rejects missing first, interior and terminal intervals",
+            "route markers require global tick/hit order, player and final scroll consistency",
+            "every periodic and terminal raw frame is exclusively retained and rehashed within its admission budget",
+            "unreadable artifact inventories, reparse points and invalid file sizes fail closed before growth",
+        ],
+        title="Hidden-CDB Harness Preflight Tests",
+        json_path=args.hidden_soak_harness_preflight_tests_json,
+        md_path=args.hidden_soak_harness_preflight_tests_md,
+        guard_policy=(
+            "source-extracted PowerShell fixtures with mocked disk/marker observations and tiny private raw files; "
+            "no harness, game, debugger or compiler execution"
+        ),
+        runtime_policy=(
+            "source-only fixtures with isolated read-only PowerShell function extraction and mocked observations; "
+            "tiny private files test raw-storage exclusivity and byte consistency; "
+            "never executes the runtime harness or launches Clash95, CDB, wrappers, native compilers or visible windows"
+        ),
+    )
+
+
+def build_hidden_soak_cleanup_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_cleanup,
+        tests=[
+            "suspended owned launch requires no-breakaway job assignment and membership before resume",
+            "retained-handle termination, generation checks, job drain and checked closes keep original failures",
+            "partial launches and mocked native failures retain cleanup debt without PID/path adoption",
+            "source-derived native layouts and serialized cleanup fields are checked without compiling C#",
+        ],
+        title="Hidden-CDB Owned Cleanup Source Tests",
+        json_path=args.hidden_soak_cleanup_tests_json,
+        md_path=args.hidden_soak_cleanup_tests_md,
+        guard_policy="RAM-only source-extracted orchestration with a mocked native adapter; no native ownership proof",
+        runtime_policy=(
+            "isolated hidden PowerShell runs only extracted orchestration with a mocked native adapter; "
+            "no runtime harness, Add-Type, native process API, compiler, game, debugger or visible window execution"
+        ),
+    )
+
+
+def build_hidden_soak_retained_files_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_retained_files,
+        tests=["bounded held reads reject missing, drifting, linked, nonregular and unreadable files",
+               "every periodic and terminal raw frame requires exact retained bytes, digest and metrics"],
+        title="Hidden-CDB Retained File Tests",
+        json_path=args.hidden_soak_retained_files_tests_json,
+        md_path=args.hidden_soak_retained_files_tests_md,
+        guard_policy="retained-byte consistency only; no native producer, coherent capture or immutability proof",
+        runtime_policy="source-only fixtures with tiny private files and RAM-only full frames; no game, debugger or compiler",
+    )
+
+
+def build_hidden_soak_binary_artifacts_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_binary_artifacts,
+        tests=["actual candidate bytes undergo the real complete protected-stage patch regrade",
+               "actual proxy, manifest, producer inputs, probes and logs require matching retained byte receipts"],
+        title="Hidden-CDB Binary Artifact Tests",
+        json_path=args.hidden_soak_binary_artifacts_tests_json,
+        md_path=args.hidden_soak_binary_artifacts_tests_md,
+        guard_policy="candidate patch and retained-byte consistency only; no original, loaded-image or native execution proof",
+        runtime_policy="source-only synthetic RAM inventory patches only the fixed file-reader boundary; no native build or runtime",
+    )
+
+
+def build_hidden_soak_log_observations_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_log_observations,
+        tests=["anchored log replay ignores actual startup prose and rejects malformed structured observations",
+               "retained CDB bytes, digests, marker rows, counts, order and failure flags match the report"],
+        title="Hidden-CDB Retained Log Tests",
+        json_path=args.hidden_soak_log_observations_tests_json,
+        md_path=args.hidden_soak_log_observations_tests_md,
+        guard_policy="retained log byte/observation consistency only; no native producer or runtime acceptance",
+        runtime_policy=("source-only synthetic log fixtures and isolated source-extracted PowerShell parser; "
+                        "no runtime harness, game, debugger or compiler execution"),
+    )
+
+
+def build_hidden_soak_report_binding_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_report_binding,
+        tests=["bounded strict retained source JSON binds typed observations without caller skip policies",
+               "selected copies require exact external source bytes and observed read failures remain failures"],
+        title="Hidden-CDB Source Report Binding Tests",
+        json_path=args.hidden_soak_report_binding_tests_json,
+        md_path=args.hidden_soak_report_binding_tests_md,
+        guard_policy="observed source/copy byte consistency only; no native producer or runtime acceptance",
+        runtime_policy=("source-only actual tiny private JSON files, RAM-only synthetic artifacts and reader faults; "
+                        "no game, debugger or compiler"),
     )
 
 
@@ -8112,6 +8252,13 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["battle_count_entry_tests"] = collect("battle_count_entry_tests", build_battle_count_entry_tests, args)
     checks["battle_count_body_v2_tests"] = collect("battle_count_body_v2_tests", build_battle_count_body_v2_tests, args)
     checks["battle_native_count_authoring_tests"] = collect("battle_native_count_authoring_tests", build_battle_native_count_authoring_tests, args)
+    checks["hidden_soak_integration_tests"] = collect("hidden_soak_integration_tests", build_hidden_soak_integration_tests, args)
+    checks["hidden_soak_harness_preflight_tests"] = collect("hidden_soak_harness_preflight_tests", build_hidden_soak_harness_preflight_tests, args)
+    checks["hidden_soak_cleanup_tests"] = collect("hidden_soak_cleanup_tests", build_hidden_soak_cleanup_tests, args)
+    checks["hidden_soak_retained_files_tests"] = collect("hidden_soak_retained_files_tests", build_hidden_soak_retained_files_tests, args)
+    checks["hidden_soak_binary_artifacts_tests"] = collect("hidden_soak_binary_artifacts_tests", build_hidden_soak_binary_artifacts_tests, args)
+    checks["hidden_soak_log_observations_tests"] = collect("hidden_soak_log_observations_tests", build_hidden_soak_log_observations_tests, args)
+    checks["hidden_soak_report_binding_tests"] = collect("hidden_soak_report_binding_tests", build_hidden_soak_report_binding_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9508,6 +9655,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--battle-native-count-authoring-tests-json", type=Path, default=DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_JSON)
     parser.add_argument("--battle-native-count-authoring-tests-md", type=Path, default=DEFAULT_BATTLE_NATIVE_COUNT_AUTHORING_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
+    parser.add_argument("--hidden-soak-integration-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_JSON)
+    parser.add_argument("--hidden-soak-integration-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_INTEGRATION_TESTS_MD)
+    parser.add_argument("--hidden-soak-harness-preflight-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_JSON)
+    parser.add_argument("--hidden-soak-harness-preflight-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_HARNESS_PREFLIGHT_TESTS_MD)
+    parser.add_argument("--hidden-soak-cleanup-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_JSON)
+    parser.add_argument("--hidden-soak-cleanup-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_CLEANUP_TESTS_MD)
+    parser.add_argument("--hidden-soak-retained-files-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_JSON)
+    parser.add_argument("--hidden-soak-retained-files-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_RETAINED_FILES_TESTS_MD)
+    parser.add_argument("--hidden-soak-binary-artifacts-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_JSON)
+    parser.add_argument("--hidden-soak-binary-artifacts-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_BINARY_ARTIFACTS_TESTS_MD)
+    parser.add_argument("--hidden-soak-log-observations-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON)
+    parser.add_argument("--hidden-soak-log-observations-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD)
+    parser.add_argument("--hidden-soak-report-binding-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON)
+    parser.add_argument("--hidden-soak-report-binding-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(
         "--hd-soak-failure-triage-tests-json",

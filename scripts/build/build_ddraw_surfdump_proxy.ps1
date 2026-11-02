@@ -39,6 +39,10 @@ $defFile = Join-Path $RepoRoot 'src\ddraw_surfdump_proxy\ddraw_surfdump_proxy.de
 if (-not (Test-Path -LiteralPath $defFile)) {
     throw "DEF file was not found: $defFile"
 }
+$buildScript = [System.IO.Path]::GetFullPath($PSCommandPath)
+$sourceSha = Get-FileSha256 -Path $source
+$defSha = Get-FileSha256 -Path $defFile
+$buildScriptSha = Get-FileSha256 -Path $buildScript
 
 $outputFull = [System.IO.Path]::GetFullPath($OutputDll)
 $outputDir = Split-Path -Parent $outputFull
@@ -108,12 +112,20 @@ if ($exitCode -ne 0) {
     throw "ddraw surface-dump proxy build failed with exit code $exitCode. See $buildLog"
 }
 
-$sourceSha = Get-FileSha256 -Path $source
+if ((Get-FileSha256 -Path $source) -ne $sourceSha -or
+    (Get-FileSha256 -Path $defFile) -ne $defSha -or
+    (Get-FileSha256 -Path $buildScript) -ne $buildScriptSha) {
+    throw 'Proxy source, DEF, or build script changed during the build'
+}
 $dllSha = Get-FileSha256 -Path $outputFull
 $manifestObject = [pscustomobject]@{
     generated_by = 'clash-hd-surface-dump-proxy'
     source = $source
     source_sha256 = $sourceSha
+    def_file = $defFile
+    def_sha256 = $defSha
+    build_script = $buildScript
+    build_script_sha256 = $buildScriptSha
     output = $outputFull
     output_sha256 = $dllSha
     vcvars32 = $vcvars

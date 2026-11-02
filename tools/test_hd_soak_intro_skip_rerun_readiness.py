@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
 import subprocess
 import sys
 import tempfile
+from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -16,6 +18,8 @@ from typing import Any
 import hd_soak_intro_skip_rerun_readiness as readiness
 import hd_soak_report
 import test_hd_soak_report as soak_fixtures
+from test_hidden_soak_artifact_fixtures import fixture_artifact_reads, retained_bytes, replace_retained_bytes
+from test_hidden_soak_integration import hidden_report
 
 APPROVAL_TOKEN = "1234567890abcdef"
 APPROVAL_EXPIRES_UTC = "2026-06-16T20:00:00.0000000+00:00"
@@ -237,12 +241,19 @@ def later_step_reports(tmp: Path, current_index: int = 2) -> dict[str, dict[str,
                "paths": {"report_json": str(tmp / f"{step_id}.json"), "guard_json": str(tmp / f"{step_id}-guard.json")}}
         rows.append(row)
         if index < current_index:
-            source = soak_fixtures.passing_report(tmp) if index == 0 else soak_fixtures.passing_hidden_report(tmp)
-            source["report_json"] = row["paths"]["report_json"]
-            guard = hd_soak_report.evaluate_report_for_environment(source)
+            if index == 0:
+                source = soak_fixtures.passing_report(tmp)
+                source["report_json"] = row["paths"]["report_json"]
+                guard = hd_soak_report.evaluate_report_for_environment(source)
+                write_json(Path(row["paths"]["report_json"]), source)
+            else:
+                source = hidden_report(tmp / step_id, row["route"], row["duration_sec"], 15)
+                alias = Path(row["paths"]["report_json"])
+                alias.parent.mkdir(parents=True, exist_ok=True)
+                alias.write_bytes(Path(source["report_json"]).read_bytes())
+                guard = hd_soak_report.evaluate_report_for_environment(source, source_report_path=alias)
             assert guard["overall"], guard["failures"]
             guard["source_report"] = row["paths"]["report_json"]
-            write_json(Path(row["paths"]["report_json"]), source)
             write_json(Path(row["paths"]["guard_json"]), guard)
     data["step_status"] = {"passed": True, "steps": rows, "current_step": {
         "id": rows[current_index]["id"], "status": "missing_pending_hidden_runtime", "preferred_environment": "hidden_cdb_host"}}
@@ -256,30 +267,30 @@ def completed_ladder_status(tmp: Path) -> dict[str, Any]:
     for index, definition in enumerate(readiness.SHORT_LADDER_STEPS):
         directory = tmp / definition["id"]
         directory.mkdir()
-        factory = (soak_fixtures.passing_report if index == 0 else
-                   soak_fixtures.passing_hidden_pan_report if definition["route"] == "map-pan" else
-                   soak_fixtures.passing_hidden_report)
-        source = factory(directory)
-        source.update({key: definition[key] for key in ("tier", "route", "duration_sec")})
         duration = definition["duration_sec"]
-        start = datetime(2026, 6, 16, 12, tzinfo=timezone.utc)
-        for samples in (source["frame_samples"], source["process_samples"]):
-            samples[-1]["Timestamp"] = (start + timedelta(seconds=duration)).isoformat()
-        if index:
-            source["route_start_marker"]["route_ticks"] = duration * 64
-            source["route_end_marker"]["tick_delta"] = duration * 64
         paths = {"report_json": str(directory / "report.json"), "guard_json": str(directory / "guard.json")}
-        source["report_json"] = paths["report_json"] if index == 0 else str(directory / "raw-report.json")
-        evaluation = hd_soak_report.evaluate_report_for_environment(source)
+        if index == 0:
+            source = soak_fixtures.passing_report(directory)
+            source.update({key: definition[key] for key in ("tier", "route", "duration_sec")})
+            start = datetime(2026, 6, 16, 12, tzinfo=timezone.utc)
+            for samples in (source["frame_samples"], source["process_samples"]):
+                samples[-1]["Timestamp"] = (start + timedelta(seconds=duration)).isoformat()
+            source["report_json"] = paths["report_json"]
+            evaluation = hd_soak_report.evaluate_report_for_environment(source)
+        else:
+            # Author the complete duration/route schedule before sealing its
+            # synthetic artifacts. Do not stretch a published two-minute run.
+            source = hidden_report(directory, definition["route"], duration, 15)
+            alias = Path(paths["report_json"])
+            alias.write_bytes(Path(source["report_json"]).read_bytes())
+            evaluation = hd_soak_report.evaluate_report_for_environment(source, source_report_path=alias)
         assert evaluation["overall"], (definition["id"], evaluation["failures"])
         # Current real source reports use absolute report_json while the
         # canonical status/guard can use the equivalent repo-relative path.
         if index == 0:
             paths["report_json"] = os.path.relpath(paths["report_json"])
+            write_json(Path(paths["report_json"]), source)
         evaluation["source_report"] = paths["report_json"]
-        write_json(Path(paths["report_json"]), source)
-        if index:
-            write_json(Path(source["report_json"]), source)
         write_json(Path(paths["guard_json"]), evaluation)
         rows.append({**definition, "status": "pass", "passed": True, "prerequisites_passed": True,
                      "preferred_environment": "host_visible" if index == 0 else "hidden_cdb_host", "paths": paths})
@@ -299,7 +310,7 @@ COMPLETION_MUTATIONS = (
 )
 
 
-def mutate_completed_ladder(status: dict[str, Any], mutation: str) -> None:
+def mutate_completed_ladder(status: dict[str, Any], mutation: str) -> tuple[str, bytes] | None:
     row = status["steps"][-1]
     if mutation == "flag_false": status["ladder_complete"] = False
     elif mutation == "flag_missing": del status["ladder_complete"]
@@ -339,10 +350,10 @@ def mutate_completed_ladder(status: dict[str, Any], mutation: str) -> None:
         elif mutation == "bool_only_source": data = {"executed": True, "passed": True, "stage": data["stage"], "tier": data["tier"], "route": data["route"]}
         elif mutation == "stale_elapsed_proof": data["frame_samples"][-1]["Timestamp"] = data["frame_samples"][0]["Timestamp"]
         elif mutation == "patch_changed":
-            patch_path = Path(data["patch_stage_report"])
-            patch = json.loads(patch_path.read_text(encoding="utf-8"))
+            patch_path = data["patch_stage_report"]
+            patch = json.loads(retained_bytes(patch_path))
             patch["exe_sha256"] = "a" * 64
-            write_json(patch_path, patch)
+            return patch_path, json.dumps(patch).encode("ascii")
         elif mutation == "missing_input_boundary": data["input_responsiveness"] = 0
         elif mutation == "wrong_stage": data["stage"] += "-validation"
         else: raise AssertionError(mutation)
@@ -389,11 +400,86 @@ def test_completed_ladder_rejects_forged_stale_or_mismatched_evidence() -> None:
             tmp = Path(directory)
             data = reports()
             data["step_status"] = completed_ladder_status(tmp)
-            mutate_completed_ladder(data["step_status"], mutation)
-            report = readiness.build_report(args_for(tmp, data))
+            artifact_fault = mutate_completed_ladder(data["step_status"], mutation)
+            with replace_retained_bytes(*artifact_fault) if artifact_fault else nullcontext():
+                report = readiness.build_report(args_for(tmp, data))
         assert not report["passed"], (mutation, report)
         assert report["status"] == "invalid_short_ladder_completion", (mutation, report)
         assert_terminal_no_authorization(report)
+
+
+def test_completed_ladder_rejects_stale_hidden_binding_after_both_copies_drift() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        data = reports()
+        data["step_status"] = completed_ladder_status(tmp)
+        args = args_for(tmp, data)
+        row = data["step_status"]["steps"][-1]
+        alias = Path(row["paths"]["report_json"])
+        guard_path = Path(row["paths"]["guard_json"])
+        source = json.loads(alias.read_bytes())
+        external = Path(source["report_json"])
+        original = external.read_bytes()
+        saved_guard = guard_path.read_bytes()
+        assert alias != external and alias.read_bytes() == original
+        assert readiness.build_report(args)["passed"]
+
+        # The typed report and both current copies still agree. Only the old
+        # saved binding is stale; never regenerate it after this mutation.
+        external.write_bytes(original + b"\n")
+        alias.write_bytes(original + b"\n")
+        fresh = hd_soak_report.evaluate_report_for_environment(source, source_report_path=alias)
+        assert fresh["overall"], fresh["failures"]
+        assert fresh["source_report_sha256"] != json.loads(saved_guard)["source_report_sha256"]
+        report = readiness.build_report(args)
+        assert report["passed"] is False, report
+        assert report["status"] == "invalid_short_ladder_completion"
+        assert any("saved hidden source_report binding" in failure for failure in report["failures"])
+        assert_terminal_no_authorization(report)
+        assert guard_path.read_bytes() == saved_guard
+        assert external.read_bytes() == alias.read_bytes() == original + b"\n"
+
+
+def test_completed_ladder_requires_complete_typed_hidden_binding_metadata() -> None:
+    mutations = (
+        "missing_check", "missing_digest", "wrong_digest", "missing_errors", "null_errors",
+        "recorded_errors", "missing_check_failures", "empty_summary", "typed_payload_flag",
+    )
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        data = reports()
+        data["step_status"] = completed_ladder_status(tmp)
+        args = args_for(tmp, data)
+        row = data["step_status"]["steps"][-1]
+        alias = Path(row["paths"]["report_json"])
+        original_alias = alias.read_bytes()
+        external = Path(json.loads(original_alias)["report_json"])
+        original_external = external.read_bytes()
+        guard_path = Path(row["paths"]["guard_json"])
+        original_guard = guard_path.read_bytes()
+        for mutation in mutations:
+            guard = copy.deepcopy(json.loads(original_guard))
+            check = guard["checks"]["source_report_binding"]
+            if mutation == "missing_check": del guard["checks"]["source_report_binding"]
+            elif mutation == "missing_digest": del guard["source_report_sha256"]
+            elif mutation == "wrong_digest": guard["source_report_sha256"] = "0" * 64
+            elif mutation == "missing_errors": del guard["source_report_binding_errors"]
+            elif mutation == "null_errors": guard["source_report_binding_errors"] = None
+            elif mutation == "recorded_errors": guard["source_report_binding_errors"] = ["retained failure"]
+            elif mutation == "missing_check_failures": del check["failures"]
+            elif mutation == "empty_summary": check["summary"] = {}
+            elif mutation == "typed_payload_flag": check["summary"]["payload_matches"] = 1
+            else: raise AssertionError(mutation)
+            write_json(guard_path, guard)
+            report = readiness.build_report(args)
+            assert not report["passed"], (mutation, report)
+            assert report["status"] == "invalid_short_ladder_completion", (mutation, report)
+            assert any("saved hidden source_report binding" in failure for failure in report["failures"]), mutation
+            assert_terminal_no_authorization(report)
+            assert alias.read_bytes() == original_alias and external.read_bytes() == original_external
+        # Restore exact old fixture bytes, not a newly graded or resealed guard.
+        guard_path.write_bytes(original_guard)
+        assert readiness.build_report(args)["passed"]
 
 
 def test_real_predecessor_reports_make_intro_readiness_historical() -> None:
@@ -479,9 +565,11 @@ def test_cli_writes_outputs() -> None:
         assert "Intro-Skip Rerun Readiness" in out_md.read_text(encoding="ascii")
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_completed_ladder_requires_real_bound_reports_but_no_current_approval_packet()
     test_completed_ladder_rejects_forged_stale_or_mismatched_evidence()
+    test_completed_ladder_rejects_stale_hidden_binding_after_both_copies_drift()
+    test_completed_ladder_requires_complete_typed_hidden_binding_metadata()
     test_real_predecessor_reports_make_intro_readiness_historical()
     test_later_step_label_cannot_replace_canonical_predecessor_proof()
     test_ready_packet_passes()
@@ -494,6 +582,11 @@ def run_tests() -> None:
     test_rejects_visible_runtime_token_drift()
     test_rejects_visible_runtime_expiry_drift()
     test_cli_writes_outputs()
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        _run_tests()
 
 
 if __name__ == "__main__":

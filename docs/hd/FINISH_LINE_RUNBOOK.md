@@ -74,8 +74,57 @@ Screenshots, captures, debugger logs, dumps, saves, and other retail-derived
 evidence must remain outside public source control. Record only concise,
 non-proprietary conclusions when updating public documentation.
 
+The default runtime workflow is headless. Hidden CDB with the non-presenting
+memory proxy can supply route, software-surface and process/endurance evidence
+under `environment=hidden_cdb_host` with
+`input_responsiveness=not_applicable_hidden`. Follow
+[the soak roadmap](HD_SOAK_TEST_ROADMAP.md) for the ordered short ladder and
+both 7,200-second map routes on one candidate SHA; retain the full run artifacts
+outside the repository and stop on a failed gate. No successful run is implied
+by these instructions.
+
+The [2026-10-08 revalidation](../../reports/hidden-soak-revalidation-20261008.json)
+records missing backing for all five historical short passes and insufficient
+local disk reserve. Restore authenticated external evidence or obtain a new
+strategy decision, and recover capacity before runtime. The follow-up raw-frame,
+pan-plan, lexical-layout and owned-job source/mock checks are not native or soak
+acceptance. The [tracked handoff](AGENT_HANDOFF.md#hidden-soak-integrity-checkpoint---2026-10-08)
+names the remaining producer/provenance work. Do not overwrite the retained
+failed/interrupted long attempts or automatically repeat the visible menu run.
+
+The assembler, public hidden grader and hidden long guard now require current
+retained-byte consistency checks for the actual candidate/patch, proxy/build
+inputs, probes, CDB log observations and every raw frame. Saved summaries cannot
+replace those reads. These checks are not immutable-file, whole-original,
+canonical-probe, loaded-image, native-producer, coherent-frame, cleanup-lifecycle
+or running-time proof; those prerequisites remain separate. Source fixtures
+cannot restore missing historical evidence or unlock runtime by themselves.
+
+The public hidden dispatcher also fails `overall` on missing or divergent
+source-report bytes. Its mandatory `source_report_binding` compares the selected
+canonical copy to the unchanged embedded external report; CLI, refresh and
+triage pass their actual selected path. Short status, intro completion and long
+admission require fresh matching saved binding records and source hashes.
+Byte-identical aliases are supported; stale guards are not. The registered
+source-binding fixtures are source-only, not replacement endurance evidence.
+
+The user-requested [replacement-evidence plan](HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13)
+is prepared only. Capacity and production admission, a verified canonical
+snapshot, and the separately authenticated visible-menu prerequisite still
+precede replacement acceptance. Do not treat plan preparation as approval to
+launch a visible session or overwrite historical canonical receipts.
+
+Visible composition and human-operated manual DirectInput require their own
+matching observations and fresh approval under [AGENTS.md](../../AGENTS.md).
+Automated injection and hidden soak reports cannot satisfy the human-input
+requirement. Complete battle entry, command, outcome and healthy return,
+save/load and player/day continuity must also be checked on the same final
+candidate under its [candidate-bound evaluator](COMPLETE_HD_EVIDENCE.md).
+
 ## Promotion
 
 A profile or resolution is promoted only when its source-level checks and the
 required local runtime validation have both succeeded for the exact candidate.
 A passing public CI job alone never establishes runtime acceptance.
+The protected stable stage and Classic/800x600 default remain unchanged until
+an explicit promotion decision follows the required evidence.

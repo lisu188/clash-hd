@@ -502,6 +502,14 @@ def raw_soak_fixture(route="map-idle"):
         lines.append(heartbeat)
     lines += [f"SOAK_ROUTE_END route_ticks=7680 pan={pan} hits=8192 tickdelta=7680 player=0 scroll=(4,{5 if pan else 4})",
               "SURFDUMP_READY redraw_seq=4 surface=00100000 size=(4,4) base=00110000 bytes=16"]
+    # The producer retains each anchored row with its 1-based log line.
+    pan_rows = iter(events)
+    for number, text in enumerate(lines, 1):
+        marker = text.split(" ", 1)[0]
+        if marker == "SOAK_ROUTE_START": start["line_number"] = number
+        elif marker == "SOAK_SURFDUMP_READY": ready["line_number"] = number
+        elif marker == "SOAK_ROUTE_END": end["line_number"] = number
+        elif marker == "SOAK_PAN_SET": next(pan_rows)["line_number"] = number
     raw = {f"frame-{index + 1:04d}": bytes(range(index, index + 16)) for index in range(3)}
     begin = datetime(2026, 10, 1, 12, 0, tzinfo=timezone.utc)
     frames, processes = [], []

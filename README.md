@@ -65,6 +65,12 @@ patcher to operate remain part of the source. Raw disassembly, decompiler output
 function-inventory exports, screenshots, and runtime dumps are not public
 project inputs.
 
+Classic at 800x600 retains the protected stable stage. Complete HD, Modal
+Widgets, Framed and expanded battle retain their separate validation identities.
+Matching runtime, manual-input, continuity and endurance requirements remain
+open where no candidate-bound acceptance exists; source checks do not promote
+them. See the [release runbook](docs/hd/FINISH_LINE_RUNBOOK.md).
+
 ## Legal scope
 
 This project is independent and unofficial. It is not affiliated with,

@@ -3,14 +3,20 @@
 
 from __future__ import annotations
 
+import copy
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
 import hd_soak_report as soak
+from test_hidden_soak_artifact_fixtures import (
+    fixture_artifact_reads, publish_fixture_report, retained_bytes, seal_fixture,
+)
 
 
 def patch_stage_report(candidate_sha: str) -> dict:
@@ -225,7 +231,7 @@ def passing_guest_report() -> dict:
     }
 
 
-def passing_hidden_report(tmp: Path) -> dict:
+def passing_hidden_report(tmp: Path, *, _seal: bool = True) -> dict:
     """A clean hidden-desktop CDB host soak report (environment=hidden_cdb_host).
 
     The game is a real host process, so all host process telemetry is present
@@ -236,7 +242,7 @@ def passing_hidden_report(tmp: Path) -> dict:
     candidate_sha = "e" * 64
     patch_path = tmp / "patch-stage-hidden.json"
     patch_path.write_text(json.dumps(patch_stage_report(candidate_sha)), encoding="ascii")
-    return {
+    report = {
         "executed": True,
         "passed": True,
         "failures": [],
@@ -250,13 +256,16 @@ def passing_hidden_report(tmp: Path) -> dict:
         "route": "map-idle",
         "duration_sec": 120,
         "sample_interval_sec": 15,
+        "load_slot": 2,
         "input_exe": soak.EXPECTED_INPUT_EXE,
         "workdir": soak.EXPECTED_WORKDIR,
-        "candidate": r"C:\ClashTests\hd-soak\clash95_hd_hidden_fixture.exe",
+        "candidate": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\clash95_hd_hidden_fixture.exe",
         "candidate_sha256": candidate_sha,
         "input_sha256": soak.EXPECTED_BASE_SHA256,
         "patch_stage_report": str(patch_path),
-        "output_directory": r"C:\ClashCaptures\hd-soak\hidden-fixture",
+        "output_directory": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture",
+        "cdb_log": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\hidden-soak-cdb.log",
+        "generated_probe": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\probe.generated.cdb",
         "report_json": "captures/current/hd-soak-hidden-current.json",
         "input_proof_class": "hidden_cdb_forced_route_diagnostic_not_manual_directinput_release_proof",
         "right_bottom_promotion_blocked": True,
@@ -268,10 +277,11 @@ def passing_hidden_report(tmp: Path) -> dict:
         "frame_read_method": soak.HIDDEN_FRAME_READ_METHOD,
         "proxy": {
             "used": True,
-            "path": r"C:\ClashTests\hd-soak\ddraw.dll",
+            "path": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw.dll",
             "sha256": "f" * 64,
-            "build_manifest": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.build.json",
-            "log": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.log",
+            "build_manifest": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.build.json",
+            "log": r"C:\ClashTests\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.log",
+            "build_log": r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\ddraw-proxy-build\build.log",
             "present_enabled": False,
         },
         "ready_marker": {
@@ -283,6 +293,7 @@ def passing_hidden_report(tmp: Path) -> dict:
             "scroll_x": 10, "scroll_y": 10, "game_data": "00600000",
         },
         "route_end_marker": {
+            "route_ticks": 7680, "pan": 0,
             "hits": 128, "tick_delta": 7680, "player": 0, "scroll_x": 10, "scroll_y": 10,
         },
         "pan_events": [],
@@ -347,20 +358,62 @@ def passing_hidden_report(tmp: Path) -> dict:
         ],
         "capture_errors": [],
     }
+    # A periodic hidden fixture must cover the interval, not only its two
+    # distant endpoints. Preserve the original summary extrema and growth.
+    started = datetime(2026, 6, 16, 12, 0, tzinfo=timezone.utc)
+    first_frame, last_frame = report["frame_samples"]
+    first_process, last_process = report["process_samples"]
+    report["frame_samples"] = [
+        dict(first_frame if index < 8 else last_frame,
+             Name=f"frame-{index:04d}", Timestamp=(started + timedelta(seconds=index * 15)).isoformat())
+        for index in range(9)
+    ]
+    report["process_samples"] = [
+        dict(first_process, Timestamp=(started + timedelta(seconds=index * 15)).isoformat(),
+             WorkingSet64=1000 + index * 128, PrivateMemorySize64=2000 + index * 256,
+             HandleCount=last_process["HandleCount"] if index == 8 else first_process["HandleCount"])
+        for index in range(9)
+    ]
+    report["frame_sample_count"] = report["process_sample_count"] = 9
+    return publish_fixture_report(seal_fixture(report), tmp) if _seal else report
 
 
-def passing_hidden_pan_report(tmp: Path) -> dict:
-    report = passing_hidden_report(tmp)
+def passing_hidden_pan_report(tmp: Path, *, _seal: bool = True) -> dict:
+    report = passing_hidden_report(tmp, _seal=False)
     report["route"] = "map-pan"
     report["pan_mechanism"] = soak.HIDDEN_PAN_MECHANISM
     report["frame_progress_expected"] = True
     report["route_start_marker"]["pan"] = 1
+    report["pan_interval_sec"] = 10
+    report["route_start_marker"]["line_number"] = 10
+    report["ready_marker"]["line_number"] = 11
+    report["pan_plans"] = [{
+        "source": "SOAK_PAN_PLAN", "safe": 1, "line_number": 12,
+        "base_x": 10, "base_y": 10, "delta_x": 1, "delta_y": 1, "max_x": 20, "max_y": 20,
+    }]
     report["pan_events"] = [
-        {"phase": phase, "x": x, "y": y, "hits": phase + 1, "tick_delta": (phase + 1) * 100}
-        for phase, (x, y) in enumerate(((11, 10), (11, 11), (10, 11), (10, 10)))
+        {"phase": index % 4, "x": 10 + int(index % 4 in (1, 2)),
+         "y": 10 + int(index % 4 in (2, 3)), "hits": index + 1, "tick_delta": (index + 1) * 640,
+         "delta_x": 1, "delta_y": 1, "line_number": 13 + index}
+        for index in range(11)
     ]
     report["pan_event_count"] = len(report["pan_events"])
-    return report
+    report["route_end_marker"].update(pan=1, scroll_x=11, scroll_y=11, line_number=24)
+    return publish_fixture_report(seal_fixture(report), tmp) if _seal else report
+
+
+def test_hidden_artifact_inventory_cannot_be_missing_or_coerced() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        for value in (None, True, False, -1, 1.5, "345678", "", [], {}, float("nan")):
+            report = copy.deepcopy(baseline)
+            report["artifact_bytes"] = value
+            result = soak.evaluate_report_for_environment(report)
+            assert not result["overall"], value
+            assert not result["checks"]["artifact_budget"]["passed"], value
+        report = copy.deepcopy(baseline)
+        del report["artifact_bytes"]
+        assert not soak.evaluate_report_for_environment(report)["checks"]["artifact_budget"]["passed"]
 
 
 def test_hidden_passing_report() -> None:
@@ -379,6 +432,75 @@ def test_hidden_passing_report() -> None:
     assert evaluation["checks"]["frame_inventory"]["passed"] is True
     assert evaluation["checks"]["render_metrics"]["passed"] is True
     assert evaluation["checks"]["summary_consistency"]["passed"] is True
+
+
+def test_hidden_artifact_layout_rejects_unbound_or_ambiguous_paths() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        original = passing_hidden_report(Path(directory))
+        path_fields = (
+            "input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe",
+            "proxy.path", "proxy.build_manifest", "proxy.log", "proxy.build_log",
+        )
+        invalid_values = (None, "", 1, False, [], {}, " C:\\Clash\\clash95.exe", "C:\\Clash\\clash95.exe\x00")
+        cases = [(field, value) for field in path_fields for value in invalid_values]
+        cases.extend((field, (original["proxy"][field.split(".", 1)[1]] if field.startswith("proxy.") else original[field]) + separator)
+                     for field in path_fields if field not in {"workdir", "output_directory"}
+                     for separator in ("\\", "/"))
+        cases.extend(("candidate", value) for value in (
+            r"C:\ClashTests\hd-soak\hidden\run\..\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\.\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe:stream",
+            r"C:\ClashTests\hd-soak\hidden\NUL.txt\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\CON .txt\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe.",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture \candidate.exe",
+            r"\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"C:ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\host\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\?\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\\.\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"\??\C:\ClashTests\hd-soak\hidden\hidden-fixture\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\hidden-fixture\nested\candidate.exe",
+            r"C:\ClashTests\hd-soak\old-run\candidate.exe",
+            r"C:\ClashTests\hd-soak\hidden\different-run\candidate.exe",
+        ))
+        cases.extend((
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden"),
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\nested"),
+            ("output_directory", r"C:\ClashCaptures\hd-soak\hidden\different-run"),
+            ("proxy.path", r"C:\unrelated\ddraw.dll"),
+            ("proxy.path", r"C:\ClashTests\hd-soak\hidden\hidden-fixture\other-ddraw.dll"),
+            ("proxy.build_manifest", r"C:\ClashTests\hd-soak\hidden\different-run\ddraw_surfdump_proxy.build.json"),
+            ("proxy.log", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\ddraw_surfdump_proxy.log"),
+            ("proxy.build_log", r"C:\ClashCaptures\hd-soak\hidden\different-run\build.log"),
+            ("proxy.build_log", original["output_directory"]),
+            ("cdb_log", r"C:\ClashCaptures\hd-soak\hidden\different-run\hidden-soak-cdb.log"),
+            ("generated_probe", r"C:\ClashCaptures\hd-soak\hidden\hidden-fixture\..\probe.generated.cdb"),
+        ))
+        for field, value in cases:
+            report = json.loads(json.dumps(original))
+            container, key = (report["proxy"], field.split(".", 1)[1]) if field.startswith("proxy.") else (report, field)
+            container[key] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], (field, value, evaluated)
+            assert not evaluated["checks"]["artifact_locations"]["passed"], (field, value, evaluated)
+
+
+def test_hidden_artifact_layout_accepts_case_and_slashes_without_claiming_physical_authentication() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = copy.deepcopy(passing_hidden_report(Path(directory)))
+        for field in ("input_exe", "workdir", "candidate", "output_directory", "cdb_log", "generated_probe"):
+            report[field] = report[field].upper().replace("\\", "/")
+        for field in ("path", "build_manifest", "log", "build_log"):
+            report["proxy"][field] = report["proxy"][field].upper().replace("\\", "/")
+        report = publish_fixture_report(report, Path(directory))
+        evaluated = soak.evaluate_report_for_environment(report)
+    assert evaluated["overall"], evaluated["failures"]
+    summary = evaluated["checks"]["artifact_locations"]["summary"]
+    assert summary["scope"] == "hidden_windows_lexical_artifact_layout_only"
+    assert summary["physical_artifacts_authenticated"] is False
+    assert summary["patch_manifest_layout_checked"] is False
 
 
 def test_hidden_markdown_banners_environment_and_disclosures() -> None:
@@ -450,7 +572,8 @@ def test_hidden_map_pan_requires_frame_progression() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_hidden_pan_report(Path(directory))
         report["frame_hash_unique_count"] = 1
-        report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+        for frame in report["frame_samples"]:
+            frame["Hash"] = report["frame_samples"][0]["Hash"]
         evaluation = soak.evaluate_hidden_report(report)
     assert evaluation["overall"] is False
     assert evaluation["checks"]["frame_progression"]["passed"] is False
@@ -565,7 +688,10 @@ def test_hidden_cli_autodetects_and_gates() -> None:
             capture_output=True,
             text=True,
         )
-    assert pass_result.returncode == 0, pass_result.stdout + pass_result.stderr
+    # A subprocess cannot access the scoped RAM inventory. Default actual
+    # retained-file reads must reject these deliberately absent artifacts.
+    assert pass_result.returncode == 1, pass_result.stdout + pass_result.stderr
+    assert "retained" in pass_result.stdout.lower()
     assert fail_result.returncode == 1, fail_result.stdout + fail_result.stderr
 
 
@@ -1238,9 +1364,17 @@ def test_dispatch_forwards_every_applicable_threshold() -> None:
         (soak.GUEST_ENVIRONMENT, "evaluate_guest_report", dict(common, min_guest_status_samples=6)),
     ):
         report = {"environment": environment}
-        with patch.object(soak, grader, return_value={"grader": grader}) as grading:
+        result_record = {"grader": grader, "overall": True, "checks": {}, "failures": []}
+        with patch.object(soak, grader, return_value=result_record) as grading:
             result = soak.evaluate_report_for_environment(report, **supplied)
-        assert result == {"grader": grader}
+            if environment == soak.HIDDEN_ENVIRONMENT:
+                assert result["grader"] == grader
+                assert result["overall"] is False
+                assert result["source_report_sha256"] is None
+                assert result["source_report_binding_errors"]
+                assert not result["checks"]["source_report_binding"]["passed"]
+            else:
+                assert result == result_record
         grading.assert_called_once_with(report, **expected)
 
 
@@ -1248,7 +1382,7 @@ def test_dispatch_thresholds_change_actual_grading() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
         for report in (passing_report(tmp), passing_hidden_report(tmp), passing_guest_report()):
-            strict = soak.evaluate_report_for_environment(report, min_frames=3, min_nonblack_percent=46.0)
+            strict = soak.evaluate_report_for_environment(report, min_frames=10, min_nonblack_percent=46.0)
             assert not strict["checks"]["frame_inventory"]["passed"]
             assert not strict["checks"]["render_metrics"]["passed"]
         for report in (passing_report(tmp), passing_hidden_report(tmp)):
@@ -1298,6 +1432,183 @@ def test_hidden_contradictory_provenance_fails_closed() -> None:
             assert not evaluation["checks"][check]["passed"], (check, evaluation)
 
 
+def test_hidden_periodic_inventory_cannot_be_replaced_by_distant_endpoints() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.update(tier="custom", duration_sec=7200, sample_interval_sec=30)
+        report["route_start_marker"]["route_ticks"] = 460800
+        report["route_end_marker"].update(route_ticks=460800, tick_delta=460800)
+        for inventory, count_field in (("frame_samples", "frame_sample_count"),
+                                       ("process_samples", "process_sample_count")):
+            report[inventory] = [report[inventory][0], report[inventory][-1]]
+            report[inventory][-1]["Timestamp"] = "2026-06-16T14:00:00+00:00"
+            report[count_field] = 2
+        evaluated = soak.evaluate_report_for_environment(report)
+        assert not evaluated["overall"]
+        assert not evaluated["checks"]["elapsed_coverage"]["passed"]
+        assert any("periodic sample count" in failure for failure in evaluated["failures"])
+        for inventory in ("frame_samples", "process_samples"):
+            for mutation in ("missing", "duplicate", "reverse", "malformed"):
+                report = passing_hidden_report(Path(directory))
+                rows = report[inventory]
+                if mutation == "missing":
+                    rows.pop(4)
+                elif mutation == "duplicate":
+                    rows[4]["Timestamp"] = rows[3]["Timestamp"]
+                elif mutation == "reverse":
+                    rows[3], rows[4] = rows[4], rows[3]
+                else:
+                    rows[4] = "retained malformed row"
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["checks"]["elapsed_coverage"]["passed"], (inventory, mutation)
+                assert rows == report[inventory]
+
+
+def test_hidden_periodic_count_and_max_gap_share_one_jitter_contract() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory), _seal=False)
+        report.update(tier="short30", duration_sec=1800)
+        report["route_start_marker"]["route_ticks"] = 115200
+        report["route_end_marker"].update(route_ticks=115200, tick_delta=115200)
+        started = datetime(2026, 6, 16, 12, 0, tzinfo=timezone.utc)
+        first_frame, last_frame = report["frame_samples"][0], report["frame_samples"][-1]
+        first_process, last_process = report["process_samples"][0], report["process_samples"][-1]
+        report["frame_samples"] = [
+            dict(first_frame if index < 118 else last_frame, Name=f"frame-{index:04d}",
+                 Timestamp=(started + timedelta(seconds=index * 1798 / 118)).isoformat())
+            for index in range(119)
+        ]
+        report["process_samples"] = [
+            dict(first_process, Timestamp=(started + timedelta(seconds=index * 1798 / 118)).isoformat(),
+                 WorkingSet64=1000 + index * 1024 // 118,
+                 PrivateMemorySize64=2000 + index * 2048 // 118,
+                 HandleCount=last_process["HandleCount"] if index == 118 else first_process["HandleCount"])
+            for index in range(119)
+        ]
+        report["frame_sample_count"] = report["process_sample_count"] = 119
+        report = publish_fixture_report(seal_fixture(report), Path(directory))
+        evaluated = soak.evaluate_report_for_environment(report)
+        assert evaluated["overall"], evaluated["failures"]
+        assert evaluated["checks"]["elapsed_coverage"]["summary"]["required_elapsed_sec"] == 1783
+
+
+def test_hidden_terminal_marker_requires_exact_identity_player_and_final_scroll() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for fixture in (passing_hidden_report, passing_hidden_pan_report):
+            for field in ("route_ticks", "pan", "player", "scroll_x", "scroll_y"):
+                for missing in (True, False):
+                    report = fixture(Path(directory))
+                    end = report["route_end_marker"]
+                    if missing:
+                        end.pop(field)
+                    else:
+                        end[field] += 1
+                    evaluated = soak.evaluate_report_for_environment(report)
+                    assert not evaluated["checks"]["marker_provenance"]["passed"], (fixture.__name__, field, missing)
+                    assert any(f"route_end_marker.{field}" in failure for failure in evaluated["failures"])
+
+
+def test_hidden_dispatcher_binds_only_matching_written_source_bytes() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        source = passing_hidden_report(tmp)
+        source_path = tmp / "source.json"
+        source["report_json"] = str(source_path)
+        original = json.dumps(source, indent=2).encode("utf-8") + b"\n"
+        source_path.write_bytes(original)
+        evaluated = soak.evaluate_report_for_environment(source)
+        assert evaluated["overall"], evaluated["failures"]
+        assert evaluated["source_report_sha256"] == hashlib.sha256(original).hexdigest()
+        assert evaluated["source_report_binding_errors"] == []
+        assert evaluated["checks"]["patch_evidence"]["summary"]["patch_stage_report_sha256"] == hashlib.sha256(retained_bytes(source["patch_stage_report"])).hexdigest()
+        # The same JSON with changed physical bytes acquires a different
+        # receipt; a saved long guard must reject the old byte identity.
+        source_path.write_bytes(original + b"\n")
+        changed = soak.evaluate_report_for_environment(source)
+        assert changed["source_report_sha256"] != evaluated["source_report_sha256"]
+        for raw in (b"{}", b"{", b"\xff"):
+            source_path.write_bytes(raw)
+            unbound = soak.evaluate_report_for_environment(source)
+            assert unbound["overall"] is False
+            assert not unbound["checks"]["source_report_binding"]["passed"]
+            assert unbound["source_report_sha256"] is None
+            assert unbound["source_report_binding_errors"]
+        source_path.unlink()
+        missing = soak.evaluate_report_for_environment(source)
+        assert missing["overall"] is False
+        assert not missing["checks"]["source_report_binding"]["passed"]
+        assert missing["source_report_sha256"] is None and missing["source_report_binding_errors"]
+        # Restore exactly the original fixture bytes before exercising the
+        # distinct held-read failure; a missing path fails before os.open.
+        source_path.write_bytes(original)
+        with patch("os.open", side_effect=PermissionError("retained read failure")):
+            denied = soak.evaluate_report_for_environment(source)
+            assert denied["overall"] is False
+            assert not denied["checks"]["source_report_binding"]["passed"]
+            assert denied["source_report_sha256"] is None
+            assert any("retained read failure" in error for error in denied["source_report_binding_errors"])
+        for visible_or_guest in (passing_report(tmp), passing_guest_report()):
+            assert "source_report_sha256" not in soak.evaluate_report_for_environment(visible_or_guest)
+
+
+def test_explicit_hidden_cli_uses_the_written_source_binding_dispatcher() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        source = passing_hidden_report(tmp)
+        source_path, guard_path = tmp / "source.json", tmp / "guard.json"
+        source["report_json"] = str(source_path)
+        source_path.write_text(json.dumps(source), encoding="ascii")
+        result = subprocess.run(
+            [sys.executable, "-B", str(Path(soak.__file__)), str(source_path), "--hidden",
+             "--write-json", str(guard_path), "--require-pass"],
+            capture_output=True, text=True, check=False,
+        )
+        # Source JSON is real and bound, but a fresh process has no test-only
+        # RAM artifact reader and must fail the missing external backing.
+        assert result.returncode == 1, result.stdout + result.stderr
+        evaluated = json.loads(guard_path.read_text(encoding="ascii"))
+        assert evaluated["source_report_sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert not evaluated["overall"]
+        assert not evaluated["checks"]["retained_binary_bytes"]["passed"]
+        assert not evaluated["checks"]["retained_frame_bytes"]["passed"]
+        assert not evaluated["checks"]["retained_log_bytes"]["passed"]
+
+
+def test_hidden_every_process_row_requires_live_numeric_telemetry() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for field in ("WorkingSet64", "PrivateMemorySize64", "HandleCount", "HasExited"):
+            for value in (None, -1, True, "unavailable"):
+                report = passing_hidden_report(Path(directory))
+                report["process_samples"][4][field] = value
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["checks"]["process_growth"]["passed"], (field, value)
+                assert any(field in failure for failure in evaluated["failures"])
+
+
+def test_hidden_pan_inventory_must_cover_every_interval_and_both_route_edges() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        for mutation in ("negative_tick", "zero_hits", "missing_middle", "missing_tail", "late_start", "past_end"):
+            report = passing_hidden_pan_report(Path(directory))
+            events = report["pan_events"]
+            if mutation == "negative_tick":
+                events[0]["tick_delta"] = -1
+            elif mutation == "zero_hits":
+                events[0]["hits"] = 0
+            elif mutation == "missing_middle":
+                events.pop(3)
+            elif mutation == "missing_tail":
+                del events[4:]
+            elif mutation == "late_start":
+                for event in events:
+                    event["tick_delta"] += 129
+            else:
+                events[-1]["tick_delta"] = report["route_end_marker"]["tick_delta"]
+            report["pan_event_count"] = len(events)
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["checks"]["marker_provenance"]["passed"], mutation
+            assert any("pan" in failure for failure in evaluated["failures"])
+
+
 def test_map_pan_cannot_disable_frame_progression_in_any_environment() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -1306,7 +1617,8 @@ def test_map_pan_cannot_disable_frame_progression_in_any_environment() -> None:
             report["frame_progress_expected"] = False
             report["frame_stability_class"] = "stable_idle"
             report["frame_hash_unique_count"] = 1
-            report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+            for frame in report["frame_samples"]:
+                frame["Hash"] = report["frame_samples"][0]["Hash"]
             evaluation = soak.evaluate_report_for_environment(report)
             assert not evaluation["checks"]["frame_progression"]["passed"], evaluation
 
@@ -1331,16 +1643,26 @@ def test_cli_rejects_unknown_and_contradictory_environment_selection() -> None:
         assert "unsupported soak environment" in unsupported.stdout
 
 
-def run_tests() -> None:
+def _run_tests() -> None:
     test_environment_dispatch_preserves_distinct_proof_classes()
     test_dispatch_rejects_unknown_labels_and_foreign_unlabeled_classes()
     test_dispatch_forwards_every_applicable_threshold()
     test_dispatch_thresholds_change_actual_grading()
     test_hidden_missing_structured_provenance_fails_closed()
     test_hidden_contradictory_provenance_fails_closed()
+    test_hidden_periodic_inventory_cannot_be_replaced_by_distant_endpoints()
+    test_hidden_periodic_count_and_max_gap_share_one_jitter_contract()
+    test_hidden_terminal_marker_requires_exact_identity_player_and_final_scroll()
+    test_hidden_dispatcher_binds_only_matching_written_source_bytes()
+    test_explicit_hidden_cli_uses_the_written_source_binding_dispatcher()
+    test_hidden_every_process_row_requires_live_numeric_telemetry()
+    test_hidden_pan_inventory_must_cover_every_interval_and_both_route_edges()
     test_map_pan_cannot_disable_frame_progression_in_any_environment()
     test_cli_rejects_unknown_and_contradictory_environment_selection()
     test_hidden_passing_report()
+    test_hidden_artifact_inventory_cannot_be_missing_or_coerced()
+    test_hidden_artifact_layout_rejects_unbound_or_ambiguous_paths()
+    test_hidden_artifact_layout_accepts_case_and_slashes_without_claiming_physical_authentication()
     test_hidden_markdown_banners_environment_and_disclosures()
     test_hidden_faked_input_responsiveness_number_fails()
     test_hidden_faked_input_responsiveness_true_fails()
@@ -1401,6 +1723,88 @@ def run_tests() -> None:
     test_final_route_marker_mismatch_fails()
     test_summary_metric_mismatch_fails()
     test_cli_honors_max_input_drift_argument()
+
+
+def test_hidden_malformed_inventories_and_summary_counts_fail_without_exceptions() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        for field in ("frame_samples", "process_samples", "capture_errors", "failures",
+                      "frame_sample_count", "process_sample_count"):
+            for value in (True, "bad", {}, None, -1):
+                report = copy.deepcopy(baseline)
+                report[field] = value
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["overall"], (field, value)
+                assert any(field in failure for failure in evaluated["failures"]), (field, value, evaluated["failures"])
+        report = copy.deepcopy(baseline)
+        report["frame_samples"][0].update(Width="bad", Height=[])
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        for field, value in (("duration_sec", float("inf")), ("duration_sec", "120"),
+                             ("sample_interval_sec", True), ("nonblack_percent_min", 10 ** 1000)):
+            report = copy.deepcopy(baseline)
+            report[field] = value
+            assert not soak.evaluate_report_for_environment(report)["overall"], (field, value)
+        for source in ([], {}):
+            report = copy.deepcopy(baseline)
+            report["ready_marker"]["source"] = source
+            assert not soak.evaluate_report_for_environment(report)["overall"]
+        report = copy.deepcopy(baseline)
+        report["process_samples"][0]["WorkingSet64"] = float("inf")
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        report = copy.deepcopy(baseline)
+        report["route_end_marker"]["route_ticks"] = float("inf")
+        assert not soak.evaluate_report_for_environment(report)["overall"]
+        for value in ([], True, float("inf"), 10 ** 1000):
+            report = copy.deepcopy(baseline)
+            report["frame_samples"][0]["MeanLuma"] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"]
+            assert any("MeanLuma" in failure for failure in evaluated["failures"])
+        for inventory in ("frame_samples", "process_samples"):
+            for timestamp in ("9999-12-31T23:59:59-23:59", "0001-01-01T00:00:00+23:59"):
+                report = copy.deepcopy(baseline)
+                report[inventory][0]["Timestamp"] = timestamp
+                evaluated = soak.evaluate_report_for_environment(report)
+                assert not evaluated["overall"], (inventory, timestamp)
+                assert not evaluated["checks"]["elapsed_coverage"]["passed"]
+                assert any("timestamp" in failure for failure in evaluated["failures"])
+        for field, value in (("WorkingSet64", 1 << 63), ("PrivateMemorySize64", 1 << 63),
+                             ("HandleCount", 1 << 31), ("WorkingSet64", 10 ** 1000),
+                             ("PrivateMemorySize64", 10 ** 1000), ("HandleCount", 10 ** 1000)):
+            report = copy.deepcopy(baseline)
+            report["process_samples"][2][field] = value
+            evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], field
+            assert any(field in failure and "range" in failure for failure in evaluated["failures"])
+
+
+def test_hidden_receipt_bound_malformed_patch_objects_fail_without_exceptions() -> None:
+    from test_hidden_soak_artifact_fixtures import replace_retained_bytes
+    with tempfile.TemporaryDirectory() as directory:
+        baseline = passing_hidden_report(Path(directory))
+        patch_path = baseline["patch_stage_report"]
+        original = json.loads(retained_bytes(patch_path))
+        for field, value in (("status_counts", "bad"), ("status_counts", []),
+                             ("status_counts", {"patched": "bad"}), ("status_counts", {"patched": True}),
+                             ("patch_count", "bad"), ("patch_count", False),
+                             ("current_hd_map_gate", "bad")):
+            payload = copy.deepcopy(original)
+            payload[field] = value
+            raw = json.dumps(payload).encode("ascii")
+            report = copy.deepcopy(baseline)
+            report.update(patch_stage_report_sha256=hashlib.sha256(raw).hexdigest(), patch_stage_report_size=len(raw))
+            with replace_retained_bytes(patch_path, raw):
+                evaluated = soak.evaluate_report_for_environment(report)
+            assert not evaluated["overall"], (field, value)
+            assert not evaluated["checks"]["patch_evidence"]["passed"], (field, value)
+            assert not evaluated["checks"]["retained_binary_bytes"]["passed"], (field, value)
+
+
+def run_tests() -> None:
+    with fixture_artifact_reads():
+        test_hidden_malformed_inventories_and_summary_counts_fail_without_exceptions()
+        test_hidden_receipt_bound_malformed_patch_objects_fail_without_exceptions()
+        _run_tests()
 
 
 if __name__ == "__main__":
