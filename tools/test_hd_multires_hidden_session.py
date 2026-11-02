@@ -93,14 +93,20 @@ class PolicyTests(unittest.TestCase):
     def test_fixed_asset_selection_excludes_tools_output_reverse_and_wrappers(self):
         with tempfile.TemporaryDirectory(prefix="clash-runtime-inventory-") as directory:
             root = Path(directory)
-            for name in (*session.ASSET_FILES, "DATA/GFX3.RES", "DATA/main.wav", "AVI/intro.avi", "GFX/CACHE/cell.s32",
-                         "save/2.dat", "save/2.fac", "DATA/output/copied.res", "DATA/ImageMagick/tool.exe", "reverse/dump.res", "ddraw.dll"):
+            for name in (*session.ASSET_FILES, "DATA/GFX3.RES", "DATA/lower.res", "DATA/main.wav", "DATA/LOUD.WAV",
+                         "AVI/intro.avi", "AVI/UPPER.AVI", "GFX/CACHE/cell.s32", "GFX/CACHE/CELL2.S32",
+                         "save/2.dat", "save/2.fac", "save/3.DAT", "save/3.Fac", "DATA/output/copied.res",
+                         "DATA/Backup/OLD.RES", "DATA/stale.RES.bak", "DATA/ImageMagick/tool.exe", "reverse/dump.res", "ddraw.dll"):
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(b"fixture")
             actual = {row["path"] for row in session.asset_inventory(root)}
-            self.assertTrue({"DATA/GFX3.RES", "save/2.dat", "AVI/intro.avi"} <= actual)
-            self.assertFalse(actual & {"DATA/output/copied.res", "DATA/ImageMagick/tool.exe", "reverse/dump.res", "ddraw.dll"})
+            # Names match case-insensitively on every host, as on Windows.
+            self.assertTrue({"DATA/GFX3.RES", "DATA/lower.res", "DATA/main.wav", "DATA/LOUD.WAV", "AVI/intro.avi",
+                             "AVI/UPPER.AVI", "GFX/CACHE/cell.s32", "GFX/CACHE/CELL2.S32", "save/2.dat",
+                             "save/2.fac", "save/3.DAT", "save/3.Fac"} <= actual)
+            self.assertFalse(actual & {"DATA/output/copied.res", "DATA/Backup/OLD.RES", "DATA/stale.RES.bak",
+                                       "DATA/ImageMagick/tool.exe", "reverse/dump.res", "ddraw.dll"})
 
     def test_actual_launched_artifacts_are_rehashed_not_trusted_from_the_bundle(self):
         with tempfile.TemporaryDirectory(prefix="clash-launch-binding-") as directory:

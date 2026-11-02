@@ -11,6 +11,7 @@ import sys
 sys.dont_write_bytecode = True
 import argparse
 from datetime import datetime, timezone
+import fnmatch
 import hashlib
 import json
 import os
@@ -115,7 +116,12 @@ def asset_inventory(source=GAME):
     source = Path(source)
     selected = set(ASSET_FILES)
     for directory, pattern in ASSET_PATTERNS:
-        selected.update(p.relative_to(source).as_posix() for p in (source / directory).glob(pattern) if p.is_file())
+        # Windows matches names case-insensitively, so GFX3.RES is a *.res
+        # archive; apply that rule on every host instead of Path.glob's.
+        base = source / directory
+        if base.is_dir():
+            selected.update(p.relative_to(source).as_posix() for p in base.iterdir()
+                            if fnmatch.fnmatchcase(p.name.lower(), pattern.lower()) and p.is_file())
     rows = []
     for name in sorted(selected):
         path = qualification.plain_path(source / name)
