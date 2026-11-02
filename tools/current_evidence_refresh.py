@@ -170,6 +170,7 @@ import test_hidden_soak_retained_files
 import test_hidden_soak_binary_artifacts
 import test_hidden_soak_log_observations
 import test_hidden_soak_report_binding
+import test_hidden_soak_probe_composition
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -683,6 +684,8 @@ DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_JSON = Path("captures/current/hidden-
 DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD = Path("captures/current/hidden-soak-log-observations-tests-current.md")
 DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON = Path("captures/current/hidden-soak-report-binding-tests-current.json")
 DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD = Path("captures/current/hidden-soak-report-binding-tests-current.md")
+DEFAULT_HIDDEN_SOAK_PROBE_COMPOSITION_TESTS_JSON = Path("captures/current/hidden-soak-probe-composition-tests-current.json")
+DEFAULT_HIDDEN_SOAK_PROBE_COMPOSITION_TESTS_MD = Path("captures/current/hidden-soak-probe-composition-tests-current.md")
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5916,6 +5919,20 @@ def build_hidden_soak_report_binding_tests(args: argparse.Namespace) -> dict[str
     )
 
 
+def build_hidden_soak_probe_composition_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_probe_composition,
+        tests=["canonical composition reproduces the pinned legacy PowerShell bytes for every hidden rung",
+               "reinterpreted template text, out-of-contract parameters and replaced outputs fail closed"],
+        title="Hidden-CDB Probe Composition Tests",
+        json_path=args.hidden_soak_probe_composition_tests_json,
+        md_path=args.hidden_soak_probe_composition_tests_md,
+        guard_policy="probe construction byte consistency only; no CDB execution, native producer or runtime acceptance",
+        runtime_policy=("source-only RAM composition of repository and synthetic templates plus one tiny private CLI "
+                        "output; no PowerShell, game, debugger or compiler"),
+    )
+
+
 def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
@@ -8259,6 +8276,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hidden_soak_binary_artifacts_tests"] = collect("hidden_soak_binary_artifacts_tests", build_hidden_soak_binary_artifacts_tests, args)
     checks["hidden_soak_log_observations_tests"] = collect("hidden_soak_log_observations_tests", build_hidden_soak_log_observations_tests, args)
     checks["hidden_soak_report_binding_tests"] = collect("hidden_soak_report_binding_tests", build_hidden_soak_report_binding_tests, args)
+    checks["hidden_soak_probe_composition_tests"] = collect("hidden_soak_probe_composition_tests", build_hidden_soak_probe_composition_tests, args)
     checks["hd_soak_failure_triage"] = collect("hd_soak_failure_triage", build_hd_soak_failure_triage, args)
     checks["hd_soak_failure_triage_tests"] = collect("hd_soak_failure_triage_tests", build_hd_soak_failure_triage_tests, args)
     checks["hd_soak_short_artifact_manifest"] = collect("hd_soak_short_artifact_manifest", build_hd_soak_short_artifact_manifest, args)
@@ -9669,6 +9687,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hidden-soak-log-observations-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_LOG_OBSERVATIONS_TESTS_MD)
     parser.add_argument("--hidden-soak-report-binding-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_JSON)
     parser.add_argument("--hidden-soak-report-binding-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_REPORT_BINDING_TESTS_MD)
+    parser.add_argument("--hidden-soak-probe-composition-tests-json", type=Path, default=DEFAULT_HIDDEN_SOAK_PROBE_COMPOSITION_TESTS_JSON)
+    parser.add_argument("--hidden-soak-probe-composition-tests-md", type=Path, default=DEFAULT_HIDDEN_SOAK_PROBE_COMPOSITION_TESTS_MD)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
     parser.add_argument(
         "--hd-soak-failure-triage-tests-json",
