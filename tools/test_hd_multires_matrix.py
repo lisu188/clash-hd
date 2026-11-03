@@ -87,6 +87,21 @@ class MultiresMatrixTests(unittest.TestCase):
         with patch.object(matrix, "MULTIRES_METADATA_BYTES", 4096), self.assertRaisesRegex(ValueError, "bounded nonempty"):
             fixture.authenticate()
 
+    def test_frozen_complete_family_metadata_uses_its_own_bound_only_at_its_cell(self):
+        # Their real 800x600 metadata (3-4 MiB) exceeds the generic JSON bound.
+        for profile in ("completehd", "modalwidgets"):
+            with self.subTest(profile=profile):
+                fixture = self.fixture(profile, "800x600")
+                revision = fixture.metadata["recipe_revision"]
+                self.assertIn(revision, matrix.LEGACY_METADATA_BYTES)
+                padded = json.dumps(fixture.metadata).encode() + b" " * 2048
+                fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), padded)
+                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_METADATA_BYTES, {revision: 8192}):
+                    self.assertTrue(fixture.authenticate()["byte_rebuild_passed"])
+                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_METADATA_BYTES, {revision: 1536}), \
+                        self.assertRaisesRegex(ValueError, "bounded nonempty"):
+                    fixture.authenticate()
+
     def test_large_probe_uses_new_bound_during_initial_and_final_rereads(self):
         for legacy in (False, True):
             fixture = self.fixture("classic", legacy=legacy)
