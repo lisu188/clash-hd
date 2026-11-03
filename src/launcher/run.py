@@ -30,7 +30,7 @@ import modalwidgets
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
 import settings as settings_mod  # noqa: E402
-from src.display_plan import PresentationTransform
+from src.display_plan import HD_MULTIRES_RESOLUTIONS, PresentationTransform
 
 
 class _ProfileSelection(argparse.Action):
@@ -67,7 +67,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--gui-selftest", action="store_true")
     parser.add_argument("--package-selftest", type=Path, metavar="REPORT_JSON",
-                        help="write source preflight and all twelve HD plans without opening the GUI or game")
+                        help="write source preflight and every HD successor plan without opening the GUI or game")
     args = parser.parse_args(argv)
     if args.package_selftest and any((args.launch, args.yes_launch, args.prepare, args.dry_run,
                                      args.gui_selftest, args.describe_plan, args.list_resolutions,
@@ -148,7 +148,7 @@ def package_selftest(report_path: Path) -> int:
         raise core.LauncherError("Package selftest reports must be outside the source/resource tree.")
     manifest = presets.load_manifest()
     profiles = ("classic", "framed", "completehd", "modalwidgets")
-    resolutions = ("1920x1080", "2560x1440", "3840x2160")
+    resolutions = HD_MULTIRES_RESOLUTIONS
     sources = {profile: multires.source_status(profile) for profile in profiles}
     cells = []
     for profile in profiles:
@@ -173,7 +173,7 @@ def package_selftest(report_path: Path) -> int:
                     "passed": data["last_profile"] == profile
                         and settings_mod.resolution_for_profile(data, profile) == resolution
                         and (profile == "classic" or data["last_resolution"] == previous_classic)})
-    passed = (all(item["passed"] for item in cells) and len(cells) == 12
+    passed = (all(item["passed"] for item in cells) and len(cells) == len(profiles) * len(resolutions)
               and (not frozen or bundle_verified)
               and manifest.get("default_renderer") == "classic" and manifest.get("default") == "800x600"
               and all(row["passed"] for row in settings_checks))

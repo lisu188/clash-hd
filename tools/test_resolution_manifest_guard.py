@@ -511,7 +511,7 @@ def profile_fixture(root: Path, *, complete: bool = True) -> argparse.Namespace:
         # synthetic stable stage, independently of the registered HD successor.
         config.pop("multires_recipe", None)
         if renderer in ("completehd", "modalwidgets"):
-            for key in ("2560x1440", "3840x2160"):
+            for key in ("1366x768", "2560x1440", "3440x1440", "3840x2160"):  # Successor-only presets.
                 config["resolutions"].pop(key, None)
         config["stage"] = config["stage"].replace(original_stage, STABLE_STAGE)
         if "wide_menu_recipe" in config:

@@ -75,7 +75,7 @@ class MultiresLauncherTests(unittest.TestCase):
         return BACKENDS[profile].plan_candidate(resolution=resolution, clash_dir=self.game,
             candidates_root=self.root / "candidates", expected_base_sha=core.sha256_bytes(self.original))
 
-    def test_twelve_exact_cells_have_isolated_identity_and_preserve_default(self):
+    def test_every_successor_cell_has_isolated_identity_and_preserves_default(self):
         directories = set()
         for profile in BACKENDS:
             for resolution in display_plan.HD_MULTIRES_RESOLUTIONS:
@@ -87,7 +87,9 @@ class MultiresLauncherTests(unittest.TestCase):
                 self.assertEqual(presets.resolution_info(resolution, renderer=profile)["status"], "experimental")
                 self.assertFalse(display.to_dict()["game_runtime_executed"])
                 directories.add(plan.candidate_dir)
-        self.assertEqual(len(directories), 12)
+        self.assertEqual(len(directories), len(BACKENDS) * len(display_plan.HD_MULTIRES_RESOLUTIONS))
+        self.assertEqual(len(directories), 32)
+        self.assertNotIn("800x600", display_plan.HD_MULTIRES_RESOLUTIONS)
         self.assertFalse((self.root / "candidates").exists())
         self.assertFalse(self.builder_calls)
         fallback = classic.plan_candidate(resolution="800x600", clash_dir=self.game, candidates_root=self.root / "candidates")

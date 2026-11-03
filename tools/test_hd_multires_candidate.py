@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source/byte/CPU contracts; optional original-bound construction of 12 cells.
+"""Source/byte/CPU contracts; optional original-bound construction of 32 cells.
 
 CPU checks execute authored guard instructions on synthetic memory. Neither
 that mode nor original-file construction launches Clash95 or proves gameplay.
@@ -97,8 +97,10 @@ class SourceAndByteTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "binding inventory"):
             candidate._portable_predecessor({"source_bindings": {"unknown": {}}})
 
-    def test_exact_twelve_cells_and_legacy_default_are_separate(self):
-        self.assertEqual(len(candidate.PROFILES) * len(candidate.RESOLUTIONS), 12)
+    def test_exact_thirty_two_cells_and_legacy_default_are_separate(self):
+        self.assertEqual(len(candidate.PROFILES) * len(candidate.RESOLUTIONS), 32)
+        # Native 800x600 keeps its own recipes and the protected stable stage.
+        self.assertNotIn("800x600", candidate.RESOLUTIONS)
         registry = json.loads((ROOT / "src/launcher/resolutions.json").read_text())
         self.assertEqual(registry["default"], "800x600")
         self.assertEqual(registry["profiles"]["classic"]["resolutions"]["800x600"]["status"], "stable")
@@ -273,7 +275,7 @@ def main():
                 runtime_verified=False)
             rows.append(row)
             print(json.dumps(row), flush=True)
-    assert len(rows) == 12
+    assert len(rows) == 32
 
 
 if __name__ == "__main__":

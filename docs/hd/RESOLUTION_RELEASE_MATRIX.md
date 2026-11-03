@@ -60,6 +60,12 @@ and candidate rereads retain their separate bounds. Malformed, oversized or
 deep inputs return structured failures. These limits do not make files
 immutable or establish a native producer. Inherited canonical source-code
 inventory reads are not yet covered by a uniform IO-bound guarantee.
+The frozen `complete_hd_v1` and `owned_modal_widget_bounds_v1` recipes record
+every patch byte, so their native 800x600 metadata (3.0 and 4.1 MB) and probes
+(2.9 and 6.5 MB) exceed the generic JSON bound. Their sidecars have an 8 MiB
+bound instead. Authentication grants it to metadata only at the cell where the
+launcher selects the recipe; matrix-cell rereads keep it for metadata and
+probe only under the recipe's own profile.
 
 The fixed source registry also admits `classic_all_presets_v1`,
 `framed_all_presets_v1`, `complete_hd_all_presets_v1` and
@@ -88,11 +94,11 @@ expanded-battle successor, implement the fourteen missing runtime verifiers,
 or supply fresh runtime evidence. Existing
 legacy acceptance cannot qualify the required expanded-battle release.
 
-The current catalog advertises 32 of the 36 preset combinations. Complete HD
-and Modal Widgets each lack 1366x768 and 3440x1440. The separate
-`hd_multires_v1` launcher successor registers the selected twelve combinations
-at 1920x1080, 2560x1440 and 3840x2160, using bounded Classic/framed map guards
-and a source-verified standalone package. Its selected construction report is
+The catalog now advertises all 36 preset combinations: Complete HD and Modal
+Widgets gained 1366x768 and 3440x1440 through the successor. The separate
+`hd_multires_v1` launcher successor registers thirty-two combinations, every
+preset above 800x600, using bounded Classic/framed map guards and a
+source-verified standalone package. Its selected construction report is
 not full-matrix or native acceptance. See [multi-resolution usage](MULTIRES_LAUNCHER.md).
 The existing release evaluator implements two of sixteen production lane
 verifiers; the remaining fourteen still fail explicitly. No new stable status,

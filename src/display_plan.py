@@ -12,7 +12,8 @@ PLAN_SCHEMA = 1
 RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1",
                    "completehd": "complete_hd_v1", "modalwidgets": "owned_modal_widget_bounds_v1"}
 HD_MULTIRES_REVISION = "hd_multires_v1"
-HD_MULTIRES_RESOLUTIONS = ("1920x1080", "2560x1440", "3840x2160")
+HD_MULTIRES_RESOLUTIONS = ("1024x768", "1280x720", "1280x960", "1366x768",
+                           "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 DEFAULT_BOUNDS = ((800, 600), (3840, 2160))
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 RESOLUTION_RE = re.compile(r"[1-9][0-9]{2,4}x[1-9][0-9]{2,4}")

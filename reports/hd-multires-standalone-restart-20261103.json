@@ -1,0 +1,401 @@
+{
+  "schema": "hd_multires_standalone_restart_v1",
+  "generated_at": "2026-11-03T09:33:49.412183+00:00",
+  "source_commit": "fb8672ba320fefcd4ea1b654711350f062b5836d",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "build": {
+    "script": "scripts/launcher/build_launcher_exe.ps1",
+    "python": "3.11.9",
+    "pyinstaller": "6.16.0",
+    "mode": "onefile windowed",
+    "post_build_source_inventory_check": "passed",
+    "executable_sha256": "9f431fc183fd872f8ad0360a509de14cec4153d12c188fb84be547b2a034490d",
+    "executable_bytes": 14007522
+  },
+  "package_selftest": {
+    "returncode": 0,
+    "passed": true,
+    "standalone_executable": true,
+    "bundled_sources_verified": true,
+    "cells": 32,
+    "settings_roundtrips": 32,
+    "default": [
+      "classic",
+      "800x600"
+    ],
+    "game_runtime_executed": false,
+    "input_executed": false,
+    "runtime_acceptance": false,
+    "report_sha256": "c09af54e30caee2a803c8197544e89843b8881371ad085d8ae618bdcc778cd8e"
+  },
+  "prepare": {
+    "launcher_processes": 64,
+    "distinct_processes": true,
+    "clean_folders": 2,
+    "processes_per_cell": 2,
+    "python_on_path": false,
+    "hidden_desktop_per_process": true,
+    "all_exit_zero": true,
+    "all_cleanup_verified": true,
+    "max_seconds": 77.77
+  },
+  "qualification": {
+    "tool": "tools/hd_multires_qualification.py",
+    "returncode": 0,
+    "authenticated_cells": 32,
+    "accepted_cells": 0,
+    "failures": 0,
+    "promotion_ready": false
+  },
+  "cells": [
+    {
+      "cell_id": "classic/1024x768",
+      "candidate_sha256": "a3615a011c994dd0a4c8faa04ee3c522ec8ab7039feb46222be666b51c3cc101",
+      "metadata_sha256": "2800f45766b162a77b354d9296a53cecad46abb2969360fe9d08cb53a298503d",
+      "probe_sha256": "83ae6ae629a1f96d34da97409b35c1165daced5a48efe4f9e2b41b34f8797b93",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/1280x720",
+      "candidate_sha256": "a654db0f586d2eea05a9aef1117b60399be150251ae5e3725c2145785533fde1",
+      "metadata_sha256": "fc8f48ede9f53746417b694c946654b642d8d42d440261c9784e759b915dde06",
+      "probe_sha256": "d4e634ec3967e1eaebb21afc39c1d65eda010a2cd18b1beae576f6d87b247ecf",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/1280x960",
+      "candidate_sha256": "a32deb3347ebb4c386466380437c0f934ccc086e758ca425dc501516a95842a5",
+      "metadata_sha256": "ad929d6ad128d527f8fa68054d09958af0f87225d818e2143069f26ea03e1c70",
+      "probe_sha256": "a1f26f583e73c4cd0cfc8eaef4b6a03d26da59fc08be9bb47a6e8873a9a9cfd6",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/1366x768",
+      "candidate_sha256": "639cdc82dc42a224c5c22de586bf6f6ad0e978c36d4cce732ca3315934691062",
+      "metadata_sha256": "bd4b2cd30488d72aa63bbe98a48f51ffbb70e3c02d6a8eb4434d25a72c22bc45",
+      "probe_sha256": "e734b89316daed6c572443409adf361382972144aafcca8793535a59f12fb768",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/1920x1080",
+      "candidate_sha256": "130b3101e583b988ef39e6c5b6e7eca809b0c13aaf3701047a0f57e6e332515e",
+      "metadata_sha256": "23af35728c1579747d43f14b283f7f27f06d82db115a31c0c9de152c27cf543e",
+      "probe_sha256": "d605079cd609a5c3fb947c829fb74c4ffe0d9922570c2a836f72917c939db895",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/2560x1440",
+      "candidate_sha256": "ae8986279bd081a38919b1dd12b46b3029d5c367ea23c51a84e349c8460a9412",
+      "metadata_sha256": "52ff06e7a48235db73fe7958eba93c66cbe04d27a620bff2ffd9dd192226b32e",
+      "probe_sha256": "f051d83448c87e89ad3bd846cca5c946f685de9838d976d187fedb6ce862bf0c",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/3440x1440",
+      "candidate_sha256": "2e1bb49eb77591037362600d2fb24d58446d0480ead0520e63be1ac7fda9f75f",
+      "metadata_sha256": "6c670f4e1523bcd90d356f4942ff4ac7c4f76339cc331d33b0217563276671f2",
+      "probe_sha256": "fed35ecb0368eb5469a87a2916f6a58269ae301c5bdc52a4d28ba55e2bf5444e",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/3840x2160",
+      "candidate_sha256": "a71969b3c4384964d54534f0c2d369d239b50348390a06bde1fda1b77738df89",
+      "metadata_sha256": "896e7a8bab4added064daf064df0c95cffd9cc64924fb31fdc011efe780b42cd",
+      "probe_sha256": "b6cb068da268792099d5b0bc2d8c86061e4493358bfa851a73b1b9f8ad4c7720",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1024x768",
+      "candidate_sha256": "62c078fd39fc56591999e358127971edd8d187ce2694a2cd7b98423a87b36d7f",
+      "metadata_sha256": "702b0b929e7ffc917556368651b6544e2247309c76554d838d0b18e79ed11e4c",
+      "probe_sha256": "43e259a287dae313336fe9a7b37e3637833a786f256b2f2f0daf953254db93dd",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1280x720",
+      "candidate_sha256": "9ef6ad1c79d5f1c172814589c71fe8c20cb57fe6b76f2368bfdf9b7a46e548ff",
+      "metadata_sha256": "edd440fe05f084eff4b0e92707dfd2a39f31be29d5cbff35d4d0c02f71ce5b3e",
+      "probe_sha256": "da54e75fb2c582f135acd6311abaeeee762c4c6626a0e97caf7843e7f478e3b7",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1280x960",
+      "candidate_sha256": "9dfd1a9f8a8d5e0a18fa6b9360d2f03d74043b4297d6de2a0305396b602c0a68",
+      "metadata_sha256": "9eb7f0c7a8f02601c849e3165348e0becc97c2a5ca663cdbb0ea267f25b48b9d",
+      "probe_sha256": "0ebac82875ad85e7a93d27d475c33e322786f21480f60a2e1869d57857175502",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1366x768",
+      "candidate_sha256": "d1dd19548a0f3dcf78230b0f441d14ef57084d2dddc440f8c3e0d81ed4f7b542",
+      "metadata_sha256": "a04e91cb9e34a352b83efb6b653a42fdf841755c986a3412d6351e262400cb30",
+      "probe_sha256": "88ae103b56858a0a12c6f7beb73f047fd8d5f9b1963af0e6d9630cabd6dbaa2b",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1920x1080",
+      "candidate_sha256": "3510e0a23fd41f95283806cee9cb761a31e4ea7b3ab4eb4f4c1fe52e6fd27e02",
+      "metadata_sha256": "9525717abfdc4636c55e1bc58b44b984eef4479ad5b98e20c2c2176ae9416843",
+      "probe_sha256": "d9ba7b33223f52c56deca6bfaf9d1c3a094038b34d0077dd6474c209a49ca4bc",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/2560x1440",
+      "candidate_sha256": "0a1b3c3edc95791f26338ef4ec6531b7bb081f548ef6cdd868a6823525e12b8d",
+      "metadata_sha256": "7b5f8f02512970ec80926c52675935095a70cb964b231738f3f353e0fc62e474",
+      "probe_sha256": "3c3d9cac16d94cdabca1060ee63c56b242e6377d749d3473c9ff6e6c0f2f748a",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/3440x1440",
+      "candidate_sha256": "fb35e60aea1c65665e4918eb4f45384b538b34a811a5f217253e9b465527b82c",
+      "metadata_sha256": "426773cf995a4253c01aa90d184fd2c04805a374e951a367cf6f8eebd77ac361",
+      "probe_sha256": "7a433dd59c19459d6c2e48081790236589cb674dc4ee57e9bf1ee43fbff7cff6",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/3840x2160",
+      "candidate_sha256": "565cdcd6e2851bbfbc2bbbced3e1cecb767138a4fc914c977bcb78fd26b666cc",
+      "metadata_sha256": "25a0cb68b7375d7bcf31ebd20a1b10fff5316165861429c49824c691175a53c1",
+      "probe_sha256": "74ff15716d1cfa233440a36992eec6b41c13ca06084d4888794a571cd347a162",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1024x768",
+      "candidate_sha256": "8a0dc89bae84b6818d19337f298ac8c5f075780ee75d9d7a0e7a652c0c668412",
+      "metadata_sha256": "e0adb9468fb513c290cab7f1c44af5914c5a35e46f812f29d13ef452cb2ffec4",
+      "probe_sha256": "b562e220f664041c315b87d129d28ed4cc721b33fa9b8a36ca7f7fb2c9b032cd",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1280x720",
+      "candidate_sha256": "582307253c706ef0cb80fb314e77fd66cd28c8c712110bd86741a4e313faac00",
+      "metadata_sha256": "9e1f58a831d12d232fb19d5080d3e3ed8d8ad9b478d0bfa12cd71e3c06dd4eac",
+      "probe_sha256": "fbcd0fa1285fd7901083edd9697375e1862dffa10dcac9a8cb3de722b0a75c6f",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1280x960",
+      "candidate_sha256": "0822053052bfd837bdc9e122beebff85eecb2c69011c5693c10efe44c638edf7",
+      "metadata_sha256": "b5402087a58d3c885e1965409f27a3db76bef5a29fee422059b8b9f0cfc9c195",
+      "probe_sha256": "79733a5547e1d939da7f3c9727610b9da375bc5e11bb7ac2e092e8bd320117d1",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1366x768",
+      "candidate_sha256": "78fd72cff0e4da4ae951bb49682fd0659053a4457e841b4d5045466c01ab5c83",
+      "metadata_sha256": "372127673578dc663645b9f7e07dc7db386a8750771838558e9c06e6a153ca95",
+      "probe_sha256": "e992a68547baa759208bb75a860e4241a373e650a3d928d4298fa8a15a9c7b30",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1920x1080",
+      "candidate_sha256": "9af7c78a1bf6f033ed3e1bf3ce783cba40601ad1bed78ce0647832bc4dd24fa0",
+      "metadata_sha256": "cf5a9e66260a6e4cd02f1cc257a9fa562fbeb60797c3aefb65af453897177ac9",
+      "probe_sha256": "6315a76bd1cd561f55eba2009bf0446dd971c281c6780f170242c7f02a14e995",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/2560x1440",
+      "candidate_sha256": "a35cec7063d5c8f9735735b030d5cf499322e17bb91aac64223a309ffb5c9fe0",
+      "metadata_sha256": "af75b6e2e17c44de7b2b1338f8645ae157f7597a938d1b78869e199909546987",
+      "probe_sha256": "34911186926fbd36516132fa8d07d0bc45696df3674068c0bd8e43ce3054c20d",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/3440x1440",
+      "candidate_sha256": "522e2f3fe2fa57697ef1faeb2f7e616254bb25177d8aa1c216a00d00a1f9b57c",
+      "metadata_sha256": "6380f30607b56d8a5507b33b6bd7a48dde62aacd5574c4290d0b1457bbe68b58",
+      "probe_sha256": "77ef0e0ff2c6693c6df9ebb0798d9ce9f0369d00631ba31ba0355100ba8d10bf",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/3840x2160",
+      "candidate_sha256": "17e31c0eb09b44cbbbe3cd0388610bb3ce581f35264c3284f45f1722b1b4015f",
+      "metadata_sha256": "f03aed007b70505fe8c2a3a07224559785523b84d98e66b41c6021f3298be311",
+      "probe_sha256": "7d4b1b4d9e28fcd3a7ea90420cf077ae56f1b5362f22fdea18e08947a408e347",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1024x768",
+      "candidate_sha256": "ad8a47bcb39e7be51e3333d1ce51617821cd843791f7a27826b2c3fb3b195818",
+      "metadata_sha256": "00e6f4cd79fa2009827b6721d7271ebbe017ed5b3daa496d5ca93a0a718aff92",
+      "probe_sha256": "c2526db5697d0006014937ca9ac3492160f2581902b448aea8d1a5b7e7e4ccd7",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1280x720",
+      "candidate_sha256": "f4f1e67686db77ccb78d921d8856118c5d7d438ba03182f5f8dacb6ae6743b2c",
+      "metadata_sha256": "bba73f637e58b996f085280cf194084b1133a8994631a9489e2f819c638d887d",
+      "probe_sha256": "a71b053ea85c0a94851efb7f4dccb51f1efe70fa0007e32e402bf6d1e2a22bf1",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1280x960",
+      "candidate_sha256": "4b123445ad5a979adeb22374bc06b8a3042dcb0a148cfca2bc996cbccee682c2",
+      "metadata_sha256": "c67d21676a0526bbcc3b57079b345eb10e8d2a5d5ea625ca77010de51618d32c",
+      "probe_sha256": "c95c578eadc4c6782bb7e8eef0370076bb413e69d8e38bdde155941a67a564bb",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1366x768",
+      "candidate_sha256": "3f630d94f39f58ee0a2453c471e9e4412ffa08f4556c79929403bad05ee3df16",
+      "metadata_sha256": "2a4c755d7629df09c8edc3a1674919b0cbc6f70d6b0a44a4c1177ccc92c58732",
+      "probe_sha256": "ce01a4c82c8b3c1ea99a306d5494f43540206a9e018607271721d6b11ebe83bc",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1920x1080",
+      "candidate_sha256": "10e68bce1b07c4d8eaa2ae20b92c77f57239c2f19a5de7ba6f32be014360483f",
+      "metadata_sha256": "4775abe82a7e8bd99a2434e0a1a615fc7b6569fce33d65c4e3f56b72805624a3",
+      "probe_sha256": "e163aad9eb8757d4b2036a0c01d45a80bc39648b0d708f684572faf0840affe6",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/2560x1440",
+      "candidate_sha256": "b9f59802c27f3d40eb4ebfe3fc7433ed892221e0a41ae80365d09774f1258df8",
+      "metadata_sha256": "1f4ce8ce957b0739eae9964c899f82eecb4cdaabb054df01b9f42eec43644593",
+      "probe_sha256": "144ecaaca97490f7c544ebdf6faf78525460113c41904b7735b3fff90aad0ebf",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/3440x1440",
+      "candidate_sha256": "5702113d84b9b749f7376457911fb5d7dd1dfb45863af99a996609ae0aee7630",
+      "metadata_sha256": "ebef318f6cf6ee1e5070038a353993cc229a68882f6d7dc964205d313f13007d",
+      "probe_sha256": "179f22b1a19a40966eac95009726e7c8896da12585b9d405bb5228a90db1e2ad",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/3840x2160",
+      "candidate_sha256": "e6d5c5e8f9f30c40677fbdc94f9a36868afc488dde3abf9ee888fcc4e2f32f43",
+      "metadata_sha256": "a8342d6dd0e4ce8b7a519e4c04d831c146dee3c6e194d495cd84a115cd875c26",
+      "probe_sha256": "53da1a6fc2cdb955db4f01530f34fe4256a12fe57a9d41de2357d762a74d813f",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    }
+  ],
+  "disk": {
+    "volume": "C:",
+    "before": {
+      "total_bytes": 999595962368,
+      "free_bytes": 603440254976,
+      "used_percent": 39.63
+    },
+    "after": {
+      "total_bytes": 999595962368,
+      "free_bytes": 596600557568,
+      "used_percent": 40.32
+    }
+  },
+  "commands": [
+    "scripts/launcher/build_launcher_exe.ps1 -Python <packaging venv python> -OutputDir C:/ClashTests/launcher/standalone-proof-20261103/build -Execute",
+    "ClashHDLauncher.exe --package-selftest <stamp>/package-selftest.json",
+    "ClashHDLauncher.exe --profile <profile> --resolution <resolution> --clash-dir C:/Clash --candidates-root <stamp>/run-<a|b> --prepare",
+    "python -B tools/hd_multires_qualification.py --prepare --output-root <stamp>/qualification --report <stamp>/qualification-report.json"
+  ],
+  "local_outputs": "C:/ClashTests/launcher/standalone-proof-20261103 (local only; never committed)",
+  "passed": true,
+  "limitation": "Construction and restart determinism of the packaged launcher only: each cell's executable, metadata and probe are byte-identical across two launcher processes with separate one-file extraction directories and equal the qualification tool's authenticated reference bundle. No game, GUI, input, rendering, gameplay, endurance or release acceptance.",
+  "game_runtime_executed": false,
+  "gui_opened": false,
+  "input_executed": false,
+  "runtime_acceptance": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

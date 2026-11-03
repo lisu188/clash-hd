@@ -1,9 +1,17 @@
-# Experimental 1080p, 1440p and 4K launcher
+# Experimental multi-resolution launcher
 
 The standalone Windows launcher now contains Classic, Framed, Complete HD and
-Modal Widgets. Its first multi-resolution batch is 1920x1080, 2560x1440 and
-3840x2160: twelve independent profile/resolution combinations. Every new
-combination remains **experimental**. Classic 800x600 remains the stable default.
+Modal Widgets. Its `hd_multires_v1` successors cover every preset above native
+800x600: 1024x768, 1280x720, 1280x960, 1366x768, 1920x1080, 2560x1440,
+3440x1440 and 3840x2160. That makes thirty-two independent profile/resolution
+combinations. The first batch was 1920x1080, 2560x1440 and 3840x2160; the
+second added the other five presets. The 800x600 cells keep their own recipes.
+Every new combination remains **experimental**. Classic 800x600 remains the
+stable default.
+
+Below the 1144-pixel wide-menu width, the Classic predecessor has no RX
+extension section. Classic 1024x768 therefore adds its own `.hdcode` section
+for the bounded map code instead of extending an existing tail.
 
 ## Using the launcher
 
@@ -58,7 +66,7 @@ screen composition, save/load or endurance acceptance.
 ## Verification and remaining acceptance
 
 The public source/CPU tests use authored synthetic memory and callbacks. An
-optional local lane constructs all twelve candidates from the exact user-owned
+optional local lane constructs all thirty-two candidates from the exact user-owned
 original without executing the game:
 
 ```powershell
@@ -99,7 +107,7 @@ Each cell still requires real map/controls, castle and building routes, battle
 entry/command/return, save/load and turn continuity, final-wrapper composition,
 five genuine manual-input categories and the ordered endurance schedule.
 The existing schedule is 54 minutes of short rungs, then two hours map-idle
-and two hours map-pan: **4h54 per cell, 58h48 for twelve cells**, before setup,
+and two hours map-pan: **4h54 per cell, 156h48 for the thirty-two successor cells**, before setup,
 failed attempts and other observations. Visible/manual sessions require
 specific approval under the repository rules.
 
@@ -111,20 +119,24 @@ ClashHDLauncher.exe --package-selftest C:/ClashTests/package-selftest.json
 ```
 
 The self-test opens neither the GUI nor game. It records four source preflights,
-twelve plans, twelve temporary settings roundtrips, defaults and false
+thirty-two plans, thirty-two temporary settings roundtrips, defaults and false
 runtime/input acceptance flags. It never reads or changes the user's saved
 launcher settings. The build
 checks its inputs before and after compilation. Any packaged-source change
 requires a new executable and clean-folder verification.
 
 The standalone restart receipt
-[`reports/hd-multires-standalone-restart-20261102.json`](../../reports/hd-multires-standalone-restart-20261102.json)
-records one build of commit `65dedc6b` and its package self-test. Each of
-the twelve cells was prepared by two separate launcher processes, started
-from two clean folders without Python on PATH. Each process ran on its own
-hidden desktop with its own one-file extraction directory.
+[`reports/hd-multires-standalone-restart-20261103.json`](../../reports/hd-multires-standalone-restart-20261103.json)
+records one build of commit `fb8672ba` and its package self-test with thirty-two
+plans and settings roundtrips. Each of the thirty-two cells was prepared by two
+separate launcher processes (64 in total), started from two clean folders
+without Python on PATH. Each process ran on its own hidden desktop with its own
+one-file extraction directory.
 Every cell's executable, metadata and probe were byte-identical across both
 runs and equal to the bundle that `tools/hd_multires_qualification.py`
-prepared and authenticated; the original executable was unchanged. This is
+prepared and authenticated; the original executable was unchanged. The first
+twelve cells keep the executables and probes of the earlier
+[twelve-cell receipt](../../reports/hd-multires-standalone-restart-20261102.json);
+only their metadata source hashes moved with the two batch-2 builders. This is
 construction and restart determinism only: no game, GUI, input, rendering or
 release acceptance.

@@ -106,15 +106,17 @@ class MatrixTests(unittest.TestCase):
         self.assertFalse(any("802x602" in key for key in matrix.REQUIRED_IDS))
         self.assertEqual(len(matrix.REQUIRED_ACCEPTANCE), 17)
 
-    def test_inventory_absent_presets_and_wide_classic(self):
-        self.assertEqual(sum(row["preset_advertised"] for row in self.inventory.values()), 32)
-        missing = {key for key, row in self.inventory.items() if not row["preset_advertised"]}
-        self.assertEqual(missing, {f"{p}/{r}" for p in ("completehd", "modalwidgets")
-                                  for r in ("1366x768", "3440x1440")})
-        self.assertEqual(self.inventory["classic/800x600"]["source_recipe"]["recipe_revision"], "classic-frozen-800-v1")
-        self.assertEqual(self.inventory["classic/1280x720"]["source_recipe"]["recipe_revision"], "classic_menu_widgets_v1")
-        self.assertIs(self.inventory["completehd/3840x2160"]["recipe_eligible"], True)
-        self.assertEqual(self.inventory["completehd/3840x2160"]["source_recipe"]["recipe_revision"], "hd_multires_v1")
+    def test_inventory_advertises_every_preset_and_routes_successors_above_native(self):
+        self.assertEqual(sum(row["preset_advertised"] for row in self.inventory.values()), 36)
+        self.assertEqual({key for key, row in self.inventory.items() if not row["preset_advertised"]}, set())
+        # Native 800x600 keeps each profile's own frozen recipe.
+        for profile, revision in (("classic", "classic-frozen-800-v1"), ("framed", "four-border-partial-initial-v1"),
+                                  ("completehd", "complete_hd_v1"), ("modalwidgets", "owned_modal_widget_bounds_v1")):
+            self.assertEqual(self.inventory[f"{profile}/800x600"]["source_recipe"]["recipe_revision"], revision)
+        # Every preset above it defaults to the bounded successor, wide Classic included.
+        for cell in ("classic/1280x720", "completehd/1366x768", "modalwidgets/3440x1440", "completehd/3840x2160"):
+            self.assertIs(self.inventory[cell]["recipe_eligible"], True)
+            self.assertEqual(self.inventory[cell]["source_recipe"]["recipe_revision"], "hd_multires_v1")
 
     def test_missing_manifest_fails(self):
         report = matrix.evaluate_matrix()
@@ -294,8 +296,12 @@ class MatrixTests(unittest.TestCase):
     def test_successor_source_authentication_does_not_fill_missing_runtime_or_advertisement(self):
         fixture = SyntheticBundle(self.root, self.manifest, "modalwidgets", "3440x1440",
                                   successor="modal_widgets_all_presets_v1")
+        # Every required preset is advertised now; withdraw this one so source
+        # authentication is shown not to stand in for advertisement.
+        inventory = copy.deepcopy(self.inventory)
+        inventory[fixture.id]["preset_advertised"] = False
         with fixture.authentication(), \
-             patch.object(matrix, "_inventory", return_value=(self.manifest, copy.deepcopy(self.inventory))):
+             patch.object(matrix, "_inventory", return_value=(self.manifest, inventory)):
             report = matrix.evaluate_matrix(fixture.matrix_path, repo_root=fixture.repo)
         self.assert_blocked(report)
         self.assertEqual(report["authenticated_candidate_count"], 1)
@@ -397,10 +403,13 @@ class MatrixTests(unittest.TestCase):
 
     def test_unsupported_preset_fails(self):
         fixture = self.fixture()
+        # Every required preset is advertised now; withdraw one to keep the check.
+        manifest = copy.deepcopy(self.manifest)
+        del manifest["profiles"]["completehd"]["resolutions"]["1366x768"]
         with fixture.authentication():
             with self.assertRaisesRegex(ValueError, "not advertised"):
                 matrix.authenticate_candidate("completehd/1366x768", fixture.spec, fixture.external,
-                                              self.manifest, repo_root=fixture.repo)
+                                              manifest, repo_root=fixture.repo)
 
     def test_frozen_classic_has_no_manufactured_probe(self):
         fixture = self.fixture("classic", "800x600")

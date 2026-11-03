@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src/launcher'))
 import bootstrap
 bootstrap.ensure_repo_paths()
+import completehd
 import core
 import framed
 import gui
@@ -174,6 +175,11 @@ class LauncherWidgetTests(unittest.TestCase):
         self.addCleanup(self.env_patch.stop)
         settings.save_settings(dict(settings.DEFAULT_SETTINGS, clash_dir=str(self.directory / 'game-not-installed'),
                                     candidates_root=str(self.directory / 'candidates')))
+        # Successor and complete-HD plans only accept outputs under their fixed
+        # external root; isolate it to this test's candidates folder.
+        self.root_patch = patch.object(completehd, 'CANDIDATE_ROOT', self.directory / 'candidates')
+        self.root_patch.start()
+        self.addCleanup(self.root_patch.stop)
         self.root = None
         self.create_app()
         self.addCleanup(lambda: self.root.destroy() if self.root is not None else None)

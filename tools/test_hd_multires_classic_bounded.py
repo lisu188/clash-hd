@@ -12,7 +12,9 @@ import hashlib
 from pathlib import Path
 import struct
 import sys
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tools")]
@@ -24,11 +26,26 @@ STAGE = classic.STABLE_STAGE + "-classic-hd-multires-validation"
 
 
 class AuthoringTests(unittest.TestCase):
-    def test_exact_three_presets_and_original_gate(self):
-        self.assertEqual(tool.RESOLUTIONS, ("1920x1080", "2560x1440", "3840x2160"))
+    def test_exact_successor_presets_and_original_gate(self):
+        self.assertEqual(tool.RESOLUTIONS, ("1024x768", "1280x720", "1280x960", "1366x768",
+                                            "1920x1080", "2560x1440", "3440x1440", "3840x2160"))
         for raw in (b"", b"authored fixture", bytearray(32), None):
             with self.assertRaises((ValueError, TypeError)):
                 tool.integrate(b"", {}, original=raw, resolution="1920x1080", selected_stage=STAGE)
+
+    def test_parent_without_rx_tail_gets_a_new_section_not_a_foreign_extension(self):
+        # Below the wide-menu width the Classic parent ends in a non-code section.
+        data_tail = SimpleNamespace(sections=[SimpleNamespace(characteristics=0xC0000040, raw_offset=0, raw_size=0)])
+        with patch.object(tool.pe, "inspect_pe", return_value=data_tail), \
+                patch.object(tool, "_new_section", return_value=(b"image", ["edit"], 3)) as new_section:
+            self.assertEqual(tool._append(b"parent", "bundle", ["hook"], (1,)), (b"image", ["edit"], 3))
+        new_section.assert_called_once_with(b"parent", "bundle", ["hook"], (1,))
+        # An RX tail that does not own the file end is still refused, never re-homed.
+        short_rx = SimpleNamespace(sections=[SimpleNamespace(characteristics=tool.pe.RX_CODE, raw_offset=0, raw_size=1)])
+        with patch.object(tool.pe, "inspect_pe", return_value=short_rx), \
+                patch.object(tool, "_new_section", side_effect=AssertionError("must not add a section")):
+            with self.assertRaisesRegex(ValueError, "must own the complete file tail"):
+                tool._append(b"parent", "bundle", [], ())
 
     def test_no_framed_builder_native_panel_or_binary_write(self):
         tree = ast.parse(Path(tool.__file__).read_text(encoding="utf-8"))

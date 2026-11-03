@@ -153,8 +153,13 @@
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-classic-hd-multires-validation",
         "recipe_revision": "hd_multires_v1",
         "resolutions": [
+          "1024x768",
+          "1280x720",
+          "1280x960",
+          "1366x768",
           "1920x1080",
           "2560x1440",
+          "3440x1440",
           "3840x2160"
         ]
       }
@@ -217,8 +222,13 @@
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framed-hd-multires-validation",
         "recipe_revision": "hd_multires_v1",
         "resolutions": [
+          "1024x768",
+          "1280x720",
+          "1280x960",
+          "1366x768",
           "1920x1080",
           "2560x1440",
+          "3440x1440",
           "3840x2160"
         ]
       }
@@ -270,14 +280,29 @@
           "status": "experimental",
           "tiles": null,
           "evidence": null
+        },
+        "1366x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3440x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
         }
       },
       "multires_recipe": {
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-hd-multires-validation",
         "recipe_revision": "hd_multires_v1",
         "resolutions": [
+          "1024x768",
+          "1280x720",
+          "1280x960",
+          "1366x768",
           "1920x1080",
           "2560x1440",
+          "3440x1440",
           "3840x2160"
         ]
       }
@@ -329,14 +354,29 @@
           "status": "experimental",
           "tiles": null,
           "evidence": null
+        },
+        "1366x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3440x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
         }
       },
       "multires_recipe": {
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-modalwidgets-hd-multires-validation",
         "recipe_revision": "hd_multires_v1",
         "resolutions": [
+          "1024x768",
+          "1280x720",
+          "1280x960",
+          "1366x768",
           "1920x1080",
           "2560x1440",
+          "3440x1440",
           "3840x2160"
         ]
       }

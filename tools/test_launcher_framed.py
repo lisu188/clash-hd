@@ -39,7 +39,9 @@ class FramedLauncherTests(unittest.TestCase):
         self.bindings = {"tools/build_framed_candidate.py": framed.BUILDER_SHA256,
                          "synthetic.py": "b" * 64}
         patch.object(framed, "_bindings", return_value=self.bindings).start()
-        self.plan = framed.plan_candidate(resolution="1280x720", clash_dir=self.game,
+        # 1280x720 defaults to the multiresolution successor; these tests cover
+        # the frozen Framed recipe, which stays selectable by its exact stage.
+        self.plan = framed.plan_candidate(stage=framed.STAGE, resolution="1280x720", clash_dir=self.game,
                                           candidates_root=self.root / "candidates")
         self.image = b"synthetic framed output; never executed"
         self.metadata = {"stage": framed.STAGE, "resolution": "1280x720",

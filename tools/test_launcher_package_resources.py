@@ -120,7 +120,7 @@ class ActualSourceClosureTests(unittest.TestCase):
 
 
 class PackageSelftestTests(unittest.TestCase):
-    def test_actual_twelve_plans_need_no_game_wrapper_gui_or_child_process(self):
+    def test_actual_successor_plans_need_no_game_wrapper_gui_or_child_process(self):
         import run
         import core
         with tempfile.TemporaryDirectory(prefix="clash-hd-selftest-") as directory:
@@ -130,9 +130,9 @@ class PackageSelftestTests(unittest.TestCase):
                 self.assertEqual(run.main(["--package-selftest", str(report)]), 0)
             recorded = json.loads(report.read_text())
             self.assertTrue(recorded["passed"])
-            self.assertEqual(len(recorded["cells"]), 12)
-            self.assertEqual(len({row["cell_id"] for row in recorded["cells"]}), 12)
-            self.assertEqual(len(recorded["settings_roundtrips"]), 12)
+            self.assertEqual(len(recorded["cells"]), 32)
+            self.assertEqual(len({row["cell_id"] for row in recorded["cells"]}), 32)
+            self.assertEqual(len(recorded["settings_roundtrips"]), 32)
             self.assertTrue(all(row["passed"] for row in recorded["settings_roundtrips"]))
             self.assertEqual(recorded["settings_scope"], "temporary_files_only")
             self.assertFalse(recorded["standalone_executable"])

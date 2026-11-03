@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare/authenticate the selected twelve cells without promoting a release.
+"""Prepare/authenticate the 32 selected successor cells without promoting a release.
 
 The full 36-cell release policy is unchanged. This tool rebuilds candidate
 bytes, metadata and the canonical probe; pending runtime lanes never pass on
@@ -95,7 +95,7 @@ def _reference(ref, base: Path, maximum: int) -> tuple[Path, bytes]:
 
 def _selected(cell_id):
     if type(cell_id) is not str or cell_id not in SELECTED_IDS:
-        raise ValueError("select one of the twelve exact profile/resolution cells")
+        raise ValueError("select one of the exact successor profile/resolution cells")
     return cell_id.split("/")
 
 

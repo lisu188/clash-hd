@@ -172,7 +172,8 @@ class WidgetProfileSourceTests(unittest.TestCase):
         self.assertEqual(manifest["default_renderer"],"classic")
         self.assertEqual(manifest["default"],"800x600")
         self.assertEqual(presets.default_key(manifest,"modalwidgets"),"800x600")
-        self.assertEqual({o.key for o in options},set(builder.complete.RESOLUTIONS) | {"2560x1440", "3840x2160"})
+        self.assertEqual({o.key for o in options},
+                         set(builder.complete.RESOLUTIONS) | {"1366x768", "2560x1440", "3440x1440", "3840x2160"})
         self.assertTrue(all(o.is_experimental and o.evidence is None for o in options))
         for field,value in (("stage",completehd.STAGE),("default","1024x768"),("recipe_revision","complete_hd_v1")):
             bad=copy.deepcopy(manifest);bad["profiles"]["modalwidgets"][field]=value

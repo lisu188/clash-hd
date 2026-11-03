@@ -151,7 +151,8 @@ class CompleteHdLauncherTests(unittest.TestCase):
     def test_manifest_advertises_legacy_and_selected_experimental_complete_resolutions(self):
         manifest = presets.load_manifest()
         options = presets.load_options(manifest, "completehd")
-        self.assertEqual({option.key for option in options}, set(builder.RESOLUTIONS) | {"2560x1440", "3840x2160"})
+        self.assertEqual({option.key for option in options},
+                         set(builder.RESOLUTIONS) | {"1366x768", "2560x1440", "3440x1440", "3840x2160"})
         self.assertTrue(all(option.is_experimental for option in options))
         self.assertEqual(presets.default_key(manifest, "completehd"), "800x600")
         self.assertEqual(presets.default_key(manifest), "800x600")

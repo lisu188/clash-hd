@@ -35,12 +35,14 @@ class ClassicMenuRoutingTests(unittest.TestCase):
         guard=patch.object(completehd,'CANDIDATE_ROOT',self.root/'candidates');guard.start();self.addCleanup(guard.stop)
 
     def test_native_defaults_and_explicit_legacy_stage_keep_exact_core_plan(self):
-        for resolution in ('800x600','1024x768'):
-            with patch.object(completehd,'_builder',side_effect=AssertionError('no extension')):
-                self.assertEqual(classic.plan_candidate(resolution=resolution,**self.args),core.plan_candidate(resolution=resolution,**self.args))
+        with patch.object(completehd,'_builder',side_effect=AssertionError('no extension')):
+            self.assertEqual(classic.plan_candidate(resolution='800x600',**self.args),core.plan_candidate(resolution='800x600',**self.args))
         stage=core.patch_clash95_hd.DEFAULT_STAGE
-        self.assertEqual(classic.plan_candidate(resolution='1920x1080',stage=stage,**self.args),
-                         core.plan_candidate(resolution='1920x1080',stage=stage,**self.args))
+        # 1024x768 now defaults to the bounded successor; its exact legacy stage stays the core plan.
+        self.assertEqual(classic.plan_candidate(resolution='1024x768',**self.args).stage,stage+'-classic-hd-multires-validation')
+        for resolution in ('1024x768','1920x1080'):
+            self.assertEqual(classic.plan_candidate(resolution=resolution,stage=stage,**self.args),
+                             core.plan_candidate(resolution=resolution,stage=stage,**self.args))
         self.assertFalse(self.args['candidates_root'].exists())
 
     def test_affected_presets_use_new_identity_without_aliasing_old_candidates(self):

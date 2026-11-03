@@ -1,4 +1,4 @@
-"""Isolated launcher adapter for the twelve versioned HD candidates."""
+"""Isolated launcher adapter for the versioned HD successor candidates."""
 from __future__ import annotations
 
 from dataclasses import replace
@@ -89,7 +89,7 @@ def source_status(profile):
 def plan_candidate(*, profile, stage=None, **kwargs):
     resolution = kwargs.get("resolution", "800x600")
     if not selected(profile, resolution, stage, kwargs.get("manifest")):
-        raise core.LauncherError("Select one of the three registered HD successor resolutions.")
+        raise core.LauncherError("Select one of the registered HD successor resolutions above 800x600.")
     _builder(profile)
     plan = core.plan_candidate(renderer=profile, stage=multires_stage(profile), **kwargs)
     directory_name, _, _ = profile_layout(profile)

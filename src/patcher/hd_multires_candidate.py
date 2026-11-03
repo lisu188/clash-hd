@@ -1,11 +1,13 @@
-"""Original-bound 1080p/1440p/4K launcher successors.
+"""Original-bound launcher successors for every preset above native 800x600.
 
-Frozen predecessor recipes remain unchanged. These versioned candidates add
+Frozen predecessor recipes remain unchanged; 800x600 keeps its own recipes and
+the protected Classic stable stage. These versioned candidates add
 bounded framed-map guards where available and carry an independent, relocated
 initial-image verifier. Construction never implies gameplay qualification.
 """
 from __future__ import annotations
 
+import bisect
 import hashlib
 import importlib
 from pathlib import Path
@@ -19,7 +21,8 @@ from . import pe_extension as pe
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = "src/patcher/hd_multires_candidate.py"
 PROFILES = ("classic", "framed", "completehd", "modalwidgets")
-RESOLUTIONS = ("1920x1080", "2560x1440", "3840x2160")
+RESOLUTIONS = ("1024x768", "1280x720", "1280x960", "1366x768",
+               "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 REVISION = "hd_multires_v1"
 ORIGINAL_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
 STABLE_STAGE = ("gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
@@ -155,6 +158,10 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
             return bytes(size)
     # Some frozen predecessors keep small authenticated code/data descriptors
     # outside executable sections; retain their literal-read coverage as well.
+    # Legacy predecessors can carry tens of thousands of such reads, so earlier
+    # reads (at most four bytes) are indexed by start instead of rescanned.
+    section_ranges = tuple(ranges)
+    read_sizes: dict[int, list[int]] = {}
     for match in _READ.finditer(inherited):
         size = {"by": 1, "wo": 2, "dwo": 4}[match.group(1)]
         rva = int(match.group(2), 16) - view.image_base
@@ -163,18 +170,23 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
             expected_bytes(rva, size)
         except ValueError as exc:
             raise ValueError(f"inherited read is not file-backed in the final image: {match.group(0)}") from exc
-        if not any(a <= rva and rva + size <= b for a, b in ranges):
+        if not (any(a <= rva and rva + size <= b for a, b in section_ranges)
+                or any(rva + size <= a + n for a in range(rva - 3, rva + 1) for n in read_sizes.get(a, ()))):
             ranges.append((rva, rva + size))
+            read_sizes.setdefault(rva, []).append(size)
     base_field = view.optional_offset + 28
     special = set(fields) | {base_field}
+    ordered = sorted(special)
     expanded = []
     for start, end in ranges:
-        for field in sorted(special):
-            if field >= end:
-                break
-            if field + 4 > start:
-                expected_bytes(field, 4)
-                start, end = min(start, field), max(end, field + 4)
+        # Ascending fields from the first one ending after start; each
+        # overlapping field widens the range, possibly reaching the next.
+        index = bisect.bisect_right(ordered, start - 4)
+        while index < len(ordered) and ordered[index] < end:
+            field = ordered[index]
+            expected_bytes(field, 4)
+            start, end = min(start, field), max(end, field + 4)
+            index += 1
         expanded.append((start, end))
     merged = []
     for start, end in sorted(set(expanded)):
@@ -208,10 +220,11 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
         comparisons += 1
 
     for start, end in merged:
-        _require(not any(start < f + 4 and f < end and not (start <= f and f + 4 <= end)
-                         for f in special), "partially covered relocated operand")
+        nearby = ordered[bisect.bisect_right(ordered, start - 4):bisect.bisect_left(ordered, end)]
+        _require(not any(not (start <= f and f + 4 <= end) for f in nearby),
+                 "partially covered relocated operand")
         at = start
-        for stop in sorted(f for f in special if start <= f < end) + [end]:
+        for stop in ordered[bisect.bisect_left(ordered, start):bisect.bisect_left(ordered, end)] + [end]:
             while at < stop:
                 size = 4 if stop - at >= 4 else 2 if stop - at >= 2 else 1
                 value = int.from_bytes(expected_bytes(at, size), "little")
@@ -246,7 +259,7 @@ def _build_candidate(original: bytes, resolution: str, *, profile: str):
     _require(type(original) is bytes and sha256(original) == ORIGINAL_SHA256,
              "unknown original executable SHA-256; no override exists")
     _require(type(resolution) is str and resolution in RESOLUTIONS,
-             "only 1920x1080, 2560x1440 and 3840x2160 are admitted")
+             "only the registered HD successor presets above 800x600 are admitted")
     selected_stage = stage(profile)
     before = _source_hashes(profile)
     image, predecessor, inherited = _builder(profile).build_candidate(original, resolution)
