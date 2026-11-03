@@ -111,6 +111,17 @@ and replays the whole retained log through the shared soak row grammar. The
 route's duration is its 64 Hz system-tick delta, which the host clock
 corroborates within polling jitter.
 
+All thirty-two successor cells passed this 120 s map-idle route on a hidden
+desktop; the compact receipt is
+[`reports/hd-multires-hidden-map-20261103.json`](../../reports/hd-multires-hidden-map-20261103.json).
+The receipt measures each run's final frame through its own palette:
+- All 24 Framed, Complete HD and Modal Widgets cells show frame art along
+  all four edges (at least 91% of each edge strip) and in the bottom-right
+  action-bar corner (at least 74%).
+- All eight Classic cells show only partial top and left border art, with
+  black right and bottom edges and a black action-bar corner, which are the
+  known proxy and frame-gutter limits.
+
 These are `hidden_cdb_host` observations with `input_or_callback_forced` set.
 The memory-only proxy's software surface can omit separately composed HUD
 layers, so its frames are not visible composition, input or endurance
