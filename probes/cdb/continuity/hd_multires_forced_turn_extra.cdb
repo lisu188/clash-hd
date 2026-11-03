@@ -8,9 +8,12 @@
 .echo keeps every general register and the flags in t6 t8 t9 t10 t11 t15 t16 t17 and
 .echo its ESP in header padding, and restores them when the call returns to 0040B0C8
 .echo with that ESP. The unacquired hidden mouse leaves stale button state. The day
-.echo banner test 0040A943 and each release-wait test 004609E0 and 004609FC are
-.echo observed for eight polls. Only then may that banner result become 1 or that
-.echo button's release result become 0, once per banner or wait - disclosed, never input.
+.echo banner test 0040A943 is observed for eight polls. The release wait tests left
+.echo 004609E0 every iteration and right 004609FC only when left reads released, and
+.echo ends when both read released in one iteration. It is observed for eight
+.echo iterations. Only then may that banner result become 1, or in the eighth
+.echo iteration each held button's result become 0, once per banner or wait -
+.echo disclosed, never input.
 .echo Scratch in PE header padding free in every candidate: 004003C0 state, C4
 .echo advances, C8 initial day, CC saved ESP, D0 last tick, D4 banner polls, D8
 .echo release ESP, DC left polls, E0 override bits, E4 captured state, E8 right
@@ -32,6 +35,6 @@ bp 0040AB44 ".if (poi(004003c0) == 3) { .printf \"HDTURN_DAY_INCREMENT advance=%
 bp 0040A943 ".if (poi(004003c0) == 3) { ed 004003d4 (poi(004003d4)+1); .printf \"HDTURN_BANNER_TEST poll=%d eax=%d lbtn=%02x rbtn=%02x\\n\", poi(004003d4), @eax, by(005451c0), by(005451c8); .if ((poi(004003d4) == 0n8) & (@eax == 0)) { .if ((poi(004003e0) & 4) != 0) { .echo HDTURN_FAIL repeated_banner_override; q } .else { ed 004003e0 (poi(004003e0) | 4); .echo HDTURN_FORCED_BANNER_ACK poll=8 value=1; r eax=1 } }; .if (poi(004003d4) > 0n8) { .echo HDTURN_FAIL banner_did_not_exit_after_eight_polls; q } }; gc"
 bp 0040A9FA ".if (poi(004003c0) == 3) { .printf \"HDTURN_BANNER_EXIT player=%d day=%d polls=%d\\n\", poi(005202ec), wo(poi(005202e4)+0x222f6), poi(004003d4) }; gc"
 bp 004609D0 ".if ((poi(004003c0) == 3) & (poi(@esp) == 0040aa06)) { ed 004003d8 @esp; ed 004003dc 0; ed 004003e8 0; ed 004003e0 (poi(004003e0) & 4); ed 004003ec (poi(004003ec)+1); .printf \"HDTURN_RELEASE_WAIT_ENTRY wait=%d player=%d day=%d\\n\", poi(004003ec), poi(005202ec), wo(poi(005202e4)+0x222f6) }; gc"
-bp 004609E0 ".if ((poi(004003c0) == 3) & (poi(004003d8) != 0)) { ed 004003dc (poi(004003dc)+1); .printf \"HDTURN_RELEASE_TEST button=left poll=%d eax=%d\\n\", poi(004003dc), @eax; .if ((poi(004003dc) == 0n8) & (@eax != 0)) { .if ((poi(004003e0) & 1) != 0) { .echo HDTURN_FAIL repeated_left_release_override; q } .else { ed 004003e0 (poi(004003e0) | 1); .echo HDTURN_FORCED_RELEASE button=left poll=8 value=0; r eax=0 } }; .if (poi(004003dc) > 0n8) { .echo HDTURN_FAIL left_release_wait_exceeded_eight_polls; q } }; gc"
-bp 004609FC ".if ((poi(004003c0) == 3) & (poi(004003d8) != 0)) { ed 004003e8 (poi(004003e8)+1); .printf \"HDTURN_RELEASE_TEST button=right poll=%d eax=%d\\n\", poi(004003e8), @eax; .if ((poi(004003e8) == 0n8) & (@eax != 0)) { .if ((poi(004003e0) & 2) != 0) { .echo HDTURN_FAIL repeated_right_release_override; q } .else { ed 004003e0 (poi(004003e0) | 2); .echo HDTURN_FORCED_RELEASE button=right poll=8 value=0; r eax=0 } }; .if (poi(004003e8) > 0n8) { .echo HDTURN_FAIL right_release_wait_exceeded_eight_polls; q } }; gc"
+bp 004609E0 ".if ((poi(004003c0) == 3) & (poi(004003d8) != 0)) { ed 004003dc (poi(004003dc)+1); .printf \"HDTURN_RELEASE_TEST button=left poll=%d eax=%d\\n\", poi(004003dc), @eax; .if ((poi(004003dc) == 0n8) & (@eax != 0)) { .if ((poi(004003e0) & 1) != 0) { .echo HDTURN_FAIL repeated_left_release_override; q } .else { ed 004003e0 (poi(004003e0) | 1); .echo HDTURN_FORCED_RELEASE button=left poll=8 value=0; r eax=0 } }; .if (poi(004003dc) > 0n8) { .echo HDTURN_FAIL release_wait_exceeded_eight_iterations; q } }; gc"
+bp 004609FC ".if ((poi(004003c0) == 3) & (poi(004003d8) != 0)) { ed 004003e8 (poi(004003e8)+1); .printf \"HDTURN_RELEASE_TEST button=right poll=%d eax=%d\\n\", poi(004003dc), @eax; .if ((poi(004003dc) == 0n8) & (@eax != 0)) { .if ((poi(004003e0) & 2) != 0) { .echo HDTURN_FAIL repeated_right_release_override; q } .else { ed 004003e0 (poi(004003e0) | 2); .echo HDTURN_FORCED_RELEASE button=right poll=8 value=0; r eax=0 } } }; gc"
 bp 0040AA06 ".if ((poi(004003c0) == 3) & (poi(004003d8) != 0)) { .if (@esp != (poi(004003d8)+4)) { .echo HDTURN_FAIL release_return_stack; q }; ed 004003d8 0; .printf \"HDTURN_RELEASE_RETURN player=%d day=%d left=%d right=%d\\n\", poi(005202ec), wo(poi(005202e4)+0x222f6), poi(004003dc), poi(004003e8) }; gc"

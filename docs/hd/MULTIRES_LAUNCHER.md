@@ -231,9 +231,12 @@ older day diagnostic's `0x400300` lies inside the section table of 18 HD
 candidates.
 
 The unacquired hidden mouse leaves stale button bytes. The day banner
-(`0x40A943`) and its release wait (`0x4609E0`, `0x4609FC`) treat them as
-clicks and held buttons. Each is observed for eight polls. Only then may one
-result per banner or button be overridden, disclosed as
+(`0x40A943`) and its release wait treat them as clicks and held buttons. The
+wait tests left (`0x4609E0`) every iteration and right (`0x4609FC`) only
+when left reads released. It ends only when both read released in one
+iteration. The banner is observed for eight polls and the wait for eight
+iterations. Only then may the banner result, or in the eighth iteration each
+held button's result, be overridden once, disclosed as
 `turn_input=cdb_bounded_stale_button_result_overrides`.
 
 On Framed 1920x1080 the run saved slot 5. Calls 1-3 returned players 1-3. Call
@@ -243,6 +246,13 @@ its 120 s route end. The cycle took about 660 ticks. No result override was
 needed; the banner's eighth test read the stale bytes as a click, which is
 not input. Every nextPlayer, banner and release-wait site is byte-identical
 to the original in all 36 candidates.
+
+`forced-campaign` continues the same calls through two or three consecutive
+days before its after-save. On Framed 1920x1080 a three-day campaign returned
+the day word 1 to 4 in 12 calls, each day back at player 0. Days 3 and 4 each
+needed one disclosed right-release override in the eighth iteration, and both
+saves returned 1. A forced save then reloaded the campaign's end slot. Its
+resave had the same normalized state.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

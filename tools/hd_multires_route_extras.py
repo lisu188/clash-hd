@@ -23,6 +23,10 @@ forced call keeps and restores every general register and the flags. The
 unacquired hidden mouse leaves stale button state, so the day banner and its
 release wait are observed for eight polls before at most one disclosed result
 override per banner or button.
+
+forced-campaign: the same forced calls continue through ``days`` consecutive day
+transitions, each with its own banner and release wait, before ``after_slot`` is
+saved.
 """
 from __future__ import annotations
 
@@ -34,7 +38,11 @@ FORCED_SAVE = "forced-save"
 FORCED_SAVE_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_save_extra.cdb"
 FORCED_TURN = "forced-turn"
 FORCED_TURN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_turn_extra.cdb"
-SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE)
+FORCED_CAMPAIGN = "forced-campaign"
+FORCED_CAMPAIGN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_campaign_extra.cdb"
+SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE)
+# Repeated day transitions, bounded to what fits the 120 s route.
+CAMPAIGN_DAYS = (2, 3)
 MAX_TEMPLATE_BYTES = 64 * 1024
 MAX_SAVE_BYTES = 16 * 1024 * 1024
 # The forced load list's rows (hidden_soak_probe_composition.LOAD_SLOT_RANGE).
@@ -107,10 +115,23 @@ def _prepare_turn(request: dict, *, route: str, duration: int) -> dict:
                 post_files=[f"save/{before_slot}.dat", f"save/{after_slot}.dat"])
 
 
+def _prepare_campaign(request: dict, *, route: str, duration: int) -> dict:
+    if set(request) != {"name", "load_slot", "before_slot", "after_slot", "days"}:
+        raise ValueError("A forced-campaign extra must be exactly {name, load_slot, before_slot, after_slot, days}.")
+    if type(request["days"]) is not int or request["days"] not in CAMPAIGN_DAYS:
+        raise ValueError(f"A forced campaign runs {CAMPAIGN_DAYS[0]} or {CAMPAIGN_DAYS[1]} days.")
+    turn = _prepare_turn({key: request[key] for key in ("name", "load_slot", "before_slot", "after_slot")},
+                         route=route, duration=duration)
+    return dict(turn, request=dict(request), name=FORCED_CAMPAIGN, days=request["days"],
+                template=FORCED_CAMPAIGN_TEMPLATE)
+
+
 def prepare(request: Any, *, route: str, duration: int) -> dict:
     """Validate one extra request and return the spec the session records."""
     if type(request) is dict and request.get("name") == FORCED_TURN:
         return _prepare_turn(request, route=route, duration=duration)
+    if type(request) is dict and request.get("name") == FORCED_CAMPAIGN:
+        return _prepare_campaign(request, route=route, duration=duration)
     if type(request) is not dict or set(request) != {"name", "load_slot", "save_slot"} \
             or request["name"] != FORCED_SAVE:
         raise ValueError("A route extra must be exactly {name: forced-save, load_slot, save_slot}.")
@@ -135,7 +156,8 @@ def compose(spec: dict, template: bytes) -> str:
     except UnicodeDecodeError as error:
         raise ValueError("Route extra template must be ASCII.") from error
     slots = (("__SAVE_SLOT__", spec["save_slot"]),) if spec["name"] == FORCED_SAVE else (
-        ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]))
+        ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]),
+        *((("__DAYS__", spec["days"]),) if spec["name"] == FORCED_CAMPAIGN else ()))
     for key, value in (("__LOAD_SLOT__", spec["load_slot"]), *slots):
         if key not in text:
             raise ValueError(f"Route extra template lacks {key}.")
@@ -154,6 +176,8 @@ def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
     """Replay the extra's printed markers; echoed commands cannot match them."""
     if spec["name"] == FORCED_TURN:
         return _observe_turn(spec, log)
+    if spec["name"] == FORCED_CAMPAIGN:
+        return _observe_campaign(spec, log)
     lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
     calls = [(index, match) for index, line in enumerate(lines) if (match := SAVE_CALL.fullmatch(line))]
     returns = [(index, match) for index, line in enumerate(lines) if (match := SAVE_RETURNED.fullmatch(line))]
@@ -249,6 +273,69 @@ def _observe_turn(spec: dict, log: str) -> tuple[dict, list[str]]:
     order = [index for name in ("start", "save_call", "next_call", "full_day", "done") for index, _ in rows[name][:1]]
     if order != sorted(order) or (calls and rows["full_day"] and not calls[-1][0] > rows["full_day"][0][0]):
         failures.append("forced turn markers are out of order")
+    if fields["release_returns"] != fields["release_waits"]:
+        failures.append("every release wait must return to the day banner caller")
+    return fields, failures
+
+
+CAMPAIGN_ROWS = {
+    "start": re.compile(r"HDCAMP_START days=(\d+) player=(\d+) day=(\d+) gd=([0-9a-fA-F`]+) tick=(\d+) "
+                        r"active=\((\d+),(\d+),(\d+),(\d+),(\d+)\)"),
+    **{name: re.compile(pattern.pattern.replace("HDTURN_", "HDCAMP_")) for name, pattern in TURN_ROWS.items()
+       if name not in ("start", "done")},
+    "day_returned": re.compile(r"HDCAMP_DAY_RETURNED days=(\d+) day=(\d+) player=(\d+) advances=(\d+)"),
+    "done": re.compile(r"HDCAMP_DONE player=(\d+) day=(\d+) advances=(\d+) days=(\d+)"),
+}
+
+
+def _observe_campaign(spec: dict, log: str) -> tuple[dict, list[str]]:
+    """Replay a forced campaign: its saves, every call and return, each day transition and every override."""
+    lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+    rows = {name: [(index, match) for index, line in enumerate(lines) if (match := pattern.fullmatch(line))]
+            for name, pattern in CAMPAIGN_ROWS.items()}
+    ints = lambda match: [int(value) for value in match.groups()]
+    days = spec["days"]
+    failures = [f"campaign probe failed: {match[1]}" for _, match in rows["fail"]]
+    fields = dict(start=None, saves=[], calls=[ints(m) for _, m in rows["next_call"]],
+                  returns=[ints(m) for _, m in rows["next_return"]],
+                  day_increments=[ints(m) for _, m in rows["day_increment"]],
+                  days_returned=[ints(m) for _, m in rows["day_returned"]], full_day=None, done=None,
+                  banner_exits=len(rows["banner_exit"]), release_waits=len(rows["release_entry"]),
+                  release_returns=len(rows["release_return"]),
+                  overrides=dict(banner=len(rows["banner_override"]),
+                                 left=sum(m[1] == "left" for _, m in rows["release_override"]),
+                                 right=sum(m[1] == "right" for _, m in rows["release_override"])))
+    if len(rows["start"]) != 1:
+        failures.append("forced campaign requires exactly one start marker")
+    else:
+        count, player, day, gd, tick, *active = (int(value, 16) if index == 3 else int(value)
+                                                 for index, value in enumerate(rows["start"][0][1].groups()))
+        fields["start"] = dict(days=count, player=player, day=day, gd=gd, tick=tick, active=active)
+        if count != days or player != 0 or gd == 0 or not active[0]:
+            failures.append("forced campaign must start its requested days on the loaded game's active player 0")
+    calls, returns = rows["save_call"], rows["save_returned"]
+    fields["saves"] = [dict(slot=int(c[1]), player=int(c[2]), day=int(c[3]), eax=int(r[2], 16))
+                       for (_, c), (_, r) in zip(calls, returns)]
+    if [(save["slot"], save["eax"]) for save in fields["saves"]] != [(spec["before_slot"], 1), (spec["after_slot"], 1)] \
+            or len(calls) != 2 or len(returns) != 2 or any(int(r[1]) != int(c[1]) for (_, c), (_, r) in zip(calls, returns)):
+        failures.append("forced campaign requires a successful before save and after save of its own slots")
+    advances = len(fields["calls"])
+    if not days <= advances <= 5 * days or [row[0] for row in fields["calls"]] != list(range(1, advances + 1)) \
+            or [row[0] for row in fields["returns"]] != list(range(1, advances + 1)):
+        failures.append("every forced nextPlayer call needs its own numbered return")
+    if len(rows["full_day"]) != 1 or len(rows["done"]) != 1:
+        failures.append("forced campaign requires one final return and one completion")
+    else:
+        initial, final, player, count = ints(rows["full_day"][0][1])
+        fields["full_day"] = dict(initial_day=initial, final_day=final, player=player, advances=count)
+        fields["done"] = dict(zip(("player", "day", "advances", "days"), ints(rows["done"][0][1])))
+        if final != (initial + days) & 0xFFFF or player != 0 or count != advances or fields["done"]["days"] != days:
+            failures.append("the forced calls did not return through exactly the requested new days to player 0")
+    if len(fields["day_increments"]) != days or [row[0] for row in fields["days_returned"]] != list(range(1, days + 1)):
+        failures.append("every requested day needs one native increment and one return to player 0")
+    order = [index for name in ("start", "save_call", "next_call", "full_day", "done") for index, _ in rows[name][:1]]
+    if order != sorted(order) or (calls and rows["full_day"] and not calls[-1][0] > rows["full_day"][0][0]):
+        failures.append("forced campaign markers are out of order")
     if fields["release_returns"] != fields["release_waits"]:
         failures.append("every release wait must return to the day banner caller")
     return fields, failures

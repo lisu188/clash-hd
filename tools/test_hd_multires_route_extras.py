@@ -222,5 +222,83 @@ class ForcedTurnTests(unittest.TestCase):
         self.assertTrue(extras.observe(turn_spec(), echoed)[1])
 
 
+CAMPAIGN_TEMPLATE = (ROOT / extras.FORCED_CAMPAIGN_TEMPLATE).read_bytes()
+CAMPAIGN_REQUEST = {"name": "forced-campaign", "load_slot": 0, "before_slot": 3, "after_slot": 4, "days": 3}
+
+
+def campaign_spec(**changes):
+    return extras.prepare(dict(CAMPAIGN_REQUEST, **changes), route="map-idle", duration=120)
+
+
+def campaign_log(days=3, *, returned=None, final=None, done_days=None):
+    """``days`` forced day transitions as the campaign template prints them."""
+    rows = [f"HDCAMP_START days={days} player=0 day=1 gd=07ee0030 tick=1000 active=(1,1,1,1,0)",
+            "HDCAMP_SAVE_CALL slot=3 player=0 day=1", "HDCAMP_SAVE_RETURNED slot=3 eax=1"]
+    advance = 0
+    for day in range(1, (returned if returned is not None else days) + 1):
+        for player in (1, 2, 3, 0):
+            advance += 1
+            rows.append(f"HDCAMP_NEXT_CALL advance={advance} player={(player - 1) % 4} day={day} tick={1000 + 128 * advance}")
+            if player == 0:
+                rows += [f"HDCAMP_DAY_INCREMENT advance={advance} player=0 day={day + 1}",
+                         f"HDCAMP_BANNER_EXIT player=0 day={day + 1} polls=2",
+                         f"HDCAMP_RELEASE_WAIT_ENTRY wait={day} player=0 day={day + 1}",
+                         f"HDCAMP_RELEASE_RETURN player=0 day={day + 1} left=3 right=1"]
+            rows.append(f"HDCAMP_NEXT_RETURN advance={advance} player={player} day={day + (player == 0)} "
+                        f"tick={1040 + 128 * advance}")
+            if player == 0:
+                rows.append(f"HDCAMP_DAY_RETURNED days={day} day={day + 1} player=0 advances={advance}")
+    final_day = final if final is not None else 1 + days
+    rows += [f"HDCAMP_FULL_DAY_RETURNED initial_day=1 final_day={final_day} player=0 advances={advance}",
+             "HDCAMP_SAVE_CALL slot=4 player=0 day=4", "HDCAMP_SAVE_RETURNED slot=4 eax=1",
+             f"HDCAMP_DONE player=0 day={final_day} advances={advance} days={done_days if done_days is not None else days}"]
+    return "\r\n".join(["EXACT_CANONICAL_PASS", *rows]) + "\r\n"
+
+
+class ForcedCampaignTests(unittest.TestCase):
+    def test_prepare_bounds_days_and_reuses_the_turn_mechanisms_and_sites(self):
+        spec = campaign_spec()
+        self.assertEqual((spec["name"], spec["days"], spec["template"]), ("forced-campaign", 3, extras.FORCED_CAMPAIGN_TEMPLATE))
+        self.assertEqual((spec["mechanisms"], spec["sites"]), (extras.TURN_MECHANISMS, list(extras.TURN_SITES)))
+        self.assertEqual(spec["post_files"], ["save/3.dat", "save/4.dat"])
+        self.assertEqual(campaign_spec(days=2)["days"], 2)
+        for changes, message in ((dict(days=1), "2 or 3 days"), (dict(days=4), "2 or 3 days"),
+                                 (dict(days=True), "2 or 3 days"), (dict(after_slot=3), "distinct")):
+            with self.assertRaisesRegex(ValueError, message):
+                campaign_spec(**changes)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            extras.prepare({key: CAMPAIGN_REQUEST[key] for key in ("name", "load_slot", "before_slot", "after_slot")},
+                           route="map-idle", duration=120)
+
+    def test_compose_substitutes_days_on_the_turn_sites_within_free_scratch(self):
+        text = extras.compose(campaign_spec(), CAMPAIGN_TEMPLATE)
+        self.assertEqual(sorted(extras.breakpoint_sites(text)), sorted(extras.TURN_SITES))
+        self.assertNotRegex(text, r"__[A-Z0-9_]+__")
+        driver = [line for line in text.split("\r\n") if line.startswith("bp 0040B0C8 ")][0]
+        self.assertIn(".if (poi(004003f0) == 0n3)", driver)
+        self.assertIn("(0n5 * 0n3)", driver)
+        self.assertLess(len(driver), 4096)
+        for address in {int(value, 16) for value in re.findall(r"\b(004003[0-9a-f]{2})\b", text)}:
+            self.assertTrue(0x4003C0 <= address <= 0x4003FC, hex(address))
+        right = [line for line in text.split("\r\n") if line.startswith("bp 004609FC ")][0]
+        # The right override belongs to the loop's eighth iteration, which the left test counts.
+        self.assertIn(".if ((poi(004003dc) == 0n8) & (@eax != 0))", right)
+
+    def test_markers_bind_every_requested_day_and_the_final_return(self):
+        fields, failures = extras.observe(campaign_spec(), campaign_log())
+        self.assertEqual(failures, [])
+        self.assertEqual([row[0] for row in fields["days_returned"]], [1, 2, 3])
+        self.assertEqual(fields["full_day"], dict(initial_day=1, final_day=4, player=0, advances=12))
+        self.assertEqual((fields["banner_exits"], fields["release_waits"], fields["release_returns"]), (3, 3, 3))
+        for text, message in ((campaign_log(returned=2, final=4), "every requested day needs"),
+                              (campaign_log(final=3), "requested new days"),
+                              (campaign_log(done_days=2), "requested new days"),
+                              (campaign_log().replace("HDCAMP_START days=3", "HDCAMP_START days=2"), "requested days on")):
+            self.assertTrue(any(message in failure for failure in extras.observe(campaign_spec(), text)[1]), message)
+        # Turn and campaign markers never stand in for each other.
+        self.assertTrue(extras.observe(turn_spec(), campaign_log())[1])
+        self.assertTrue(extras.observe(campaign_spec(), turn_log())[1])
+
+
 if __name__ == "__main__":
     unittest.main()

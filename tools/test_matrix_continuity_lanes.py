@@ -283,7 +283,7 @@ class TurnRun:
                 "session_report": write(self.directory / "session-report.json", json.dumps(session).encode()),
                 "cdb_log": write(self.directory / "cdb.log", log),
                 **{key: write(self.directory / "route-extra" / Path(name).name, self.saves[name])
-                   for key, name in zip(continuity.SAVE_KEYS[TURN], self.spec["post_files"])}}
+                   for key, name in zip(continuity.SAVE_KEYS[TURN][0], self.spec["post_files"])}}
 
 
 class TurnReplayTests(unittest.TestCase):
@@ -350,6 +350,110 @@ class TurnReplayTests(unittest.TestCase):
                                                      Path(__file__).resolve().parents[1])
                 self.assertFalse(any(value["passed"] for value in checks.values()))
                 self.assertTrue(any("fixed role" in item for item in failures), failures)
+
+
+CAMPAIGN = "campaign_routes"
+END = flipped(STATE, 200)
+
+
+class CampaignRun(TurnRun):
+    """One retained three-day forced-campaign run: TurnRun's session with campaign markers and slots."""
+
+    def __init__(self, root: Path, started, *, after: bytes = END):
+        super().__init__(root, started, after=after)
+        role, request = continuity.SCHEDULE[CAMPAIGN][0]
+        self.spec = extras.prepare(request, route="map-idle", duration=120)
+        self.role, self.directory = role, root / "session-campaign"
+        self.saves = {"save/3.dat": STATE, "save/4.dat": after}
+        self.log_lines = [MARKER, "HDSESSION_TARGET pid=abc base=00400000",
+                          "HDSESSION_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=0a000000",
+                          "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=1000 gd=0a000000 scroll=(10,17)",
+                          "HDCAMP_START days=3 player=0 day=1 gd=0a000000 tick=1001 active=(1,1,1,1,0)",
+                          "HDCAMP_SAVE_CALL slot=3 player=0 day=1", "HDCAMP_SAVE_RETURNED slot=3 eax=1"]
+        advance = 0
+        for day in (1, 2, 3):
+            for player in (1, 2, 3, 0):
+                advance += 1
+                self.log_lines.append(f"HDCAMP_NEXT_CALL advance={advance} player={(player - 1) % 4} day={day} "
+                                      f"tick={1000 + 128 * advance}")
+                if player == 0:
+                    self.log_lines += [f"HDCAMP_DAY_INCREMENT advance={advance} player=0 day={day + 1}",
+                                       f"HDCAMP_BANNER_EXIT player=0 day={day + 1} polls=2",
+                                       f"HDCAMP_RELEASE_WAIT_ENTRY wait={day} player=0 day={day + 1}",
+                                       f"HDCAMP_RELEASE_RETURN player=0 day={day + 1} left=3 right=1"]
+                self.log_lines.append(f"HDCAMP_NEXT_RETURN advance={advance} player={player} day={day + (player == 0)} "
+                                      f"tick={1040 + 128 * advance}")
+                if player == 0:
+                    self.log_lines.append(f"HDCAMP_DAY_RETURNED days={day} day={day + 1} player=0 advances={advance}")
+        self.log_lines += ["HDCAMP_FULL_DAY_RETURNED initial_day=1 final_day=4 player=0 advances=12",
+                           "HDCAMP_SAVE_CALL slot=4 player=0 day=4", "HDCAMP_SAVE_RETURNED slot=4 eax=1",
+                           "HDCAMP_DONE player=0 day=4 advances=12 days=3",
+                           "SOAK_ROUTE_END route_ticks=7680 pan=0 hits=3605 tickdelta=7681 player=0 scroll=(10,17)"]
+        state = lambda data, mtime: {"sha256": sha(data), "bytes": len(data), "mtime_ns": mtime}
+        self.session.update(
+            run_directory=str(self.directory), route_extra=copy.deepcopy(self.spec),
+            route_extra_files={
+                "before": {"save/0.dat": state(SOURCE, 5), "save/3.dat": None, "save/4.dat": state(b"old4", 6)},
+                "after": {"save/0.dat": state(SOURCE, 5), "save/3.dat": state(STATE, 9), "save/4.dat": state(after, 9)},
+                "retained": {name: {"path": f"route-extra/{Path(name).name}", "sha256": sha(data), "bytes": len(data)}
+                             for name, data in self.saves.items()}})
+
+    def save(self) -> dict:
+        step = super().save()
+        step["role"] = self.role
+        return step
+
+
+class CampaignReplayTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="clash-campaign-lanes-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.cases = 0
+        self.identity = dict(IDENTITY, resolution=f"{WIDTH}x{HEIGHT}")
+
+    def lane(self, *, resaved=END):
+        self.cases += 1
+        root = self.root / f"case-{self.cases}"
+        campaign = CampaignRun(root, START)
+        role, request = continuity.SCHEDULE[CAMPAIGN][1]
+        reload = Run(root, role, request, START + timedelta(seconds=300), loaded=END, saved=resaved)
+        reload.session["identity"] = {key: self.identity[key] for key in continuity.soak.SESSION_IDENTITY_KEYS}
+        return root, [campaign, reload]
+
+    def replay(self, root, runs):
+        return continuity.replay(CAMPAIGN, {"steps": [run.save() for run in runs]}, root / "lane.json", self.identity,
+                                 release._reference_bytes, PRODUCER, MARKER, Path(__file__).resolve().parents[1])
+
+    def test_three_days_and_a_reload_replay_all_four_checks_in_policy_order(self):
+        checks, failures = self.replay(*self.lane())
+        self.assertEqual(list(checks), list(continuity.evidence.LANES[CAMPAIGN][1]))
+        self.assertFalse(failures)
+        self.assertTrue(all(value == {"passed": True, "failures": []} for value in checks.values()), checks)
+        # A resave that differs only in process pointers is still the same state.
+        checks, failures = self.replay(*self.lane(resaved=flipped(END, POINTER + 1)))
+        self.assertTrue(all(value["passed"] for value in checks.values()), failures)
+
+    def test_each_campaign_check_fails_closed_on_its_own_artifact(self):
+        everything = set(continuity.evidence.LANES[CAMPAIGN][1])
+        cases = {
+            "missing banner": (None, lambda runs: runs[0].log_lines.remove("HDCAMP_BANNER_EXIT player=0 day=3 polls=2"),
+                               {"repeated_screen_transitions"}),
+            "reload first": (None, lambda runs: runs[1].session.__setitem__("started_at", runs[0].session["started_at"]),
+                             {"route_completed"}),
+            "drifted reload": (dict(resaved=flipped(END, 300)), None, {"state_consistent"}),
+            "frame before the last day": (None, lambda runs: runs[0].session["frames"][-1].__setitem__("elapsed_sec", 9.0),
+                                          {"post_return_map_health"}),
+            "live saves": (None, lambda runs: runs[0].session.__setitem__("live_saves_unchanged", False), everything),
+            "two roots": (None, lambda runs: runs[1].session.__setitem__("asset_root", ASSETS + "-2"), everything),
+        }
+        for label, (options, mutate, expected) in cases.items():
+            with self.subTest(case=label):
+                root, runs = self.lane(**(options or {}))
+                if mutate:
+                    mutate(runs)
+                checks, failures = self.replay(root, runs)
+                self.assertEqual({key for key, value in checks.items() if not value["passed"]}, expected, failures)
 
 
 if __name__ == "__main__":

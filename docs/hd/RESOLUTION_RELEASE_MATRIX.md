@@ -100,7 +100,19 @@ retained saves:
 Map entry, saves, turn calls and any result overrides are forced and
 disclosed, so this is not a played turn decision or input.
 
-The other ten runtime lanes in the new context remain unsupported, including
+`campaign_routes` replays two runs in one isolated root. A three-day
+`forced-campaign` from slot 0 saves slots 3 and 4, then a `forced-save`
+reloads slot 4 into slot 2:
+- `repeated_screen_transitions`: each of the three days returns to player 0
+  through its own banner and release wait.
+- `route_completed`: both runs complete, in order.
+- `state_consistent`: the day word advances by three, the before and end
+  states differ, and the reload reads exactly the end save and resaves its
+  normalized state.
+- `post_return_map_health`: the route end and a non-flat frame follow the
+  last day's return.
+
+The other nine runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
 verifiers. Expanded-battle and promotion acceptance also remain false. Neither
