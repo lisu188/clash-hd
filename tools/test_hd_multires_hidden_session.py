@@ -161,6 +161,9 @@ class PolicyTests(unittest.TestCase):
             with patch.object(session, "MAX_LOG", 4):
                 with self.assertRaisesRegex(ValueError, "retained output budget"):
                     tail.lines()
+            path.write_bytes(b"short\n")
+            with self.assertRaisesRegex(ValueError, "shrank"):
+                tail.lines()
 
     def run_steady_state(self, route, duration, rows, *, end_at, extra=(), alive=True):
         """Drive the sampler with a fake clock; rows after the start arrive once the clock passes end_at."""

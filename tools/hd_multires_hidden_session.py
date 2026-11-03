@@ -447,6 +447,8 @@ class _LogTail:
         size = self.path.stat().st_size
         if size > MAX_LOG:
             raise ValueError("CDB diagnostic log exceeded its retained output budget.")
+        if size < self.offset:
+            raise ValueError("CDB diagnostic log shrank below lines already observed.")
         with self.path.open("rb") as stream:
             stream.seek(self.offset)
             chunk = stream.read(size - self.offset)
@@ -759,6 +761,12 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
         report["cleanup"] = native.close() if native else dict(cleanup_verified=True, reason="no native session was created")
         if not report["cleanup"]["cleanup_verified"]:
             report["failures"].append("Task-owned native cleanup was not verified.")
+        # The debugger has exited, so the log is final: pin it for later replay.
+        try:
+            final_log = log.read_bytes() if log.exists() else b""
+            report["retained_log"] = dict(path=log.name, sha256=_sha(final_log), bytes=len(final_log))
+        except OSError as error:
+            report["failures"].append("Retained CDB log could not be pinned: " + str(error))
         try:
             report["live_saves_unchanged"] = _live_save_hashes() == before_saves
         except OSError as error:
