@@ -174,9 +174,11 @@ framed profile identities. All thirty-two cells remain experimental; this does
 not install expanded battle or accept native gameplay, input or endurance.
 See [the multi-resolution launcher](MULTIRES_LAUNCHER.md) for usage, packaging,
 current verification boundaries and the selected-cell qualification tool.
-The standalone build's restart determinism for the first twelve cells is
-recorded in `reports/hd-multires-standalone-restart-20261102.json`. A restart
-proof for all thirty-two cells is pending. Both are construction evidence only.
+The standalone build's restart determinism for all thirty-two cells is
+recorded in `reports/hd-multires-standalone-restart-20261103.json` (64 hidden
+launcher processes); the earlier twelve-cell receipt
+`reports/hd-multires-standalone-restart-20261102.json` is retained. Both are
+construction evidence only.
 
 The separately versioned Adjacent/Unit caller successor has source/scalar
 coverage and a local original-backed CPU fixture through real Unit RET4 on a
