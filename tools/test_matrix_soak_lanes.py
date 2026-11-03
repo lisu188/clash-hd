@@ -69,7 +69,7 @@ class Run:
         frames = [bytes((index + shift) % 251 for index in range(WIDTH * HEIGHT)) for shift in (0, 7)]
         prefix = "menu" if route == "menu-idle" else "map"
         self.frame_bytes = {f"{prefix}-frame-{index:04d}.indexed8": data for index, data in enumerate(frames)}
-        mechanisms = ({"start_animations": "cdb_fast_forward_sleeps"} if route == "menu-idle" else
+        mechanisms = (dict(soak.MENU_MECHANISMS[1]) if route == "menu-idle" else
                       dict(soak.MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})))
         self.session = {
             "schema": soak.SESSION_SCHEMA, "executed": True, "route": route, "duration_sec": seconds,

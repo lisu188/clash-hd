@@ -97,33 +97,58 @@ class PolicyTests(unittest.TestCase):
         menu = session.command_script(prefix, {}, metadata).decode("ascii")
         self.assertNotIn("HDSESSION_FORCE", menu)
 
-    def test_menu_intro_fast_forward_is_opt_in_disclosed_and_forces_no_input_or_menu_state(self):
+    def test_hidden_menu_entry_is_opt_in_disclosed_and_writes_no_input_clicks_or_menu_state(self):
         prefix = b"CANONICAL_PROBE_BYTES\r\n"
         metadata = {"probe_contract": {"required_chunks": 47}}
         plain = session.command_script(prefix, {}, metadata).decode("ascii")
-        fast = session.command_script(prefix, {}, metadata, fast_forward_intro=True).decode("ascii")
+        entry = session.command_script(prefix, {}, metadata, hidden_menu_entry=True).decode("ascii")
         self.assertNotIn("HDSESSION_FORCED_ROUTE", plain)
         self.assertNotIn("0044789a", plain)
-        lines = fast[len(prefix):].split("\r\n")
+        self.assertNotIn("0047BD66", plain)
+        lines = entry[len(prefix):].split("\r\n")
         self.assertEqual(lines[2], ".if (@$t19 != 0x400000) { .echo HDSESSION_BASE_REJECT; q }")
-        self.assertIn(".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps", lines)
-        self.assertIn(session.soak_composition.START_ANIMS_BREAKPOINTS, fast)
-        # Only the disclosed intro sleeps are skipped: menu observation and
-        # acquisition-return observers are unchanged, and nothing writes input.
-        self.assertLess(fast.index("bp 0044789a"), fast.index("bp /1 @$t19+0x47d61"))
-        for observer in ("bp /1 @$t19+0x47d61", "bp /1 @$t19+0x7bd6f", "bp /1 @$t19+0x7bdb7"):
-            self.assertIn(observer, fast)
-        for forbidden in ("ed ", "eb ", "0047BD66", "0047BDAE", "00419B80", "00447780", "00448A68", "SendInput"):
-            self.assertNotIn(forbidden, fast)
+        self.assertIn(".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps "
+                      "acquisition=cdb_forced_bypass", lines)
+        self.assertIn(session.soak_composition.START_ANIMS_BREAKPOINTS, entry)
+        # The same disclosed acquisition bypass as the map route, and nothing more.
+        for bypass in session.ACQUISITION_BYPASS:
+            self.assertEqual(lines.count(bypass), 1)
+        self.assertEqual(session.HIDDEN_MENU_MECHANISMS,
+                         {"start_animations": "cdb_fast_forward_sleeps", "acquisition": "cdb_forced_bypass"})
+        self.assertLess(entry.index("bp 0044789a"), entry.index("bp /1 @$t19+0x19b80"))
+        self.assertIn("bp /1 @$t19+0x19b80", entry)
+        for forbidden in ("ed ", "eb ", "00419B80", "00419C51", "00447780", "00448A68", "00448AE3", "SendInput"):
+            self.assertNotIn(forbidden, entry)
         for option in ({"smoke_only": True}, {"acquire_only": True}):
             with self.assertRaisesRegex(ValueError, "menu idle observation"):
-                session.command_script(prefix, {}, metadata, fast_forward_intro=True, **option)
+                session.command_script(prefix, {}, metadata, hidden_menu_entry=True, **option)
             with self.assertRaisesRegex(ValueError, "menu idle observation"):
-                session.plan(Path("missing.json"), fast_forward_intro=True, **option)
+                session.plan(Path("missing.json"), hidden_menu_entry=True, **option)
         with self.assertRaisesRegex(ValueError, "menu idle observation"):
-            session.plan(Path("missing.json"), route="map-idle", fast_forward_intro=True)
+            session.plan(Path("missing.json"), route="map-idle", hidden_menu_entry=True)
         identity, marker = {"resolution": "1024x768"}, {"probe_contract": {"acceptance_marker": "EXACT_CANONICAL_PASS"}}
         self.assertTrue(session.parse_observations("EXACT_CANONICAL_PASS\nHDSESSION_BASE_REJECT\n", identity, marker)["failures"])
+
+    def test_idle_menu_frames_come_from_the_one_live_proxy_buffer_of_the_canvas(self):
+        identity, marker = {"resolution": "1024x768"}, {"probe_contract": {"acceptance_marker": "EXACT_CANONICAL_PASS"}}
+        log = "EXACT_CANONICAL_PASS\nHDSESSION_TARGET pid=abc base=00400000\n"
+        # An unlocked descriptor has no pixel pointer; the observation still binds.
+        unlocked = "HDSESSION_MENU_READY pid=abc surface=0051d4c0 width=1024 height=768 pixels=00000000\n"
+        self.assertFalse(session.parse_observations(log + unlocked, identity, marker)["failures"])
+        self.assertTrue(session.parse_observations(log + unlocked.replace("00000000", "00000100"), identity, marker)["failures"])
+        proxy = ("FakeSurface created this=062109D8 size=1024x768 pitch=1024 caps=0x00000200\n"
+                 "FakeSurface destroyed this=062109D8\n"
+                 "FakeSurface created this=006DB068 size=1024x768 pitch=1024 caps=0x00000200\n"
+                 "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=09EAC040\n"
+                 "FakeSurface Unlock this=006DB068\n"
+                 "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=09EAC040\n")
+        self.assertEqual(session.proxy_surface_buffer(proxy, 1024, 768), 0x09EAC040)
+        self.assertIsNone(session.proxy_surface_buffer(proxy, 1920, 1080))
+        self.assertIsNone(session.proxy_surface_buffer(proxy.split("FakeSurface Lock")[0], 1024, 768))
+        moved = proxy + "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=0A000040\n"
+        self.assertIsNone(session.proxy_surface_buffer(moved, 1024, 768))
+        twin = proxy + "FakeSurface created this=00700000 size=1024x768 pitch=1024 caps=0x00000200\n"
+        self.assertIsNone(session.proxy_surface_buffer(twin, 1024, 768))
 
     def test_map_ready_binds_one_entry_and_the_selected_canvas_to_the_adopted_process(self):
         identity, target = {"resolution": "1920x1080"}, {"pid": 0xabc, "base": 0x400000}
@@ -257,7 +282,7 @@ class PolicyTests(unittest.TestCase):
         self.assertTrue(script.startswith(prefix))
         suffix = script[len(prefix):].decode()
         self.assertIn("@$t18 != 0n47", suffix)
-        self.assertIn("bp /1 @$t19+0x47d61", suffix)
+        self.assertIn("bp /1 @$t19+0x19b80", suffix)
         self.assertIn("bp /1 @$t19+0x7bd6f", suffix)
         self.assertIn("bp /1 @$t19+0x7bdb7", suffix)
         self.assertNotIn("bp /1 @$t19+0x7bd66", suffix)

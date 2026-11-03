@@ -63,6 +63,14 @@ MAP_END_GRACE_SEC = 120
 MAP_HOST_JITTER_SEC = 2
 MAP_MECHANISMS = dict(map_entry="cdb_forced_menu_load_route", start_animations="cdb_fast_forward_sleeps",
     acquisition="cdb_forced_bypass")
+# A hidden desktop denies DirectInput acquisition and the game then never
+# enters its menu dispatch, so a hidden natural menu needs both disclosed steps.
+HIDDEN_MENU_MECHANISMS = dict(start_animations="cdb_fast_forward_sleeps", acquisition="cdb_forced_bypass")
+# The legacy acquisition bypass: Acquire is skipped and reports success.
+ACQUISITION_BYPASS = (
+    r'bp 0047BD66 ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=mouse hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+8); r eax=0; r eip=0047bd73; gc"',
+    r'bp 0047BDAE ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=keyboard hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"',
+)
 PLAYGAME = re.compile(r"^HDSESSION_PLAYGAME pid=([0-9a-fA-F]+) gd=([0-9a-fA-F`]+) map=\((\d+),(\d+)\) "
     r"scroll=\((-?\d+),(-?\d+)\) surface=([0-9a-fA-F`]+) size=\((\d+),(\d+)\)$", re.M)
 TARGET = re.compile(r"^HDSESSION_TARGET pid=([0-9a-fA-F]+) base=([0-9a-fA-F`]+)$", re.M)
@@ -70,6 +78,10 @@ MENU = re.compile(r"^HDSESSION_MENU_READY pid=([0-9a-fA-F]+) surface=([0-9a-fA-F
 ACQUIRE = re.compile(r"^HDSESSION_ACQUIRE kind=(mouse|keyboard) pid=([0-9a-fA-F]+) pc=([0-9a-fA-F`]+) hr=0x([0-9a-fA-F]{8}) hwnd=([0-9a-fA-F`]+) device=([0-9a-fA-F`]+)$", re.M)
 ACQUIRE_BLOCK = re.compile(r"^HDSESSION_ACQUIRE_BEGIN_(mouse|keyboard)\n([^\n]*)\nHDSESSION_ACQUIRE_END_\1$", re.M)
 ACQUIRE_RETURNS = {"mouse": (0x7bd6f, 8), "keyboard": (0x7bdb7, 4)}
+# The main-menu hit test runs every frame while the menu waits. The former
+# 0x47d61 anchor is the dispatch poll, which only runs after a menu choice,
+# so an idle menu never reached it.
+MENU_READY_RVA = 0x19b80
 
 
 def _sha(data):
@@ -218,11 +230,11 @@ def stage_assets(destination, rows, *, create=True):
 
 
 def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acquire_only=False,
-         fast_forward_intro=False):
+         hidden_menu_entry=False):
     if smoke_only and acquire_only:
         raise ValueError("Select either initial smoke or acquisition observation, not both.")
-    if fast_forward_intro and (route != "menu-idle" or smoke_only or acquire_only):
-        raise ValueError("Intro fast-forward applies only to the menu idle observation.")
+    if hidden_menu_entry and (route != "menu-idle" or smoke_only or acquire_only):
+        raise ValueError("Hidden menu entry applies only to the menu idle observation.")
     if route not in ROUTES or type(duration) is not int or duration not in ROUTES[route]:
         raise ValueError("Route/duration must preserve the fixed short-ladder or two-hour policy.")
     map_route = route != "menu-idle"
@@ -248,10 +260,10 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
             "initial_image_and_native_acquisition_returns" if acquire_only else
             "forced_map_entry_and_native_arrow_pan" if route == "map-pan" else
             "forced_map_entry_and_steady_state" if map_route else
-            "fast_forwarded_intro_natural_menu_idle" if fast_forward_intro else "natural_menu_idle_no_input"),
+            "hidden_menu_entry_natural_menu_idle" if hidden_menu_entry else "natural_menu_idle_no_input"),
         forced_mechanisms=(MAP_MECHANISMS | ({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})
-                           if map_route else {"start_animations": "cdb_fast_forward_sleeps"} if fast_forward_intro else {}),
-        fast_forward_intro=fast_forward_intro,
+                           if map_route else dict(HIDDEN_MENU_MECHANISMS) if hidden_menu_entry else {}),
+        hidden_menu_entry=hidden_menu_entry,
         input_or_callback_forced=map_route, load_slot=MAP_LOAD_SLOT if map_route else None,
         pan_interval_sec=MAP_PAN_INTERVAL_SEC if route == "map-pan" else None,
         acquisition_return_rvas={kind: rva for kind, (rva, _) in ACQUIRE_RETURNS.items()},
@@ -266,29 +278,31 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
 
 
 def command_script(probe: bytes, identity, metadata, *, smoke_only=False, acquire_only=False,
-                   fast_forward_intro=False):
+                   hidden_menu_entry=False):
     chunks = metadata["probe_contract"]["required_chunks"]
     if type(chunks) is not int or chunks <= 0:
         raise ValueError("Canonical initial-image chunk inventory is invalid.")
-    if fast_forward_intro and (smoke_only or acquire_only):
-        raise ValueError("Intro fast-forward applies only to the menu idle observation.")
+    if hidden_menu_entry and (smoke_only or acquire_only):
+        raise ValueError("Hidden menu entry applies only to the menu idle observation.")
     suffix = [f'.if ((@$t19 == 0) | (@$t18 != 0n{chunks})) {{ .echo HDSESSION_INITIAL_REJECT; q }}',
         '.printf "HDSESSION_TARGET pid=%x base=%p\\n", @$tpid, @$t19']
-    if fast_forward_intro:
-        # The proven fast-forward block uses absolute legacy addresses.
+    if hidden_menu_entry:
+        # The proven fast-forward and bypass blocks use absolute legacy addresses.
         suffix[1:1] = [f".if (@$t19 != 0x{MAP_IMAGE_BASE:x}) {{ .echo HDSESSION_BASE_REJECT; q }}"]
     if smoke_only:
         suffix += ['.echo HDSESSION_INITIAL_SMOKE_COMPLETE', '.sleep 0n300000', 'q']
     else:
         # These are observers only; no input bytes, acquisition return values
-        # or game state are forced. The opt-in intro fast-forward alone skips
-        # the disclosed intro sleeps, which never return on a hidden desktop.
+        # or game state are forced. The opt-in hidden menu entry only skips the
+        # intro sleeps and reports the denied acquisition as successful, both
+        # disclosed; it writes no input, clicks or menu state.
         suffix += ['sxe -c ".echo HDSESSION_AV; .exr -1; r; kb; q" av',
             'bp /1 @$t19+0x1dda ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"']
-        if fast_forward_intro:
-            suffix += [".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps",
-                       "r @$t12 = 0", "r @$t14 = 0", soak_composition.START_ANIMS_BREAKPOINTS]
-        suffix += ['bp /1 @$t19+0x47d61 ".printf \\"HDSESSION_MENU_READY pid=%x surface=%p width=%d height=%d pixels=%p\\\\n\\", @$tpid, @$t19+0x11d4c0, wo(@$t19+0x11d4c0), wo(@$t19+0x11d4c2), dwo(@$t19+0x11d4c4); gc"', 'g']
+        if hidden_menu_entry:
+            mechanisms = " ".join(f"{key}={value}" for key, value in HIDDEN_MENU_MECHANISMS.items())
+            suffix += [f".echo HDSESSION_FORCED_ROUTE {mechanisms}", "r @$t12 = 0", "r @$t14 = 0",
+                       *ACQUISITION_BYPASS, soak_composition.START_ANIMS_BREAKPOINTS]
+        suffix += [f'bp /1 @$t19+0x{MENU_READY_RVA:x} ".printf \\"HDSESSION_MENU_READY pid=%x surface=%p width=%d height=%d pixels=%p\\\\n\\", @$tpid, @$t19+0x11d4c0, wo(@$t19+0x11d4c0), wo(@$t19+0x11d4c2), dwo(@$t19+0x11d4c4); gc"', 'g']
         acquisition = []
         # The legacy 0x47BD66/0x47BDAE sites precede the native Acquire
         # calls. Observe EAX at the actual return PCs, nine bytes later.
@@ -343,8 +357,7 @@ def map_command_script(probe: bytes, identity, metadata, *, route, duration, soa
         'sxe -c ".echo HDSESSION_AV; .exr -1; r; kb; q" av',
         *(f"r @$t{index} = 0" for index in range(18)),
         'bp 00401DDA ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"',
-        r'bp 0047BD66 ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=mouse hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+8); r eax=0; r eip=0047bd73; gc"',
-        r'bp 0047BDAE ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=keyboard hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"',
+        *ACQUISITION_BYPASS,
         soak_composition.START_ANIMS_BREAKPOINTS,
         (rf'bp 00419B80 ".if (@$t14 == 0) {{ .if (poi(00543d7c) != 5) {{ ed 00544cfc {main_x:08x}; ed 00544d00 {main_y:08x}; '
          rf'eb 005451c0 80; ed 00544d04 1; .if (@$t0 < 0n16) {{ .printf \"HDSESSION_FORCE_MAIN_POINT seq=%d choice=%d '
@@ -402,7 +415,9 @@ def parse_observations(log: str, identity, metadata):
         menu = dict(pid=int(row[0], 16), surface=int(row[1].replace("`", ""), 16),
             width=int(row[2]), height=int(row[3]), pixels=int(row[4].replace("`", ""), 16))
         selected = tuple(map(int, identity["resolution"].split("x")))
-        if (menu["width"], menu["height"]) not in ((640, 480), selected) or not 0x10000 <= menu["pixels"] < 0x80000000:
+        # The descriptor holds a pixel pointer only while the menu surface is locked.
+        if ((menu["width"], menu["height"]) not in ((640, 480), selected)
+                or not (menu["pixels"] == 0 or 0x10000 <= menu["pixels"] < 0x80000000)):
             failures.append("menu surface differs from native-menu or selected-canvas bounds")
         if target is None or menu["pid"] != target["pid"]:
             failures.append("menu observation belongs to a different process")
@@ -427,6 +442,26 @@ def parse_observations(log: str, identity, metadata):
         failures.append("duplicate one-shot acquisition return")
     return dict(initial_image_bytes_verified=verified, target=target, menu=menu,
                 acquisition_returns=acquisition, failures=failures)
+
+
+PROXY_CREATED = re.compile(r"^FakeSurface created this=([0-9A-Fa-f]{8}) size=(\d+)x(\d+) pitch=(\d+) caps=0x[0-9A-Fa-f]{8}$", re.M)
+PROXY_LOCK = re.compile(r"^FakeSurface Lock this=([0-9A-Fa-f]{8}) rect=-1,-1,-1,-1 surface=([0-9A-Fa-f]{8})$", re.M)
+PROXY_DESTROYED = re.compile(r"^FakeSurface destroyed this=([0-9A-Fa-f]{8})$", re.M)
+
+
+def proxy_surface_buffer(log: str, width: int, height: int):
+    """The source-built proxy's one buffer for the live full-canvas surface, or None.
+
+    An idle menu stops locking its surface, so the game descriptor's pixel
+    pointer is usually 0; the proxy keeps the last drawn image in this buffer.
+    """
+    destroyed = set(PROXY_DESTROYED.findall(log))
+    live = [this for this, w, h, pitch in PROXY_CREATED.findall(log)
+            if (int(w), int(h), int(pitch)) == (width, height, width) and this not in destroyed]
+    if len(live) != 1:
+        return None
+    buffers = {surface for this, surface in PROXY_LOCK.findall(log) if this == live[0]}
+    return int(buffers.pop(), 16) if len(buffers) == 1 else None
 
 
 def _read_log(path):
@@ -495,6 +530,51 @@ def map_ready(log: str, identity, target):
         if playgame is None:
             failures.append("soak route started without the bound forced map entry")
     return dict(playgame=playgame, surface=surface, failures=failures)
+
+
+MENU_FAILURE_TOKENS = ("HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSION_BASE_REJECT",
+    "HDSESSION_APP_REQUEST_QUIT")
+
+
+def _menu_idle(native, target, debugger, tail, bound, menu, pixels, run, report, preflight):
+    """Sample one idle main menu for the route duration, reading only new log lines."""
+    duration = preflight["duration_sec"]
+    started = next_sample = next_frame = time.monotonic()
+    first_controls = None
+    while True:
+        now = time.monotonic()
+        for line in tail.lines():
+            if line in MENU_FAILURE_TOKENS:
+                raise ValueError("Menu idle recorded a runtime failure: " + line)
+        if not native.alive(debugger) or not native.alive(target):
+            raise ValueError("Debugger/candidate exited before the requested diagnostic completed.")
+        if now >= next_sample:
+            controls = native.read(target, bound["base"] + 0x143d78, 8)
+            first_controls = first_controls or controls
+            if controls != first_controls or struct.unpack_from("<I", controls)[0] != 0:
+                raise ValueError("Native main-menu control/exit state changed during the idle diagnostic.")
+            width, height, locked = struct.unpack("<HHI", native.read(target, menu["surface"], 8))
+            if (width, height) != (menu["width"], menu["height"]) or locked not in (0, pixels):
+                raise ValueError("Native menu surface descriptor changed during sampling.")
+            report["samples"].append(dict(elapsed_sec=now - started,
+                menu_exit=struct.unpack_from("<I", controls)[0], menu_choice=struct.unpack_from("<I", controls, 4)[0],
+                **native.telemetry(target)))
+            next_sample = now + 1
+        if now >= next_frame or now - started >= duration:
+            count = menu["width"] * menu["height"]
+            qualification._reserve(run, count + 32 * 1024 * 1024)
+            frame = native.read(target, pixels, count)
+            filename = f"menu-frame-{len(report['frames']):04d}.indexed8"
+            _new(run / filename, frame)
+            report["frames"].append(dict(path=filename, sha256=_sha(frame), bytes=count,
+                elapsed_sec=now - started, width=menu["width"], height=menu["height"],
+                coherent_snapshot_verified=False))
+            next_frame = now + 30
+        if now - started >= duration:
+            report["natural_menu_idle_verified"] = True
+            report["measured_menu_host_seconds"] = now - started
+            return
+        time.sleep(0.25)
 
 
 def _map_steady_state(native, target, debugger, log_path, tail, seen, run, report, preflight, ready):
@@ -590,7 +670,7 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
     else:
         _new(commands, command_script(loaded["probe"][1], context["identity"], metadata,
             smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False),
-            fast_forward_intro=preflight.get("fast_forward_intro", False)))
+            hidden_menu_entry=preflight.get("hidden_menu_entry", False)))
     _new(run / "candidate.cdb", loaded["probe"][1])
     launch_artifacts = {"candidate": dict(path=str(local_candidate), sha256=_sha(loaded["executable"][1])),
         "canonical_probe": dict(path=str(run / "candidate.cdb"), sha256=_sha(loaded["probe"][1])),
@@ -650,8 +730,7 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
         print(json.dumps(dict(event="hidden_debugger_start", identity=context["identity"], smoke_only=preflight["smoke_only"])), flush=True)
         cdb_handle, cdb_identity = native.spawn(CDB, ["-y", ".", "-logo", str(log), "-cf", str(commands), str(local_candidate)], asset_root, environment)
         report["native_processes"].append(cdb_identity | {"role": "debugger"})
-        start, menu_started, next_sample, next_frame = time.monotonic(), None, 0, 0
-        menu_controls = None
+        start, menu_started = time.monotonic(), None
         target_handle = None
         map_tail, map_lines, map_target = None, [], None
         while True:
@@ -713,44 +792,22 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
             if observed["menu"] and menu_started is None:
                 if not observed["initial_image_bytes_verified"] or target_handle is None:
                     raise ValueError("Menu observation precedes authenticated image/process binding.")
-                menu_started, next_sample, next_frame = now, now, now
-                report["menu_surface"] = observed["menu"]
-                print(json.dumps(dict(event="natural_menu_observed", identity=context["identity"], duration_sec=preflight["duration_sec"])), flush=True)
+                menu = observed["menu"]
+                menu_pixels = menu["pixels"] or proxy_surface_buffer(
+                    _read_log(run / "ddraw_surfdump_proxy.log"), menu["width"], menu["height"])
+                if menu_pixels is not None:
+                    menu_started = now
+                    report["menu_surface"] = menu | dict(frame_pixels=menu_pixels, frame_source=(
+                        "game_descriptor" if menu["pixels"] else "proxy_surface_buffer"))
+                    print(json.dumps(dict(event="natural_menu_observed", identity=context["identity"], duration_sec=preflight["duration_sec"])), flush=True)
+                    _menu_idle(native, target_handle, cdb_handle, _LogTail(log, raw.rfind(b"\n") + 1),
+                               observed["target"], menu, menu_pixels, run, report, preflight)
+                    break
             if not native.alive(cdb_handle) or (target_handle and not native.alive(target_handle)):
                 raise ValueError("Debugger/candidate exited before the requested diagnostic completed.")
             if menu_started is None and now - start > ready_timeout:
                 raise TimeoutError(("Native acquisition returns" if preflight.get("acquire_only") else "Natural menu readiness")
                     + " were not observed within the bounded startup interval.")
-            if menu_started is not None:
-                if now >= next_sample:
-                    controls = native.read(target_handle, observed["target"]["base"] + 0x143d78, 8)
-                    if menu_controls is None:
-                        menu_controls = controls
-                    if controls != menu_controls or struct.unpack_from("<I", controls)[0] != 0:
-                        raise ValueError("Native main-menu control/exit state changed during the idle diagnostic.")
-                    menu = observed["menu"]
-                    descriptor = native.read(target_handle, menu["surface"], 8)
-                    if struct.unpack("<HHI", descriptor) != (menu["width"], menu["height"], menu["pixels"]):
-                        raise ValueError("Native menu surface descriptor changed during sampling.")
-                    report["samples"].append(dict(elapsed_sec=now - menu_started,
-                        menu_exit=struct.unpack_from("<I", controls)[0], menu_choice=struct.unpack_from("<I", controls, 4)[0],
-                        **native.telemetry(target_handle)))
-                    next_sample = now + 1
-                if now >= next_frame or now - menu_started >= preflight["duration_sec"]:
-                    surface = observed["menu"]
-                    count = surface["width"] * surface["height"]
-                    qualification._reserve(run, count + 32 * 1024 * 1024)
-                    frame = native.read(target_handle, surface["pixels"], count)
-                    filename = f"menu-frame-{len(report['frames']):04d}.indexed8"
-                    _new(run / filename, frame)
-                    report["frames"].append(dict(path=filename, sha256=_sha(frame), bytes=count,
-                        elapsed_sec=now - menu_started, width=surface["width"], height=surface["height"],
-                        coherent_snapshot_verified=False))
-                    next_frame = now + 30
-                if now - menu_started >= preflight["duration_sec"]:
-                    report["natural_menu_idle_verified"] = True
-                    report["measured_menu_host_seconds"] = now - menu_started
-                    break
             time.sleep(0.25)
         proxy_log = _read_log(run / "ddraw_surfdump_proxy.log")
         if not preflight["smoke_only"] and ("loaded present_enabled=0" not in proxy_log or "present_enabled=1" in proxy_log):
@@ -806,8 +863,8 @@ def main(argv=None):
     parser.add_argument("--duration", type=int, default=120)
     parser.add_argument("--smoke-only", action="store_true", help="stop after canonical initial bytes; supplies no menu/endurance pass")
     parser.add_argument("--acquire-only", action="store_true", help="observe genuine mouse/keyboard HRESULT returns; never force acquisition or input")
-    parser.add_argument("--fast-forward-intro", action="store_true",
-                        help="menu-idle only: skip the disclosed intro sleeps; never force input or menu state")
+    parser.add_argument("--hidden-menu-entry", action="store_true",
+                        help="menu-idle only: skip the intro sleeps and the hidden desktop's denied acquisition, both disclosed; never input, clicks or menu state")
     parser.add_argument("--output-root", type=Path, default=Path("C:/ClashTests/hd-multires-hidden"))
     parser.add_argument("--asset-root", type=Path, default=Path("C:/ClashTests/hd-multires-runtime-assets-20261025"))
     parser.add_argument("--ready-timeout", type=int, default=300)
@@ -817,7 +874,7 @@ def main(argv=None):
         parser.error("--ready-timeout must be between 30 and 600 seconds")
     try:
         preflight, context, loaded, metadata, rows = plan(args.bundle, args.route, args.duration,
-            smoke_only=args.smoke_only, acquire_only=args.acquire_only, fast_forward_intro=args.fast_forward_intro)
+            smoke_only=args.smoke_only, acquire_only=args.acquire_only, hidden_menu_entry=args.hidden_menu_entry)
         if args.execute:
             report = execute(preflight, context, loaded, metadata, rows, output_root=args.output_root,
                              asset_root=args.asset_root, ready_timeout=args.ready_timeout)

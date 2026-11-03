@@ -48,7 +48,9 @@ MAX_SAMPLE_GAP_SEC = 5
 HOST_JITTER_SEC = 2
 MAP_MECHANISMS = {"map_entry": "cdb_forced_menu_load_route", "start_animations": "cdb_fast_forward_sleeps",
                   "acquisition": "cdb_forced_bypass"}
-MENU_MECHANISMS = ({}, {"start_animations": "cdb_fast_forward_sleeps"})
+# A hidden desktop denies DirectInput, so its natural menu needs both disclosed
+# steps; neither injects input, clicks or menu state.
+MENU_MECHANISMS = ({}, {"start_animations": "cdb_fast_forward_sleeps", "acquisition": "cdb_forced_bypass"})
 FAILURE_TOKENS = frozenset({"HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSION_BASE_REJECT",
                             "HDSESSION_APP_REQUEST_QUIT", "HDSESSION_PLAYGAME_NO_GAME_DATA"})
 MENU_READY = re.compile(r"HDSESSION_MENU_READY pid=[0-9a-fA-F]+ surface=[0-9a-fA-F`]+ width=\d+ height=\d+ "
