@@ -62,7 +62,7 @@ MAP_END_GRACE_SEC = 120
 # both ends plus margin.
 MAP_HOST_JITTER_SEC = 2
 MAP_MECHANISMS = dict(map_entry="cdb_forced_menu_load_route", start_animations="cdb_fast_forward_sleeps",
-    acquisition="cdb_forced_bypass")
+    acquisition="cdb_forced_bypass", drag_scroll="cdb_forced_skip")
 # A hidden desktop denies DirectInput acquisition and the game then never
 # enters its menu dispatch, so a hidden natural menu needs both disclosed steps.
 HIDDEN_MENU_MECHANISMS = dict(start_animations="cdb_fast_forward_sleeps", acquisition="cdb_forced_bypass")
@@ -385,6 +385,14 @@ def map_command_script(probe: bytes, identity, metadata, *, route, duration, soa
          r'poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), '
          r'poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; } '
          r'.else { .echo HDSESSION_PLAYGAME_NO_GAME_DATA; }; gc"'),
+        # The unacquired DirectInput mouse can report a held right button; the
+        # original drag handler (0x407B90) then reads a far-left pointer and
+        # scrolls the map by a page. After map entry every drag start takes the
+        # handler's own not-held exit (0x407BC6) and is logged.
+        (r'bp 00407BD7 ".if (@$t14 != 0) { .if (@$t3 < 0n16) { .printf \"HDSESSION_FORCE_SKIP_DRAG_SCROLL seq=%d '
+         r'flags=%08x buttons=%02x/%02x mouse=(%d,%d) scroll=(%d,%d)\\n\", @$t3, poi(00544d04), by(005451c0), '
+         r'by(005451c8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(poi(005202e4)+0n140008), '
+         r'poi(poi(005202e4)+0n140012); r @$t3 = @$t3 + 1; }; r eip = 00407bc6; }; gc"'),
         soak,
         "g",
     ]
@@ -559,7 +567,7 @@ def _menu_idle(native, target, debugger, tail, bound, menu, pixels, run, report,
             report["samples"].append(dict(elapsed_sec=now - started,
                 menu_exit=struct.unpack_from("<I", controls)[0], menu_choice=struct.unpack_from("<I", controls, 4)[0],
                 **native.telemetry(target)))
-            next_sample = now + 1
+            next_sample += 1  # A fixed one-second grid, so sampling never drifts behind the route.
         if now >= next_frame or now - started >= duration:
             count = menu["width"] * menu["height"]
             qualification._reserve(run, count + 32 * 1024 * 1024)
@@ -604,7 +612,7 @@ def _map_steady_state(native, target, debugger, log_path, tail, seen, run, repor
             if native.read(target, surface["descriptor"], 8) != descriptor:
                 raise ValueError("Map surface descriptor changed during sampling.")
             report["samples"].append(dict(elapsed_sec=now - started, **native.telemetry(target)))
-            next_sample = now + 1
+            next_sample += 1  # A fixed one-second grid, so sampling never drifts behind the route.
         if now >= next_frame or ended is not None:
             qualification._reserve(run, surface["bytes"] + 32 * 1024 * 1024)
             frame = native.read(target, surface["pixels"], surface["bytes"])
@@ -633,6 +641,8 @@ def _map_steady_state(native, target, debugger, log_path, tail, seen, run, repor
             failures.append("forced pan route lacks its single plan or its scheduled native arrow-key steps")
     elif rows["PanPlans"] or rows["PanEvents"]:
         failures.append("idle map route recorded forced pan rows")
+    report["drag_scroll_skips"] = sum(line.startswith(b"HDSESSION_FORCE_SKIP_DRAG_SCROLL ")
+                                      for line in log_path.read_bytes().split(b"\n"))
     report["soak_route"] = dict(route_start=rows["RouteStarts"][0] if rows["RouteStarts"] else None, route_end=end,
         heartbeats=len(rows["Heartbeats"]), pan_plans=rows["PanPlans"], pan_events=len(rows["PanEvents"]),
         final_scroll=[end["ScrollX"], end["ScrollY"]] if end else None, failures=failures)

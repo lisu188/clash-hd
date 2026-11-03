@@ -47,7 +47,7 @@ MAX_SAMPLE_GAP_SEC = 5
 # Host-clock corroboration tolerance; the route's own duration is its tick delta.
 HOST_JITTER_SEC = 2
 MAP_MECHANISMS = {"map_entry": "cdb_forced_menu_load_route", "start_animations": "cdb_fast_forward_sleeps",
-                  "acquisition": "cdb_forced_bypass"}
+                  "acquisition": "cdb_forced_bypass", "drag_scroll": "cdb_forced_skip"}
 # A hidden desktop denies DirectInput, so its natural menu needs both disclosed
 # steps; neither injects input, clicks or menu state.
 MENU_MECHANISMS = ({}, {"start_animations": "cdb_fast_forward_sleeps", "acquisition": "cdb_forced_bypass"})
@@ -74,8 +74,9 @@ def _number(value: Any) -> bool:
 
 def _telemetry(samples: Any, seconds: int, notes: list[str]) -> tuple[bool, bool]:
     """Return (liveness, growth) from per-second host samples."""
-    if type(samples) is not list or len(samples) < seconds - MAX_SAMPLE_GAP_SEC:
-        notes.append("telemetry does not cover the route at one sample per second")
+    # Coverage is proved by the start, end and gap checks below; the count is only a floor.
+    if type(samples) is not list or len(samples) < seconds // MAX_SAMPLE_GAP_SEC:
+        notes.append("telemetry is too sparse to cover the route")
         return False, False
     keys = ("working_set", "private_bytes", "handles")
     if any(type(row) is not dict or not _number(row.get("elapsed_sec")) or

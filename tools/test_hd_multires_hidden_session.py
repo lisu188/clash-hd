@@ -55,14 +55,21 @@ class PolicyTests(unittest.TestCase):
         first_write = min(index for index, line in enumerate(lines) if line.startswith(("bp ", "ed ", "eb ")))
         self.assertGreater(first_write, 3)
         self.assertIn("HDSESSION_FORCED_ROUTE map_entry=cdb_forced_menu_load_route start_animations="
-                      "cdb_fast_forward_sleeps acquisition=cdb_forced_bypass pan=none load_slot=0", text)
+                      "cdb_fast_forward_sleeps acquisition=cdb_forced_bypass drag_scroll=cdb_forced_skip "
+                      "pan=none load_slot=0", text)
+        # Spurious drag starts after map entry take the handler's own not-held exit.
+        drag = [line for line in lines if line.startswith("bp 00407BD7 ")]
+        self.assertEqual(len(drag), 1)
+        self.assertIn(".if (@$t14 != 0)", drag[0])
+        self.assertIn("r eip = 00407bc6", drag[0])
+        self.assertIn("HDSESSION_FORCE_SKIP_DRAG_SCROLL", drag[0])
         self.assertNotIn("r @$t18 = 0", text)
         self.assertNotIn("r @$t19 = 0", text)
         # Centered 640x480 menu point at 1920x1080 and the native load-list point, in <<6 units.
         self.assertIn("ed 00544cfc 0000d700; ed 00544d00 00007280;", text)
         self.assertEqual(text.count("ed 00544cfc 00005000; ed 00544d00 00002980;"), 2)
         for site in ("00401DDA", "0047BD66", "0047BDAE", "0044789a", "00419B80", "00419C51", "00447780",
-                     "00448A68", "00448AE3", "00444490", "0040B660", "0040B0C3", "00406FA1", "00407D20"):
+                     "00448A68", "00448AE3", "00444490", "0040B660", "0040B0C3", "00406FA1", "00407D20", "00407BD7"):
             self.assertEqual(text.count(f"bp {site} "), 1, site)
         self.assertIn("route_ticks=%d pan=%d", text)
         self.assertIn("ed 00400040 0", text)
