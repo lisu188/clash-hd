@@ -6,6 +6,7 @@ initial-image verifier. Construction never implies gameplay qualification.
 """
 from __future__ import annotations
 
+import bisect
 import hashlib
 import importlib
 from pathlib import Path
@@ -155,6 +156,10 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
             return bytes(size)
     # Some frozen predecessors keep small authenticated code/data descriptors
     # outside executable sections; retain their literal-read coverage as well.
+    # Legacy predecessors can carry tens of thousands of such reads, so earlier
+    # reads (at most four bytes) are indexed by start instead of rescanned.
+    section_ranges = tuple(ranges)
+    read_sizes: dict[int, list[int]] = {}
     for match in _READ.finditer(inherited):
         size = {"by": 1, "wo": 2, "dwo": 4}[match.group(1)]
         rva = int(match.group(2), 16) - view.image_base
@@ -163,18 +168,23 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
             expected_bytes(rva, size)
         except ValueError as exc:
             raise ValueError(f"inherited read is not file-backed in the final image: {match.group(0)}") from exc
-        if not any(a <= rva and rva + size <= b for a, b in ranges):
+        if not (any(a <= rva and rva + size <= b for a, b in section_ranges)
+                or any(rva + size <= a + n for a in range(rva - 3, rva + 1) for n in read_sizes.get(a, ()))):
             ranges.append((rva, rva + size))
+            read_sizes.setdefault(rva, []).append(size)
     base_field = view.optional_offset + 28
     special = set(fields) | {base_field}
+    ordered = sorted(special)
     expanded = []
     for start, end in ranges:
-        for field in sorted(special):
-            if field >= end:
-                break
-            if field + 4 > start:
-                expected_bytes(field, 4)
-                start, end = min(start, field), max(end, field + 4)
+        # Ascending fields from the first one ending after start; each
+        # overlapping field widens the range, possibly reaching the next.
+        index = bisect.bisect_right(ordered, start - 4)
+        while index < len(ordered) and ordered[index] < end:
+            field = ordered[index]
+            expected_bytes(field, 4)
+            start, end = min(start, field), max(end, field + 4)
+            index += 1
         expanded.append((start, end))
     merged = []
     for start, end in sorted(set(expanded)):
@@ -208,10 +218,11 @@ def render_probe(image: bytes, metadata: dict, inherited: str) -> tuple[str, dic
         comparisons += 1
 
     for start, end in merged:
-        _require(not any(start < f + 4 and f < end and not (start <= f and f + 4 <= end)
-                         for f in special), "partially covered relocated operand")
+        nearby = ordered[bisect.bisect_right(ordered, start - 4):bisect.bisect_left(ordered, end)]
+        _require(not any(not (start <= f and f + 4 <= end) for f in nearby),
+                 "partially covered relocated operand")
         at = start
-        for stop in sorted(f for f in special if start <= f < end) + [end]:
+        for stop in ordered[bisect.bisect_left(ordered, start):bisect.bisect_left(ordered, end)] + [end]:
             while at < stop:
                 size = 4 if stop - at >= 4 else 2 if stop - at >= 2 else 1
                 value = int.from_bytes(expected_bytes(at, size), "little")
