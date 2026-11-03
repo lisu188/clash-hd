@@ -13,7 +13,9 @@ Full HD completion requires the [36-cell profile/preset matrix](RESOLUTION_RELEA
 The versioned matrix-cell release context replays source-bound resolution
 metadata and, from retained hidden successor runs, the three hidden-host soak
 lanes. Its fifteen runtime lanes, installed expanded battle and promotion
-remain separate unfinished requirements; no soak lane has passing evidence yet.
+remain separate unfinished requirements. Only Framed 1920x1080 has a passing
+soak lane so far (`short_soak_ladder`, hidden host); its other fourteen lanes
+and every other cell's runtime lanes have no evidence.
 Do not reuse the narrow legacy 1920x1080 panel proof for another context.
 Source fixtures establish neither a release nor a new runtime pass.
 

@@ -101,12 +101,22 @@ adventure map through the legacy hidden soak's disclosed debugger-forced route:
 - fast-forwarded intro sleeps;
 - bypassed DirectInput acquisition;
 - forced main-menu and load-slot clicks;
-- the canonical soak extra, including native arrow-key pans.
+- the canonical soak extra, including native arrow-key pans;
+- skipped map drag-scroll starts after map entry.
+
+The unacquired hidden mouse leaves stale button bytes, so the original drag
+handler (`0x407B90`) sees a held button and scrolls the map by a page from a
+far-left pointer, which the HD clamp then pins. After map entry every drag
+start therefore takes the handler's own not-held exit (`0x407BC6`). The first
+sixteen skips are logged with their flags, button bytes, pointer and scroll
+position. The report counts those logged lines as `drag_scroll_skips` and
+discloses `drag_scroll=cdb_forced_skip`; later skips are not logged.
 
 Every breakpoint site of that route, and the main-menu, load-list and PlayGame
 ranges, are byte-identical to the original in all 36 candidates. The host binds
 map entry and the soak-ready surface to the adopted process and the selected
-canvas, samples process telemetry each second and the surface every 60 seconds,
+canvas, samples process telemetry on a fixed one-second grid and the surface
+every 60 seconds,
 and replays the whole retained log through the shared soak row grammar. The
 route's duration is its 64 Hz system-tick delta, which the host clock
 corroborates within polling jitter.
@@ -144,6 +154,21 @@ An idle menu stops locking its surface, so its frames are read from the
 source-built proxy's single buffer for the live surface of that exact canvas
 (`frame_source=proxy_surface_buffer`). A Classic 1024x768 run passed 120 s at
 the centered native menu with one sample per second.
+
+The first ordered short ladder passed for Framed 1920x1080 on a hidden desktop
+(`reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json`). Its five
+rungs were a 120 s menu idle with the hidden menu entry, 120 s and 600 s map
+idle, then 600 s and 1800 s map pan:
+- Every map rung measured exactly 64 system ticks and one telemetry sample
+  per second. The pan rungs made 59 and 179 native arrow pans.
+- Peak growth was 312 KiB working set, 340 KiB private bytes and 3 handles,
+  against the legacy 64 MiB, 64 MiB and 128-handle limits.
+- Every map rung logged the sixteen-line drag-skip cap. Live saves stayed
+  unchanged and owned-process cleanup was verified.
+
+The matrix-cell release evaluation replays `short_soak_ladder` and
+`resolution_coverage` as passing. The other fourteen lanes have no evidence,
+so the cell fails. These remain forced-route hidden-host observations.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

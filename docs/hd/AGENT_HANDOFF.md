@@ -245,7 +245,10 @@ recipe. See the
 A local index of all 36 launcher-selected candidates now authenticates every
 candidate, and each cell's `resolution_coverage` lane passes in this context
 (`reports/resolution-release-matrix-index-20261103.json`). The other fifteen
-lanes have no evidence and fail explicitly.
+lanes have no evidence and fail explicitly. Framed 1920x1080 has since
+passed `short_soak_ladder` on a hidden desktop, so its release evaluation now
+passes two lanes and fails fourteen
+(`reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json`).
 
 The four all-preset source constructors are
 [`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),

@@ -1,0 +1,283 @@
+{
+  "schema": "matrix_cell_hidden_soak_lane_receipt_v1",
+  "generated_at": "2026-11-03T19:22:56.410313+00:00",
+  "source_commit": "6afaf1fa7f70680a62ab7246048245899f51cd96",
+  "source_changed_since_commit": false,
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "cell_id": "framed/1920x1080",
+  "lane": "short_soak_ladder",
+  "verifier": "tools/matrix_release_evidence.py with tools/matrix_soak_lanes.py",
+  "producer": {
+    "path": "tools/hd_multires_hidden_session.py",
+    "sha256": "27205bee40a358e832eed164ce23606e5653a1ead374d8c77cdb75285f0e16bc"
+  },
+  "identity": {
+    "candidate_sha256": "3510e0a23fd41f95283806cee9cb761a31e4ea7b3ab4eb4f4c1fe52e6fd27e02",
+    "probe_sha256": "d9ba7b33223f52c56deca6bfaf9d1c3a094038b34d0077dd6474c209a49ca4bc",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framed-hd-multires-validation",
+    "recipe_revision": "hd_multires_v1",
+    "source_closure_sha256": "4f81f0b3af7c3cfeed90c8f36605a42d2e55af7f3155361a6639308c1dee6ba4",
+    "launcher_manifest_sha256": "dc8d4399de7aa08f3f1f3888ce683370c44913fffe5174a708bed69a579f7583"
+  },
+  "release_manifest_sha256": "12fc3149162a8b46fc8ee6eac9c862720a5bd4fc659472b062e063c7e868a7e0",
+  "candidate_authentication_passed": true,
+  "lane_passed": true,
+  "lane_failures": [],
+  "lane_checks": {
+    "ordered_ladder_completed": {
+      "passed": true,
+      "failures": []
+    },
+    "process_liveness": {
+      "passed": true,
+      "failures": []
+    },
+    "render_integrity": {
+      "passed": true,
+      "failures": []
+    },
+    "process_growth": {
+      "passed": true,
+      "failures": []
+    },
+    "clean_stop": {
+      "passed": true,
+      "failures": []
+    }
+  },
+  "cell_lanes_passed": [
+    "short_soak_ladder",
+    "resolution_coverage"
+  ],
+  "cell_passed": false,
+  "steps": [
+    {
+      "tier": "short2",
+      "route": "menu-idle",
+      "duration_sec": 120,
+      "session": "session-20261103-164029-66f58655",
+      "session_report_sha256": "427f538333564b1ccf3b412fccaeefa8b57f22ce8115c425203271d368d3b593",
+      "cdb_log_sha256": "189562f163bd966860725648061b52b2abb115fae73ba081794454449f64ce9f",
+      "started_at": "2026-11-03T15:40:29.178744+00:00",
+      "finished_at": "2026-11-03T15:42:48.266176+00:00",
+      "forced_mechanisms": {
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "route_ticks": null,
+      "tick_delta": null,
+      "redraw_hits": null,
+      "heartbeats": null,
+      "pan_events": null,
+      "host_seconds": 120.2,
+      "telemetry_samples": 121,
+      "growth": {
+        "working_set": 65536,
+        "private_bytes": 208896,
+        "handles": 3
+      },
+      "frames": [
+        "9390226ffbff46bab6f5f2eb0e8e6750b90a553ea31b5771aa93b948618f90d9",
+        "9390226ffbff46bab6f5f2eb0e8e6750b90a553ea31b5771aa93b948618f90d9",
+        "9390226ffbff46bab6f5f2eb0e8e6750b90a553ea31b5771aa93b948618f90d9",
+        "9390226ffbff46bab6f5f2eb0e8e6750b90a553ea31b5771aa93b948618f90d9",
+        "9390226ffbff46bab6f5f2eb0e8e6750b90a553ea31b5771aa93b948618f90d9"
+      ],
+      "frame_source": "proxy_surface_buffer"
+    },
+    {
+      "tier": "short2",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "session": "session-20261103-164253-b6cc750b",
+      "session_report_sha256": "fbe8854d81cebfbd3679577c3b01f8fa40534ee1fdacfeb983c5dbd7c89c3460",
+      "cdb_log_sha256": "51f25904fd6713c2b9f8796a01b6893572ab20d9617885e937a7ba70dcf5aa01",
+      "started_at": "2026-11-03T15:42:53.175332+00:00",
+      "finished_at": "2026-11-03T15:45:23.825798+00:00",
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass",
+        "drag_scroll": "cdb_forced_skip"
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 6818,
+      "heartbeats": 3,
+      "pan_events": 0,
+      "host_seconds": 119.56,
+      "telemetry_samples": 120,
+      "growth": {
+        "working_set": 73728,
+        "private_bytes": 208896,
+        "handles": 3
+      },
+      "frames": [
+        "64b629fbb49096f4fb76ce8fd13a9ffcb71ee919b06ed975ad3a6c629797491b",
+        "9d7f7042a07515772569f5e68f4d59728c399c3cb77ad5b3c939427c3b17f674",
+        "51583ef2b0864ae13ac113d8062be1c51b654fd9dbffd6277f2bff37159c8f67"
+      ],
+      "frame_source": "map_back_buffer"
+    },
+    {
+      "tier": "short10",
+      "route": "map-idle",
+      "duration_sec": 600,
+      "session": "session-20261103-164528-7b1accc9",
+      "session_report_sha256": "e75a16cd79cf459aaba8b5833d7bb15379618d5e2b2930b46445723f7794a3c7",
+      "cdb_log_sha256": "7d263597e86aff9847c5a7f6222ef78b037000f3222ddc1711feb277e19ea2fb",
+      "started_at": "2026-11-03T15:45:28.403481+00:00",
+      "finished_at": "2026-11-03T15:55:59.191983+00:00",
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass",
+        "drag_scroll": "cdb_forced_skip"
+      },
+      "route_ticks": 38400,
+      "tick_delta": 38400,
+      "redraw_hits": 35918,
+      "heartbeats": 17,
+      "pan_events": 0,
+      "host_seconds": 599.7,
+      "telemetry_samples": 600,
+      "growth": {
+        "working_set": 278528,
+        "private_bytes": 217088,
+        "handles": 3
+      },
+      "frames": [
+        "64b629fbb49096f4fb76ce8fd13a9ffcb71ee919b06ed975ad3a6c629797491b",
+        "7d625947b250401eea9c749223ec9df0e8a0bf31d9562567c02a042898b984d7",
+        "0b0cc4509ede76f043474c531bc633c456aa360a8deebb09db75efad82d2a7de",
+        "7d625947b250401eea9c749223ec9df0e8a0bf31d9562567c02a042898b984d7",
+        "9d7f7042a07515772569f5e68f4d59728c399c3cb77ad5b3c939427c3b17f674",
+        "cd5c9a81d2f5d1b991c37dcf6d076f57aa8a1dd6b7fc990a075174ebdde47170",
+        "64b629fbb49096f4fb76ce8fd13a9ffcb71ee919b06ed975ad3a6c629797491b",
+        "dc4801a0db270c08716761fd18ffada6d8e27a42e5f0e45ba37dd789582f00d0",
+        "8ccfa6d46a78099840d8e76e69eeb03898c889c6112801d79863adc735a05b48",
+        "ac3e1401d523eb6ab7d61b8bbdb65ff6441094c292e2091652968b8ea0cc8572",
+        "217f511ae0e90473e0c3d0e97ac0280e7d763a80c98750b8408c5d9ca4abe38b"
+      ],
+      "frame_source": "map_back_buffer"
+    },
+    {
+      "tier": "short10",
+      "route": "map-pan",
+      "duration_sec": 600,
+      "session": "session-20261103-165603-a768d187",
+      "session_report_sha256": "fd3fa58a85caca9dc24f9c8254352329fb90d7fa5bde7d7154b50b2c4fb2e23c",
+      "cdb_log_sha256": "5d01be6424004d1385a4b4c0b705114191628a7948798f8b8498a13d8fecfcc4",
+      "started_at": "2026-11-03T15:56:03.218566+00:00",
+      "finished_at": "2026-11-03T16:06:37.650761+00:00",
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass",
+        "drag_scroll": "cdb_forced_skip",
+        "pan": "cdb_forced_native_arrow_key"
+      },
+      "route_ticks": 38400,
+      "tick_delta": 38400,
+      "redraw_hits": 37164,
+      "heartbeats": 18,
+      "pan_events": 59,
+      "host_seconds": 599.98,
+      "telemetry_samples": 600,
+      "growth": {
+        "working_set": 270336,
+        "private_bytes": 344064,
+        "handles": 3
+      },
+      "frames": [
+        "217f511ae0e90473e0c3d0e97ac0280e7d763a80c98750b8408c5d9ca4abe38b",
+        "62ef919fdede72a0337c1f75fe651f9c100d9030254775b2ab79ba9e7ac4f36e",
+        "3c3b1807975e8fc094c7783f053d6ca049ae0779bd642a1beaa15384db1ffc7c",
+        "f23cffb71628abd281e25e4480e95b4648068f63308a061c7c7c92a5b3a6f5bb",
+        "72f31defb996bff25e81bffb3cafc34f1197dc9ba483df564d9e35eddabbab46",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "1b61fbe521754822883f2f8b0f8d122cde7f0f18bd3c419378a603367611a1e7",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "32fc0cf5c396ab6b1e0f1935db7304c3464bd979b247cb8d1c832a7bab7955ff",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "e8367f556748e9d9eb2b58bae4f7f66d2b1b71f9c92ca1f6b5450aac713f40e2"
+      ],
+      "frame_source": "map_back_buffer"
+    },
+    {
+      "tier": "short30",
+      "route": "map-pan",
+      "duration_sec": 1800,
+      "session": "session-20261103-170641-dc7d3546",
+      "session_report_sha256": "5afe0db1084d8ad2a3cee1769966afb2f8193d80b180e3420f498d4388264dc7",
+      "cdb_log_sha256": "353d45b66a0b564e77dd0cad367c4bb1f772779e8c2082d62dd620fabae13e15",
+      "started_at": "2026-11-03T16:06:41.796354+00:00",
+      "finished_at": "2026-11-03T16:37:10.628360+00:00",
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass",
+        "drag_scroll": "cdb_forced_skip",
+        "pan": "cdb_forced_native_arrow_key"
+      },
+      "route_ticks": 115200,
+      "tick_delta": 115200,
+      "redraw_hits": 109887,
+      "heartbeats": 53,
+      "pan_events": 179,
+      "host_seconds": 1799.78,
+      "telemetry_samples": 1800,
+      "growth": {
+        "working_set": 319488,
+        "private_bytes": 348160,
+        "handles": 3
+      },
+      "frames": [
+        "44a4a4ab1407afc22f0fa64b8de77305703e8d685824c5ee59f12e43b9aabd88",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "32fc0cf5c396ab6b1e0f1935db7304c3464bd979b247cb8d1c832a7bab7955ff",
+        "62ef919fdede72a0337c1f75fe651f9c100d9030254775b2ab79ba9e7ac4f36e",
+        "d090f35529b4be74662552abd81f4c4239eec10f648b4ca9ccc29ef712d61d11",
+        "1436b5e666ee99291e05ba82398aec80d762cd12bc46201d0e524e78caf420c9",
+        "1b61fbe521754822883f2f8b0f8d122cde7f0f18bd3c419378a603367611a1e7",
+        "7180cf3171193d6ccd7e4e3c7a148f7a8efac3190014a21495e2dabf30419952",
+        "e1cd79f67c5693fc59a4f92402be43a2af6e2299406fe63359126f7a394ba4cd",
+        "82d924849cf8592bbb0ddb97f81efcbc0215214e057aa6073f7d875f94875ce0",
+        "b25554311cdd0836f372fd019fe3650ad18986cb0900aa2141b4ccf22b873b9e",
+        "9b71244c741f369170b6df0cccc56e74b872187bd2c4edbd6127034a6b55edaf",
+        "72d71b0d101d2504ae0111145bb6838a3113769fb730663435e2fa2f19dcce1f",
+        "9b71244c741f369170b6df0cccc56e74b872187bd2c4edbd6127034a6b55edaf",
+        "0b0bdf28ce3e80fde44aa6be45d7abc052b8ddfe126baaaed41e66e7c1bb4884",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "0b0bdf28ce3e80fde44aa6be45d7abc052b8ddfe126baaaed41e66e7c1bb4884",
+        "4a4d95ffc4387c83857820a66bc76a17844dbea55a61cce5037821308c40c1b5",
+        "32fc0cf5c396ab6b1e0f1935db7304c3464bd979b247cb8d1c832a7bab7955ff",
+        "9b71244c741f369170b6df0cccc56e74b872187bd2c4edbd6127034a6b55edaf",
+        "79e19df2cdcc1ef92446c7f0adfd09cb628be7fc671dc43c5c94512458cdcd31",
+        "023c9b8209970351650ed90be8068f291ccaa8a3c6d98cf2dbefda74b8ecbcdc",
+        "e1cd79f67c5693fc59a4f92402be43a2af6e2299406fe63359126f7a394ba4cd",
+        "149531235501e6b74b83c076332d6e83f49d9b137f00e0820a3029a36c1ec6b1",
+        "75914c720ada46a3b8b2dd83bfc3f039d7fdace995030e5504941cc95f17430e",
+        "a78d897481c746c176ba1cb8afe445e9c5893bd117e793a58bd82f55fab1add2",
+        "3c3b1807975e8fc094c7783f053d6ca049ae0779bd642a1beaa15384db1ffc7c",
+        "149531235501e6b74b83c076332d6e83f49d9b137f00e0820a3029a36c1ec6b1",
+        "3c3b1807975e8fc094c7783f053d6ca049ae0779bd642a1beaa15384db1ffc7c",
+        "023c9b8209970351650ed90be8068f291ccaa8a3c6d98cf2dbefda74b8ecbcdc",
+        "d926b64726438eea7925ced6436964683f34afc302b568ea6edbc952229ce676"
+      ],
+      "frame_source": "map_back_buffer"
+    }
+  ],
+  "environment": "hidden_cdb_host",
+  "input_responsiveness": "not_applicable_hidden",
+  "local_outputs": "C:/ClashTests/matrix-soak-20261103/framed/1920x1080 and C:/ClashTests/hd-multires-hidden/<session> (local only; never committed)",
+  "not_claimed": [
+    "manual or natural input",
+    "visible composition or HUD rendering",
+    "any other lane",
+    "expanded battle",
+    "a cell or matrix pass",
+    "promotion or a stable-stage change"
+  ]
+}

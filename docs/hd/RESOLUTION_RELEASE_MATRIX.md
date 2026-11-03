@@ -63,6 +63,11 @@ Claimed checks must equal the replay. Only `hd_multires_v1` cells have this
 producer, and its disclosed forced map entry keeps these hidden evidence, not
 input or visible proof.
 
+Framed 1920x1080 is the first cell with a passing soak lane in this context.
+Its replayed `short_soak_ladder` and `resolution_coverage` pass; the other
+fourteen lanes fail for lack of evidence, so the cell fails. See
+[the ladder receipt](../../reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json).
+
 The other twelve runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
