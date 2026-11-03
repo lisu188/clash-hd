@@ -128,6 +128,22 @@ layers, so its frames are not visible composition, input or endurance
 acceptance. The old Classic 800x600 runner is separate. A local Classic 1080p
 hidden attempt observed a genuine mouse Acquire denial; its failed report is
 retained as a diagnostic, not acceptance.
+
+The menu-idle route stays observation-only by default. Its menu-ready
+observation is the main-menu hit test at `+0x19b80`, which fires every frame
+while the menu waits. The former `+0x47d61` anchor is a dispatch poll that only
+runs after a menu choice.
+
+On a hidden desktop the game never reaches its menu: the mouse Acquire is
+denied (`0x80070005`) and the keyboard Acquire never follows. The opt-in
+`--hidden-menu-entry` therefore fast-forwards the intro sleeps and applies the
+map route's acquisition bypass. Both steps are disclosed in the report, and it
+writes no input, clicks or menu state.
+
+An idle menu stops locking its surface, so its frames are read from the
+source-built proxy's single buffer for the live surface of that exact canvas
+(`frame_source=proxy_surface_buffer`). A Classic 1024x768 run passed 120 s at
+the centered native menu with one sample per second.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.
