@@ -95,10 +95,28 @@ source closure's receipt is preserved separately.
 
 `tools/hd_multires_hidden_session.py` authenticates an exact selected bundle
 before creating an isolated hidden desktop and owned process job. It implements
-initial loaded-byte and natural-menu/acquisition diagnostics. Map-idle/map-pan
-collection remains unavailable and fails closed. The old Classic 800x600 runner
-is separate. A local Classic 1080p hidden attempt observed a genuine mouse
-Acquire denial; its failed report is retained as a diagnostic, not acceptance.
+initial loaded-byte and natural-menu/acquisition diagnostics. Its map-idle and
+map-pan routes first replay the canonical initial image. They then reach the
+adventure map through the legacy hidden soak's disclosed debugger-forced route:
+- fast-forwarded intro sleeps;
+- bypassed DirectInput acquisition;
+- forced main-menu and load-slot clicks;
+- the canonical soak extra, including native arrow-key pans.
+
+Every breakpoint site of that route, and the main-menu, load-list and PlayGame
+ranges, are byte-identical to the original in all 36 candidates. The host binds
+map entry and the soak-ready surface to the adopted process and the selected
+canvas, samples process telemetry each second and the surface every 60 seconds,
+and replays the whole retained log through the shared soak row grammar. The
+route's duration is its 64 Hz system-tick delta, which the host clock
+corroborates within polling jitter.
+
+These are `hidden_cdb_host` observations with `input_or_callback_forced` set.
+The memory-only proxy's software surface can omit separately composed HUD
+layers, so its frames are not visible composition, input or endurance
+acceptance. The old Classic 800x600 runner is separate. A local Classic 1080p
+hidden attempt observed a genuine mouse Acquire denial; its failed report is
+retained as a diagnostic, not acceptance.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

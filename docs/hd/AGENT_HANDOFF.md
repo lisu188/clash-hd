@@ -195,6 +195,15 @@ installer remain unfinished. The installed-map CPU receipt for the portable
 launcher metadata is `reports/hd-multires-installed-cpu-20261027-portable.json`.
 Hidden Classic 1080p initial-image and Acquire diagnostics remain local; they
 do not establish visible input, map endurance or release acceptance.
+The successor hidden session now has map-idle and map-pan routes. Each replays
+the canonical image, then reaches the map through the legacy hidden soak's
+disclosed forced route. Every site of that route is byte-identical to the
+original in all 36 candidates. A Classic 1024x768 map-idle 120 s run passed on a
+hidden desktop: forced entry, 3,137 redraws over 7,681 system ticks and three
+software-surface frames, with clean shutdown and live saves unchanged. These
+remain `hidden_cdb_host` observations with forced input. The proxy surface can
+omit HUD layers, so visible composition, input, endurance and soak-lane
+verification stay open. See [the launcher notes](MULTIRES_LAUNCHER.md).
 
 `battle_profile_primitive_request_v2.py` recomposes one fresh shared guard for
 the 43 normal-return windows and 13 query frames (eleven sprite requests and

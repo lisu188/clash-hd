@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Candidate-bound hidden diagnostic. Dry-run by default; never input or promotion.
 
-The first implemented route observes natural menu entry after replaying the
-candidate's complete canonical initial-image probe. Map routes remain pending;
-the legacy 800x600 runner and its reports are not reused or relabeled.
+Every route first replays the candidate's complete canonical initial-image
+probe. menu-idle then only observes natural menu entry. map-idle and map-pan
+reach the adventure map through the disclosed debugger-forced route of the
+proven legacy hidden soak: fast-forwarded intro sleeps, bypassed DirectInput
+acquisition, forced main-menu and load-slot clicks, then its steady-state
+soak extra with native arrow-key pans. These are hidden_cdb_host
+observations, never input proof; legacy reports are not reused or relabeled.
 """
 from __future__ import annotations
 
@@ -27,6 +31,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tools")]
 import hd_multires_qualification as qualification
 from hd_multires_win32 import HiddenJob
+import hidden_soak_log_observations as soak_log
+import hidden_soak_probe_composition as soak_composition
 
 SCHEMA = "hd_multires_hidden_session_v1"
 CDB = Path("C:/Program Files (x86)/Windows Kits/10/Debuggers/x86/cdb.exe")
@@ -39,7 +45,26 @@ ASSET_PATTERNS = (("AVI", "*.avi"), ("DATA", "*.res"), ("DATA", "*.wav"),
 ASSET_FILES = ("STRATEG/CLASH.DAT", "STRATEG/PRIOR", "CLASH.CFG", "options.cfg", "default.rec")
 PRODUCERS = ("tools/hd_multires_hidden_session.py", "tools/hd_multires_win32.py",
     "tools/hd_multires_qualification.py", "scripts/build/build_ddraw_surfdump_proxy.ps1",
-    "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp", "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.def")
+    "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp", "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.def",
+    "tools/hidden_soak_probe_composition.py", "tools/hidden_soak_log_observations.py",
+    "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb")
+SOAK_TEMPLATE = "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb"
+# The forced route uses absolute legacy addresses. All its breakpoint sites and
+# the main-menu, load-list and PlayGame ranges are byte-identical to the
+# original in every successor candidate, which loads at its preferred base.
+MAP_IMAGE_BASE = 0x400000
+MAP_LOAD_SLOT = 0
+MAP_PAN_INTERVAL_SEC = 10
+MAP_FRAME_INTERVAL_SEC = 60
+MAP_END_GRACE_SEC = 120
+# The route's own duration is the 64 Hz system tick delta at its end marker.
+# The host clock only corroborates it, within the 0.25 s log-polling jitter at
+# both ends plus margin.
+MAP_HOST_JITTER_SEC = 2
+MAP_MECHANISMS = dict(map_entry="cdb_forced_menu_load_route", start_animations="cdb_fast_forward_sleeps",
+    acquisition="cdb_forced_bypass")
+PLAYGAME = re.compile(r"^HDSESSION_PLAYGAME pid=([0-9a-fA-F]+) gd=([0-9a-fA-F`]+) map=\((\d+),(\d+)\) "
+    r"scroll=\((-?\d+),(-?\d+)\) surface=([0-9a-fA-F`]+) size=\((\d+),(\d+)\)$", re.M)
 TARGET = re.compile(r"^HDSESSION_TARGET pid=([0-9a-fA-F]+) base=([0-9a-fA-F`]+)$", re.M)
 MENU = re.compile(r"^HDSESSION_MENU_READY pid=([0-9a-fA-F]+) surface=([0-9a-fA-F`]+) width=(\d+) height=(\d+) pixels=([0-9a-fA-F`]+)$", re.M)
 ACQUIRE = re.compile(r"^HDSESSION_ACQUIRE kind=(mouse|keyboard) pid=([0-9a-fA-F]+) pc=([0-9a-fA-F`]+) hr=0x([0-9a-fA-F]{8}) hwnd=([0-9a-fA-F`]+) device=([0-9a-fA-F`]+)$", re.M)
@@ -197,6 +222,9 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
         raise ValueError("Select either initial smoke or acquisition observation, not both.")
     if route not in ROUTES or type(duration) is not int or duration not in ROUTES[route]:
         raise ValueError("Route/duration must preserve the fixed short-ladder or two-hour policy.")
+    map_route = route != "menu-idle"
+    if map_route and (smoke_only or acquire_only):
+        raise ValueError("Initial-smoke and acquisition diagnostics use only the observation-only menu route.")
     bundle = qualification.plain_path(bundle)
     context = qualification.authenticate_bundle(bundle)
     declared = qualification.read_json(bundle)
@@ -206,11 +234,21 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
     producers = {name: _sha(qualification.read_file(ROOT / name, 4 * 1024 * 1024)) for name in PRODUCERS}
     cdb_hash = _pe_x86(CDB)
     rows = asset_inventory()
-    pending = [] if route == "menu-idle" else ["candidate-bound native map collector is not implemented"]
+    pending = []
+    if map_route:
+        # Composing once here rejects a changed or malformed soak extra before any process exists.
+        map_command_script(loaded["probe"][1], context["identity"], metadata, route=route, duration=duration,
+                           soak_template=qualification.read_file(ROOT / SOAK_TEMPLATE, soak_composition.MAX_TEMPLATE_BYTES))
     report = dict(schema=SCHEMA, executed=False, identity=context["identity"], bundle=str(bundle),
         bundle_sha256=_sha(bundle.read_bytes()), route=route, duration_sec=duration, smoke_only=smoke_only,
         acquire_only=acquire_only, diagnostic_scope=("initial_image_only" if smoke_only else
-            "initial_image_and_native_acquisition_returns" if acquire_only else "natural_menu_idle_no_input"),
+            "initial_image_and_native_acquisition_returns" if acquire_only else
+            "forced_map_entry_and_native_arrow_pan" if route == "map-pan" else
+            "forced_map_entry_and_steady_state" if map_route else "natural_menu_idle_no_input"),
+        forced_mechanisms=(MAP_MECHANISMS | ({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})
+                           if map_route else {}),
+        input_or_callback_forced=map_route, load_slot=MAP_LOAD_SLOT if map_route else None,
+        pan_interval_sec=MAP_PAN_INTERVAL_SEC if route == "map-pan" else None,
         acquisition_return_rvas={kind: rva for kind, (rva, _) in ACQUIRE_RETURNS.items()},
         debugger_holds_at_acquisition_completion=acquire_only,
         environment="hidden_cdb_host", input_responsiveness="not_applicable_hidden", input_injected=False,
@@ -255,6 +293,77 @@ def command_script(probe: bytes, identity, metadata, *, smoke_only=False, acquir
             acquisition.append(f'bp /1 @$t19+0x{rva:x} "' + body.replace('\\', '\\\\').replace('"', '\\"') + '"')
         suffix[-1:-1] = acquisition
     return probe + ("\r\n" + "\r\n".join(suffix) + "\r\n").encode("ascii")
+
+
+def map_command_script(probe: bytes, identity, metadata, *, route, duration, soak_template: bytes):
+    """Canonical image replay, then the legacy forced map route and soak extra.
+
+    The forced steps match probes/cdb/render/clash95_surface_dump_probe.cdb
+    and the proven -FastForwardStartAnims block. Its 800x600 visibility
+    and surface-dump gates are left out; the soak extra is the canonical
+    composer's own substituted text. Every forced write is disclosed.
+    """
+    chunks = metadata["probe_contract"]["required_chunks"]
+    if type(chunks) is not int or chunks <= 0:
+        raise ValueError("Canonical initial-image chunk inventory is invalid.")
+    if route not in ("map-idle", "map-pan") or duration not in ROUTES[route]:
+        raise ValueError("Map routes preserve the fixed short-ladder or two-hour policy.")
+    width, height = (int(value) for value in identity["resolution"].split("x"))
+    if width < 640 or height < 480:
+        raise ValueError("The centered native menu needs at least a 640x480 canvas.")
+    soak = soak_composition.prepare_soak_text(soak_template, route=route, duration_sec=duration,
+        pan_interval_sec=MAP_PAN_INTERVAL_SEC, load_slot=MAP_LOAD_SLOT)
+    # 0x419B80 compares the menu descriptors shifted by the centered 640x480
+    # offset; the load list at 0x448A68 tests native, unshifted coordinates.
+    main_x, main_y = (220 + (width - 640) // 2) << 6, (158 + (height - 480) // 2) << 6
+    load_x, load_y = soak_composition.load_mouse_raw(MAP_LOAD_SLOT)
+    mouse = r"poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c)"
+    mechanisms = " ".join(f"{key}={value}" for key, value in MAP_MECHANISMS.items())
+    pan = "cdb_forced_native_arrow_key" if route == "map-pan" else "none"
+    lines = [
+        f".if ((@$t19 == 0) | (@$t18 != 0n{chunks})) {{ .echo HDSESSION_INITIAL_REJECT; q }}",
+        f".if (@$t19 != 0x{MAP_IMAGE_BASE:x}) {{ .echo HDSESSION_BASE_REJECT; q }}",
+        '.printf "HDSESSION_TARGET pid=%x base=%p\\n", @$tpid, @$t19',
+        f".echo HDSESSION_FORCED_ROUTE {mechanisms} pan={pan} load_slot={MAP_LOAD_SLOT}",
+        'sxe -c ".echo HDSESSION_AV; .exr -1; r; kb; q" av',
+        *(f"r @$t{index} = 0" for index in range(18)),
+        'bp 00401DDA ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"',
+        r'bp 0047BD66 ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=mouse hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+8); r eax=0; r eip=0047bd73; gc"',
+        r'bp 0047BDAE ".printf \"HDSESSION_FORCE_ACQUIRE_BYPASS kind=keyboard hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"',
+        soak_composition.START_ANIMS_BREAKPOINTS,
+        (rf'bp 00419B80 ".if (@$t14 == 0) {{ .if (poi(00543d7c) != 5) {{ ed 00544cfc {main_x:08x}; ed 00544d00 {main_y:08x}; '
+         rf'eb 005451c0 80; ed 00544d04 1; .if (@$t0 < 0n16) {{ .printf \"HDSESSION_FORCE_MAIN_POINT seq=%d choice=%d '
+         rf'entry=0x%08x ex=%d ey=%d mouse=(%d,%d)\\n\", @$t0, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), {mouse}; '
+         rf'r @$t0 = @$t0 + 1; }}; }} .else {{ ed 00544cfc {load_x}; ed 00544d00 {load_y}; eb 005451c0 80; '
+         rf'ed 00544d04 1; .if (@$t1 < 0n16) {{ .printf \"HDSESSION_FORCE_LOAD_POINT seq=%d choice=%d mouse=(%d,%d) '
+         rf'selected=%d accept=%d\\n\", @$t1, poi(00543d7c), {mouse}, poi(005441e0), poi(00544190); '
+         rf'r @$t1 = @$t1 + 1; }}; }}; }} .else {{ eb 005451c0 00; ed 00544d04 0; }}; gc"'),
+        (rf'bp 00419C51 ".if (@$t14 == 0) {{ .if (poi(00543d7c) != 5) {{ r eax=1; .if (@$t2 < 0n8) {{ '
+         rf'.printf \"HDSESSION_FORCE_MAIN_CLICK seq=%d desc=0x%08x mouse=(%d,%d)\\n\", @$t2, @ebx, {mouse}; '
+         rf'r @$t2 = @$t2 + 1; }}; }}; }}; gc"'),
+        (r'bp 00447780 ".printf \"HDSESSION_FORCE_SKIP_MAIN_LOAD_CALLBACK ret=%p choice_before=%d exit_before=%d\\n\", '
+         r'poi(@esp), poi(00543d7c), poi(00543d78); ed 00543d7c 5; ed 00543d78 1; r eip=poi(@esp); r esp=@esp+4; gc"'),
+        (rf'bp 00448A68 ".if (@$t14 == 0) {{ .if (poi(00543d7c) == 5) {{ ed 00544cfc {load_x}; ed 00544d00 {load_y}; '
+         rf'eb 005451c0 80; ed 00544d04 1; r eax=1; .if (@$t4 < 0n8) {{ .printf \"HDSESSION_FORCE_LOAD_SELECT seq=%d '
+         rf'mouse=(%d,%d) selected=%d accept=%d\\n\", @$t4, {mouse}, poi(005441e0), poi(00544190); '
+         rf'r @$t4 = @$t4 + 1; }}; }}; }}; gc"'),
+        (r'bp 00448AE3 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { r eax=1; .if (@$t5 < 0n8) { '
+         r'.printf \"HDSESSION_FORCE_LOAD_ACCEPT seq=%d selected=%d accept=%d\\n\", @$t5, poi(005441e0), poi(00544190); '
+         r'r @$t5 = @$t5 + 1; }; }; }; gc"'),
+        (r'bp 00444490 ".printf \"HDSESSION_LOADSAVE selected_arg=%d selected_global=%d accept=%d choice=%d gd=%p\\n\", '
+         r'@eax, poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4); gc"'),
+        (r'bp 0040B660 ".if (poi(005202e4) != 0) { .if (@$t14 == 0) { r @$t14 = 1; eb 005451c0 00; ed 00544d04 0; '
+         r'.printf \"HDSESSION_PLAYGAME pid=%x gd=%p map=(%d,%d) scroll=(%d,%d) surface=%p size=(%d,%d)\\n\", @$tpid, '
+         r'poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), '
+         r'poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; } '
+         r'.else { .echo HDSESSION_PLAYGAME_NO_GAME_DATA; }; gc"'),
+        soak,
+        "g",
+    ]
+    text = "\r\n".join(lines)
+    if not soak_composition._PLAIN_TEXT.fullmatch(text) or soak_composition._LEFTOVER_PLACEHOLDER.search(text):
+        raise ValueError("Forced map route must be plain ASCII without unsubstituted placeholders.")
+    return probe + ("\r\n" + text + "\r\n").encode("ascii")
 
 
 def parse_observations(log: str, identity, metadata):
@@ -312,6 +421,130 @@ def _read_log(path):
     return path.read_bytes().decode("utf-8", errors="replace").replace("\r\n", "\n")
 
 
+class _LogTail:
+    """Complete new log lines since the last read, so long routes never rescan the probe echo."""
+
+    def __init__(self, path, offset=0):
+        self.path, self.offset, self.partial = path, offset, b""
+
+    def lines(self):
+        size = self.path.stat().st_size
+        if size > MAX_LOG:
+            raise ValueError("CDB diagnostic log exceeded its retained output budget.")
+        with self.path.open("rb") as stream:
+            stream.seek(self.offset)
+            chunk = stream.read(size - self.offset)
+        self.offset += len(chunk)
+        *complete, self.partial = (self.partial + chunk).split(b"\n")
+        return [line.rstrip(b"\r").decode("latin-1").strip() for line in complete]
+
+
+MAP_FAILURE_TOKENS = ("HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSION_BASE_REJECT",
+    "HDSESSION_APP_REQUEST_QUIT", "HDSESSION_PLAYGAME_NO_GAME_DATA")
+
+
+def map_ready(log: str, identity, target):
+    """Bind the single map entry and soak-ready rows to the adopted process and selected canvas."""
+    failures = []
+    lines = log.splitlines()
+    if any(token in lines for token in MAP_FAILURE_TOKENS):
+        failures.append("native exception, rejected image/base, application quit or missing game data observed")
+    if any(line.startswith("SOAK_PAN_UNSAFE") for line in lines):
+        failures.append("forced pan found no safe inward direction on the loaded map")
+    games = PLAYGAME.findall(log)
+    rows = soak_log.parse_soak_log(log.encode("latin-1", errors="replace"))
+    failures.extend(rows["failures"])
+    ready = [row for row in rows["ReadyRows"] if row["Source"] == "SOAK_SURFDUMP_READY"]
+    if len(games) > 1 or len(ready) > 1 or len(rows["RouteStarts"]) > 1:
+        failures.append("duplicate map entry, route start or soak-ready observation")
+    playgame = surface = None
+    if len(games) == 1:
+        pid, gd, map_w, map_h, scroll_x, scroll_y, descriptor, width, height = games[0]
+        playgame = dict(pid=int(pid, 16), game_data=int(gd.replace("`", ""), 16), map=(int(map_w), int(map_h)),
+                        scroll=(int(scroll_x), int(scroll_y)), surface=int(descriptor.replace("`", ""), 16),
+                        size=(int(width), int(height)))
+        if target is None or playgame["pid"] != target["pid"] or playgame["game_data"] == 0:
+            failures.append("map entry belongs to a different process or has no game data")
+    if len(ready) == 1 and len(rows["RouteStarts"]) == 1:
+        row = ready[0]
+        surface = dict(descriptor=int(row["Surface"].replace("`", ""), 16), width=row["Width"], height=row["Height"],
+                       pixels=int(row["Base"].replace("`", ""), 16), bytes=row["Bytes"],
+                       route_start=rows["RouteStarts"][0])
+        selected = tuple(map(int, identity["resolution"].split("x")))
+        if ((surface["width"], surface["height"]) != selected or surface["bytes"] != selected[0] * selected[1]
+                or not 0x10000 <= surface["pixels"] < 0x80000000 or not 0x10000 <= surface["descriptor"] < 0x80000000):
+            failures.append("map surface differs from the selected canvas or has an invalid pointer")
+        if playgame is None:
+            failures.append("soak route started without the bound forced map entry")
+    return dict(playgame=playgame, surface=surface, failures=failures)
+
+
+def _map_steady_state(native, target, debugger, log_path, tail, seen, run, report, preflight, ready):
+    """Sample one forced map route until its own end marker, then replay the whole retained log.
+
+    ``seen`` holds the lines the readiness poll already consumed from ``tail``.
+    """
+    surface, route, duration = ready["surface"], preflight["route"], preflight["duration_sec"]
+    report["map_entry"] = ready["playgame"]
+    report["map_surface"] = {key: surface[key] for key in ("descriptor", "width", "height", "pixels", "bytes")}
+    descriptor = struct.pack("<HHI", surface["width"], surface["height"], surface["pixels"])
+    started = next_sample = next_frame = time.monotonic()
+    ended = None
+    print(json.dumps(dict(event="forced_map_ready", route=route, duration_sec=duration,
+                          surface=report["map_surface"])), flush=True)
+    while True:
+        now = time.monotonic()
+        lines, seen = seen + tail.lines(), []
+        for line in lines:
+            if line in MAP_FAILURE_TOKENS or line in ("AV_SURFDUMP", "SURFDUMP_INVALID") or line.startswith("SOAK_PAN_UNSAFE"):
+                raise ValueError("Map route recorded a runtime failure: " + line)
+            if line.startswith("SOAK_ROUTE_END "):
+                ended = now
+        if not native.alive(debugger) or not native.alive(target):
+            raise ValueError("Debugger/candidate exited before the soak route end.")
+        if now >= next_sample:
+            if native.read(target, surface["descriptor"], 8) != descriptor:
+                raise ValueError("Map surface descriptor changed during sampling.")
+            report["samples"].append(dict(elapsed_sec=now - started, **native.telemetry(target)))
+            next_sample = now + 1
+        if now >= next_frame or ended is not None:
+            qualification._reserve(run, surface["bytes"] + 32 * 1024 * 1024)
+            frame = native.read(target, surface["pixels"], surface["bytes"])
+            filename = f"map-frame-{len(report['frames']):04d}.indexed8"
+            _new(run / filename, frame)
+            report["frames"].append(dict(path=filename, sha256=_sha(frame), bytes=surface["bytes"],
+                elapsed_sec=now - started, width=surface["width"], height=surface["height"],
+                coherent_snapshot_verified=False))
+            next_frame = now + MAP_FRAME_INTERVAL_SEC
+        if ended is not None:
+            report["measured_map_host_seconds"] = ended - started
+            break
+        if now - started > duration + MAP_END_GRACE_SEC:
+            raise TimeoutError("The soak route end was not observed within its bounded interval.")
+        time.sleep(0.25)
+    rows = soak_log.parse_soak_log(log_path.read_bytes())
+    failures = list(rows["failures"]) + soak_log._global_order_failures(rows)
+    ticks = duration * soak_composition.TICKS_PER_SECOND
+    end = rows["RouteEnds"][0] if len(rows["RouteEnds"]) == 1 else None
+    if end is None or end["RouteTicks"] != ticks or end["TickDelta"] < ticks or end["Pan"] != (route == "map-pan"):
+        failures.append("soak route end does not cover the fixed route duration")
+    if report["measured_map_host_seconds"] < duration - MAP_HOST_JITTER_SEC:
+        failures.append("host clock does not corroborate the fixed route duration")
+    if route == "map-pan":
+        if len(rows["PanPlans"]) != 1 or len(rows["PanEvents"]) < duration // MAP_PAN_INTERVAL_SEC - 2:
+            failures.append("forced pan route lacks its single plan or its scheduled native arrow-key steps")
+    elif rows["PanPlans"] or rows["PanEvents"]:
+        failures.append("idle map route recorded forced pan rows")
+    report["soak_route"] = dict(route_start=rows["RouteStarts"][0] if rows["RouteStarts"] else None, route_end=end,
+        heartbeats=len(rows["Heartbeats"]), pan_plans=rows["PanPlans"], pan_events=len(rows["PanEvents"]),
+        final_scroll=[end["ScrollX"], end["ScrollY"]] if end else None, failures=failures)
+    if failures:
+        raise ValueError("; ".join(failures))
+    report["map_route_completed"] = True
+    print(json.dumps(dict(event="forced_map_route_completed", route=route, frames=len(report["frames"]),
+                          heartbeats=len(rows["Heartbeats"]), pan_events=len(rows["PanEvents"]))), flush=True)
+
+
 def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_root, ready_timeout=300):
     if preflight["pending"]:
         raise ValueError("; ".join(preflight["pending"]))
@@ -321,15 +554,24 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
     stage_assets(asset_root, rows)
     run = output_root / ("session-" + datetime.now().strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
     run.mkdir(parents=True, exist_ok=False)
+    map_route = preflight["route"] != "menu-idle"
     report = preflight | dict(executed=True, started_at=_now(), run_directory=str(run), failures=[],
         initial_image_bytes_verified=False, natural_menu_idle_verified=False, native_processes=[], frames=[], samples=[],
-        acquisition_returns=[], acquisition_observation_completed=False, input_acquisition_verified=False)
+        acquisition_returns=[], acquisition_observation_completed=False, input_acquisition_verified=False,
+        map_entry=None, map_surface=None, map_route_completed=False, soak_route=None)
     _json(run / "preflight.json", preflight)
     local_candidate = run / "clash95_hd_session.exe"
     _new(local_candidate, loaded["executable"][1])
     commands = run / "session.cdb"
-    _new(commands, command_script(loaded["probe"][1], context["identity"], metadata,
-        smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False)))
+    if map_route:
+        soak_template = qualification.read_file(ROOT / SOAK_TEMPLATE, soak_composition.MAX_TEMPLATE_BYTES)
+        if _sha(soak_template) != preflight["producer_source_hashes"][SOAK_TEMPLATE]:
+            raise ValueError("Soak route template changed after preflight.")
+        _new(commands, map_command_script(loaded["probe"][1], context["identity"], metadata,
+            route=preflight["route"], duration=preflight["duration_sec"], soak_template=soak_template))
+    else:
+        _new(commands, command_script(loaded["probe"][1], context["identity"], metadata,
+            smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False)))
     _new(run / "candidate.cdb", loaded["probe"][1])
     launch_artifacts = {"candidate": dict(path=str(local_candidate), sha256=_sha(loaded["executable"][1])),
         "canonical_probe": dict(path=str(run / "candidate.cdb"), sha256=_sha(loaded["probe"][1])),
@@ -392,8 +634,29 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
         start, menu_started, next_sample, next_frame = time.monotonic(), None, 0, 0
         menu_controls = None
         target_handle = None
+        map_tail, map_lines, map_target = None, [], None
         while True:
-            text = _read_log(log)
+            if map_tail is not None:
+                # The canonical image and target are bound; read only new lines from here on.
+                now = time.monotonic()
+                map_lines.extend(map_tail.lines())
+                if not native.alive(cdb_handle) or not native.alive(target_handle):
+                    raise ValueError("Debugger/candidate exited before the forced map route was ready.")
+                ready = map_ready("\n".join(map_lines), context["identity"], map_target)
+                if ready["failures"]:
+                    raise ValueError("; ".join(ready["failures"]))
+                if ready["surface"] is not None:
+                    _map_steady_state(native, target_handle, cdb_handle, log, map_tail, map_lines, run, report,
+                                      preflight, ready)
+                    break
+                if now - start > ready_timeout:
+                    raise TimeoutError("Forced map entry and soak readiness were not observed within the bounded startup interval.")
+                time.sleep(0.25)
+                continue
+            raw = log.read_bytes() if log.exists() else b""
+            if len(raw) > MAX_LOG:
+                raise ValueError("CDB diagnostic log exceeded its retained output budget.")
+            text = raw.decode("utf-8", errors="replace").replace("\r\n", "\n")
             observed = parse_observations(text, context["identity"], metadata)
             report["acquisition_returns"] = observed["acquisition_returns"]
             report["acquisition_failed_hresult_count"] = sum(r["failed_hresult"] for r in observed["acquisition_returns"])
@@ -415,6 +678,19 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
                     report["acquisition_observation_completed"] = True
                     break
             now = time.monotonic()
+            if map_route:
+                if not native.alive(cdb_handle) or (target_handle and not native.alive(target_handle)):
+                    raise ValueError("Debugger/candidate exited before the forced map route was ready.")
+                if observed["initial_image_bytes_verified"] and target_handle is not None:
+                    complete = text.split("\n")[:-1]  # The tail rereads any partial last line.
+                    marker = next(index for index, line in enumerate(complete) if TARGET.fullmatch(line.strip()))
+                    map_target, map_lines = observed["target"], [line.strip() for line in complete[marker + 1:]]
+                    map_tail = _LogTail(log, raw.rfind(b"\n") + 1)
+                    continue
+                if now - start > ready_timeout:
+                    raise TimeoutError("Forced map entry and soak readiness were not observed within the bounded startup interval.")
+                time.sleep(0.25)
+                continue
             if observed["menu"] and menu_started is None:
                 if not observed["initial_image_bytes_verified"] or target_handle is None:
                     raise ValueError("Menu observation precedes authenticated image/process binding.")
@@ -492,7 +768,8 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
                 report["failures"].append("Producer source changed during session: " + name)
         report["finished_at"] = _now()
         report["diagnostic_passed"] = not report["failures"] and report["initial_image_bytes_verified"] and (
-            preflight["smoke_only"] or report["natural_menu_idle_verified"] or report["acquisition_observation_completed"])
+            preflight["smoke_only"] or report["natural_menu_idle_verified"] or report["acquisition_observation_completed"]
+            or report["map_route_completed"])
         _json(run / "session-report.json", report)
     return report
 

@@ -87,20 +87,24 @@ def _bounded(label: str, value: object, bounds: tuple[int, int]) -> int:
     return value
 
 
-def compose_probe(probe_template: bytes, soak_template: bytes, *, route: str, duration_sec: int,
-                  pan_interval_sec: int, load_slot: int, raw_path: str) -> bytes:
-    """Return the exact generated probe bytes for one hidden soak run."""
+def load_mouse_raw(load_slot: int) -> tuple[str, str]:
+    """Native load-list point for one slot, in the game's raw <<6 mouse units."""
+    return f"{320 << 6:08x}", f"{(166 + 22 * load_slot) << 6:08x}"
+
+
+def prepare_soak_text(soak_template: bytes, *, route: str, duration_sec: int, pan_interval_sec: int,
+                      load_slot: int) -> str:
+    """Return the stripped soak extra with one run's parameters substituted.
+
+    compose_probe inserts exactly this text; other hidden producers can reuse
+    it without the legacy base template.
+    """
     if route not in ROUTES:
         raise ProbeCompositionError("route must be map-idle or map-pan")
     duration_ticks = _bounded("duration_sec", duration_sec, DURATION_SEC_RANGE) * TICKS_PER_SECOND
     pan_interval_ticks = _bounded("pan_interval_sec", pan_interval_sec, PAN_INTERVAL_SEC_RANGE) * TICKS_PER_SECOND
     _bounded("load_slot", load_slot, LOAD_SLOT_RANGE)
-    if (type(raw_path) is not str or not raw_path or not _PLAIN_TEXT.fullmatch(raw_path)
-            or any(character in raw_path for character in '\t\r\n"')):
-        raise ProbeCompositionError("raw_path must be one line of plain ASCII without quotes")
-    mouse_x = f"{320 << 6:08x}"
-    mouse_y = f"{(166 + 22 * load_slot) << 6:08x}"
-
+    mouse_x, mouse_y = load_mouse_raw(load_slot)
     soak = _template_text("soak probe template", soak_template).strip(_TRIM)
     missing = [name for name in REQUIRED_SOAK_PLACEHOLDERS if name not in soak]
     if missing:
@@ -114,6 +118,23 @@ def compose_probe(probe_template: bytes, soak_template: bytes, *, route: str, du
                                ("__LOAD_MOUSE_RAW_X__", mouse_x),
                                ("__LOAD_MOUSE_RAW_Y__", mouse_y)):
         soak = soak.replace(placeholder, value)
+    return soak
+
+
+def compose_probe(probe_template: bytes, soak_template: bytes, *, route: str, duration_sec: int,
+                  pan_interval_sec: int, load_slot: int, raw_path: str) -> bytes:
+    """Return the exact generated probe bytes for one hidden soak run."""
+    if route not in ROUTES:
+        raise ProbeCompositionError("route must be map-idle or map-pan")
+    _bounded("duration_sec", duration_sec, DURATION_SEC_RANGE)
+    _bounded("pan_interval_sec", pan_interval_sec, PAN_INTERVAL_SEC_RANGE)
+    _bounded("load_slot", load_slot, LOAD_SLOT_RANGE)
+    if (type(raw_path) is not str or not raw_path or not _PLAIN_TEXT.fullmatch(raw_path)
+            or any(character in raw_path for character in '\t\r\n"')):
+        raise ProbeCompositionError("raw_path must be one line of plain ASCII without quotes")
+    mouse_x, mouse_y = load_mouse_raw(load_slot)
+    soak = prepare_soak_text(soak_template, route=route, duration_sec=duration_sec,
+                             pan_interval_sec=pan_interval_sec, load_slot=load_slot)
 
     probe = _template_text("probe template", probe_template)
     # Order matters: the load-coordinate action carries the mouse placeholders.
