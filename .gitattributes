@@ -1151,3 +1151,7 @@
 /src/patcher/battle_profile_line_replay_v2.py text eol=lf
 /tools/test_battle_profile_line_replay_v2.py text eol=lf
 /reports/battle-line-replay-v2-authoring-20261027.json text eol=lf
+/tools/test_battle_profile_native_unit_count_original.py text eol=lf
+/.github/workflows/native-unit-count-contracts.yml text eol=lf
+/docs/hd/BATTLE_UNIT_COUNT_CPU.md text eol=lf
+/reports/battle-unit-count-native-cpu-20261027.json text eol=lf
