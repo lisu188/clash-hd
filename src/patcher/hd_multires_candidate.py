@@ -1,6 +1,7 @@
-"""Original-bound 1080p/1440p/4K launcher successors.
+"""Original-bound launcher successors for every preset above native 800x600.
 
-Frozen predecessor recipes remain unchanged. These versioned candidates add
+Frozen predecessor recipes remain unchanged; 800x600 keeps its own recipes and
+the protected Classic stable stage. These versioned candidates add
 bounded framed-map guards where available and carry an independent, relocated
 initial-image verifier. Construction never implies gameplay qualification.
 """
@@ -20,7 +21,8 @@ from . import pe_extension as pe
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = "src/patcher/hd_multires_candidate.py"
 PROFILES = ("classic", "framed", "completehd", "modalwidgets")
-RESOLUTIONS = ("1920x1080", "2560x1440", "3840x2160")
+RESOLUTIONS = ("1024x768", "1280x720", "1280x960", "1366x768",
+               "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 REVISION = "hd_multires_v1"
 ORIGINAL_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
 STABLE_STAGE = ("gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
@@ -257,7 +259,7 @@ def _build_candidate(original: bytes, resolution: str, *, profile: str):
     _require(type(original) is bytes and sha256(original) == ORIGINAL_SHA256,
              "unknown original executable SHA-256; no override exists")
     _require(type(resolution) is str and resolution in RESOLUTIONS,
-             "only 1920x1080, 2560x1440 and 3840x2160 are admitted")
+             "only the registered HD successor presets above 800x600 are admitted")
     selected_stage = stage(profile)
     before = _source_hashes(profile)
     image, predecessor, inherited = _builder(profile).build_candidate(original, resolution)

@@ -88,11 +88,11 @@ expanded-battle successor, implement the fourteen missing runtime verifiers,
 or supply fresh runtime evidence. Existing
 legacy acceptance cannot qualify the required expanded-battle release.
 
-The current catalog advertises 32 of the 36 preset combinations. Complete HD
-and Modal Widgets each lack 1366x768 and 3440x1440. The separate
-`hd_multires_v1` launcher successor registers the selected twelve combinations
-at 1920x1080, 2560x1440 and 3840x2160, using bounded Classic/framed map guards
-and a source-verified standalone package. Its selected construction report is
+The catalog now advertises all 36 preset combinations: Complete HD and Modal
+Widgets gained 1366x768 and 3440x1440 through the successor. The separate
+`hd_multires_v1` launcher successor registers thirty-two combinations, every
+preset above 800x600, using bounded Classic/framed map guards and a
+source-verified standalone package. Its selected construction report is
 not full-matrix or native acceptance. See [multi-resolution usage](MULTIRES_LAUNCHER.md).
 The existing release evaluator implements two of sixteen production lane
 verifiers; the remaining fourteen still fail explicitly. No new stable status,

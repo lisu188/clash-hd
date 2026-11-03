@@ -155,16 +155,19 @@ hidden map-pan frame metrics cannot show coherent panning. See the
 ### Selected multi-resolution launcher batch
 
 The versioned `hd_multires_v1` launcher route now covers Classic, Framed,
-Complete HD and Modal Widgets at 1920x1080, 2560x1440 and 3840x2160.
+Complete HD and Modal Widgets at every preset above native 800x600: 1024x768,
+1280x720, 1280x960, 1366x768, 1920x1080, 2560x1440, 3440x1440 and 3840x2160.
+The 800x600 cells keep their own recipes, and Classic 800x600 stays the
+protected stable default.
 Source and standalone Windows launchers share exact recipe/provenance checks.
 Separate bounded map/input integration preserves Classic style and the three
-framed profile identities. All twelve cells remain experimental; this does
+framed profile identities. All thirty-two cells remain experimental; this does
 not install expanded battle or accept native gameplay, input or endurance.
 See [the multi-resolution launcher](MULTIRES_LAUNCHER.md) for usage, packaging,
 current verification boundaries and the selected-cell qualification tool.
-The standalone build's restart determinism for all twelve cells is recorded in
-`reports/hd-multires-standalone-restart-20261102.json`. It is construction
-evidence only.
+The standalone build's restart determinism for the first twelve cells is
+recorded in `reports/hd-multires-standalone-restart-20261102.json`. A restart
+proof for all thirty-two cells is pending. Both are construction evidence only.
 
 The separately versioned Adjacent/Unit caller successor has source/scalar
 coverage and a local original-backed CPU fixture through real Unit RET4 on a

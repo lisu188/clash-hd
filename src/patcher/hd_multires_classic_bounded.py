@@ -14,7 +14,8 @@ from . import classic_all_presets_candidate as classic
 from . import partial_tile_clip as clip
 from . import pe_extension as pe
 
-RESOLUTIONS = ("1920x1080", "2560x1440", "3840x2160")
+RESOLUTIONS = ("1024x768", "1280x720", "1280x960", "1366x768",
+               "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 FULL_ENTRY = bytes.fromhex("53515256575583ec18")
 INCREMENTAL_ENTRY = bytes.fromhex("535156575583ec08")
 FULL_SHA256 = "0bc270a6f9131268c61dad8b65ff8ea04a43fd44371c63b21a4e06ea9b9d5e5c"
@@ -36,10 +37,24 @@ def _same_json(left, right):
     return json.dumps(left, sort_keys=True, separators=(",", ":")) == json.dumps(right, sort_keys=True, separators=(",", ":"))
 
 
+def _new_section(parent, bundle, hooks, removed):
+    """Below the wide-menu width the Classic parent has no RX extension tail.
+
+    Add one bounded .hdcode section at the address the bundle was emitted for,
+    with the same hooks and relocation removals as the tail extension.
+    """
+    result = pe._extend_verified_image(parent, code=bundle.code, code_va=bundle.base_va,
+        relocations=bundle.relocations, binding={"purpose": "classic-bounded-world"},
+        hooks=hooks, removed_highlow_rvas=removed)
+    return result.image, list(result.edits), len(clip.absolute_relocation_offsets(bundle))
+
+
 def _append(parent, bundle, hooks, removed):
     """Extend only the authenticated final RX tail; retain its old bytes."""
     view = pe.inspect_pe(parent)
     last = view.sections[-1]
+    if last.characteristics != pe.RX_CODE:
+        return _new_section(parent, bundle, hooks, removed)
     require(last.characteristics == pe.RX_CODE and last.raw_offset + last.raw_size == len(parent),
             "Classic final RX section must own the complete file tail")
     old_table, old_fields = pe._old_relocations(parent, view)

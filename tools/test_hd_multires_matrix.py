@@ -25,11 +25,13 @@ class MultiresMatrixTests(unittest.TestCase):
         return SyntheticBundle(self.root / (profile + resolution + str(legacy)),
             self.manifest, profile, resolution, legacy=legacy)
 
-    def test_twelve_selected_recipes_are_fixed_but_full_matrix_remains_36(self):
+    def test_thirty_two_selected_recipes_are_fixed_but_full_matrix_remains_36(self):
         self.assertEqual(len(matrix.REQUIRED_IDS), 36)
         selected = [row for row in self.inventory.values()
                     if (row.get("source_recipe") or {}).get("recipe_revision") == "hd_multires_v1"]
-        self.assertEqual(len(selected), 12)
+        self.assertEqual(len(selected), 32)
+        # Native 800x600 cells keep their own recipes; Classic's is the stable stage.
+        self.assertFalse(any(row.get("resolution") == "800x600" for row in selected))
         for profile in matrix.PROFILES:
             for resolution in matrix.MULTIRES_PRESETS:
                 fixture = self.fixture(profile, resolution)
@@ -100,7 +102,8 @@ class MultiresMatrixTests(unittest.TestCase):
                     "stage": matrix.evidence.STABLE_STAGE + "-classic-hd-multires-validation"}
         self.assertEqual(matrix.candidate_artifact_limit(identity, "metadata"), 16 * 1024 * 1024)
         self.assertEqual(matrix.candidate_artifact_limit(identity, "probe"), 64 * 1024 * 1024)
-        for change in ({"profile": "framed"}, {"resolution": "3440x1440"}, {"recipe_revision": "complete_hd_v1"}):
+        # 800x600 is never a successor preset, so it keeps the default bound.
+        for change in ({"profile": "framed"}, {"resolution": "800x600"}, {"recipe_revision": "complete_hd_v1"}):
             self.assertEqual(matrix.candidate_artifact_limit(identity | change, "probe"), matrix.MAX_JSON_BYTES)
 
     def test_private_reconstruction_ignores_public_producer_and_issuer_aliases(self):
@@ -144,7 +147,7 @@ class MultiresMatrixTests(unittest.TestCase):
     def test_wrong_profile_preset_stage_or_root_rejects_before_build(self):
         for profile, resolution, stage, root in (
                 ("unknown", "1920x1080", matrix.evidence.STABLE_STAGE + "-classic-hd-multires-validation", matrix.ROOT),
-                ("classic", "3440x1440", matrix.evidence.STABLE_STAGE + "-classic-hd-multires-validation", matrix.ROOT),
+                ("classic", "800x600", matrix.evidence.STABLE_STAGE + "-classic-hd-multires-validation", matrix.ROOT),
                 ("classic", "1920x1080", matrix.evidence.STAGE, matrix.ROOT),
                 ("classic", "1920x1080", matrix.evidence.STABLE_STAGE + "-classic-hd-multires-validation", self.root)):
             with self.subTest(profile=profile, resolution=resolution, stage=stage), self.assertRaisesRegex(ValueError, "exact fixed|fixed repository"):

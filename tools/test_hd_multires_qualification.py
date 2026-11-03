@@ -50,9 +50,9 @@ class QualificationTests(unittest.TestCase):
             qualification._authenticate_bundle(path, rebuild, qualification.sha(original))))
         return stack
 
-    def test_inventory_is_exactly_twelve_and_keeps_full_release_target(self):
+    def test_inventory_is_exactly_thirty_two_and_keeps_full_release_target(self):
         report = qualification.selected_report([])
-        self.assertEqual(len(report["cells"]), 12)
+        self.assertEqual(len(report["cells"]), 32)
         self.assertEqual(report["full_release_cell_count"], 36)
         self.assertEqual(report["measured_endurance_seconds_per_cell"], 17640)
         self.assertEqual(report["accepted_cells"], 0)
@@ -99,9 +99,9 @@ class QualificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown original"):
             qualification.authenticate_bundle(manifest)
         bundle = json.loads(manifest.read_bytes())
-        bundle["cell_id"] = "framed/3440x1440"
+        bundle["cell_id"] = "framed/800x600"  # Native 800x600 is never a successor cell.
         manifest.write_bytes(qualification.encode(bundle))
-        with self.assertRaisesRegex(ValueError, "twelve exact"):
+        with self.assertRaisesRegex(ValueError, "exact successor"):
             qualification.authenticate_bundle(manifest)
 
     def test_public_original_identity_and_producer_alias_cannot_select_authentication(self):
@@ -135,7 +135,8 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(report["authenticated_cells"], 1)
         self.assertEqual(report["accepted_cells"], 0)
         self.assertTrue(any("duplicate selected cell" in error for error in report["failures"]))
-        row = report["cells"][1]
+        cell_id = json.loads(manifest.read_bytes())["cell_id"]
+        row = next(row for row in report["cells"] if row["cell_id"] == cell_id)
         self.assertTrue(row["lanes"]["resolution_coverage"]["passed"])
         self.assertEqual(sum(lane["passed"] for lane in row["lanes"].values()), 1)
         self.assertFalse(row["candidate_bound_expanded_battle_passed"])

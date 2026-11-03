@@ -36,7 +36,8 @@ CANDIDATE_ROOT = Path("C:/ClashTests")
 MAX_JSON_BYTES = 2 * 1024 * 1024
 MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
 MULTIRES_REVISION = "hd_multires_v1"
-MULTIRES_PRESETS = ("1920x1080", "2560x1440", "3840x2160")
+MULTIRES_PRESETS = ("1024x768", "1280x720", "1280x960", "1366x768",
+                    "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 MULTIRES_METADATA_BYTES = 16 * 1024 * 1024
 MULTIRES_PROBE_BYTES = 64 * 1024 * 1024
 RUNTIME_POLICY = "read-only candidate/evidence checks; no runtime, capture, input, status or promotion writes"
@@ -183,7 +184,7 @@ def _multires_identity(identity: dict) -> bool:
 
 
 def candidate_artifact_limit(identity: dict, name: str, *, json_default=None, binary_default=None) -> int:
-    """Large sidecars belong only to the exact twelve-cell source recipe."""
+    """Large sidecars belong only to the exact multiresolution successor recipe."""
     if _multires_identity(identity):
         if name == "metadata":
             return MULTIRES_METADATA_BYTES

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optional original-backed CPU checks of all twelve installed HD candidates.
+"""Optional original-backed CPU checks of all 32 installed HD successor candidates.
 
 The PE is independently loaded/rebased in RAM. Installed full/incremental
 hooks, cell clipping and mouse guards execute; native Tile/fill/minimap,
@@ -203,8 +203,8 @@ class Machine:
 
 
 class AuthoringTests(unittest.TestCase):
-    def test_exact_twelve_geometry_and_synthetic_relocation_loader(self):
-        self.assertEqual(len(CELLS), 12)
+    def test_exact_successor_geometry_and_synthetic_relocation_loader(self):
+        self.assertEqual(len(CELLS), 32)
         for profile, resolution in CELLS:
             width, height, right, bottom, full, cover = geometry(profile, resolution)
             self.assertLessEqual(full[0], cover[0]); self.assertLessEqual(full[1], cover[1])
@@ -348,10 +348,10 @@ def main():
     if not result.wasSuccessful() or result.skipped:
         return 1
     if args.report is not None:
-        report = dict(schema="hd_multires_installed_cpu_fixture_v1", generated_at=datetime.now(timezone.utc).isoformat(),
+        report = dict(schema="hd_multires_installed_cpu_fixture_v2", generated_at=datetime.now(timezone.utc).isoformat(),
             fixture_source_sha256=fixture_sha, original_sha256=candidate.ORIGINAL_SHA256,
             expected_cells=[p + "/" + r for p, r in SELECTED], cells=ROWS,
-            all_twelve_cells_checked=len(ROWS) == 12 and set(SELECTED) == set(CELLS),
+            all_selected_cells_checked=len(ROWS) == len(CELLS) and set(SELECTED) == set(CELLS),
             tests_run=result.testsRun, skipped=0, passed=True,
             limitation="Installed candidate RAM bytes and authored callback models; no native drawing, Windows gameplay, device input, endurance or release acceptance.",
             **{name: False for name in FALSE_CLAIMS})

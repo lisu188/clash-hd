@@ -128,7 +128,8 @@ class LauncherDisplayIntegrationTests(unittest.TestCase):
 
     def test_profile_plans_use_independent_geometry_and_preserve_paths(self):
         kwargs = dict(resolution="1366x768", clash_dir=self.root / "game", candidates_root=self.root / "candidates")
-        classic, framed = self.core.plan_candidate(**kwargs), self.framed.plan_candidate(**kwargs)
+        # 1366x768 defaults to the successor; this compares the frozen recipes.
+        classic, framed = self.core.plan_candidate(**kwargs), self.framed.plan_candidate(stage=self.framed.STAGE, **kwargs)
         self.assertEqual(classic.candidate_dir, self.root / "candidates/1366x768")
         self.assertEqual(framed.candidate_dir, self.root / "candidates/framed-minimap/1366x768")
         self.assertEqual(classic.renderer, "classic")
@@ -280,6 +281,12 @@ class LauncherDisplayIntegrationTests(unittest.TestCase):
         app.settings = {"clash_dir": str(self.root / "game"), "candidates_root": str(self.root / "candidates")}
         app.display_label, app.play_button = Mock(), Mock()
         app.resolution_buttons = [(Mock(), presets.load_options(self.manifest)[0])]
+        import completehd
+        # Framed 1366x768 now previews its bounded successor; admit this
+        # temporary candidates root for it as the bundle tests do.
+        root_guard = patch.object(completehd, "CANDIDATE_ROOT", self.root / "candidates")
+        root_guard.start()
+        self.addCleanup(root_guard.stop)
         with patch.object(self.core, "launch_game") as launch:
             app.refresh_display_plan()
         text = app.display_label.configure.call_args.kwargs["text"]

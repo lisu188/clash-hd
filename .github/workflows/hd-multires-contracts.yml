@@ -78,7 +78,7 @@ jobs:
           $taskPython = (Get-Command python).Source
           & .\scripts\launcher\build_launcher_exe.ps1 -Python $taskPython -OutputDir C:\ClashTests\launcher\ci-build -Execute
           if ($LASTEXITCODE -ne 0) { throw 'Launcher build failed.' }
-      - name: Inspect all twelve plans from a clean folder without Python
+      - name: Inspect all thirty-two successor plans from a clean folder without Python
         shell: pwsh
         run: |
           $taskExe = Get-ChildItem -LiteralPath C:\ClashTests\launcher\ci-build -Filter ClashHDLauncher.exe -Recurse -File
@@ -103,7 +103,7 @@ jobs:
             $env:PYTHONHOME = $taskSavedPythonHome
           }
           $taskResult = Get-Content -LiteralPath $taskReport -Raw | ConvertFrom-Json
-          if ($taskResult.passed -ne $true -or @($taskResult.cells).Count -ne 12 -or $taskResult.game_runtime_executed -ne $false) { throw 'Incomplete standalone launcher proof.' }
+          if ($taskResult.passed -ne $true -or @($taskResult.cells).Count -ne 32 -or $taskResult.game_runtime_executed -ne $false) { throw 'Incomplete standalone launcher proof.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: experimental-hd-launcher

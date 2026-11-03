@@ -1,6 +1,6 @@
 # Local release-validation runbook
 
-The selected twelve 1080p/1440p/4K launcher successors and standalone package
+The thirty-two launcher successors (every preset above 800x600) and standalone package
 are described in [MULTIRES_LAUNCHER.md](MULTIRES_LAUNCHER.md). Their construction
 and private source authentication are available, but they do not establish
 native acceptance or complete expanded-battle installation. The selected-cell

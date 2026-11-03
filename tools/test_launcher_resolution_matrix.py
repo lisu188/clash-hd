@@ -19,7 +19,7 @@ class ResolutionMatrixTests(unittest.TestCase):
     def test_inventory_covers_every_profile_preset_once(self):
         expected=tool.presets.load_manifest()['profiles']
         rows=tool.inventory()
-        self.assertEqual(len(rows),34)
+        self.assertEqual(len(rows),38)
         self.assertEqual({(r['profile'],r['resolution']) for r in rows},
                          {(p,r) for p,d in expected.items() for r in d['resolutions']})
         self.assertEqual(len({(r['profile'],r['resolution']) for r in rows}),len(rows))
@@ -29,7 +29,8 @@ class ResolutionMatrixTests(unittest.TestCase):
     def test_no_missing_backend_or_unadvertised_combo_can_silently_run(self):
         manifest=copy.deepcopy(tool.presets.load_manifest());manifest['profiles']['unknown']={}
         with patch.object(tool.presets,'load_manifest',return_value=manifest),self.assertRaises(ValueError):tool.inventory()
-        for pair in (('modalwidgets','1366x768'),('classic','802x602'),('bad','800x600'),('framed','1600x900')):
+        # 802x602 is advertised only for Complete HD and Modal Widgets.
+        for pair in (('framed','802x602'),('classic','802x602'),('bad','800x600'),('framed','1600x900')):
             with self.subTest(pair=pair),self.assertRaises(ValueError):tool.select_case(*pair)
 
     def test_matrix_and_dry_run_never_start_process_or_change_display(self):
