@@ -75,7 +75,7 @@ jobs:
               output.write('## Resolution successor source contracts\n\n')
               output.write('All four preset constructors use synthetic PE fixtures here. Their optional original-backed lanes are separate local evidence.\n\n')
               output.write('Successor recipe authentication does not register a launcher recipe or establish runtime acceptance.\n\n')
-              output.write('Matrix-cell contexts replay resolution metadata and, from retained hidden runs, the three hidden-host soak lanes and the save/load round trip. Those fixtures here are synthetic; the other eleven matrix-context runtime lanes, installed expanded battle and promotion remain unsupported.\n\n')
+              output.write('Matrix-cell contexts replay resolution metadata and, from retained hidden runs, the three hidden-host soak lanes the save/load round trip and the day of turns. Those fixtures here are synthetic; the other ten matrix-context runtime lanes, installed expanded battle and promotion remain unsupported.\n\n')
               output.write('The two Complete HD matrix recipes privately reconstruct a pinned source graph. These source tests do not run the optional genuine-original memory lane or qualify runtime evidence.\n\n')
               output.write('Battle parent allocation plans install no hooks, code, state or relocations. Runtime ownership and complete battle routing remain separate requirements.\n\n')
               output.write('The V2 allocation context reserves fresh RX/RW addresses and audits Modal header growth with exact file-offset edits. Its provider reservation is unpopulated and has no proven capacity or lifetime. The optional original-backed RAM lane is not run in CI.\n\n')

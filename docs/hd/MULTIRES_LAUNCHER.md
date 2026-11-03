@@ -217,6 +217,32 @@ reload read exactly the first save's bytes. The two saves differ in 22
 bytes, all inside those pointer fields, and have the same normalized state.
 Against the source slot 0, the first save differs only in pointer fields
 and its empty 16-byte name.
+
+### Hidden forced day of turns
+
+`forced-turn` is a second extra, so the session module is unchanged. At the
+world-map loop site `0x40B0C8` it saves `before_slot`. It then calls the native
+`nextPlayer` (`0x40AA60`) every 128 ticks until the day word (`gd+0x222F6`) has
+advanced by one and player 0 is current again, then saves `after_slot`. There
+are at most five calls. Each forced call keeps every general register and the
+flags and restores them when the call returns with its ESP. Its state uses the
+only header padding free in all 36 candidates (`0x4003C0`-`0x4003FF`); the
+older day diagnostic's `0x400300` lies inside the section table of 18 HD
+candidates.
+
+The unacquired hidden mouse leaves stale button bytes. The day banner
+(`0x40A943`) and its release wait (`0x4609E0`, `0x4609FC`) treat them as
+clicks and held buttons. Each is observed for eight polls. Only then may one
+result per banner or button be overridden, disclosed as
+`turn_input=cdb_bounded_stale_button_result_overrides`.
+
+On Framed 1920x1080 the run saved slot 5. Calls 1-3 returned players 1-3. Call
+4 logged the native day increment 1 to 2, the banner and its release wait,
+then returned player 0 on day 2. The run saved slot 6, and the map redrew to
+its 120 s route end. The cycle took about 660 ticks. No result override was
+needed; the banner's eighth test read the stale bytes as a click, which is
+not input. Every nextPlayer, banner and release-wait site is byte-identical
+to the original in all 36 candidates.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

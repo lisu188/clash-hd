@@ -4,8 +4,8 @@
 The public evaluator always rebuilds the candidate through the production
 matrix authenticator and rereads the actual launcher catalog. Resolution
 coverage, the three hidden-host soak lanes (tools/matrix_soak_lanes.py) and the
-hidden save/load round trip (tools/matrix_continuity_lanes.py) have
-matrix-context replay. The other eleven runtime lanes, installed expanded
+hidden save/load round trip and day of turns (tools/matrix_continuity_lanes.py)
+have matrix-context replay. The other ten runtime lanes, installed expanded
 battle and promotion remain explicit failures.
 """
 from __future__ import annotations

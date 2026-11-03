@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -120,6 +121,105 @@ class ForcedSaveTests(unittest.TestCase):
         # The echoed command text carries format strings, never a printed marker.
         echoed = "0:000> " + extras.compose(spec(), TEMPLATE).split("\r\n")[-1] + "\r\n"
         self.assertTrue(extras.observe(spec(), echoed)[1])
+
+
+TURN_TEMPLATE = (ROOT / extras.FORCED_TURN_TEMPLATE).read_bytes()
+TURN_REQUEST = {"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6}
+
+
+def turn_spec():
+    return extras.prepare(dict(TURN_REQUEST), route="map-idle", duration=120)
+
+
+def turn_log(*, players=(1, 2, 3, 0), day=1, banner=None, release=None, fail=None, after_eax="1", done=True):
+    """One day of forced turns as the template prints it, with optional disclosed overrides."""
+    rows = [f"HDTURN_START player=0 day={day} gd=07ee0030 tick=1000 active=(1,1,1,1,0)",
+            "HDTURN_SAVE_CALL slot=5 player=0 day=1", "HDTURN_SAVE_RETURNED slot=5 eax=1"]
+    for advance, player in enumerate(players, 1):
+        before = players[advance - 2] if advance > 1 else 0
+        rows.append(f"HDTURN_NEXT_CALL advance={advance} player={before} day={day} tick={1000 + 128 * advance}")
+        if player == 0:
+            rows += [f"HDTURN_DAY_INCREMENT advance={advance} player=0 day={day + 1}",
+                     *([banner] if banner else []), f"HDTURN_BANNER_EXIT player=0 day={day + 1} polls=8",
+                     "HDTURN_RELEASE_WAIT_ENTRY wait=1 player=0 day=2", *([release] if release else []),
+                     "HDTURN_RELEASE_RETURN player=0 day=2 left=8 right=1"]
+        rows.append(f"HDTURN_NEXT_RETURN advance={advance} player={player} day={day + (player == 0)} "
+                    f"tick={1040 + 128 * advance}")
+    rows += [f"HDTURN_FULL_DAY_RETURNED initial_day={day} final_day={day + 1} player=0 advances={len(players)}",
+             "HDTURN_SAVE_CALL slot=6 player=0 day=2", f"HDTURN_SAVE_RETURNED slot=6 eax={after_eax}"]
+    if done:
+        rows.append(f"HDTURN_DONE player=0 day={day + 1} advances={len(players)}")
+    if fail:
+        rows.append(f"HDTURN_FAIL {fail}")
+    return "\r\n".join(["EXACT_CANONICAL_PASS", *rows]) + "\r\n"
+
+
+class ForcedTurnTests(unittest.TestCase):
+    def test_prepare_fixes_route_slots_mechanisms_and_sites(self):
+        spec = turn_spec()
+        self.assertEqual(spec["mechanisms"], {"turn": "cdb_forced_next_player", "save": "cdb_forced_save_game",
+                                              "turn_input": "cdb_bounded_stale_button_result_overrides"})
+        self.assertEqual((spec["pre_files"], spec["post_files"]), (["save/0.dat"], ["save/5.dat", "save/6.dat"]))
+        self.assertNotIn("save_slot", spec)
+        # The forced-save spec is unchanged by the turn extra.
+        self.assertEqual(sorted(spec_save := extras.prepare({"name": "forced-save", "load_slot": 0, "save_slot": 7},
+                                                            route="map-idle", duration=120)),
+                         ["load_slot", "mechanisms", "name", "post_files", "pre_files", "request", "save_slot",
+                          "sites", "template"])
+        self.assertEqual(spec_save["sites"], ["0040B0C1"])
+        for request, message in ((dict(TURN_REQUEST, before_slot=6), "distinct"),
+                                 (dict(TURN_REQUEST, after_slot=0), "after_slot"),
+                                 (dict(TURN_REQUEST, extra=1), "exactly"),
+                                 ({key: TURN_REQUEST[key] for key in ("name", "load_slot", "before_slot")}, "exactly")):
+            with self.assertRaisesRegex(ValueError, message):
+                extras.prepare(request, route="map-idle", duration=120)
+        with self.assertRaisesRegex(ValueError, "120 s map-idle"):
+            extras.prepare(dict(TURN_REQUEST), route="map-pan", duration=600)
+
+    def test_compose_restores_registers_around_every_forced_call_on_declared_sites(self):
+        text = extras.compose(turn_spec(), TURN_TEMPLATE)
+        self.assertEqual(sorted(extras.breakpoint_sites(text)), sorted(extras.TURN_SITES))
+        self.assertNotRegex(text, r"__[A-Z0-9_]+__")
+        driver = [line for line in text.split("\r\n") if line.startswith("bp 0040B0C8 ")][0]
+        # Three forced calls (before save, nextPlayer, after save) each save all registers; one restore serves all.
+        self.assertEqual(driver.count("r @$t6 = @eax; r @$t8 = @ebx; r @$t9 = @ecx; r @$t10 = @edx; r @$t11 = @esi; "
+                                      "r @$t15 = @edi; r @$t16 = @ebp; r @$t17 = @efl; ed 004003cc @esp;"), 3)
+        self.assertEqual(driver.count("r eax=@$t6; r ebx=@$t8; r ecx=@$t9; r edx=@$t10; r esi=@$t11; r edi=@$t15; "
+                                      "r ebp=@$t16; r efl=@$t17"), 1)
+        self.assertIn("r eax=0n5; r edx=00543d28; r eip=004443E0", driver)
+        self.assertIn("r eax=0n6; r edx=00543d28; r eip=004443E0", driver)
+        self.assertIn("r eax=0; r edx=5; r ecx=0; r eip=0040AA60", driver)
+        self.assertLess(len(driver), 4096)
+        # Scratch stays inside the header padding free in every candidate.
+        for address in {int(value, 16) for value in re.findall(r"\b(004003[0-9a-f]{2})\b", text)}:
+            self.assertTrue(0x4003C0 <= address <= 0x4003FC, hex(address))
+        for forbidden in ("$t7", "$t13", "$t14", "$t18", "$t19", "00400040", "005451c0 ", "SendInput"):
+            self.assertNotIn(forbidden, text)
+
+    def test_markers_bind_the_day_cycle_saves_and_disclosed_overrides(self):
+        fields, failures = extras.observe(turn_spec(), turn_log())
+        self.assertEqual(failures, [])
+        self.assertEqual([row[1] for row in fields["returns"]], [1, 2, 3, 0])
+        self.assertEqual(fields["full_day"], dict(initial_day=1, final_day=2, player=0, advances=4))
+        self.assertEqual(fields["overrides"], dict(banner=0, left=0, right=0))
+        self.assertEqual([(save["slot"], save["eax"]) for save in fields["saves"]], [(5, 1), (6, 1)])
+        overridden = extras.observe(turn_spec(), turn_log(
+            banner="HDTURN_FORCED_BANNER_ACK poll=8 value=1",
+            release="HDTURN_FORCED_RELEASE button=left poll=8 value=0"))[0]["overrides"]
+        self.assertEqual(overridden, dict(banner=1, left=1, right=0))
+        for text, message in ((turn_log(fail="release_return_stack"), "release_return_stack"),
+                              (turn_log(after_eax="0"), "after save"),
+                              (turn_log(done=False), "one completion"),
+                              (turn_log().replace("HDTURN_NEXT_RETURN advance=2", "HDTURN_NEXT_RETURN advance=9"),
+                               "numbered return"),
+                              (turn_log().replace("HDTURN_DAY_INCREMENT", "HDTURN_DAY_MISSING"), "day increment"),
+                              (turn_log().replace("final_day=2", "final_day=3"), "exactly one new day"),
+                              (turn_log().replace("HDTURN_START player=0", "HDTURN_START player=1"), "player 0"),
+                              (turn_log().replace("HDTURN_RELEASE_RETURN", "HDTURN_RELEASE_LOST"), "release wait")):
+            self.assertTrue(any(message in failure for failure in extras.observe(turn_spec(), text)[1]), message)
+        echoed = "0:000> " + [line for line in extras.compose(turn_spec(), TURN_TEMPLATE).split("\r\n")
+                              if line.startswith("bp 0040B0C8")][0] + "\r\n"
+        self.assertTrue(extras.observe(turn_spec(), echoed)[1])
 
 
 if __name__ == "__main__":

@@ -87,7 +87,20 @@ unchanged. Its evidence class is `approved_hidden_cdb_continuity`: map entry
 and both saves are debugger-forced and disclosed, so it is not a played
 turn, manual input or a cell pass.
 
-The other eleven runtime lanes in the new context remain unsupported, including
+`turn_advancement` replays one `forced-turn` run, pinning its log and both
+retained saves:
+- `player_cycle_completed`: the numbered returns visit every active player
+  after 0 in order, then player 0.
+- `day_advanced`: exactly one native day increment, on the last call; the day
+  word is one higher, and the two saves' normalized states differ.
+- `call_return_observed`: every forced call and every release wait returns.
+- `post_day_map_health`: the route end follows the completed turn and the
+  final non-flat frame is later than the day's return.
+
+Map entry, saves, turn calls and any result overrides are forced and
+disclosed, so this is not a played turn decision or input.
+
+The other ten runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
 verifiers. Expanded-battle and promotion acceptance also remain false. Neither

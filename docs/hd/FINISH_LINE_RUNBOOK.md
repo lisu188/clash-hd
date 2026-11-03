@@ -12,10 +12,12 @@ Release validation that requires the original game is **local-only**.
 Full HD completion requires the [36-cell profile/preset matrix](RESOLUTION_RELEASE_MATRIX.md).
 The versioned matrix-cell release context replays source-bound resolution
 metadata and, from retained hidden successor runs, the three hidden-host soak
-lanes and the save/load round trip. Its fifteen runtime lanes, installed
+lanes, the save/load round trip and the day of turns. Its fifteen runtime
+lanes, installed
 expanded battle and promotion remain separate unfinished requirements. Framed
 1920x1080's short ladder passed with the earlier session producer and must be
-collected again with the current one. Its hidden save/load round trip passes;
+collected again with the current one. Its hidden save/load round trip and
+forced day of turns pass;
 every other cell's runtime lanes have no evidence.
 Do not reuse the narrow legacy 1920x1080 panel proof for another context.
 Source fixtures establish neither a release nor a new runtime pass.

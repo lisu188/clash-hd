@@ -15,6 +15,14 @@ loop entry (0x40B0C1, before its first poll) calls the native saveGame
 (0x4443E0) once for ``save_slot`` with the loaded game's name buffer, then
 restores the two registers it set. Saving slot 0 into slot 7, then reloading
 slot 7 and saving it into slot 8, is the save/load round trip.
+
+forced-turn: at the world-map loop site 0x40B0C8 it saves ``before_slot``, then
+calls the native nextPlayer (0x40AA60) every 128 ticks until the day word has
+advanced by one and player 0 is current again, then saves ``after_slot``. Each
+forced call keeps and restores every general register and the flags. The
+unacquired hidden mouse leaves stale button state, so the day banner and its
+release wait are observed for eight polls before at most one disclosed result
+override per banner or button.
 """
 from __future__ import annotations
 
@@ -24,7 +32,9 @@ from typing import Any
 
 FORCED_SAVE = "forced-save"
 FORCED_SAVE_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_save_extra.cdb"
-SOURCES = (FORCED_SAVE_TEMPLATE,)
+FORCED_TURN = "forced-turn"
+FORCED_TURN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_turn_extra.cdb"
+SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE)
 MAX_TEMPLATE_BYTES = 64 * 1024
 MAX_SAVE_BYTES = 16 * 1024 * 1024
 # The forced load list's rows (hidden_soak_probe_composition.LOAD_SLOT_RANGE).
@@ -33,6 +43,11 @@ ROUTE, DURATION = "map-idle", 120
 MECHANISMS = {"save": "cdb_forced_save_game"}
 # The forced map route and soak extra never break here.
 SITES = ("0040B0C1",)
+TURN_MECHANISMS = {"turn": "cdb_forced_next_player", "save": "cdb_forced_save_game",
+                   "turn_input": "cdb_bounded_stale_button_result_overrides"}
+# Loop iteration, day increment, banner test and exit, release wait entry, its
+# left and right tests and its return; all byte-identical in every candidate.
+TURN_SITES = ("0040B0C8", "0040AB44", "0040A943", "0040A9FA", "004609D0", "004609E0", "004609FC", "0040AA06")
 _PLACEHOLDER = re.compile(r"__[A-Z0-9_]+__")
 _BREAKPOINT = re.compile(r"^bp\s+(?:/\d+\s+)?([0-9A-Fa-f]{8})\s", re.M)
 SAVE_CALL = re.compile(r"HDCONT_SAVE_CALL slot=(\d+) load_slot=(\d+) gd=([0-9a-fA-F`]+) player=(\d+) "
@@ -76,8 +91,26 @@ def _slot(value: Any, label: str, low: int) -> int:
     return value
 
 
+def _prepare_turn(request: dict, *, route: str, duration: int) -> dict:
+    if set(request) != {"name", "load_slot", "before_slot", "after_slot"}:
+        raise ValueError("A forced-turn extra must be exactly {name, load_slot, before_slot, after_slot}.")
+    if (route, duration) != (ROUTE, DURATION):
+        raise ValueError("Continuity extras run only on the 120 s map-idle route.")
+    load_slot = _slot(request["load_slot"], "load_slot", SLOT_RANGE[0])
+    before_slot = _slot(request["before_slot"], "before_slot", 1)
+    after_slot = _slot(request["after_slot"], "after_slot", 1)
+    if len({load_slot, before_slot, after_slot}) != 3:
+        raise ValueError("A forced turn needs distinct load, before and after slots.")
+    return dict(request=dict(request), name=FORCED_TURN, load_slot=load_slot, before_slot=before_slot,
+                after_slot=after_slot, template=FORCED_TURN_TEMPLATE, mechanisms=dict(TURN_MECHANISMS),
+                sites=list(TURN_SITES), pre_files=[f"save/{load_slot}.dat"],
+                post_files=[f"save/{before_slot}.dat", f"save/{after_slot}.dat"])
+
+
 def prepare(request: Any, *, route: str, duration: int) -> dict:
     """Validate one extra request and return the spec the session records."""
+    if type(request) is dict and request.get("name") == FORCED_TURN:
+        return _prepare_turn(request, route=route, duration=duration)
     if type(request) is not dict or set(request) != {"name", "load_slot", "save_slot"} \
             or request["name"] != FORCED_SAVE:
         raise ValueError("A route extra must be exactly {name: forced-save, load_slot, save_slot}.")
@@ -101,7 +134,9 @@ def compose(spec: dict, template: bytes) -> str:
         text = template.decode("ascii").replace("\r\n", "\n")
     except UnicodeDecodeError as error:
         raise ValueError("Route extra template must be ASCII.") from error
-    for key, value in (("__LOAD_SLOT__", spec["load_slot"]), ("__SAVE_SLOT__", spec["save_slot"])):
+    slots = (("__SAVE_SLOT__", spec["save_slot"]),) if spec["name"] == FORCED_SAVE else (
+        ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]))
+    for key, value in (("__LOAD_SLOT__", spec["load_slot"]), *slots):
         if key not in text:
             raise ValueError(f"Route extra template lacks {key}.")
         text = text.replace(key, str(value))
@@ -117,6 +152,8 @@ def compose(spec: dict, template: bytes) -> str:
 
 def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
     """Replay the extra's printed markers; echoed commands cannot match them."""
+    if spec["name"] == FORCED_TURN:
+        return _observe_turn(spec, log)
     lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
     calls = [(index, match) for index, line in enumerate(lines) if (match := SAVE_CALL.fullmatch(line))]
     returns = [(index, match) for index, line in enumerate(lines) if (match := SAVE_RETURNED.fullmatch(line))]
@@ -144,4 +181,74 @@ def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
     if not loads or any(row["selected_arg"] != spec["load_slot"] or row["selected_global"] != spec["load_slot"]
                         for row in fields["loads"]):
         failures.append("the forced route did not load exactly the requested slot")
+    return fields, failures
+
+
+TURN_ROWS = {
+    "start": re.compile(r"HDTURN_START player=(\d+) day=(\d+) gd=([0-9a-fA-F`]+) tick=(\d+) "
+                        r"active=\((\d+),(\d+),(\d+),(\d+),(\d+)\)"),
+    "save_call": re.compile(r"HDTURN_SAVE_CALL slot=(\d+) player=(\d+) day=(\d+)"),
+    "save_returned": re.compile(r"HDTURN_SAVE_RETURNED slot=(\d+) eax=([0-9a-fA-F]+)"),
+    "next_call": re.compile(r"HDTURN_NEXT_CALL advance=(\d+) player=(\d+) day=(\d+) tick=(\d+)"),
+    "next_return": re.compile(r"HDTURN_NEXT_RETURN advance=(\d+) player=(\d+) day=(\d+) tick=(\d+)"),
+    "day_increment": re.compile(r"HDTURN_DAY_INCREMENT advance=(\d+) player=(\d+) day=(\d+)"),
+    "full_day": re.compile(r"HDTURN_FULL_DAY_RETURNED initial_day=(\d+) final_day=(\d+) player=(\d+) advances=(\d+)"),
+    "done": re.compile(r"HDTURN_DONE player=(\d+) day=(\d+) advances=(\d+)"),
+    "banner_exit": re.compile(r"HDTURN_BANNER_EXIT player=(\d+) day=(\d+) polls=(\d+)"),
+    "release_entry": re.compile(r"HDTURN_RELEASE_WAIT_ENTRY wait=(\d+) player=(\d+) day=(\d+)"),
+    "release_return": re.compile(r"HDTURN_RELEASE_RETURN player=(\d+) day=(\d+) left=(\d+) right=(\d+)"),
+    "banner_override": re.compile(r"HDTURN_FORCED_BANNER_ACK poll=8 value=1"),
+    "release_override": re.compile(r"HDTURN_FORCED_RELEASE button=(left|right) poll=8 value=0"),
+    "fail": re.compile(r"HDTURN_FAIL (\S+)"),
+}
+
+
+def _observe_turn(spec: dict, log: str) -> tuple[dict, list[str]]:
+    """Replay one forced day of turns: its saves, every call and return, the day and every override."""
+    lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+    rows = {name: [(index, match) for index, line in enumerate(lines) if (match := pattern.fullmatch(line))]
+            for name, pattern in TURN_ROWS.items()}
+    ints = lambda match: [int(value) for value in match.groups()]
+    failures = [f"turn probe failed: {match[1]}" for _, match in rows["fail"]]
+    fields = dict(start=None, saves=[], calls=[ints(m) for _, m in rows["next_call"]],
+                  returns=[ints(m) for _, m in rows["next_return"]],
+                  day_increments=[ints(m) for _, m in rows["day_increment"]], full_day=None, done=None,
+                  banner_exits=len(rows["banner_exit"]), release_waits=len(rows["release_entry"]),
+                  release_returns=len(rows["release_return"]),
+                  overrides=dict(banner=len(rows["banner_override"]),
+                                 left=sum(m[1] == "left" for _, m in rows["release_override"]),
+                                 right=sum(m[1] == "right" for _, m in rows["release_override"])))
+    if len(rows["start"]) != 1:
+        failures.append("forced turn requires exactly one start marker")
+    else:
+        player, day, gd, tick, *active = (int(value, 16) if index == 2 else int(value)
+                                          for index, value in enumerate(rows["start"][0][1].groups()))
+        fields["start"] = dict(player=player, day=day, gd=gd, tick=tick, active=active)
+        if player != 0 or gd == 0 or not active[0]:
+            failures.append("forced turn must start on the loaded game's active player 0")
+    calls, returns = rows["save_call"], rows["save_returned"]
+    fields["saves"] = [dict(slot=int(c[1]), player=int(c[2]), day=int(c[3]), eax=int(r[2], 16))
+                       for (_, c), (_, r) in zip(calls, returns)]
+    if [(save["slot"], save["eax"]) for save in fields["saves"]] != [(spec["before_slot"], 1), (spec["after_slot"], 1)] \
+            or len(calls) != 2 or len(returns) != 2 or any(int(r[1]) != int(c[1]) for (_, c), (_, r) in zip(calls, returns)):
+        failures.append("forced turn requires a successful before save and after save of its own slots")
+    advances = len(fields["calls"])
+    if not 1 <= advances <= 5 or [row[0] for row in fields["calls"]] != list(range(1, advances + 1)) \
+            or [row[0] for row in fields["returns"]] != list(range(1, advances + 1)):
+        failures.append("every forced nextPlayer call needs its own numbered return")
+    if len(rows["full_day"]) != 1 or len(rows["done"]) != 1:
+        failures.append("forced turn requires one full-day return and one completion")
+    else:
+        initial, final, player, count = ints(rows["full_day"][0][1])
+        fields["full_day"] = dict(initial_day=initial, final_day=final, player=player, advances=count)
+        fields["done"] = dict(zip(("player", "day", "advances"), ints(rows["done"][0][1])))
+        if final != (initial + 1) & 0xFFFF or player != 0 or count != advances:
+            failures.append("the forced calls did not return through exactly one new day to player 0")
+    if len(fields["day_increments"]) != 1:
+        failures.append("the native day increment must be observed exactly once")
+    order = [index for name in ("start", "save_call", "next_call", "full_day", "done") for index, _ in rows[name][:1]]
+    if order != sorted(order) or (calls and rows["full_day"] and not calls[-1][0] > rows["full_day"][0][0]):
+        failures.append("forced turn markers are out of order")
+    if fields["release_returns"] != fields["release_waits"]:
+        failures.append("every release wait must return to the day banner caller")
     return fields, failures

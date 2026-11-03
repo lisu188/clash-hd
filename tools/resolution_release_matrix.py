@@ -49,7 +49,7 @@ REQUIRED_ACCEPTANCE = (*evidence.LANES, "candidate_bound_expanded_battle")
 # These describe the additive cell schema, not the legacy 1920x1080 registry.
 # In particular the legacy native panel adapter is not matrix-context proof.
 MATRIX_CONTEXT_LANE_VERIFIERS = ("resolution_coverage", "short_soak_ladder", "long_map_idle", "long_map_pan",
-                                 "save_load_roundtrip")
+                                 "save_load_roundtrip", "turn_advancement")
 MATRIX_CONTEXT_UNIMPLEMENTED_LANES = tuple(name for name in evidence.LANES if name not in MATRIX_CONTEXT_LANE_VERIFIERS)
 # Repository code selects recipes.
 RECIPE_MODULES = {

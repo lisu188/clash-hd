@@ -210,6 +210,22 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("tools/hd_multires_route_extras.py", session.PRODUCERS)
         self.assertIn(session.route_extras.FORCED_SAVE_TEMPLATE, session.PRODUCER_SOURCES)
 
+    def test_forced_turn_extra_composes_on_unique_sites_and_discloses_every_mechanism(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        template = (session.ROOT / session.SOAK_TEMPLATE).read_bytes()
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        extra = session.route_extras.prepare({"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6},
+                                             route="map-idle", duration=120)
+        text = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+            soak_template=template, extra=extra,
+            extra_template=(session.ROOT / extra["template"]).read_bytes())[len(prefix):].decode("ascii")
+        sites = session.route_extras.breakpoint_sites(text)
+        self.assertEqual(len(sites), len(set(sites)))
+        self.assertTrue(set(session.route_extras.TURN_SITES) <= set(sites))
+        self.assertIn("drag_scroll=cdb_forced_skip turn=cdb_forced_next_player save=cdb_forced_save_game "
+                      "turn_input=cdb_bounded_stale_button_result_overrides pan=none load_slot=0", text)
+        self.assertIn(session.route_extras.FORCED_TURN_TEMPLATE, session.PRODUCER_SOURCES)
+
     def test_route_extra_retains_its_rewritten_save_and_keeps_the_load_slot_unchanged(self):
         extra = session.route_extras.prepare({"name": "forced-save", "load_slot": 7, "save_slot": 8},
                                              route="map-idle", duration=120)

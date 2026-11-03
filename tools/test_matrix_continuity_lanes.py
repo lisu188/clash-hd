@@ -214,5 +214,143 @@ class RoundTripReplayTests(unittest.TestCase):
                 self.assertTrue(any(message in item for item in failures), failures)
 
 
+TURN = "turn_advancement"
+WIDTH, HEIGHT = 16, 8
+
+
+class TurnRun:
+    """One retained forced-turn run directory with its frames, editable before it is written."""
+
+    def __init__(self, root: Path, started, *, before: bytes = STATE, after: bytes = flipped(STATE, 100),
+                 players=(1, 2, 3, 0)):
+        role, request = continuity.SCHEDULE[TURN][0]
+        self.spec = extras.prepare(request, route="map-idle", duration=120)
+        self.role, self.directory = role, root / "session-turn"
+        self.saves = {"save/5.dat": before, "save/6.dat": after}
+        self.log_lines = [MARKER, "HDSESSION_TARGET pid=abc base=00400000",
+                          "HDSESSION_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=0a000000",
+                          "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=1000 gd=0a000000 scroll=(10,17)",
+                          "HDTURN_START player=0 day=1 gd=0a000000 tick=1001 active=(1,1,1,1,0)",
+                          "HDTURN_SAVE_CALL slot=5 player=0 day=1", "HDTURN_SAVE_RETURNED slot=5 eax=1"]
+        for advance, player in enumerate(players, 1):
+            self.log_lines.append(f"HDTURN_NEXT_CALL advance={advance} player={players[advance - 2] if advance > 1 else 0} "
+                                  f"day=1 tick={1000 + 128 * advance}")
+            if player == 0:
+                self.log_lines += [f"HDTURN_DAY_INCREMENT advance={advance} player=0 day=2",
+                                   "HDTURN_BANNER_EXIT player=0 day=2 polls=8",
+                                   "HDTURN_RELEASE_WAIT_ENTRY wait=1 player=0 day=2",
+                                   "HDTURN_RELEASE_RETURN player=0 day=2 left=8 right=1"]
+            self.log_lines.append(f"HDTURN_NEXT_RETURN advance={advance} player={player} day={1 + (player == 0)} "
+                                  f"tick={1040 + 128 * advance}")
+        self.log_lines += [f"HDTURN_FULL_DAY_RETURNED initial_day=1 final_day=2 player=0 advances={len(players)}",
+                           "HDTURN_SAVE_CALL slot=6 player=0 day=2", "HDTURN_SAVE_RETURNED slot=6 eax=1",
+                           f"HDTURN_DONE player=0 day=2 advances={len(players)}",
+                           "SOAK_ROUTE_END route_ticks=7680 pan=0 hits=3499 tickdelta=7681 player=0 scroll=(10,17)"]
+        frames = [bytes((index + shift) % 251 for index in range(WIDTH * HEIGHT)) for shift in (0, 7)]
+        self.frame_bytes = {f"map-frame-{index:04d}.indexed8": data for index, data in enumerate(frames)}
+        state = lambda data, mtime: {"sha256": sha(data), "bytes": len(data), "mtime_ns": mtime}
+        identity = dict(IDENTITY, resolution=f"{WIDTH}x{HEIGHT}")
+        self.session = {
+            "schema": continuity.soak.SESSION_SCHEMA, "executed": True, "route": "map-idle", "duration_sec": 120,
+            "identity": {key: identity[key] for key in continuity.soak.SESSION_IDENTITY_KEYS},
+            "environment": "hidden_cdb_host", "input_responsiveness": "not_applicable_hidden",
+            "input_injected": False, "manual_input_proof": False, "initial_image_bytes_verified": True,
+            "diagnostic_passed": True, "failures": [], "smoke_only": False, "acquire_only": False,
+            "map_route_completed": True, "input_or_callback_forced": True,
+            "forced_mechanisms": dict(continuity.soak.MAP_MECHANISMS, **extras.TURN_MECHANISMS),
+            "load_slot": 0, "route_extra": copy.deepcopy(self.spec), "asset_root": ASSETS,
+            "producer_source_hashes": {continuity.PRODUCER: sha(PRODUCER)}, "run_directory": str(self.directory),
+            "route_extra_files": {
+                "before": {"save/0.dat": state(SOURCE, 5), "save/5.dat": state(b"old5", 6), "save/6.dat": None},
+                "after": {"save/0.dat": state(SOURCE, 5), "save/5.dat": state(before, 9), "save/6.dat": state(after, 9)},
+                "retained": {name: {"path": f"route-extra/{Path(name).name}", "sha256": sha(data), "bytes": len(data)}
+                             for name, data in self.saves.items()}},
+            "frames": [{"path": name, "sha256": sha(data), "bytes": len(data), "elapsed_sec": elapsed,
+                        "width": WIDTH, "height": HEIGHT, "coherent_snapshot_verified": False}
+                       for (name, data), elapsed in zip(self.frame_bytes.items(), (0.0, 119.9))],
+            "cleanup": {"cleanup_verified": True}, "live_saves_unchanged": True, "launch_artifacts_unchanged": True,
+            "started_at": started.isoformat(), "finished_at": (started + timedelta(seconds=150)).isoformat(),
+        }
+
+    def save(self) -> dict:
+        log = ("\r\n".join(self.log_lines) + "\r\n").encode("ascii")
+        session = copy.deepcopy(self.session)
+        session.setdefault("retained_log", {"path": "cdb.log", "sha256": sha(log), "bytes": len(log)})
+        session.setdefault("route_extra_observations", extras.observe(self.spec, log.decode("latin-1"))[0])
+        for name, data in self.frame_bytes.items():
+            write(self.directory / name, data)
+        return {"role": self.role,
+                "session_report": write(self.directory / "session-report.json", json.dumps(session).encode()),
+                "cdb_log": write(self.directory / "cdb.log", log),
+                **{key: write(self.directory / "route-extra" / Path(name).name, self.saves[name])
+                   for key, name in zip(continuity.SAVE_KEYS[TURN], self.spec["post_files"])}}
+
+
+class TurnReplayTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="clash-turn-lanes-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.cases = 0
+        self.identity = dict(IDENTITY, resolution=f"{WIDTH}x{HEIGHT}")
+
+    def run_case(self, mutate=None, **options):
+        self.cases += 1
+        run = TurnRun(self.root / f"case-{self.cases}", START, **options)
+        if mutate:
+            mutate(run)
+        checks, failures = continuity.replay(TURN, {"steps": [run.save()]}, self.root / "lane.json", self.identity,
+                                             release._reference_bytes, PRODUCER, MARKER,
+                                             Path(__file__).resolve().parents[1])
+        return checks, failures
+
+    def test_one_forced_day_replays_all_four_checks_in_policy_order(self):
+        checks, failures = self.run_case()
+        self.assertEqual(list(checks), list(continuity.evidence.LANES[TURN][1]))
+        self.assertFalse(failures)
+        self.assertTrue(all(value == {"passed": True, "failures": []} for value in checks.values()), checks)
+        self.assertEqual(continuity.STEP_BOUNDS["before_save"], extras.MAX_SAVE_BYTES)
+
+    def test_each_turn_check_fails_closed_on_its_own_artifact(self):
+        everything = set(continuity.evidence.LANES[TURN][1])
+        cases = {
+            "skipped player": (dict(players=(1, 3, 0)), None, {"player_cycle_completed"}),
+            "unchanged state": (dict(after=STATE), None, {"day_advanced"}),
+            "frame before the day": (None, lambda run: run.session["frames"][-1].__setitem__("elapsed_sec", 5.0),
+                                     {"post_day_map_health"}),
+            "route ended first": (None, lambda run: run.log_lines.insert(-2, run.log_lines.pop()),
+                                  {"post_day_map_health"}),
+            "flat final frame": (None, lambda run: (run.frame_bytes.__setitem__("map-frame-0001.indexed8",
+                                                                                 bytes(WIDTH * HEIGHT)),
+                                                    run.session["frames"][1].__setitem__("sha256", sha(bytes(WIDTH * HEIGHT)))),
+                                 {"post_day_map_health"}),
+            "lost release": (None, lambda run: run.log_lines.remove("HDTURN_RELEASE_RETURN player=0 day=2 left=8 right=1"),
+                             everything),
+            "live saves": (None, lambda run: run.session.__setitem__("live_saves_unchanged", False), everything),
+            "live game root": (None, lambda run: run.session.__setitem__("asset_root", "C:/Clash"), everything),
+            "soak run": (None, lambda run: run.session.__setitem__("route_extra", None), everything),
+            "moved source": (None, lambda run: run.session["route_extra_files"]["after"]["save/0.dat"]
+                             .__setitem__("sha256", "9" * 64), everything),
+        }
+        for label, (options, mutate, expected) in cases.items():
+            with self.subTest(case=label):
+                checks, failures = self.run_case(mutate, **(options or {}))
+                self.assertEqual({key for key, value in checks.items() if not value["passed"]}, expected, failures)
+
+    def test_turn_steps_pin_both_saves_and_only_their_fixed_role(self):
+        for mutate in (lambda step: step.pop("after_save"), lambda step: step.__setitem__("role", "save"),
+                       lambda step: step.__setitem__("save", step["before_save"])):
+            with self.subTest(mutate=mutate):
+                self.cases += 1
+                run = TurnRun(self.root / f"case-{self.cases}", START)
+                step = run.save()
+                mutate(step)
+                checks, failures = continuity.replay(TURN, {"steps": [step]}, self.root / "lane.json", self.identity,
+                                                     release._reference_bytes, PRODUCER, MARKER,
+                                                     Path(__file__).resolve().parents[1])
+                self.assertFalse(any(value["passed"] for value in checks.values()))
+                self.assertTrue(any("fixed role" in item for item in failures), failures)
+
+
 if __name__ == "__main__":
     unittest.main()

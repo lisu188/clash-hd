@@ -93,7 +93,7 @@ class MatrixReleaseTests(unittest.TestCase):
             self.assertIs(report[name], False, name)
         self.assertEqual(report["required_lanes"], list(matrix.evidence.LANES))
         self.assertEqual(set(report["lanes"]), set(matrix.evidence.LANES))
-        self.assertEqual(len(report["unimplemented_lane_verifiers"]), 11)
+        self.assertEqual(len(report["unimplemented_lane_verifiers"]), 10)
         self.assertIn("panel_command", report["unimplemented_lane_verifiers"])
         # Fabricated or absent soak or continuity evidence never passes its implemented replay.
         for name in (*release.soak_lanes.LANES, *release.continuity_lanes.LANES):
@@ -105,9 +105,9 @@ class MatrixReleaseTests(unittest.TestCase):
     def test_public_api_has_no_context_builder_verifier_or_root_override(self):
         self.assertEqual(list(inspect.signature(release.evaluate_release_manifest).parameters), ["path"])
         self.assertEqual(len(release.REQUIRED_LANES), 16)
-        self.assertEqual(len(release.UNIMPLEMENTED_LANES), 11)
+        self.assertEqual(len(release.UNIMPLEMENTED_LANES), 10)
         self.assertEqual(release.IMPLEMENTED_LANES, ("resolution_coverage", "short_soak_ladder", "long_map_idle", "long_map_pan",
-                                                     "save_load_roundtrip"))
+                                                     "save_load_roundtrip", "turn_advancement"))
         self.assertEqual(matrix.MATRIX_CONTEXT_LANE_VERIFIERS, release.IMPLEMENTED_LANES)
 
     def test_real_replay_accepts_all_36_advertised_canonical_source_contexts_only(self):
@@ -380,7 +380,7 @@ class MatrixReleaseTests(unittest.TestCase):
                 report = matrix.evaluate_matrix(fixture.matrix_path, repo_root=fixture.repo)
             self.assertFalse(report["passed"])
             self.assertTrue(any("release acceptance" in item for item in report["cells"][fixture.id]["failures"]))
-            self.assertEqual(len(report["matrix_context_unimplemented_lane_verifiers"]), 11)
+            self.assertEqual(len(report["matrix_context_unimplemented_lane_verifiers"]), 10)
             self.assertEqual(report["matrix_context_lane_verifiers"], list(release.IMPLEMENTED_LANES))
 
     def test_failed_outer_candidate_still_bounds_and_rejects_release_json(self):
@@ -457,7 +457,7 @@ class MatrixReleaseTests(unittest.TestCase):
         self.assertEqual(report["authenticated_candidate_count"], 1)
         cell = report["cells"][fixture.id]
         self.assertTrue(cell["release_evaluation"]["lanes"]["resolution_coverage"]["passed"], cell["failures"])
-        self.assertEqual(len(cell["release_evaluation"]["unimplemented_lane_verifiers"]), 11)
+        self.assertEqual(len(cell["release_evaluation"]["unimplemented_lane_verifiers"]), 10)
         self.assertFalse(cell["passed"])
         self.assertFalse(report["evidence_ready"])
 

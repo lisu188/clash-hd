@@ -1157,3 +1157,4 @@
 /reports/battle-unit-count-native-cpu-20261027.json text eol=lf
 /tools/hd_multires_route_extras.py text eol=lf
 /probes/cdb/continuity/hd_multires_forced_save_extra.cdb text eol=lf
+/probes/cdb/continuity/hd_multires_forced_turn_extra.cdb text eol=lf
