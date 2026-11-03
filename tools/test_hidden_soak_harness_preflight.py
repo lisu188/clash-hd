@@ -87,7 +87,7 @@ class HiddenSoakHarnessSourceTests(unittest.TestCase):
         source = RUNNER.read_text(encoding="ascii")
         launch = source.index("$launch = Start-CdbOnHiddenDesktop")
         for receipt in ("$patchReceipt", "$proxyManifestReceipt", "$proxyBuildLogReceipt",
-                        "$generatedProbeReceipt", "$probeTemplateReceipt", "$soakTemplateReceipt"):
+                        "$generatedProbeReceipt", "$probeTemplateReceipt", "$soakTemplateReceipt", "$composerReceipt"):
             self.assertLess(source.index(receipt + " = Get-RetainedFileReceipt"), launch)
             self.assertEqual(source.count(receipt + " = Get-RetainedFileReceipt"), 1)
         self.assertGreater(source.index("$cdbLogReceipt = Get-RetainedFileReceipt"), launch)
@@ -124,7 +124,7 @@ class HiddenSoakHarnessSourceTests(unittest.TestCase):
         loop = source.index("    while ((Get-Date) -lt $overallDeadline)")
         self.assertLess(source.index(guard, loop), source.index("Start-Sleep -Milliseconds 500", loop))
         for write in (
-            "Set-Content -LiteralPath $generatedProbe",
+            "$compositionRaw = & $pythonExe -B $composer",
             "$samples | ConvertTo-Json", "& $pythonExe $assembler", "& $pythonExe $grader",
         ):
             offset = source.index(write)

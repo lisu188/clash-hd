@@ -1053,9 +1053,13 @@ def test_probe_placeholder_contract_and_safety() -> None:
 
 def test_runner_static_contract() -> None:
     text = RUNNER.read_text(encoding="ascii")
-    # Placeholder substitution for the soak contract.
+    # Placeholder substitution for the soak contract happens only in the
+    # canonical composer, which the runner calls instead of composing inline.
+    composer = (ROOT / "tools" / "hidden_soak_probe_composition.py").read_text(encoding="ascii")
+    assert "$compositionRaw = & $pythonExe -B $composer --probe-template" in text
     for placeholder in ("__SOAK_DURATION_TICKS__", "__SOAK_PAN__", "__PAN_INTERVAL_TICKS__"):
-        assert placeholder in text, f"runner never substitutes {placeholder}"
+        assert placeholder in composer, f"composer never substitutes {placeholder}"
+        assert placeholder not in text, f"runner still composes {placeholder} inline"
     # Honesty sentinel is hardcoded, never computed.
     assert "input_responsiveness = 'not_applicable_hidden'" in text
     # Hidden desktop only; no visible fallback switch exists.

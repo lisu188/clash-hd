@@ -710,6 +710,7 @@ def assemble_report(
         "generated_probe": samples.get("generated_probe"),
         "generated_probe_sha256": samples.get("generated_probe_sha256"),
         "generated_probe_size": samples.get("generated_probe_size"),
+        "probe_composition": samples.get("probe_composition"),
         "probe_template": samples.get("probe_template"),
         "probe_template_sha256": samples.get("probe_template_sha256"),
         "probe_template_size": samples.get("probe_template_size"),

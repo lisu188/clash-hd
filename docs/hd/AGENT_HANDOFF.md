@@ -57,8 +57,17 @@ without being coerced into plausible observations. Failed inventories remain
 in JSON and no longer abort diagnostic Markdown rendering. Visible/guest graders
 retain their existing behavior. This is observed retained-byte consistency, not file
 immutability, original-derived whole-candidate or native-producer authentication.
-Template and generated-probe pins do not establish canonical probe generation;
-the original samples JSON also still needs an independent byte binding.
+The generated probe now comes only from the canonical composer
+`tools/hidden_soak_probe_composition.py`. The runner records its exact
+`probe_composition` parameters, and the binary grader rebuilds the probe from
+the retained templates and fails on any byte difference. Parity with the former
+inline PowerShell composition is pinned in
+[the parity receipt](../../reports/hidden-soak-probe-composition-parity-20261102.json)
+for all seven hidden rung parameter sets and both range boundaries; the real
+D0 composition also equals the retained probe of the 2026-11-02 diagnostic
+run. Reports without the composition record now fail. This is construction
+evidence, not proof that CDB executed the probe. The original samples JSON
+still needs an independent byte binding.
 
 The native host source now creates CDB suspended, assigns and verifies a
 kill-on-close/no-breakaway job before resume, and uses retained handles for
@@ -71,9 +80,9 @@ cleanup-receipt regrading remain required.
 
 The sampler still discovers its candidate by PID/path and reopens it for live
 ReadProcessMemory. Loaded-image/target and native-producer authentication, held
-coherent frame reads, independently verified cleanup receipts, canonical probe
-generation and running-time rather than wall-clock coverage remain production
-gaps. Retained-file checks and physical-path preflight do not authenticate
+coherent frame reads, independently verified cleanup receipts, an independent
+samples-JSON byte binding and running-time rather than wall-clock coverage
+remain production gaps. Retained-file checks and physical-path preflight do not authenticate
 immutable file or process identity. No fresh runtime evidence was produced by
 the retained-byte source batch.
 Manual DirectInput, final visible composition, release and promotion remain
@@ -1225,3 +1234,16 @@ and capture outside the repository and preserve the disk reserve before use.
 Historical runtime experiments, screenshots, raw debugger sessions, and
 workstation-specific evidence that formerly accompanied this project are not
 part of the public repository. Do not recreate them in public source control.
+
+
+The separate [Unit-to-Count CPU slice](BATTLE_UNIT_COUNT_CPU.md) authenticates
+selected canonical parent instructions and executes the genuine final caller,
+Unit type-minus-one branch, Count argument preparation, body and RET in an
+explicit opt-in RAM fixture. The 2026-10-27 local suite passes all 13 methods;
+it stops before `0x42F95B` and exercises four override locations with synthetic
+helper allocation and modeled outer ancestry/Thread. Its default five authoring
+checks and the frozen prefix's four checks need no original executable.
+The retained saved-ECX corruption counterexample remains failed; native ECX
+pop-slot authority, historical callee preservation, later Unit continuation,
+installation, Windows/runtime, input, endurance and promotion remain unproved.
+See the [bounded result](../../reports/battle-unit-count-native-cpu-20261027.json).

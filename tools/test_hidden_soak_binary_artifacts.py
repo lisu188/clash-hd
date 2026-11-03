@@ -19,6 +19,7 @@ from pathlib import Path, PureWindowsPath
 from unittest import mock
 
 import hidden_soak_binary_artifacts as binaries
+import hidden_soak_probe_composition as composition
 import patch_stage_report
 
 
@@ -103,7 +104,14 @@ def synthetic_binary_inventory(payload: dict, *, candidate_variant: int = 0) -> 
     for role, path in binaries._PROBE_PINS.items():
         result[role] = str(path)
         inventory[str(path)] = path.read_bytes()
-    inventory[result["generated_probe"]] = b".echo synthetic retained probe; never executed\r\n"
+    # The runner's canonical composition of the pinned templates; never executed.
+    parameters = {"route": result.get("route"), "duration_sec": result.get("duration_sec"),
+                  "pan_interval_sec": result.get("pan_interval_sec") or 10, "load_slot": result.get("load_slot"),
+                  "raw_path": str(PureWindowsPath(result["output_directory"]) / "frames" / "surface.raw")}
+    result["probe_composition"] = {"schema": "hidden_soak_probe_composition_v1",
+                                   "composer_sha256": composition.composer_sha256(), "parameters": parameters}
+    inventory[result["generated_probe"]] = composition.compose_probe(
+        inventory[result["probe_template"]], inventory[result["soak_probe_template"]], **parameters)
     for role in ("patch_stage_report", "generated_probe", *binaries._PROBE_PINS):
         data = inventory[result[role]]
         result[f"{role}_sha256"] = _sha(data)
@@ -144,6 +152,7 @@ def _payload() -> dict:
         "workdir": r"C:\Clash", "candidate": str(candidate_run / "candidate.exe"),
         "output_directory": str(output), "cdb_log": str(output / "cdb.log"),
         "generated_probe": str(output / "probe.generated.cdb"), "load_slot": 2,
+        "route": "map-pan", "duration_sec": 120, "pan_interval_sec": 10,
         "proxy": {
             "path": str(candidate_run / "ddraw.dll"),
             "build_manifest": str(candidate_run / "ddraw_surfdump_proxy.build.json"),
@@ -183,9 +192,10 @@ class RetainedBinaryTests(unittest.TestCase):
         self.assertGreater(summary["candidate_patch_report"]["patch_count"], 100)
         self.assertEqual(summary["candidate_patch_report"]["status_counts"],
                          {"patched": summary["candidate_patch_report"]["patch_count"]})
-        for field in ("original_file_authenticated", "loaded_image_authenticated", "native_execution_authenticated",
-                      "canonical_probe_regeneration_authenticated"):
+        for field in ("original_file_authenticated", "loaded_image_authenticated", "native_execution_authenticated"):
             self.assertIs(summary[field], False)
+        self.assertIs(summary["canonical_probe_regeneration_authenticated"], True)
+        self.assertIs(summary["probe_composition"]["same_composer_source"], True)
         self.assertNotIn(self.payload["input_exe"], self.inventory)
         with mock.patch.object(binaries, "_read_retained_file", side_effect=reader_from_inventory(self.inventory)) as reader:
             patch, error = binaries.read_retained_patch(self.payload)
@@ -358,6 +368,48 @@ class RetainedBinaryTests(unittest.TestCase):
             payload = copy.deepcopy(self.payload)
             payload["proxy"][field] = bad
             self.assert_rejected(payload, fragment="proxy")
+
+    def test_generated_probe_must_be_the_canonical_composition_of_the_retained_templates(self):
+        templates = {role: self.inventory[self.payload[role]] for role in binaries._PROBE_PINS}
+        parameters = self.payload["probe_composition"]["parameters"]
+        other = composition.compose_probe(templates["probe_template"], templates["soak_probe_template"],
+                                          **(parameters | {"duration_sec": 600}))
+        for data in (self.inventory[self.payload["generated_probe"]] + b"gc\r\n", other):
+            with self.subTest(generated=len(data)):
+                self.setUp()
+                self.replace_receipted("generated_probe", data)  # Receipts match; only the rebuild differs.
+                self.assert_rejected(fragment="canonical composition")
+        self.setUp()
+        self.replace_receipted("soak_probe_template", templates["soak_probe_template"] + b".echo changed template\r\n")
+        self.assert_rejected(fragment="canonical composition")
+        self.setUp()
+        self.replace_receipted("soak_probe_template", templates["soak_probe_template"].replace(b"__SOAK_PAN__", b"1"))
+        self.assert_rejected(fragment="missing required placeholders")
+        self.setUp()
+        for record in (None, "composed", {}, {"schema": "hidden_soak_probe_composition_v1"},
+                       {"schema": "other", "parameters": parameters},
+                       {"schema": "hidden_soak_probe_composition_v1", "parameters": parameters | {"extra": 1}},
+                       {"schema": "hidden_soak_probe_composition_v1",
+                        "parameters": {k: v for k, v in parameters.items() if k != "raw_path"}}):
+            with self.subTest(record=record):
+                payload = copy.deepcopy(self.payload)
+                payload["probe_composition"] = record
+                self.assert_rejected(payload, fragment="probe_composition must record")
+        for field, value in (("route", "map-idle"), ("duration_sec", 600), ("duration_sec", 120.0),
+                             ("load_slot", 3), ("pan_interval_sec", 11), ("raw_path", 'C:\\"quoted"')):
+            with self.subTest(field=field, value=value):
+                payload = copy.deepcopy(self.payload)
+                payload["probe_composition"]["parameters"][field] = value
+                summary, failures = self.evaluate(payload)
+                self.assertFalse(summary["canonical_probe_regeneration_authenticated"])
+                self.assertTrue(any("probe_composition" in failure or "canonical composition" in failure
+                                    for failure in failures), failures)
+        payload = copy.deepcopy(self.payload)
+        payload["probe_composition"]["composer_sha256"] = "0" * 64  # Informational: the bytes decide.
+        summary, failures = self.evaluate(payload)
+        self.assertEqual(failures, [])
+        self.assertIs(summary["canonical_probe_regeneration_authenticated"], True)
+        self.assertIs(summary["probe_composition"]["same_composer_source"], False)
 
     def test_private_reader_default_performs_actual_small_file_io(self):
         # This is actual physical IO, not a fixture path escape in the public
