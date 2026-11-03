@@ -40,8 +40,9 @@ MULTIRES_PRESETS = ("1024x768", "1280x720", "1280x960", "1366x768",
                     "1920x1080", "2560x1440", "3440x1440", "3840x2160")
 MULTIRES_METADATA_BYTES = 16 * 1024 * 1024
 # The frozen Complete-HD-family recipes record every patch byte in their
-# metadata; at native 800x600 that is 3-4 MiB, above the generic JSON bound.
-LEGACY_METADATA_BYTES = {"complete_hd_v1": 8 * 1024 * 1024, "owned_modal_widget_bounds_v1": 8 * 1024 * 1024}
+# sidecars; at native 800x600 the metadata is 3-4 MiB and the probe 3-7 MiB,
+# above the generic JSON bound. Each bound belongs to its recipe's own profile.
+LEGACY_SIDECAR_BYTES = {"complete_hd_v1": 8 * 1024 * 1024, "owned_modal_widget_bounds_v1": 8 * 1024 * 1024}
 MULTIRES_PROBE_BYTES = 64 * 1024 * 1024
 RUNTIME_POLICY = "read-only candidate/evidence checks; no runtime, capture, input, status or promotion writes"
 REQUIRED_ACCEPTANCE = (*evidence.LANES, "candidate_bound_expanded_battle")
@@ -187,14 +188,16 @@ def _multires_identity(identity: dict) -> bool:
 
 
 def candidate_artifact_limit(identity: dict, name: str, *, json_default=None, binary_default=None) -> int:
-    """Large sidecars belong only to the exact multiresolution successor recipe."""
+    """Large sidecars belong only to the multiresolution successor or a frozen recipe's own profile."""
     if _multires_identity(identity):
         if name == "metadata":
             return MULTIRES_METADATA_BYTES
         if name == "probe":
             return MULTIRES_PROBE_BYTES
-    if name == "metadata" and identity.get("recipe_revision") in LEGACY_METADATA_BYTES:
-        return LEGACY_METADATA_BYTES[identity["recipe_revision"]]
+    revision, profile = identity.get("recipe_revision"), identity.get("profile")
+    if (name in ("metadata", "probe") and revision in LEGACY_SIDECAR_BYTES
+            and isinstance(profile, str) and revision in PROFILE_RECIPES.get(profile, ())):
+        return LEGACY_SIDECAR_BYTES[revision]
     return (MAX_ARTIFACT_BYTES if binary_default is None else binary_default) if name in (
         "base_executable", "executable") else (MAX_JSON_BYTES if json_default is None else json_default)
 
@@ -452,7 +455,7 @@ def authenticate_candidate(cell_id: str, spec: Any, base: Path, manifest: dict,
             continue
         reference = spec[name]
         # A frozen recipe's own bound applies only where the launcher selects that recipe.
-        legacy_bound = None if selected_hd or selected is None else LEGACY_METADATA_BYTES.get(selected.recipe_revision)
+        legacy_bound = None if selected_hd or selected is None else LEGACY_SIDECAR_BYTES.get(selected.recipe_revision)
         maximum = MULTIRES_METADATA_BYTES if selected_hd and name == "metadata" else None
         if name == "metadata" and legacy_bound is not None:
             maximum = legacy_bound

@@ -93,12 +93,12 @@ class MultiresMatrixTests(unittest.TestCase):
             with self.subTest(profile=profile):
                 fixture = self.fixture(profile, "800x600")
                 revision = fixture.metadata["recipe_revision"]
-                self.assertIn(revision, matrix.LEGACY_METADATA_BYTES)
+                self.assertIn(revision, matrix.LEGACY_SIDECAR_BYTES)
                 padded = json.dumps(fixture.metadata).encode() + b" " * 2048
                 fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), padded)
-                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_METADATA_BYTES, {revision: 8192}):
+                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_SIDECAR_BYTES, {revision: 8192}):
                     self.assertTrue(fixture.authenticate()["byte_rebuild_passed"])
-                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_METADATA_BYTES, {revision: 1536}), \
+                with patch.object(matrix, "MAX_JSON_BYTES", 1024), patch.dict(matrix.LEGACY_SIDECAR_BYTES, {revision: 1536}), \
                         self.assertRaisesRegex(ValueError, "bounded nonempty"):
                     fixture.authenticate()
 
@@ -158,6 +158,43 @@ class MultiresMatrixTests(unittest.TestCase):
         for name in release.UNIMPLEMENTED_LANES:
             self.assertFalse(report["lanes"][name]["implemented"])
             self.assertFalse(report["lanes"][name]["passed"])
+
+    def test_frozen_complete_family_final_recheck_keeps_its_own_large_probe_bound(self):
+        # Their real 800x600 probes (3-7 MiB) also exceed the generic JSON bound.
+        for profile in ("completehd", "modalwidgets"):
+            for bound, accepted in ((8 * 1024 * 1024, True), (release.MAX_JSON_BYTES, False)):
+                with self.subTest(profile=profile, bound=bound):
+                    fixture = ReleaseFixture(self.root / f"release-frozen-{profile}-{accepted}", profile, "800x600")
+                    revision = fixture.metadata["recipe_revision"]
+                    fixture.probe = "synthetic probe; no native observations\n" + "x" * (release.MAX_JSON_BYTES + 1)
+                    fixture.metadata["probe_sha256"] = matrix.sha(fixture.probe.encode())
+                    fixture.spec["probe"] = write(Path(fixture.spec["probe"]["path"]), fixture.probe.encode())
+                    fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), fixture.metadata)
+                    with fixture.runtime_free_context():
+                        context = matrix.authenticate_candidate(fixture.id, fixture.spec, fixture.external,
+                            fixture.manifest, repo_root=fixture.repo)
+                    identity = context["identity"] | {"cell_id": fixture.id, "features": {"minimap_viewport": True},
+                        "launcher_manifest_sha256": fixture.catalog_ref["sha256"],
+                        "source_closure_sha256": matrix.sha(matrix.canonical(context["source_hashes"]).encode())}
+                    fixture.index["candidate"] = fixture.spec
+                    for name, report in fixture.reports.items():
+                        report["identity"] = identity
+                        fixture.save_lane(name)
+                    fixture.save_release()
+                    with patch.dict(matrix.LEGACY_SIDECAR_BYTES, {revision: bound}):
+                        report = fixture.evaluate()
+                    self.assertTrue(report["candidate_authentication_passed"] is accepted, report["failures"])
+                    self.assertTrue(report["lanes"]["resolution_coverage"]["passed"] is accepted, report["failures"])
+                    if not accepted:
+                        self.assertIn("bounded nonempty", " ".join(report["failures"]))
+                    self.assertFalse(report["passed"])
+        # Another profile cannot borrow a frozen recipe's sidecar bound.
+        identity = {"profile": "completehd", "resolution": "800x600", "recipe_revision": "complete_hd_v1"}
+        for name in ("metadata", "probe"):
+            self.assertEqual(matrix.candidate_artifact_limit(identity, name, json_default=release.MAX_JSON_BYTES),
+                             matrix.LEGACY_SIDECAR_BYTES["complete_hd_v1"])
+            self.assertEqual(matrix.candidate_artifact_limit(identity | {"profile": "modalwidgets"}, name,
+                json_default=release.MAX_JSON_BYTES), release.MAX_JSON_BYTES)
 
     def test_wrong_profile_preset_stage_or_root_rejects_before_build(self):
         for profile, resolution, stage, root in (
