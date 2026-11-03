@@ -238,6 +238,10 @@ It replays resolution metadata only; fifteen matrix-context runtime lanes
 promotion remain unsupported. This does not change the legacy 1920x1080
 context, advertise any missing preset or promote a recipe. See the
 [matrix contract](RESOLUTION_RELEASE_MATRIX.md#versioned-matrix-cell-release-context).
+A local index of all 36 launcher-selected candidates now authenticates every
+candidate, and each cell's `resolution_coverage` lane passes in this context
+(`reports/resolution-release-matrix-index-20261103.json`). The other fifteen
+lanes have no evidence and fail explicitly.
 
 The four all-preset source constructors are
 [`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),

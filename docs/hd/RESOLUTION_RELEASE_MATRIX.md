@@ -113,6 +113,20 @@ profile/recipe replay and an explicit promotion decision bound to each accepted
 candidate are also required, while preserving the frozen Classic fallback and
 its default selection.
 
+### Local 36-cell index checkpoint (2026-11-03)
+
+A local index under `C:\ClashTests` references all 36 launcher-selected
+candidates. Each cell has a `matrix_cell_release_manifest_v1` that lists the
+sixteen fixed lanes. Evaluated at commit `df479c12`:
+- every candidate rebuilt byte for byte and authenticated;
+- every cell's `resolution_coverage` lane passed its source-artifact replay.
+
+The other fifteen lanes per cell are explicit failing no-evidence reports, so
+the matrix still fails; installed expanded battle and promotion also remain
+open. No game, debugger, input or capture ran. The compact receipt is
+[`reports/resolution-release-matrix-index-20261103.json`](../../reports/resolution-release-matrix-index-20261103.json);
+the candidates and lane files stay local.
+
 ## Subsequent source preparation
 
 `src/patcher/classic_all_presets_candidate.py` preserves the narrow scalar
