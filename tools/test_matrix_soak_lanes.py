@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -51,7 +52,7 @@ def map_log(route: str, seconds: int) -> list[str]:
     if pan:
         for index in range(seconds // 10 - 1):
             hits += 50
-            x, y = ((11, 17), (11, 18), (10, 18), (10, 17))[index % 4]
+            x, y = ((10, 17), (11, 17), (11, 18), (10, 18))[index % 4]
             lines.append(f"SOAK_PAN_SET phase={index % 4} x={x} y={y} hits={hits} tickdelta={640 * (index + 1)} delta=(1,1)")
     lines.append(f"SOAK_ROUTE_END route_ticks={ticks} pan={pan} hits={hits + 10} tickdelta={ticks + 1} player=0 scroll=({x},{y})")
     return lines
@@ -182,6 +183,37 @@ class SoakReplayTests(unittest.TestCase):
                 self.assertEqual(failed, expected, failures)
                 if note:
                     self.assertTrue(any(note in item for item in failures), failures)
+
+    def test_blank_frames_stationary_pans_and_failure_flags_fail_closed(self):
+        # One lit pixel on a black surface is not a rendered screen.
+        root, runs = self.lane("long_map_idle")
+        blank = bytes(WIDTH * HEIGHT - 1) + b"\x01"
+        for run in runs:
+            run.frame_bytes = {name: blank for name in run.frame_bytes}
+            for frame in run.session["frames"]:
+                frame["sha256"] = sha(blank)
+        failed, failures = self.failed("long_map_idle", root, runs)
+        self.assertEqual(failed, {"render_integrity"})
+        self.assertTrue(any("palette variety" in item for item in failures), failures)
+        # A map that stopped moving fails, however its frames change.
+        root, runs = self.lane("long_map_pan")
+        lines = runs[0].log_lines
+        for index, line in enumerate(lines):
+            if line.startswith(("SOAK_PAN_SET ", "SOAK_ROUTE_END ")):
+                lines[index] = re.sub(r"x=\d+ y=\d+", "x=10 y=17", re.sub(r"scroll=\(\d+,\d+\)", "scroll=(10,17)", line))
+        failed, failures = self.failed("long_map_pan", root, runs)
+        self.assertEqual(failed, {"route_completed", "frame_progression"})
+        self.assertTrue(any("pan schedule" in item for item in failures), failures)
+        # Explicit runtime failure rows fail beside an otherwise positive session summary.
+        for row in ("SURFDUMP_INVALID", "AV_SURFDUMP",
+                    "SURFDUMP_APP_REQUEST_QUIT text_ptr=00401000 caption_ptr=00402000",
+                    "SOAK_PAN_UNSAFE base=(10,17) max=(0,0) reason=no_inward_axis"):
+            with self.subTest(row=row):
+                root, runs = self.lane("long_map_idle")
+                runs[0].log_lines.insert(-1, row)
+                failed, failures = self.failed("long_map_idle", root, runs)
+                self.assertEqual(failed, {"route_completed"})
+                self.assertTrue(any("runtime failure" in item for item in failures), failures)
 
     def test_schedule_shape_and_external_location_are_fixed(self):
         root, runs = self.lane("long_map_idle")

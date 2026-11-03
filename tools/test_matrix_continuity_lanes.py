@@ -146,6 +146,9 @@ class RoundTripReplayTests(unittest.TestCase):
                         {"roundtrip_completed"}, None),
             "failure token": (None, lambda runs: runs[1].log_lines.append("HDSESSION_AV"), {"roundtrip_completed"},
                               "runtime failure"),
+            # The shared parser's explicit failure rows count even when the session reported success.
+            "surface invalid": (None, lambda runs: runs[1].log_lines.insert(-1, "SURFDUMP_INVALID"),
+                                {"roundtrip_completed"}, "runtime failure or a forced pan"),
         }
         for label, (options, mutate, expected, note) in cases.items():
             with self.subTest(case=label):

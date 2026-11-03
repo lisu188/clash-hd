@@ -53,8 +53,16 @@ and, for each fixed schedule row, one retained `hd_multires_hidden_session`
 report and its CDB log, all outside the repository. The replay:
 - rereads them and binds each run to the freshly authenticated cell;
 - requires the producer-recorded log hash;
-- reparses the soak rows through the shared grammar;
-- rehashes every frame;
+- reparses the soak rows through the shared grammar and rejects its explicit
+  failure observations (`AV_SURFDUMP`, `SURFDUMP_INVALID`, a structured
+  application quit, `SOAK_PAN_UNSAFE`);
+- regrades the pan plan and every pan event against its exact four-phase
+  cycle with the legacy grader's rules (`tools/hd_soak_report.py`), so a map
+  that stopped moving fails both completion and frame progression;
+- rehashes every frame and requires a rendered screen. Every one of 331
+  real frames used at least 188 palette indices and had at least 3.57% of
+  pixels off its dominant index. The coarse floors of 32 indices and 1%
+  reject blank surfaces; they are not visual correctness.
 - recomputes liveness, render, growth (legacy limits of 64 MiB working
   set, 64 MiB private bytes and 128 handles), clean-stop, ladder-order and
   pan-progression checks.

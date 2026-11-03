@@ -15,12 +15,14 @@ pinned session producer; a change to either invalidates it.
 """
 from __future__ import annotations
 
+from collections import Counter
 import hashlib
 from pathlib import Path
 import re
 from typing import Any, Callable
 
 import complete_hd_evidence as evidence
+import hd_soak_report as soak_report
 import hidden_soak_log_observations as soak_log
 
 
@@ -57,6 +59,15 @@ FAILURE_TOKENS = frozenset({"HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSI
 MENU_READY = re.compile(r"HDSESSION_MENU_READY pid=[0-9a-fA-F]+ surface=[0-9a-fA-F`]+ width=\d+ height=\d+ "
                         r"pixels=[0-9a-fA-F`]+")
 _FRAME_NAME = re.compile(r"(?:map|menu)-frame-\d{4}\.indexed8")
+# A rendered screen, not a bare surface: every one of 331 retained real frames
+# from 69 passing sessions used at least 188 palette indices, and at least 3.57%
+# of its pixels differed from its dominant index (a 4K centered native menu).
+# These coarse floors reject blank or near-blank surfaces such as one lit pixel;
+# they are not visual or layout correctness.
+MIN_FRAME_INDICES = 32
+MIN_FRAME_DETAIL = 0.01
+# The shared parser's explicit runtime failure observations.
+_FAILURE_FLAGS = ("AvObserved", "SurfaceInvalidObserved", "AppRequestQuitObserved")
 
 Reader = Callable[..., tuple[Path, bytes]]
 
@@ -110,11 +121,41 @@ def _frames(session: dict, run: Path, read: Reader, width_height: set, notes: li
             return False, digests
         _, data = read({"path": str(run / frame["path"]), "sha256": frame.get("sha256", "")}, run,
                        "retained frame", maximum=frame["bytes"])
-        if len(data) != frame["bytes"] or data.count(data[:1]) == len(data):
-            notes.append("retained frame is truncated or a single flat colour")
+        counts = Counter(data)
+        if len(data) != frame["bytes"] or len(counts) < MIN_FRAME_INDICES \
+                or 1 - max(counts.values()) / len(data) < MIN_FRAME_DETAIL:
+            notes.append("retained frame is truncated or lacks the palette variety and detail of a rendered screen")
             return False, digests
         digests.add(_sha(data))
     return True, digests
+
+
+def runtime_flag_failures(rows: dict) -> list[str]:
+    """The shared parser's own failures plus its explicit runtime failure and unsafe-pan observations."""
+    return ([*rows["failures"]] + [f"retained log records {name}" for name in _FAILURE_FLAGS if rows[name]]
+            + (["retained log records an unsafe forced-pan plan"] if rows["PanUnsafeRows"] else []))
+
+
+def pan_cycle_failures(rows: dict, route: str) -> list[str]:
+    """Regrade the retained pan plan and every pan event against its exact four-phase cycle.
+
+    Reuses the legacy grader's rules (tools/hd_soak_report.py): an inward live-bound
+    axis choice, one consistent bounded direction, real movement, and each event's
+    delta, phase coordinates and order between the plan and the route end.
+    """
+    ready = [row for row in rows["ReadyRows"] if row["Source"] == "SOAK_SURFDUMP_READY"]
+    if len(rows["RouteStarts"]) != 1 or len(rows["RouteEnds"]) != 1 or len(ready) != 1:
+        return ["pan regrade requires one route start, readiness row and route end"]
+    snake = lambda row, fields: {name: row[source] for name, source in fields.items()}
+    start = snake(rows["RouteStarts"][0], soak_log._START_FIELDS)
+    events = [snake(row, soak_log._PAN_FIELDS) for row in rows["PanEvents"]]
+    failures = soak_report.hidden_pan_plan_failures(
+        [snake(row, soak_log._PLAN_FIELDS) for row in rows["PanPlans"]], start,
+        snake(ready[0], soak_log._READY_FIELDS), snake(rows["RouteEnds"][0], soak_log._END_FIELDS), events,
+        route=route)
+    if route == "map-pan":
+        failures += soak_report.hidden_pan_pattern_failures(start, events)
+    return failures
 
 
 def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, producer_sha: str,
@@ -180,18 +221,21 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
             and _number(session.get("measured_menu_host_seconds"))
             and session["measured_menu_host_seconds"] >= seconds
             and sum(bool(MENU_READY.fullmatch(line)) for line in lines) == 1)
-        sizes, pan_events = {(640, 480), (width, height)}, 0
+        sizes, pan_events, pan_ok = {(640, 480), (width, height)}, 0, False
     else:
         mechanisms = dict(MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {}))
         rows = soak_log.parse_soak_log(log_raw)
-        order = soak_log._global_order_failures(rows)
+        # The parser's failures, its explicit failure flags and the route's global order.
+        order = runtime_flag_failures(rows) + soak_log._global_order_failures(rows)
         ticks = seconds * TICKS_PER_SECOND
         end = rows["RouteEnds"][0] if len(rows["RouteEnds"]) == 1 else None
         surface = session.get("map_surface")
         pan_events = len(rows["PanEvents"])
-        pan_ok = (len(rows["PanPlans"]) == 1 and pan_events >= seconds // PAN_INTERVAL_SEC - 2
-                  if route == "map-pan" else not rows["PanPlans"] and not pan_events)
-        completed = completed and not rows["failures"] and not order and pan_ok and (
+        # A pan only counts when every event moves the map along the retained plan's cycle.
+        pan_ok = not pan_cycle_failures(rows, route) and (
+            len(rows["PanPlans"]) == 1 and pan_events >= seconds // PAN_INTERVAL_SEC - 2
+            if route == "map-pan" else not rows["PanPlans"] and not pan_events)
+        completed = completed and not order and pan_ok and (
             session.get("map_route_completed") is True and session.get("input_or_callback_forced") is True
             and session.get("forced_mechanisms") == mechanisms and session.get("load_slot") == 0
             and end is not None and end["RouteTicks"] == ticks and end["TickDelta"] >= ticks
@@ -199,8 +243,9 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
             and type(surface) is dict and (surface.get("width"), surface.get("height")) == (width, height)
             and _number(session.get("measured_map_host_seconds"))
             and session["measured_map_host_seconds"] >= seconds - HOST_JITTER_SEC)
-        if rows["failures"] or order or not pan_ok:
-            notes.append(f"{label}: retained soak rows fail the shared grammar, ordering or pan schedule")
+        if order or not pan_ok:
+            notes.append(f"{label}: retained soak rows fail the shared grammar, record a runtime failure, "
+                         "or break the route order, the pan schedule or its plan's cycle")
         sizes = {(width, height)}
     live, growth = _telemetry(session.get("samples"), seconds, notes)
     render, digests = _frames(session, run_resolved, read, sizes, notes)
@@ -213,7 +258,8 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
         notes.append(f"{label}: session wall interval is shorter than the route")
         completed = False
     result.update(completed=completed, liveness=live, render=render, growth=growth, clean=clean,
-                  progression=route == "map-pan" and pan_events >= seconds // PAN_INTERVAL_SEC - 2 and len(digests) > 1,
+                  progression=route == "map-pan" and pan_ok and pan_events >= seconds // PAN_INTERVAL_SEC - 2
+                  and len(digests) > 1,
                   started_at=started, finished_at=finished)
     return result
 

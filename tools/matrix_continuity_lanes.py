@@ -163,6 +163,12 @@ def _step(lane: str, index: int, row: Any, expected: tuple, base: Path, identity
     if soak.FAILURE_TOKENS.intersection(lines) or lines.count(marker) != 1:
         notes.append(f"{role}: log records a runtime failure or lacks the single canonical image marker")
         completed = False
+    # Forced turns change the current player, so only the soak-independent rules apply:
+    # the parser's own failures and failure flags, and no forced pans on this idle route.
+    rows = soak.soak_log.parse_soak_log(log_raw)
+    if soak.runtime_flag_failures(rows) or rows["PanPlans"] or rows["PanEvents"]:
+        notes.append(f"{role}: retained route rows record a runtime failure or a forced pan")
+        completed = False
     observed, marker_failures = route_extras.observe(spec, log_raw.decode("latin-1"))
     if marker_failures or not evidence._same_raw_json(session.get("route_extra_observations"), observed):
         notes.append(f"{role}: replayed {spec['name']} markers fail or differ from the recorded observations")
