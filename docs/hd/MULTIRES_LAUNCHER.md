@@ -155,6 +155,14 @@ source-built proxy's single buffer for the live surface of that exact canvas
 (`frame_source=proxy_surface_buffer`). A Classic 1024x768 run passed 120 s at
 the centered native menu with one sample per second.
 
+The proxy log is replayed in order to find that buffer. The game destroys and
+recreates its canvas surface during start-up, and the heap can return the
+same address. The earlier parser treated every destroyed address as dead, so
+about half of the hidden menu runs timed out at a menu they had reached.
+Only each address's latest creation and the Locks after it now count. The
+two failed farm runs' retained logs (Classic 1024x768, Complete HD
+2560x1440) both resolve to their live buffer under the fixed parser.
+
 The first ordered short ladder passed for Framed 1920x1080 on a hidden desktop
 (`reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json`). Its five
 rungs were a 120 s menu idle with the hidden menu entry, 120 s and 600 s map
@@ -169,6 +177,46 @@ idle, then 600 s and 1800 s map pan:
 The matrix-cell release evaluation replays `short_soak_ladder` and
 `resolution_coverage` as passing. The other fourteen lanes have no evidence,
 so the cell fails. These remain forced-route hidden-host observations.
+
+The ladder ran with the session producer before its continuity extension.
+The replay pins the producer's exact bytes, so that receipt documents the
+earlier producer; every soak lane must be collected again with the current
+one.
+
+### Hidden save/load continuity extra
+
+A 120 s map-idle run can add one continuity extra from
+`tools/hd_multires_route_extras.py` (`--route-extra`). The extras module and
+each template it lists are pinned producer sources, so new extras never
+change the session module. The session composes the extra after the soak
+extra and rejects any reused breakpoint site; a second `bp` on one address
+would silently replace the first.
+
+`forced-save` loads `load_slot` through the forced route. At the first
+world-map loop entry (`0x40B0C1`, before the first poll) it keeps EAX and EDX,
+calls the native `saveGame` (`0x4443E0`) for `save_slot` and restores both
+registers on return; `saveGame` preserves the others. The run discloses
+`save=cdb_forced_save_game` and snapshots the loaded and saved isolated
+slots before launch. Afterwards it requires the loaded slot unchanged and
+the saved slot rewritten, and keeps a copy of the save in the run directory.
+Slot 0 is never a save target. The map loop and `saveGame` are
+byte-identical to the original in all 36 candidates.
+
+The save format copies two process-local object pointers verbatim: the
+trailing dword of 500 725-byte records at game data `+0x23EE6` and of 100
+467-byte records at `+0x7C6EA`. Loading recreates them, so two saves of one
+state differ there whenever the heap moves. The user's own slot 0, written
+by the original game, holds such pointers in the same fields. The
+save/load comparison zeroes only those 2,400 bytes
+(`route_extras.POINTER_FIELDS`, derived from the bounds and fields the code
+uses) and keeps the raw hashes.
+
+On Framed 1920x1080 a forced save of slot 0 into slot 7, then a reload of
+slot 7 saved into slot 8, both passed. Each `saveGame` returned 1. The
+reload read exactly the first save's bytes. The two saves differ in 22
+bytes, all inside those pointer fields, and have the same normalized state.
+Against the source slot 0, the first save differs only in pointer fields
+and its empty 16-byte name.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

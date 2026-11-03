@@ -236,8 +236,9 @@ The separate versioned matrix-cell release context in
 `tools/matrix_release_evidence.py` freshly authenticates each selected candidate
 and binds the actual launcher/catalog, typed features and source closure.
 It replays resolution metadata and, from retained `hd_multires_hidden_session`
-runs, the three hidden-host soak lanes (`tools/matrix_soak_lanes.py`). The other
-twelve matrix-context runtime lanes (including the legacy-only panel adapter),
+runs, the three hidden-host soak lanes (`tools/matrix_soak_lanes.py`) and the
+hidden save/load round trip (`tools/matrix_continuity_lanes.py`). The other
+eleven matrix-context runtime lanes (including the legacy-only panel adapter),
 installed expanded battle and promotion remain unsupported. This does not
 change the legacy 1920x1080 context, advertise any missing preset or promote a
 recipe. See the
@@ -249,6 +250,10 @@ lanes have no evidence and fail explicitly. Framed 1920x1080 has since
 passed `short_soak_ladder` on a hidden desktop, so its release evaluation now
 passes two lanes and fails fourteen
 (`reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json`).
+That run predates the session's continuity extension; the replay pins the
+producer's bytes, so soak lanes must be collected again with the current
+producer. Its forced-save round trip on Framed 1920x1080 replays as a passing
+`save_load_roundtrip`; see [the launcher notes](MULTIRES_LAUNCHER.md).
 
 The four all-preset source constructors are
 [`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),

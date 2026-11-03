@@ -14,9 +14,10 @@ The separate `matrix_cell_release_manifest_v1` path in
 contexts for the full [36-cell matrix](RESOLUTION_RELEASE_MATRIX.md). It freshly
 reconstructs the actual candidate and binds its launcher features/catalog and
 source closure, rather than extending this legacy identity or trusting a
-supplied authenticated context. Its only implemented lane is resolution
-metadata; all fifteen matrix-context runtime lanes, expanded battle and
-promotion remain unsupported. In particular, the legacy panel adapter below
+supplied authenticated context. It replays resolution metadata, the three
+hidden-host soak lanes and the hidden save/load round trip; the other eleven
+matrix-context runtime lanes, expanded battle and promotion remain
+unsupported. In particular, the legacy panel adapter below
 is not reused for those new identities. Source fixtures do not establish
 runtime or release acceptance, and unregistered recipes stay unregistered.
 

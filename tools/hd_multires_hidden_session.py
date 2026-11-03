@@ -6,7 +6,9 @@ probe. menu-idle then only observes natural menu entry. map-idle and map-pan
 reach the adventure map through the disclosed debugger-forced route of the
 proven legacy hidden soak: fast-forwarded intro sleeps, bypassed DirectInput
 acquisition, forced main-menu and load-slot clicks, then its steady-state
-soak extra with native arrow-key pans. These are hidden_cdb_host
+soak extra with native arrow-key pans. A 120 s map-idle run may add one
+disclosed continuity extra from tools/hd_multires_route_extras.py, whose
+isolated saves are retained with the run. These are hidden_cdb_host
 observations, never input proof; legacy reports are not reused or relabeled.
 """
 from __future__ import annotations
@@ -30,6 +32,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tools")]
 import hd_multires_qualification as qualification
+import hd_multires_route_extras as route_extras
 from hd_multires_win32 import HiddenJob
 import hidden_soak_log_observations as soak_log
 import hidden_soak_probe_composition as soak_composition
@@ -47,7 +50,10 @@ PRODUCERS = ("tools/hd_multires_hidden_session.py", "tools/hd_multires_win32.py"
     "tools/hd_multires_qualification.py", "scripts/build/build_ddraw_surfdump_proxy.ps1",
     "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp", "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.def",
     "tools/hidden_soak_probe_composition.py", "tools/hidden_soak_log_observations.py",
-    "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb")
+    "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb", "tools/hd_multires_route_extras.py")
+# Continuity extras live in their own pinned module, so adding one never
+# changes this file; every run also pins each extra template it lists.
+PRODUCER_SOURCES = PRODUCERS + route_extras.SOURCES
 SOAK_TEMPLATE = "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb"
 # The forced route uses absolute legacy addresses. All its breakpoint sites and
 # the main-menu, load-list and PlayGame ranges are byte-identical to the
@@ -173,6 +179,45 @@ def _live_save_hashes():
             for p in sorted((GAME / "save").iterdir()) if p.is_file()}
 
 
+def _save_state(asset_root, name):
+    """Hash one isolated save file, or None when its slot is empty."""
+    path = asset_root / name
+    if not path.exists():
+        return None
+    path = qualification.plain_path(path)
+    stat = path.stat()
+    return dict(sha256=_file_sha(path, route_extras.MAX_SAVE_BYTES), bytes=stat.st_size, mtime_ns=stat.st_mtime_ns)
+
+
+def _collect_route_extra(extra, asset_root, run, log_bytes, report):
+    """Retain the extra's written saves and replay its markers; only failures are reported."""
+    files = report["route_extra_files"]
+    names = extra["pre_files"] + extra["post_files"]
+    files["after"] = {name: _save_state(asset_root, name) for name in names}
+    retained = {}
+    for name in extra["post_files"]:
+        state = files["after"][name]
+        if state is None:
+            raise ValueError("The route extra wrote no save: " + name)
+        before = files["before"][name]
+        if before is not None and state["mtime_ns"] <= before["mtime_ns"]:
+            raise ValueError("The route extra did not rewrite its save: " + name)
+        data = qualification.read_file(asset_root / name, route_extras.MAX_SAVE_BYTES)
+        if _sha(data) != state["sha256"]:
+            raise ValueError("A written save changed while it was retained: " + name)
+        target = run / "route-extra" / Path(name).name
+        target.parent.mkdir(exist_ok=True)
+        _new(target, data)
+        retained[name] = dict(path=f"route-extra/{target.name}", sha256=state["sha256"], bytes=len(data))
+    files["retained"] = retained
+    for name in extra["pre_files"]:
+        if files["after"][name] != files["before"][name]:
+            raise ValueError("The route extra's load slot changed during the run: " + name)
+    observed, failures = route_extras.observe(extra, log_bytes.decode("latin-1"))
+    report["route_extra_observations"] = observed
+    return failures
+
+
 def stage_assets(destination, rows, *, create=True):
     """Copy selected lawful runtime files once, never tool/reverse/output trees."""
     destination = _external(destination)
@@ -230,7 +275,7 @@ def stage_assets(destination, rows, *, create=True):
 
 
 def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acquire_only=False,
-         hidden_menu_entry=False):
+         hidden_menu_entry=False, route_extra=None):
     if smoke_only and acquire_only:
         raise ValueError("Select either initial smoke or acquisition observation, not both.")
     if hidden_menu_entry and (route != "menu-idle" or smoke_only or acquire_only):
@@ -240,20 +285,22 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
     map_route = route != "menu-idle"
     if map_route and (smoke_only or acquire_only):
         raise ValueError("Initial-smoke and acquisition diagnostics use only the observation-only menu route.")
+    extra = None if route_extra is None else route_extras.prepare(route_extra, route=route, duration=duration)
     bundle = qualification.plain_path(bundle)
     context = qualification.authenticate_bundle(bundle)
     declared = qualification.read_json(bundle)
     loaded = {name: qualification._reference(ref, bundle.parent, qualification.MAX_BYTES[name])
               for name, ref in declared["artifacts"].items()}
     metadata = qualification.policy.parse_evidence_json(loaded["metadata"][1], "candidate metadata")
-    producers = {name: _sha(qualification.read_file(ROOT / name, 4 * 1024 * 1024)) for name in PRODUCERS}
+    producers = {name: _sha(qualification.read_file(ROOT / name, 4 * 1024 * 1024)) for name in PRODUCER_SOURCES}
     cdb_hash = _pe_x86(CDB)
     rows = asset_inventory()
     pending = []
     if map_route:
         # Composing once here rejects a changed or malformed soak extra before any process exists.
         map_command_script(loaded["probe"][1], context["identity"], metadata, route=route, duration=duration,
-                           soak_template=qualification.read_file(ROOT / SOAK_TEMPLATE, soak_composition.MAX_TEMPLATE_BYTES))
+                           soak_template=qualification.read_file(ROOT / SOAK_TEMPLATE, soak_composition.MAX_TEMPLATE_BYTES),
+                           extra=extra, extra_template=_extra_template(extra))
     report = dict(schema=SCHEMA, executed=False, identity=context["identity"], bundle=str(bundle),
         bundle_sha256=_sha(bundle.read_bytes()), route=route, duration_sec=duration, smoke_only=smoke_only,
         acquire_only=acquire_only, diagnostic_scope=("initial_image_only" if smoke_only else
@@ -262,9 +309,11 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
             "forced_map_entry_and_steady_state" if map_route else
             "hidden_menu_entry_natural_menu_idle" if hidden_menu_entry else "natural_menu_idle_no_input"),
         forced_mechanisms=(MAP_MECHANISMS | ({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})
+                           | (extra["mechanisms"] if extra else {})
                            if map_route else dict(HIDDEN_MENU_MECHANISMS) if hidden_menu_entry else {}),
-        hidden_menu_entry=hidden_menu_entry,
-        input_or_callback_forced=map_route, load_slot=MAP_LOAD_SLOT if map_route else None,
+        hidden_menu_entry=hidden_menu_entry, route_extra=extra,
+        input_or_callback_forced=map_route,
+        load_slot=(extra["load_slot"] if extra else MAP_LOAD_SLOT) if map_route else None,
         pan_interval_sec=MAP_PAN_INTERVAL_SEC if route == "map-pan" else None,
         acquisition_return_rvas={kind: rva for kind, (rva, _) in ACQUIRE_RETURNS.items()},
         debugger_holds_at_acquisition_completion=acquire_only,
@@ -324,36 +373,47 @@ def command_script(probe: bytes, identity, metadata, *, smoke_only=False, acquir
     return probe + ("\r\n" + "\r\n".join(suffix) + "\r\n").encode("ascii")
 
 
-def map_command_script(probe: bytes, identity, metadata, *, route, duration, soak_template: bytes):
+def _extra_template(extra):
+    if extra is None:
+        return None
+    return qualification.read_file(ROOT / extra["template"], route_extras.MAX_TEMPLATE_BYTES)
+
+
+def map_command_script(probe: bytes, identity, metadata, *, route, duration, soak_template: bytes,
+                       extra=None, extra_template=None):
     """Canonical image replay, then the legacy forced map route and soak extra.
 
     The forced steps match probes/cdb/render/clash95_surface_dump_probe.cdb
     and the proven -FastForwardStartAnims block. Its 800x600 visibility
     and surface-dump gates are left out; the soak extra is the canonical
-    composer's own substituted text. Every forced write is disclosed.
+    composer's own substituted text. An optional continuity extra follows it
+    on breakpoint sites nothing else uses. Every forced write is disclosed.
     """
     chunks = metadata["probe_contract"]["required_chunks"]
     if type(chunks) is not int or chunks <= 0:
         raise ValueError("Canonical initial-image chunk inventory is invalid.")
     if route not in ("map-idle", "map-pan") or duration not in ROUTES[route]:
         raise ValueError("Map routes preserve the fixed short-ladder or two-hour policy.")
+    if (extra is None) != (extra_template is None):
+        raise ValueError("A route extra needs exactly its own template.")
     width, height = (int(value) for value in identity["resolution"].split("x"))
     if width < 640 or height < 480:
         raise ValueError("The centered native menu needs at least a 640x480 canvas.")
+    load_slot = extra["load_slot"] if extra else MAP_LOAD_SLOT
     soak = soak_composition.prepare_soak_text(soak_template, route=route, duration_sec=duration,
-        pan_interval_sec=MAP_PAN_INTERVAL_SEC, load_slot=MAP_LOAD_SLOT)
+        pan_interval_sec=MAP_PAN_INTERVAL_SEC, load_slot=load_slot)
     # 0x419B80 compares the menu descriptors shifted by the centered 640x480
     # offset; the load list at 0x448A68 tests native, unshifted coordinates.
     main_x, main_y = (220 + (width - 640) // 2) << 6, (158 + (height - 480) // 2) << 6
-    load_x, load_y = soak_composition.load_mouse_raw(MAP_LOAD_SLOT)
+    load_x, load_y = soak_composition.load_mouse_raw(load_slot)
     mouse = r"poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c)"
-    mechanisms = " ".join(f"{key}={value}" for key, value in MAP_MECHANISMS.items())
+    mechanisms = " ".join(f"{key}={value}" for key, value in (MAP_MECHANISMS | (extra["mechanisms"] if extra else {})).items())
     pan = "cdb_forced_native_arrow_key" if route == "map-pan" else "none"
     lines = [
         f".if ((@$t19 == 0) | (@$t18 != 0n{chunks})) {{ .echo HDSESSION_INITIAL_REJECT; q }}",
         f".if (@$t19 != 0x{MAP_IMAGE_BASE:x}) {{ .echo HDSESSION_BASE_REJECT; q }}",
         '.printf "HDSESSION_TARGET pid=%x base=%p\\n", @$tpid, @$t19',
-        f".echo HDSESSION_FORCED_ROUTE {mechanisms} pan={pan} load_slot={MAP_LOAD_SLOT}",
+        f".echo HDSESSION_FORCED_ROUTE {mechanisms} pan={pan} load_slot={load_slot}",
         'sxe -c ".echo HDSESSION_AV; .exr -1; r; kb; q" av',
         *(f"r @$t{index} = 0" for index in range(18)),
         'bp 00401DDA ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"',
@@ -394,11 +454,17 @@ def map_command_script(probe: bytes, identity, metadata, *, route, duration, soa
          r'by(005451c8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(poi(005202e4)+0n140008), '
          r'poi(poi(005202e4)+0n140012); r @$t3 = @$t3 + 1; }; r eip = 00407bc6; }; gc"'),
         soak,
+        *([route_extras.compose(extra, extra_template)] if extra else []),
         "g",
     ]
     text = "\r\n".join(lines)
     if not soak_composition._PLAIN_TEXT.fullmatch(text) or soak_composition._LEFTOVER_PLACEHOLDER.search(text):
         raise ValueError("Forced map route must be plain ASCII without unsubstituted placeholders.")
+    # A second bp on one address silently replaces the first, so an extra may
+    # never reuse a site of the route or soak extra.
+    sites = route_extras.breakpoint_sites(text)
+    if len(sites) != len(set(sites)):
+        raise ValueError("Forced map route breakpoint sites must be unique; a route extra collides.")
     return probe + ("\r\n" + text + "\r\n").encode("ascii")
 
 
@@ -462,14 +528,23 @@ def proxy_surface_buffer(log: str, width: int, height: int):
 
     An idle menu stops locking its surface, so the game descriptor's pixel
     pointer is usually 0; the proxy keeps the last drawn image in this buffer.
+    The log is replayed in order: the heap can recreate a destroyed surface at
+    the same address, so only each address's latest creation and the Locks
+    after it count.
     """
-    destroyed = set(PROXY_DESTROYED.findall(log))
-    live = [this for this, w, h, pitch in PROXY_CREATED.findall(log)
-            if (int(w), int(h), int(pitch)) == (width, height, width) and this not in destroyed]
-    if len(live) != 1:
+    live = {}
+    for line in log.splitlines():
+        if created := PROXY_CREATED.fullmatch(line):
+            this, w, h, pitch = created.groups()
+            live[this] = dict(canvas=(int(w), int(h), int(pitch)) == (width, height, width), buffers=set())
+        elif destroyed := PROXY_DESTROYED.fullmatch(line):
+            live.pop(destroyed[1], None)
+        elif (locked := PROXY_LOCK.fullmatch(line)) and locked[1] in live:
+            live[locked[1]]["buffers"].add(locked[2])
+    canvases = [surface for surface in live.values() if surface["canvas"]]
+    if len(canvases) != 1 or len(canvases[0]["buffers"]) != 1:
         return None
-    buffers = {surface for this, surface in PROXY_LOCK.findall(log) if this == live[0]}
-    return int(buffers.pop(), 16) if len(buffers) == 1 else None
+    return int(canvases[0]["buffers"].pop(), 16)
 
 
 def _read_log(path):
@@ -671,12 +746,25 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
     local_candidate = run / "clash95_hd_session.exe"
     _new(local_candidate, loaded["executable"][1])
     commands = run / "session.cdb"
+    extra = preflight.get("route_extra")
+    report["asset_root"] = str(asset_root)
     if map_route:
         soak_template = qualification.read_file(ROOT / SOAK_TEMPLATE, soak_composition.MAX_TEMPLATE_BYTES)
         if _sha(soak_template) != preflight["producer_source_hashes"][SOAK_TEMPLATE]:
             raise ValueError("Soak route template changed after preflight.")
+        extra_template = _extra_template(extra)
+        if extra and _sha(extra_template) != preflight["producer_source_hashes"][extra["template"]]:
+            raise ValueError("Route extra template changed after preflight.")
         _new(commands, map_command_script(loaded["probe"][1], context["identity"], metadata,
-            route=preflight["route"], duration=preflight["duration_sec"], soak_template=soak_template))
+            route=preflight["route"], duration=preflight["duration_sec"], soak_template=soak_template,
+            extra=extra, extra_template=extra_template))
+        if extra:
+            # Before any process exists: the slot the route will load and the
+            # slot it will save, so the run proves both its source and its write.
+            report["route_extra_files"] = dict(before={name: _save_state(asset_root, name)
+                for name in extra["pre_files"] + extra["post_files"]}, after=None, retained=None)
+            if report["route_extra_files"]["before"][extra["pre_files"][0]] is None:
+                raise ValueError("The route extra's load slot has no isolated save to load.")
     else:
         _new(commands, command_script(loaded["probe"][1], context["identity"], metadata,
             smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False),
@@ -829,11 +917,17 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
         if not report["cleanup"]["cleanup_verified"]:
             report["failures"].append("Task-owned native cleanup was not verified.")
         # The debugger has exited, so the log is final: pin it for later replay.
+        final_log = b""
         try:
             final_log = log.read_bytes() if log.exists() else b""
             report["retained_log"] = dict(path=log.name, sha256=_sha(final_log), bytes=len(final_log))
         except OSError as error:
             report["failures"].append("Retained CDB log could not be pinned: " + str(error))
+        if extra and report.get("route_extra_files"):
+            try:
+                report["failures"].extend(_collect_route_extra(extra, asset_root, run, final_log, report))
+            except (OSError, ValueError) as error:
+                report["failures"].append("Route extra collection failed: " + str(error))
         try:
             report["live_saves_unchanged"] = _live_save_hashes() == before_saves
         except OSError as error:
@@ -875,6 +969,9 @@ def main(argv=None):
     parser.add_argument("--acquire-only", action="store_true", help="observe genuine mouse/keyboard HRESULT returns; never force acquisition or input")
     parser.add_argument("--hidden-menu-entry", action="store_true",
                         help="menu-idle only: skip the intro sleeps and the hidden desktop's denied acquisition, both disclosed; never input, clicks or menu state")
+    parser.add_argument("--route-extra", type=json.loads, default=None,
+                        help='map-idle 120 only: one disclosed continuity extra as JSON, e.g. '
+                             '{"name": "forced-save", "load_slot": 0, "save_slot": 7}')
     parser.add_argument("--output-root", type=Path, default=Path("C:/ClashTests/hd-multires-hidden"))
     parser.add_argument("--asset-root", type=Path, default=Path("C:/ClashTests/hd-multires-runtime-assets-20261025"))
     parser.add_argument("--ready-timeout", type=int, default=300)
@@ -884,7 +981,8 @@ def main(argv=None):
         parser.error("--ready-timeout must be between 30 and 600 seconds")
     try:
         preflight, context, loaded, metadata, rows = plan(args.bundle, args.route, args.duration,
-            smoke_only=args.smoke_only, acquire_only=args.acquire_only, hidden_menu_entry=args.hidden_menu_entry)
+            smoke_only=args.smoke_only, acquire_only=args.acquire_only, hidden_menu_entry=args.hidden_menu_entry,
+            route_extra=args.route_extra)
         if args.execute:
             report = execute(preflight, context, loaded, metadata, rows, output_root=args.output_root,
                              asset_root=args.asset_root, ready_timeout=args.ready_timeout)

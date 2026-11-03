@@ -156,6 +156,101 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNone(session.proxy_surface_buffer(moved, 1024, 768))
         twin = proxy + "FakeSurface created this=00700000 size=1024x768 pitch=1024 caps=0x00000200\n"
         self.assertIsNone(session.proxy_surface_buffer(twin, 1024, 768))
+        # The heap can recreate a destroyed surface at the same address: only
+        # its latest creation and the Locks after it count.
+        reused = ("FakeSurface created this=04038908 size=1024x768 pitch=1024 caps=0x00000200\n"
+                  "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=07000040\n"
+                  "FakeSurface destroyed this=04038908\n"
+                  "FakeSurface created this=04038908 size=1024x768 pitch=1024 caps=0x00000200\n"
+                  "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=08CBA040\n")
+        self.assertEqual(session.proxy_surface_buffer(reused, 1024, 768), 0x08CBA040)
+        self.assertIsNone(session.proxy_surface_buffer(reused + "FakeSurface destroyed this=04038908\n", 1024, 768))
+        early = "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=07000040\n" + reused.split("\n", 2)[2]
+        self.assertEqual(session.proxy_surface_buffer(early, 1024, 768), 0x08CBA040)
+
+    def test_forced_save_extra_follows_the_soak_extra_on_its_own_site_and_slot(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        template = (session.ROOT / session.SOAK_TEMPLATE).read_bytes()
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        request = {"name": "forced-save", "load_slot": 7, "save_slot": 8}
+        extra = session.route_extras.prepare(request, route="map-idle", duration=120)
+        extra_template = (session.ROOT / extra["template"]).read_bytes()
+        composed = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle",
+            duration=120, soak_template=template, extra=extra, extra_template=extra_template)
+        self.assertTrue(composed.startswith(prefix))
+        text = composed[len(prefix):].decode("ascii")
+        lines = text.split("\r\n")
+        self.assertIn("HDSESSION_FORCED_ROUTE map_entry=cdb_forced_menu_load_route start_animations="
+                      "cdb_fast_forward_sleeps acquisition=cdb_forced_bypass drag_scroll=cdb_forced_skip "
+                      "save=cdb_forced_save_game pan=none load_slot=7", text)
+        # Slot 7's native load-list row: (320, 166 + 22 * 7) << 6.
+        self.assertEqual(text.count("ed 00544cfc 00005000; ed 00544d00 00005000;"), 2)
+        self.assertNotIn("ed 00544d00 00002980;", text)
+        sites = session.route_extras.breakpoint_sites(text)
+        self.assertEqual(len(sites), len(set(sites)))
+        first = {site: next(index for index, line in enumerate(lines) if line.startswith(f"bp {site} "))
+                 for site in ("00407D20", "0040B0C1")}
+        self.assertLess(first["00407D20"], first["0040B0C1"])
+        self.assertEqual(lines[-2:], ["g", ""])
+        plain = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle",
+            duration=120, soak_template=template).decode("ascii")
+        self.assertNotIn("0040B0C1", plain)
+        self.assertNotIn("save=", plain)
+        # An extra declaring a site the soak extra owns would silently replace it.
+        colliding = dict(extra, sites=["0040B0C3"])
+        with self.assertRaisesRegex(ValueError, "unique"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+                soak_template=template, extra=colliding, extra_template=extra_template.replace(b"0040B0C1", b"0040B0C3"))
+        with self.assertRaisesRegex(ValueError, "exactly its own template"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+                soak_template=template, extra=extra)
+        for route, duration in (("map-pan", 600), ("menu-idle", 120), ("map-idle", 600)):
+            with self.assertRaisesRegex(ValueError, "120 s map-idle"):
+                session.plan(Path("missing.json"), route=route, duration=duration, route_extra=request)
+        self.assertIn("tools/hd_multires_route_extras.py", session.PRODUCERS)
+        self.assertIn(session.route_extras.FORCED_SAVE_TEMPLATE, session.PRODUCER_SOURCES)
+
+    def test_route_extra_retains_its_rewritten_save_and_keeps_the_load_slot_unchanged(self):
+        extra = session.route_extras.prepare({"name": "forced-save", "load_slot": 7, "save_slot": 8},
+                                             route="map-idle", duration=120)
+        log = ("HDSESSION_LOADSAVE selected_arg=7 selected_global=7 accept=1 choice=5 gd=03f30030\n"
+               "HDCONT_SAVE_CALL slot=8 load_slot=7 gd=03f30030 player=0 scroll=(10,17) tick=5\n"
+               "HDCONT_SAVE_RETURNED slot=8 eax=1 tick=6\n").encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+
+            def attempt(name, *, rewrite=True, change_load=False, remove=False, log_bytes=log):
+                assets, run = base / name / "assets", base / name / "run"
+                (assets / "save").mkdir(parents=True)
+                run.mkdir()
+                (assets / "save/7.dat").write_bytes(b"state")
+                (assets / "save/8.dat").write_bytes(b"old")
+                os.utime(assets / "save/8.dat", ns=(10 ** 18, 10 ** 18))
+                report = {"route_extra_files": dict(before={path: session._save_state(assets, path)
+                          for path in extra["pre_files"] + extra["post_files"]}, after=None, retained=None)}
+                if rewrite:
+                    (assets / "save/8.dat").write_bytes(b"state")
+                    os.utime(assets / "save/8.dat", ns=(2 * 10 ** 18, 2 * 10 ** 18))
+                if change_load:
+                    (assets / "save/7.dat").write_bytes(b"other")
+                if remove:
+                    (assets / "save/8.dat").unlink()
+                return session._collect_route_extra(extra, assets, run, log_bytes, report), report, run
+
+            failures, report, run = attempt("pass")
+            self.assertEqual(failures, [])
+            files = report["route_extra_files"]
+            self.assertEqual(files["retained"], {"save/8.dat": dict(path="route-extra/8.dat",
+                sha256=files["after"]["save/7.dat"]["sha256"], bytes=5)})
+            self.assertEqual((run / "route-extra/8.dat").read_bytes(), b"state")
+            self.assertEqual(report["route_extra_observations"]["save_returned"]["eax"], 1)
+            for name, options, message in (("stale", dict(rewrite=False), "did not rewrite"),
+                                           ("moved", dict(change_load=True), "load slot changed"),
+                                           ("missing", dict(remove=True), "wrote no save")):
+                with self.assertRaisesRegex(ValueError, message):
+                    attempt(name, **options)
+            # A rewritten save without the native call and return markers still fails.
+            self.assertTrue(attempt("unlogged", log_bytes=b"")[0])
 
     def test_map_ready_binds_one_entry_and_the_selected_canvas_to_the_adopted_process(self):
         identity, target = {"resolution": "1920x1080"}, {"pid": 0xabc, "base": 0x400000}

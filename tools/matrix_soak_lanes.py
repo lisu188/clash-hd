@@ -39,6 +39,7 @@ SESSION_IDENTITY_KEYS = frozenset({"base_sha256", "candidate_sha256", "cell_id",
                                    "source_closure_sha256", "stage"})
 MAX_SESSION_BYTES = 16 * 1024 * 1024
 MAX_LOG_BYTES = 128 * 1024 * 1024
+STEP_BOUNDS = {"session_report": MAX_SESSION_BYTES, "cdb_log": MAX_LOG_BYTES}
 TICKS_PER_SECOND = 64
 PAN_INTERVAL_SEC = 10
 # The legacy hidden soak's host telemetry limits (tools/hd_soak_report.py).
@@ -161,6 +162,8 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
         and session.get("initial_image_bytes_verified") is True
         and session.get("diagnostic_passed") is True and session.get("failures") == []
         and session.get("smoke_only") is False and session.get("acquire_only") is False
+        # A continuity extra forces a native call, so its runs are never soak rows.
+        and session.get("route_extra") is None
         and evidence._same_raw_json(retained, {"path": "cdb.log", "sha256": _sha(log_raw), "bytes": len(log_raw)})
         and type(hashes) is dict and hashes.get(PRODUCER) == producer_sha)
     if not completed:

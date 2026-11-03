@@ -67,8 +67,27 @@ Framed 1920x1080 is the first cell with a passing soak lane in this context.
 Its replayed `short_soak_ladder` and `resolution_coverage` pass; the other
 fourteen lanes fail for lack of evidence, so the cell fails. See
 [the ladder receipt](../../reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json).
+That run used the session producer before its continuity extension, and
+the replay pins the producer's bytes, so every soak lane needs collecting
+again with the current producer.
 
-The other twelve runtime lanes in the new context remain unsupported, including
+`save_load_roundtrip` has replay too (`tools/matrix_continuity_lanes.py`).
+Its lane report pins two retained `forced-save` runs in one isolated asset
+root: slot 0 saved into slot 7, then slot 7 reloaded and saved into slot 8.
+Each run's session report, CDB log and retained save are pinned. The replay:
+- binds both runs to the fresh cell and the pinned producer;
+- replays each run's load, call and return markers;
+- requires the loaded slot unchanged and the saved slot rewritten;
+- requires the reload to read exactly the first save's bytes;
+- requires the resave's state, with only the code-derived process-pointer
+  fields zeroed, to equal the first save's.
+
+The isolated root must lie under `C:/ClashTests`, and live saves must stay
+unchanged. Its evidence class is `approved_hidden_cdb_continuity`: map entry
+and both saves are debugger-forced and disclosed, so it is not a played
+turn, manual input or a cell pass.
+
+The other eleven runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
 verifiers. Expanded-battle and promotion acceptance also remain false. Neither

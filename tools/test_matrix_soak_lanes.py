@@ -229,7 +229,7 @@ class SoakReplayTests(unittest.TestCase):
     def test_release_dispatch_replays_only_the_fixed_hidden_soak_envelope(self):
         report, path, context = self.release_lane("long_map_idle")
         refs, failures = [], []
-        measured = release._soak_lane("long_map_idle", report, path, context, refs, failures)
+        measured = release._hidden_lane("long_map_idle", release.soak_lanes, report, path, context, refs, failures)
         self.assertFalse(failures)
         self.assertTrue(all(value["passed"] for value in measured.values()))
         # The producer and both pinned step files are rechecked at the end, each with its own bound.
@@ -247,16 +247,16 @@ class SoakReplayTests(unittest.TestCase):
             with self.subTest(change=sorted(change)):
                 report, path, context = self.release_lane("long_map_idle", **change)
                 failures = []
-                release._soak_lane("long_map_idle", report, path, context, [], failures)
+                release._hidden_lane("long_map_idle", release.soak_lanes, report, path, context, [], failures)
                 self.assertTrue(any(message in item for item in failures), failures)
         report, path, context = self.release_lane("long_map_idle")
         context["identity"] = dict(IDENTITY, recipe_revision="complete_hd_v1")
         with self.assertRaisesRegex(ValueError, "only hd_multires_v1"):
-            release._soak_lane("long_map_idle", report, path, context, [], [])
+            release._hidden_lane("long_map_idle", release.soak_lanes, report, path, context, [], [])
         report, path, context = self.release_lane("long_map_idle")
         context["artifact_refs"]["metadata"] = write(path.parent / "other.json", b'{"probe_contract": {}}')
         with self.assertRaises(KeyError):
-            release._soak_lane("long_map_idle", report, path, context, [], [])
+            release._hidden_lane("long_map_idle", release.soak_lanes, report, path, context, [], [])
 
     def test_tampered_frame_or_report_bytes_raise_before_any_check(self):
         root, runs = self.lane("long_map_idle")
