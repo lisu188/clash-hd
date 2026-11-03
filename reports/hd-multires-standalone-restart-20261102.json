@@ -1,0 +1,201 @@
+{
+  "schema": "hd_multires_standalone_restart_v1",
+  "generated_at": "2026-11-02T17:00:09.887612+00:00",
+  "source_commit": "65dedc6bf60944d1e3a2005afdbe500e95b77471",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "build": {
+    "script": "scripts/launcher/build_launcher_exe.ps1",
+    "python": "3.11.9",
+    "pyinstaller": "6.16.0",
+    "mode": "onefile windowed",
+    "post_build_source_inventory_check": "passed",
+    "executable_sha256": "03b0e92dd88853a2a934f49bb6f50a2f1b03e38c6b22c20819f12800b8f4888d",
+    "executable_bytes": 14005304
+  },
+  "package_selftest": {
+    "returncode": 0,
+    "passed": true,
+    "standalone_executable": true,
+    "bundled_sources_verified": true,
+    "cells": 12,
+    "settings_roundtrips": 12,
+    "default": [
+      "classic",
+      "800x600"
+    ],
+    "game_runtime_executed": false,
+    "input_executed": false,
+    "runtime_acceptance": false,
+    "report_sha256": "18230fa33f6f01a17a96764d074c680c9e0f582a391a3158acc9d4911856cbf0"
+  },
+  "prepare": {
+    "launcher_processes": 24,
+    "distinct_processes": true,
+    "clean_folders": 2,
+    "processes_per_cell": 2,
+    "python_on_path": false,
+    "hidden_desktop_per_process": true,
+    "all_exit_zero": true,
+    "all_cleanup_verified": true,
+    "max_seconds": 70.39
+  },
+  "qualification": {
+    "tool": "tools/hd_multires_qualification.py",
+    "returncode": 0,
+    "authenticated_cells": 12,
+    "accepted_cells": 0,
+    "failures": 0,
+    "promotion_ready": false
+  },
+  "cells": [
+    {
+      "cell_id": "classic/1920x1080",
+      "candidate_sha256": "130b3101e583b988ef39e6c5b6e7eca809b0c13aaf3701047a0f57e6e332515e",
+      "metadata_sha256": "3601127f4219ccc1d19cfd8dcdf0409245fe53101c433411e368ecbcfb006b0c",
+      "probe_sha256": "d605079cd609a5c3fb947c829fb74c4ffe0d9922570c2a836f72917c939db895",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/2560x1440",
+      "candidate_sha256": "ae8986279bd081a38919b1dd12b46b3029d5c367ea23c51a84e349c8460a9412",
+      "metadata_sha256": "d0b136f36f024b4726f7ef8849e3a50f494dcc2fa054446601415808c6e1ca49",
+      "probe_sha256": "f051d83448c87e89ad3bd846cca5c946f685de9838d976d187fedb6ce862bf0c",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "classic/3840x2160",
+      "candidate_sha256": "a71969b3c4384964d54534f0c2d369d239b50348390a06bde1fda1b77738df89",
+      "metadata_sha256": "2dae1cb10dd6c45e4a30c0b0bfb9b1e209033bbe59e1ff88867cf17614a25575",
+      "probe_sha256": "b6cb068da268792099d5b0bc2d8c86061e4493358bfa851a73b1b9f8ad4c7720",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/1920x1080",
+      "candidate_sha256": "3510e0a23fd41f95283806cee9cb761a31e4ea7b3ab4eb4f4c1fe52e6fd27e02",
+      "metadata_sha256": "d523e944b96393a2a3cfe1171d5a2efaeeeb32a7f818831651d69617718ce6cf",
+      "probe_sha256": "d9ba7b33223f52c56deca6bfaf9d1c3a094038b34d0077dd6474c209a49ca4bc",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/2560x1440",
+      "candidate_sha256": "0a1b3c3edc95791f26338ef4ec6531b7bb081f548ef6cdd868a6823525e12b8d",
+      "metadata_sha256": "baf66e949aa200570e21355fd0c3944ec53b18a8c8201754d2ef27c0ee1e014c",
+      "probe_sha256": "3c3d9cac16d94cdabca1060ee63c56b242e6377d749d3473c9ff6e6c0f2f748a",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "framed/3840x2160",
+      "candidate_sha256": "565cdcd6e2851bbfbc2bbbced3e1cecb767138a4fc914c977bcb78fd26b666cc",
+      "metadata_sha256": "3ac600ab5355cff1afad295289a51b579a3361e47b803885a2d22e03f0645f5d",
+      "probe_sha256": "74ff15716d1cfa233440a36992eec6b41c13ca06084d4888794a571cd347a162",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/1920x1080",
+      "candidate_sha256": "9af7c78a1bf6f033ed3e1bf3ce783cba40601ad1bed78ce0647832bc4dd24fa0",
+      "metadata_sha256": "1dd536edf4fb87db0ec1e637a6a14109697592719190d64f6f426ccd7e9d2fa5",
+      "probe_sha256": "6315a76bd1cd561f55eba2009bf0446dd971c281c6780f170242c7f02a14e995",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/2560x1440",
+      "candidate_sha256": "a35cec7063d5c8f9735735b030d5cf499322e17bb91aac64223a309ffb5c9fe0",
+      "metadata_sha256": "1e52c79fe6394feadb1e1726a0c4b3f151f6a96da67b63343ccb584f516e7455",
+      "probe_sha256": "34911186926fbd36516132fa8d07d0bc45696df3674068c0bd8e43ce3054c20d",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "completehd/3840x2160",
+      "candidate_sha256": "17e31c0eb09b44cbbbe3cd0388610bb3ce581f35264c3284f45f1722b1b4015f",
+      "metadata_sha256": "68609bcffbf8f9641b541d50b146e86fecbc0a165584bc91c8ba193b52113560",
+      "probe_sha256": "7d4b1b4d9e28fcd3a7ea90420cf077ae56f1b5362f22fdea18e08947a408e347",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/1920x1080",
+      "candidate_sha256": "10e68bce1b07c4d8eaa2ae20b92c77f57239c2f19a5de7ba6f32be014360483f",
+      "metadata_sha256": "79d004e078e9a5b0c5ee90823d30ca21d8dcb846ef1a3e300a056f351e7bf73d",
+      "probe_sha256": "e163aad9eb8757d4b2036a0c01d45a80bc39648b0d708f684572faf0840affe6",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/2560x1440",
+      "candidate_sha256": "b9f59802c27f3d40eb4ebfe3fc7433ed892221e0a41ae80365d09774f1258df8",
+      "metadata_sha256": "49918a8166d31024aaead239fb555301ef10b17c97fd971120ed56fda2266470",
+      "probe_sha256": "144ecaaca97490f7c544ebdf6faf78525460113c41904b7735b3fff90aad0ebf",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    },
+    {
+      "cell_id": "modalwidgets/3840x2160",
+      "candidate_sha256": "e6d5c5e8f9f30c40677fbdc94f9a36868afc488dde3abf9ee888fcc4e2f32f43",
+      "metadata_sha256": "a28e4b69460ce290de2860f79a84d6dacb978378259084d3d245c54c485a1e19",
+      "probe_sha256": "53da1a6fc2cdb955db4f01530f34fe4256a12fe57a9d41de2357d762a74d813f",
+      "run_a_equals_run_b": true,
+      "launcher_equals_authenticated_reference": true,
+      "deployment_identity_equal": true,
+      "reference_identity_matches": true
+    }
+  ],
+  "disk": {
+    "volume": "C:",
+    "before": {
+      "total_bytes": 999595962368,
+      "free_bytes": 627058593792,
+      "used_percent": 37.27
+    },
+    "after": {
+      "total_bytes": 999595962368,
+      "free_bytes": 625496453120,
+      "used_percent": 37.43
+    }
+  },
+  "commands": [
+    "scripts/launcher/build_launcher_exe.ps1 -Python <packaging venv python> -OutputDir C:/ClashTests/launcher/standalone-proof-20261102/build -Execute",
+    "ClashHDLauncher.exe --package-selftest <stamp>/package-selftest.json",
+    "ClashHDLauncher.exe --profile <profile> --resolution <resolution> --clash-dir C:/Clash --candidates-root <stamp>/run-<a|b> --prepare",
+    "python -B tools/hd_multires_qualification.py --prepare --output-root <stamp>/qualification --report <stamp>/qualification-report.json"
+  ],
+  "local_outputs": "C:/ClashTests/launcher/standalone-proof-20261102 (local only; never committed)",
+  "passed": true,
+  "limitation": "Construction and restart determinism of the packaged launcher only: each cell's executable, metadata and probe are byte-identical across two launcher processes with separate one-file extraction directories and equal the qualification tool's authenticated reference bundle. No game, GUI, input, rendering, gameplay, endurance or release acceptance.",
+  "game_runtime_executed": false,
+  "gui_opened": false,
+  "input_executed": false,
+  "runtime_acceptance": false,
+  "release_accepted": false,
+  "promotion_ready": false
+}

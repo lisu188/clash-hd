@@ -1,0 +1,188 @@
+{
+  "acceptance": {
+    "atomic_installation_verified": false,
+    "battle_installed": false,
+    "healthy_map_return_verified": false,
+    "input_verified": false,
+    "installation_ready": false,
+    "installed": false,
+    "intra_decoder_cancellation": false,
+    "native_callback_abi_verified": false,
+    "native_line_abi_verified": false,
+    "native_line_execution_verified": false,
+    "native_sprite_replay_emitted": false,
+    "native_stack_capacity_verified": false,
+    "promotion_ready": false,
+    "provider_lifetime_verified": false,
+    "provider_validity_verified": false,
+    "release_accepted": false,
+    "runtime_verified": false,
+    "sprite_rle_verified": false,
+    "whole_chain_capacity_verified": false
+  },
+  "authoring": {
+    "canonical_parent_or_profile_emitted": false,
+    "checks": [
+      "whole pinned fresh parent and lazy synthetic-input rejection",
+      "unchanged eleven sprite query thunks",
+      "two native CALL ports and actual output/cleanup instruction sequences",
+      "exact pre/post helper return plus phase and literal memory-vtable binding",
+      "exact generated helper source transformation and double-composition rejection",
+      "small synthetic-symbol shared guard and conservative capacity bound"
+    ],
+    "command": "python -B tools/test_battle_profile_line_replay_v2.py",
+    "cpu_interpreter_used": false,
+    "elapsed_seconds": 0.221,
+    "methods": 4,
+    "original_opened_by_default_tests": false,
+    "passed": true,
+    "pixel_arena_allocated": false,
+    "skipped": 0
+  },
+  "candidate_written": false,
+  "capacity_block": {
+    "observed_free_bytes": 99733778432,
+    "policy": "No large processes, profile/pixel batches, builds, installs or captures under the reserve; unique evidence retained.",
+    "required_minimum_free_bytes": 99959596237,
+    "volume_bytes": 999595962368
+  },
+  "capacity_plan": {
+    "additional_rx_upper_bound_bytes": 390,
+    "conservative_remaining_rx_lower_bound_bytes": 2600,
+    "full_emission_verified": false,
+    "helper_phase_delta_bytes": 15,
+    "limitation": "Bound derives from exact shared-guard/thunk source sizes under synthetic symbols and at most16-byte prefix alignment. It is not a canonical producer/RAM receipt.",
+    "parent_minimum_remaining_rx_bytes": 2990,
+    "parent_producer_sha256": "72e39bdcb4a047d227bf38cf40d5cb6c69d771ccb5e170e2040cfbb55ecb3be5",
+    "prefix_alignment_quantum_bytes": 16,
+    "rw_borrowed": false,
+    "rx_expanded": false,
+    "shared_guard_delta_bytes": 134,
+    "thunk_delta_bytes": 235
+  },
+  "evidence_date": "2026-10-27",
+  "full_emission_verified": false,
+  "independent_review": "Read-only review found no actionable source/ABI/overlap/composition issue in authoring scope; no expensive suite rerun.",
+  "installed_hooks": [],
+  "original_static": {
+    "line_target_va": 4210544,
+    "memory_vtable_va": 5303844,
+    "native_or_cpu_executed": false,
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "passed": true,
+    "relayout_parent_authenticated": false,
+    "scope": "Read-only exact-original hashes/HIGHLOWs of4closed native spans,2whole replacement windows and literal vtable slot; same original supplied for both static-image arguments.",
+    "spans": [
+      [
+        "memory_line",
+        4210544,
+        4210749,
+        "74308b78ce403326e9df50c52c7c522bbc645e6b5001961e3a957e5d9b0ebf5e"
+      ],
+      [
+        "fill_adapter",
+        4669400,
+        4669424,
+        "72d0f071ad4527d35d1d3a72d27ba6c438a17144868c4d381f451485bbcbb3ec"
+      ],
+      [
+        "fill_closure",
+        4750576,
+        4750739,
+        "0d817cb2566a6e1c69d28ad408e2c64dbe30f5718e5c9e2a0126d2bc4d8ebc03"
+      ],
+      [
+        "memory_vtable",
+        5303844,
+        5303904,
+        "297030147e736198144db61d9839b9be6372b4d8a679a20db4586c188367fa3e"
+      ]
+    ],
+    "windows": [
+      [
+        4393685,
+        "ff5714e954fdffff",
+        4393009
+      ],
+      [
+        4393735,
+        "ff571489ec5d5f5e595bc3",
+        null
+      ]
+    ]
+  },
+  "pending": [
+    "Canonical full Line emission and all12 profile/resolution RAM reconstructions",
+    "Independent complete operand/relocation replay over actual Line output",
+    "Original-backed native memory-line/fill execution and pre/post ABI/pixel/stack comparisons",
+    "Callback/control/argument loss CPU matrix and complete caller continuations",
+    "Sprite/RLE lifetime, atomic installer, Windows runtime, human input and release qualification"
+  ],
+  "schema": "clash95_line_replay_v2_authoring_receipt_v1",
+  "scope": "Uninstalled LineV2 source and small synthetic-symbol assembly authoring only; canonical full emission remains unverified.",
+  "source_closure_count": 45,
+  "source_closure_sha256": "396482c6a79be90104f7a1e9e34498fa326746358f8920be7d3108b793f17ebe",
+  "source_contracts": {
+    "complete_line_ports": 2,
+    "helper_frame_bytes": 1616,
+    "malformed_fault_unknown_control": "UD2; no unchecked cleanup",
+    "owning_thunk_bytes": 80,
+    "phase_policy": "literal memory vtable; pre helper return+task0 or post helper return+task1; native outputs retained",
+    "planned_hooks_installed": false,
+    "provider_records_emitted": 0,
+    "provider_schema": "unpopulated_provider_reservation_v1",
+    "removed_overlapping_post_windows": [
+      4393688,
+      4393738
+    ],
+    "sprite_queries_retained": 11
+  },
+  "source_hashes": {
+    "src/patcher/battle_profile_adjacent_unit_v2.py": "b2ae87457bd2344d9e6650032dba46d03a680e2303946acb75abaf0508f5ead8",
+    "src/patcher/battle_profile_content.py": "52f9ac7f8d52cb40638e91868910d6487cea083be0cc32e622d8fe4a3f8cf3d7",
+    "src/patcher/battle_profile_content_replay.py": "bafc8fd0cdd8350a85b3ca0cd0d91005d603d6db99b10359c401b50d083248f3",
+    "src/patcher/battle_profile_content_v2.py": "681fbf96f79e9c1fa9c64ab70f27057ade97bc4a109f79562c65a383067372c6",
+    "src/patcher/battle_profile_context.py": "be3bbca018c415895ba7e79e64862512f330297fb56b4d8321f8f6d378c38500",
+    "src/patcher/battle_profile_context_v2.py": "d0a8b27ae4d07b290a449c1c875d4b574d329d2a9ac6b1397a2753f7d10ee5c9",
+    "src/patcher/battle_profile_continuation.py": "075bd62a8311f8cc761136bca21063813dfc874ce8d8a5bcf075ebdb664d811f",
+    "src/patcher/battle_profile_continuation_v2.py": "2723321d508dd8b7775bb15d65180212a157ec356ce6f28f661bbe68fe374a9d",
+    "src/patcher/battle_profile_count_body_v2.py": "b42d1724edb3eb6ba1a393884a8ceff0f590d61368fe438c4b003ad2997b1d8d",
+    "src/patcher/battle_profile_count_entry.py": "50bf7d588bd41102ba7170f6a53ff9f65a22496b5d9ea13586496196a7cc2ac4",
+    "src/patcher/battle_profile_field.py": "c329460fc7289d11ac10ddc33d26eb5ad158169ca976fee41ccd32fba6d97c88",
+    "src/patcher/battle_profile_field_loss.py": "3d473676828e13fc24853c3bf7f08d7e92e2a3f682bd31226e50cbf9f9258163",
+    "src/patcher/battle_profile_field_v2.py": "673a2170f77dc143a1d62745bf5879f23163e9cbcffa3f5549123c4cc81f8cbf",
+    "src/patcher/battle_profile_field_v3.py": "c369525f34308ab5fde48b9c334d45a90845aded3ab26abda5a08b5ff35d6d3a",
+    "src/patcher/battle_profile_lifecycle.py": "dccb907b09d002691cad679219942ac5a8ffcb2798af4c96b0b1768dbd9e9f44",
+    "src/patcher/battle_profile_lifecycle_v2.py": "cbc91857e7fb914be0e27654bd59c7ed4cec145c118d9ebe3aa8163b55e78199",
+    "src/patcher/battle_profile_line_replay_v2.py": "2fd82327341cee7b3566cf74d588442fcbf6143fb8ecd266e86d507ce8d14668",
+    "src/patcher/battle_profile_primitive_request_v2.py": "72e39bdcb4a047d227bf38cf40d5cb6c69d771ccb5e170e2040cfbb55ecb3be5",
+    "src/patcher/battle_profile_routing.py": "838d371bf837ab0098420e5589abc07d446a22bd6daa25ecab683e4725e25972",
+    "src/patcher/battle_profile_routing_v2.py": "77be6897c0cfab78237a6d85dd678e772a0b34c81787e11736950f4cb4700b1c",
+    "src/patcher/battle_profile_stack_lease.py": "47d6ad4931aef39b58919dff4b22b41cce76b0abf39267237a704471331f834c",
+    "src/patcher/battle_profile_stack_lease_v2.py": "f24b7c1cb0756ce1bdcbb1e4f5a24cd2fb139aacb6feb627cad8a7e636408d19",
+    "src/patcher/battle_profile_tile_replay.py": "2df87c637b5477ed4154a57fd69751f4a7f48712dc73ccac23c133e543a2a8c6",
+    "src/patcher/framed_battle_coordinates.py": "b67900d7399e0ce807d88a261c97942598beebfc28e2d78774cd109098f95142",
+    "src/patcher/framed_battle_field.py": "f690865e615db65d02e8c59b5c43e0cfbaa1e371dd6502441d16e0d270a7196d",
+    "src/patcher/framed_battle_hud.py": "3a6cb61a2ec2fcd0fa9c52c09a96e11a9a2d9f75cac6e3a2e826d5caa98a3ee3",
+    "src/patcher/framed_battle_viewport.py": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6",
+    "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+    "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+    "tools/test_battle_profile_adjacent_unit_v2.py": "a8fbbccba6151b5f1b6e374be2935db8e8a58348228451380f883a02a685b009",
+    "tools/test_battle_profile_content.py": "750cecfd7d8cad5f2dc4c4e80cf0f0e2111a468641a7ccbf410a4c619db749e8",
+    "tools/test_battle_profile_content_replay.py": "f285dea2525bd2ad796391f8d53eebaf4d206e20660e9de5e862c815aa4afd86",
+    "tools/test_battle_profile_content_v2.py": "4ba3ae488509da4600cb3e94fab3523f1684beffed0bfc07797dca828b6e242f",
+    "tools/test_battle_profile_continuation_v2.py": "a6339649cf0064460c559ca96359ce7c1f73ecf4b653144ed4f218c6f2ac6d5e",
+    "tools/test_battle_profile_count_body_v2.py": "80ebeb87f50959890b6eb8d6df6bb2dfc398c750419137f9e51c7a4b14505ecc",
+    "tools/test_battle_profile_count_entry.py": "b927ee3d1a0bf55f6ca46dfe4915adf9b60d783aec7c2a6d4f95cf75462da73c",
+    "tools/test_battle_profile_field_loss.py": "98edffc4cb1f2f5b95b8908e9a4928fcab9976d9152abe75cadf0d390d07419c",
+    "tools/test_battle_profile_field_v3.py": "a5e4f26de52766513bdac5abec85a076bdaf7e96155e99fa3fa52194e1ffcbba",
+    "tools/test_battle_profile_line_replay_v2.py": "f95ccefae9fae236da6b7a0f240425fe17089ab6017f85e541da4529bb032926",
+    "tools/test_battle_profile_primitive_request_v2.py": "1bfc7b9662f978114d9f4ee56b767c458f5e01eaffccfea46f18dd5434870a5d",
+    "tools/test_battle_profile_stack_lease.py": "d5f5076627e809a16860b19808f929bc20ad56f88f1194c15dd2c54fd3c9b81e",
+    "tools/test_battle_profile_stack_lease_v2.py": "d87bfba633789609be12b0c1e7f542c16d115dc544fb00edd6a1555d8d7b3124",
+    "tools/test_battle_profile_tile_replay.py": "ae4af88f86a5d574ebb80770b281c864de4f1baf78b9be16261495263b9701c7"
+  },
+  "source_only_checkpoint": true
+}

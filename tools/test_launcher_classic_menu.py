@@ -46,9 +46,9 @@ class ClassicMenuRoutingTests(unittest.TestCase):
     def test_affected_presets_use_new_identity_without_aliasing_old_candidates(self):
         for resolution in ('1280x720','1280x960','1366x768','1920x1080','2560x1440','3440x1440','3840x2160'):
             with self.subTest(resolution=resolution):
-                plan=classic.plan_candidate(resolution=resolution,**self.args)
+                plan=classic.plan_candidate(stage=builder.STAGE,resolution=resolution,**self.args)
                 old=core.plan_candidate(resolution=resolution,**self.args)
-                expected=presets.resolve_plan(renderer='classic',resolution=resolution)
+                expected=presets.resolve_plan(renderer='classic',resolution=resolution,stage=builder.STAGE)
                 self.assertEqual((plan.stage,expected.recipe_revision),(builder.STAGE,builder.REVISION))
                 self.assertEqual(plan.renderer,'classic')
                 self.assertEqual(plan.candidate_dir.parts[-2:],('classic-menu-validation',resolution))
@@ -65,7 +65,7 @@ class ClassicMenuRoutingTests(unittest.TestCase):
         for key,value in (('minimum_width',True),('minimum_width',1146),('stage','wrong'),('recipe_revision','wrong')):
             bad=copy.deepcopy(m);bad['profiles']['classic']['wide_menu_recipe'][key]=value
             with self.subTest(key=key),self.assertRaises(presets.ManifestError):presets.validate_manifest(bad)
-        legacy=copy.deepcopy(m);legacy['profiles']['classic'].pop('wide_menu_recipe')
+        legacy=copy.deepcopy(m);legacy['profiles']['classic'].pop('wide_menu_recipe');legacy['profiles']['classic'].pop('multires_recipe')
         presets.validate_manifest(legacy)
         self.assertEqual(presets.resolve_plan(renderer='classic',resolution='1920x1080',manifest=legacy).stage,m['stable_stage'])
 
@@ -82,7 +82,7 @@ class ClassicMenuRoutingTests(unittest.TestCase):
     def test_cli_and_gui_select_corrected_classic_without_running_a_game(self):
         with patch.object(core,'launch_game',side_effect=AssertionError('no game')),redirect_stdout(io.StringIO()) as stream:
             self.assertEqual(run.main(['--profile','classic','--resolution','1920x1080','--describe-plan']),0)
-        value=json.loads(stream.getvalue());self.assertEqual(value['plan']['stage'],builder.STAGE)
+        value=json.loads(stream.getvalue());self.assertEqual(value['plan']['stage'],core.patch_clash95_hd.DEFAULT_STAGE+'-classic-hd-multires-validation')
         self.assertFalse(value['game_runtime_executed'])
         app=SimpleNamespace(profile_var=SimpleNamespace(get=lambda:'classic'))
         self.assertIs(gui.LauncherApp._backend(app),classic)
@@ -103,7 +103,7 @@ class ClassicMenuBundleTests(unittest.TestCase):
             _write_bundle=complete._write_bundle)
         for guard in (patch.object(completehd,'_builder',return_value=self.adapter),patch.object(completehd,'CANDIDATE_ROOT',self.root/'candidates')):
             guard.start();self.addCleanup(guard.stop)
-        self.plan=classic.plan_candidate(resolution='1920x1080',clash_dir=self.game,candidates_root=self.root/'candidates',
+        self.plan=classic.plan_candidate(stage=builder.STAGE,resolution='1920x1080',clash_dir=self.game,candidates_root=self.root/'candidates',
                                           expected_base_sha=self.adapter.BASE_SHA256)
 
     def deploy(self):

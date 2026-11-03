@@ -1,5 +1,12 @@
 # Local release-validation runbook
 
+The selected twelve 1080p/1440p/4K launcher successors and standalone package
+are described in [MULTIRES_LAUNCHER.md](MULTIRES_LAUNCHER.md). Their construction
+and private source authentication are available, but they do not establish
+native acceptance or complete expanded-battle installation. The selected-cell
+qualification report preserves all pending native lanes and the full 36-cell
+release target.
+
 Release validation that requires the original game is **local-only**.
 
 Full HD completion requires the [36-cell profile/preset matrix](RESOLUTION_RELEASE_MATRIX.md).

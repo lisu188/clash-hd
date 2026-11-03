@@ -166,6 +166,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\build
 After installing PyInstaller in the selected Python environment, add `-Execute`
 to build locally. Outputs default to `C:\ClashTests\launcher\build`; the helper
 refuses a repository output directory. Do not commit the generated executable.
-The packaged launcher exposes Classic only; experimental source recipes and
-wide-menu source composition require their complete checkout. Building a
-launcher package does not certify gameplay or release acceptance.
+The standalone package includes verified source resources for all four profiles.
+The selected 1920x1080, 2560x1440 and 3840x2160 modes use a separate experimental
+recipe; see [the multi-resolution launcher](MULTIRES_LAUNCHER.md). The package
+runs without Python or a checkout. Building it does not certify gameplay or
+release acceptance.

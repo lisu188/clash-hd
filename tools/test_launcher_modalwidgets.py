@@ -48,7 +48,7 @@ class WidgetLauncherTests(unittest.TestCase):
         patched.start(); self.addCleanup(patched.stop)
         patched = patch.object(completehd, "CANDIDATE_ROOT", self.root/"candidates")
         patched.start(); self.addCleanup(patched.stop)
-        self.plan = modalwidgets.plan_candidate(resolution="1920x1080", clash_dir=self.game,
+        self.plan = modalwidgets.plan_candidate(stage=builder.STAGE, resolution="1920x1080", clash_dir=self.game,
             candidates_root=self.root/"candidates", expected_base_sha=self.recipe.BASE_SHA256)
 
     def deploy(self):
@@ -147,8 +147,8 @@ class WidgetProfileSourceTests(unittest.TestCase):
             self.assertEqual(adapter.REVISION,builder.REVISION)
             self.assertEqual(adapter.BASE_SHA256,builder.pe.ORIGINAL_SHA256)
             for resolution in builder.complete.RESOLUTIONS:
-                display=resolve_display_plan(renderer="modalwidgets",resolution=resolution)
-                complete=resolve_display_plan(renderer="completehd",resolution=resolution)
+                display=resolve_display_plan(renderer="modalwidgets",resolution=resolution,stage=builder.STAGE)
+                complete=resolve_display_plan(renderer="completehd",resolution=resolution,stage=completehd.STAGE)
                 self.assertEqual((display.terrain,display.action_cells,display.native_offset),
                                  (complete.terrain,complete.action_cells,complete.native_offset))
                 self.assertNotEqual(display.build_identity("a"*64,{"x.py":"b"*64}),
@@ -167,12 +167,12 @@ class WidgetProfileSourceTests(unittest.TestCase):
             self.assertFalse(modalwidgets.source_status()["passed"])
             with self.assertRaises(core.LauncherError):modalwidgets.plan_candidate()
 
-    def test_manifest_keeps_classic_default_and_six_experimental_widget_options(self):
+    def test_manifest_keeps_classic_default_and_legacy_plus_hd_widget_options(self):
         manifest=presets.load_manifest();options=presets.load_options(manifest,"modalwidgets")
         self.assertEqual(manifest["default_renderer"],"classic")
         self.assertEqual(manifest["default"],"800x600")
         self.assertEqual(presets.default_key(manifest,"modalwidgets"),"800x600")
-        self.assertEqual({o.key for o in options},set(builder.complete.RESOLUTIONS))
+        self.assertEqual({o.key for o in options},set(builder.complete.RESOLUTIONS) | {"2560x1440", "3840x2160"})
         self.assertTrue(all(o.is_experimental and o.evidence is None for o in options))
         for field,value in (("stage",completehd.STAGE),("default","1024x768"),("recipe_revision","complete_hd_v1")):
             bad=copy.deepcopy(manifest);bad["profiles"]["modalwidgets"][field]=value
@@ -188,7 +188,7 @@ class WidgetProfileSourceTests(unittest.TestCase):
         with redirect_stdout(output),patch.object(core,"launch_game",side_effect=AssertionError("no process")):
             self.assertEqual(run.main(["--profile","modalwidgets","--describe-plan","--resolution","1920x1080"]),0)
         result=json.loads(output.getvalue())
-        self.assertEqual(result["plan"]["stage"],builder.STAGE)
+        self.assertEqual(result["plan"]["stage"],core.patch_clash95_hd.DEFAULT_STAGE+"-modalwidgets-hd-multires-validation")
         self.assertFalse(result["game_runtime_executed"])
         self.assertFalse(result["candidate_paths_validated"])
         app=SimpleNamespace(profile_var=SimpleNamespace(get=lambda:"modalwidgets"))

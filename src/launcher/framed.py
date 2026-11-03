@@ -8,6 +8,7 @@ import sys
 from typing import Any, Callable
 
 import core
+import multires
 
 PROFILE = "framed"
 DIRECTORY = "framed-minimap"
@@ -25,11 +26,14 @@ WARNING = (
 
 def source_status() -> dict[str, Any]:
     if getattr(sys, "frozen", False):
-        return {"passed": False, "error": "The framed profile requires the source-tree launcher; use Classic in a packaged launcher."}
+        return multires.source_status(PROFILE)
     from run_framed_offline_tests import source_preflight
     result = source_preflight(core.REPO_ROOT)
     if result.get("builder_sha256") != BUILDER_SHA256:
         result = dict(result, passed=False, error="The reviewed framed builder source has changed.")
+    successor = multires.source_status(PROFILE)
+    result = dict(result, passed=result.get("passed") is True and successor["passed"],
+                  multires_source_preflight=successor)
     return result
 
 
@@ -43,6 +47,8 @@ def _bindings() -> dict[str, str]:
 
 
 def plan_candidate(*, stage: str | None = None, **kwargs: Any) -> core.CandidatePlan:
+    if multires.selected(PROFILE, kwargs.get("resolution", "800x600"), stage, kwargs.get("manifest")):
+        return multires.plan_candidate(profile=PROFILE, stage=stage, **kwargs)
     if stage not in (None, STAGE):
         raise core.LauncherError("The framed profile cannot be combined with another --stage.")
     if getattr(sys, "frozen", False):
@@ -107,6 +113,8 @@ def _build(original: bytes, resolution: str) -> tuple[bytes, dict[str, Any], str
 
 
 def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] | None = None) -> dict[str, Any]:
+    if multires.is_plan(plan):
+        return multires.ensure_candidate(plan, progress=progress)
     say = progress or (lambda message: None)
     try:
         _assert_plan(plan)
@@ -178,6 +186,8 @@ def _verify_artifacts(plan: core.CandidatePlan, record: dict[str, Any], *, deplo
 
 def deploy_runtime_files(plan: core.CandidatePlan, candidate_result: dict[str, Any] | None = None,
                          progress: Callable[[str], None] | None = None) -> dict[str, Any]:
+    if multires.is_plan(plan):
+        return multires.deploy_runtime_files(plan, candidate_result, progress=progress)
     try:
         _assert_plan(plan)
         if not isinstance(candidate_result, dict):
@@ -201,6 +211,8 @@ def deploy_runtime_files(plan: core.CandidatePlan, candidate_result: dict[str, A
 
 
 def verify_launch(plan: core.CandidatePlan) -> None:
+    if multires.is_plan(plan):
+        return multires.verify_launch(plan)
     try:
         _assert_plan(plan)
         manifest = core.read_candidate_manifest(plan)
