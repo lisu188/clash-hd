@@ -233,10 +233,12 @@ The full completion target remains all four profiles at all nine presets.
 The separate versioned matrix-cell release context in
 `tools/matrix_release_evidence.py` freshly authenticates each selected candidate
 and binds the actual launcher/catalog, typed features and source closure.
-It replays resolution metadata only; fifteen matrix-context runtime lanes
-(including the legacy-only panel adapter), installed expanded battle and
-promotion remain unsupported. This does not change the legacy 1920x1080
-context, advertise any missing preset or promote a recipe. See the
+It replays resolution metadata and, from retained `hd_multires_hidden_session`
+runs, the three hidden-host soak lanes (`tools/matrix_soak_lanes.py`). The other
+twelve matrix-context runtime lanes (including the legacy-only panel adapter),
+installed expanded battle and promotion remain unsupported. This does not
+change the legacy 1920x1080 context, advertise any missing preset or promote a
+recipe. See the
 [matrix contract](RESOLUTION_RELEASE_MATRIX.md#versioned-matrix-cell-release-context).
 A local index of all 36 launcher-selected candidates now authenticates every
 candidate, and each cell's `resolution_coverage` lane passes in this context

@@ -42,7 +42,7 @@ class MultiresMatrixTests(unittest.TestCase):
         report = matrix.evaluate_matrix()
         self.assertFalse(report["passed"])
         self.assertEqual(len(report["cells"]), 36)
-        self.assertEqual(len(release.UNIMPLEMENTED_LANES), 15)
+        self.assertEqual(len(release.UNIMPLEMENTED_LANES), 12)
 
     def test_mixed_profile_recipe_stage_probe_and_stale_sources_fail(self):
         for change in ("profile", "recipe", "stage", "probe", "source"):

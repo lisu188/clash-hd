@@ -39,18 +39,35 @@ identity additionally binds the profile, launcher features and catalog hash,
 and canonical reconstructed source-closure hash. The original legacy index,
 identity and 1920x1080 replay contract remain unchanged.
 
-Only `resolution_coverage` currently has source-artifact replay for this new
-context. It checks the actual selected profile/recipe, typed feature values,
-advertisement and protected Classic/800x600 policy; source-authenticated but
-unregistered successors cannot satisfy launcher coverage. A candidate's preset
-appearing in the catalog does not register its different recipe. Classic wide
-menus use their actual resolved recipe and retain minimap disabled.
+`resolution_coverage` has source-artifact replay for this new context. It checks
+the actual selected profile/recipe, typed feature values, advertisement and
+protected Classic/800x600 policy; source-authenticated but unregistered
+successors cannot satisfy launcher coverage. A candidate's preset appearing in
+the catalog does not register its different recipe. Classic wide menus use
+their actual resolved recipe and retain minimap disabled.
 
-All fifteen runtime lanes in the new context remain unsupported, including
+The three hidden-host soak lanes also have replay
+(`tools/matrix_soak_lanes.py`): `short_soak_ladder`, `long_map_idle` and
+`long_map_pan`. Their lane report pins the repository's hidden session producer
+and, for each fixed schedule row, one retained `hd_multires_hidden_session`
+report and its CDB log, all outside the repository. The replay:
+- rereads them and binds each run to the freshly authenticated cell;
+- requires the producer-recorded log hash;
+- reparses the soak rows through the shared grammar;
+- rehashes every frame;
+- recomputes liveness, render, growth (legacy limits of 64 MiB working
+  set, 64 MiB private bytes and 128 handles), clean-stop, ladder-order and
+  pan-progression checks.
+
+Claimed checks must equal the replay. Only `hd_multires_v1` cells have this
+producer, and its disclosed forced map entry keeps these hidden evidence, not
+input or visible proof.
+
+The other twelve runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
 verifiers. Expanded-battle and promotion acceptance also remain false. Neither
-metadata replay nor the registered synthetic context suite establishes a cell
+metadata replay nor the registered synthetic context suites establish a cell
 pass, native execution, input, endurance or a full release.
 
 Matrix JSON envelopes and object references are limited to 2 MiB and 64

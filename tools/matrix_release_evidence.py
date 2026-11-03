@@ -2,9 +2,10 @@
 """Source-bound matrix-cell context, not runtime or complete release proof.
 
 The public evaluator always rebuilds the candidate through the production
-matrix authenticator and rereads the actual launcher catalog. Only the existing
-resolution-coverage requirement has a matrix-context replay. All fifteen runtime
-lanes, installed expanded battle and promotion remain explicit failures.
+matrix authenticator and rereads the actual launcher catalog. Resolution
+coverage and the three hidden-host soak lanes (tools/matrix_soak_lanes.py) have
+matrix-context replay. The other twelve runtime lanes, installed expanded
+battle and promotion remain explicit failures.
 """
 from __future__ import annotations
 
@@ -13,13 +14,15 @@ from pathlib import Path
 from typing import Any
 
 import complete_hd_evidence as evidence
+import matrix_soak_lanes as soak_lanes
 import resolution_release_matrix as matrix
 
 
 RELEASE_SCHEMA = "matrix_cell_release_manifest_v1"
 LANE_SCHEMA = "matrix_cell_lane_evidence_v1"
 REQUIRED_LANES = tuple(evidence.LANES)
-UNIMPLEMENTED_LANES = tuple(name for name in REQUIRED_LANES if name != "resolution_coverage")
+IMPLEMENTED_LANES = ("resolution_coverage", *soak_lanes.LANES)
+UNIMPLEMENTED_LANES = tuple(name for name in REQUIRED_LANES if name not in IMPLEMENTED_LANES)
 MAX_JSON_BYTES = 2 * 1024 * 1024
 MAX_CANDIDATE_BYTES = 32 * 1024 * 1024
 PRODUCER = "tools/matrix_release_evidence.py"
@@ -109,10 +112,52 @@ def _coverage_checks(context: dict, manifest: dict) -> dict:
     return {name: {"passed": passed, "failures": [] if passed else [name]} for name, passed in values.items()}
 
 
+def _soak_lane(name: str, report: dict, report_path: Path, context: dict,
+               retained_refs: list, failures: list[str]) -> dict:
+    """Replay one hidden soak lane from its pinned retained runs; claims are never trusted."""
+    if set(report) != soak_lanes.LANE_KEYS:
+        failures.append("soak lane requires only the fixed hidden-soak envelope")
+    if report.get("evidence_class") != soak_lanes.EVIDENCE_CLASS:
+        failures.append("soak lane requires approved_hidden_cdb_host_soak")
+    if report.get("passed") is not True or report.get("failures") != []:
+        failures.append("soak lane is not an affirmative report")
+    if report.get("stable_stage_should_change") is not False:
+        failures.append("soak lane must preserve the protected stable stage")
+    if not context:
+        raise ValueError("soak replay requires freshly authenticated candidate bytes")
+    identity = context["identity"]
+    if identity.get("recipe_revision") != matrix.MULTIRES_REVISION:
+        raise ValueError("the hidden soak producer supports only hd_multires_v1 successor cells")
+    producer_bound = 4 * 1024 * 1024
+    producer_path, producer_raw = _reference_bytes(report.get("producer"), report_path.parent,
+                                                   "soak producer source", maximum=producer_bound)
+    retained_refs.append((report["producer"], report_path.parent, producer_bound))
+    if producer_path != (matrix.ROOT / soak_lanes.PRODUCER).resolve():
+        failures.append("soak lane requires the fixed hidden session producer")
+    metadata_bound = matrix.candidate_artifact_limit(identity, "metadata", json_default=MAX_JSON_BYTES,
+                                                     binary_default=MAX_CANDIDATE_BYTES)
+    _, metadata_raw = _reference_bytes(context["artifact_refs"]["metadata"], Path("."), "candidate metadata",
+                                       maximum=metadata_bound)
+    marker = evidence.parse_evidence_json(metadata_raw, "candidate metadata")["probe_contract"]["acceptance_marker"]
+    if not evidence._text(marker):
+        raise ValueError("candidate metadata lacks its canonical image acceptance marker")
+    measured, notes = soak_lanes.replay(name, report, report_path, identity, _reference_bytes,
+                                        producer_raw, marker, matrix.ROOT)
+    failures.extend(notes)
+    for step in report["steps"] if type(report.get("steps")) is list else []:
+        for key, bound in (("session_report", soak_lanes.MAX_SESSION_BYTES), ("cdb_log", soak_lanes.MAX_LOG_BYTES)):
+            if type(step) is dict and key in step:
+                retained_refs.append((step[key], report_path.parent, bound))
+    if not _same(report.get("checks"), measured):
+        failures.append("claimed soak checks differ from source-artifact replay")
+    failures.extend(f"source-artifact check failed: {key}" for key, value in measured.items() if not value["passed"])
+    return measured
+
+
 def _lane(name: str, ref: Any, base: Path, context: dict, manifest: dict,
           launcher_ref: dict, retained_refs: list[tuple[dict, Path]]) -> dict:
     failures, report, measured, report_path = [], {}, {}, None
-    implemented = name == "resolution_coverage"
+    implemented = name in IMPLEMENTED_LANES
     if not implemented:
         failures.append(f"matrix-context source-artifact verifier is not implemented for {name}")
     try:
@@ -122,7 +167,9 @@ def _lane(name: str, ref: Any, base: Path, context: dict, manifest: dict,
             failures.append("lane schema/name does not identify the selected matrix-cell requirement")
         if not context or not _same(report.get("identity"), context["identity"]):
             failures.append("lane identity differs from the freshly authenticated matrix cell")
-        if implemented:
+        if name in soak_lanes.LANES:
+            measured = _soak_lane(name, report, report_path, context, retained_refs, failures)
+        elif implemented:
             if set(report) != _COVERAGE_KEYS:
                 failures.append("resolution lane requires only the fixed source-coverage envelope")
             if report.get("evidence_class") != "repo_resolution_coverage":
@@ -208,8 +255,8 @@ def evaluate_release_manifest(path: Path) -> dict:
             raise ValueError("matrix-cell release changed during evaluation")
         if launcher_path is not None and _json_file(launcher_path, "launcher manifest recheck")[1] != launcher_raw:
             raise ValueError("actual launcher manifest changed during evaluation")
-        for ref, base in retained_refs:
-            _reference_bytes(ref, base, "retained source-artifact recheck")
+        for ref, base, *bound in retained_refs:
+            _reference_bytes(ref, base, "retained source-artifact recheck", maximum=bound[0] if bound else MAX_JSON_BYTES)
         if context:
             for name, ref in context["artifact_refs"].items():
                 maximum = matrix.candidate_artifact_limit(context["identity"], name,
