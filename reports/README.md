@@ -4,8 +4,8 @@ Reports are human-readable plans, inventories, validation matrices, checklists,
 and PR bodies. They are the narrative audit trail for HD work and repository
 maintenance.
 
-Keep generated current evidence summaries in `captures/current/`. Keep durable
-planning and explanatory reports here.
+Keep durable public planning and concise source-level reports here. Raw runtime
+evidence, screenshots and retail-derived captures remain outside source control.
 
 Start from the [documentation index](../docs/hd/README.md) and
 [current handoff](../docs/hd/AGENT_HANDOFF.md) before interpreting an older plan.
@@ -22,5 +22,5 @@ claims. Read the report's date, exact stage/candidate and remaining gates.
 | How were implementation sources combined? | [Foundation import guide](../docs/hd/HD_FOUNDATION_IMPORT.md) |
 
 Preserve prior failures and their provenance when recording a successor. Some
-reports reference workstation artifacts that are no longer available; the
-[capture guide](../captures/README.md) explains how that limits replay.
+reports reference local workstation artifacts that are unavailable in a public
+checkout; a historical description alone cannot support replay or new acceptance.

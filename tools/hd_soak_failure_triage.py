@@ -222,10 +222,12 @@ def evidence_binding(report: dict[str, Any]) -> tuple[str, Any]:
     return environment, evidence_class
 
 
-def guard_evaluation_for(report: dict[str, Any]) -> dict[str, Any] | None:
+def guard_evaluation_for(report: dict[str, Any], source_report: Path | None = None) -> dict[str, Any] | None:
     if report.get("executed") is not True or report.get("passed") is not True:
         return None
-    return hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
+    return hd_soak_report.evaluate_report_for_environment(
+        report, source_report_path=source_report, max_input_drift_px=1,
+    )
 
 
 def hidden_next_probe(classification: str) -> str:
@@ -877,8 +879,10 @@ def failure_timestamp_context(
     return report.get("generated_at"), "report_generated_at"
 
 
-def visual_anomaly_summary(report: dict[str, Any]) -> dict[str, Any]:
-    evaluation = hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
+def visual_anomaly_summary(report: dict[str, Any], source_report: Path | None = None) -> dict[str, Any]:
+    evaluation = hd_soak_report.evaluate_report_for_environment(
+        report, source_report_path=source_report, max_input_drift_px=1,
+    )
     check = (evaluation.get("checks") or {}).get("visual_anomalies") or {}
     summary = dict(check.get("summary") or {})
     summary["passed"] = check.get("passed")
@@ -894,7 +898,7 @@ def build_triage(
 ) -> dict[str, Any]:
     environment, evidence_class = evidence_binding(report)
     is_hidden = environment == hd_soak_report.HIDDEN_ENVIRONMENT
-    guard_evaluation = guard_evaluation_for(report)
+    guard_evaluation = guard_evaluation_for(report, source_report)
     probe_diagnostics = probe_log_diagnostics(report)
     cursor_diagnostics = cursor_probe_diagnostics(report)
     classification, next_probe, passed = classify(
@@ -955,7 +959,7 @@ def build_triage(
     )
     last_process = process_summary(last_item(report.get("process_samples")))
     failure_timestamp, failure_timestamp_source = failure_timestamp_context(report, last_frame, last_process)
-    visual_anomalies = visual_anomaly_summary(report)
+    visual_anomalies = visual_anomaly_summary(report, source_report)
     guard_failures = list((guard_evaluation or {}).get("failures") or [])
     if classification == "intro_skip_input_drift_exit" and isinstance(intro_route, dict):
         click_mode = intro_route.get("click_mode")

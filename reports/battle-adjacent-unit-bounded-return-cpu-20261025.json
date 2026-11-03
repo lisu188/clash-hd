@@ -1,0 +1,322 @@
+{
+  "schema": "battle_adjacent_unit_bounded_return_cpu_v1",
+  "date": "2026-10-25",
+  "evidence_class": "original_opcode_cpu_emulation_with_modeled_outer_frames_and_thread",
+  "publication_base_git_commit": "9a08c58d6a674c09c8b3bb88ab5d1da5da39a13b",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "producer": {
+    "path": "src/patcher/battle_profile_adjacent_unit_v2.py",
+    "sha256": "b2ae87457bd2344d9e6650032dba46d03a680e2303946acb75abaf0508f5ead8",
+    "planned_override_windows": 8,
+    "installed_hooks": 0
+  },
+  "scalar_fixture": {
+    "path": "tools/test_battle_profile_adjacent_unit_v2.py",
+    "sha256": "a8fbbccba6151b5f1b6e374be2935db8e8a58348228451380f883a02a685b009",
+    "methods_passed": 13,
+    "seconds": 674.63,
+    "skips": 0,
+    "closure_files": 39,
+    "closure_unchanged": true,
+    "scope": "all36 source geometries and authored scalar CPU models; no original instructions"
+  },
+  "original_cpu_fixture": {
+    "path": "tools/test_battle_profile_native_adjacent_unit_return_original.py",
+    "sha256": "722118c20e54c9f7f0fc28e8d1533834444c31f37cc83c095b1a3b3ff3aa4a12",
+    "authoring_methods": 4,
+    "original_methods": 6,
+    "all_methods_covered_across_selected_batches": true,
+    "complete_default_suite_run": false,
+    "selected_batches": [
+      {
+        "methods": [
+          "test_genuine_phase_identity_motion_owner_and_occupied_edges",
+          "test_callback_motion_identity_and_count_local_loss_are_terminal",
+          "test_genuine_sentinel_branch_and_wrong_count_self_never_enter_count",
+          "test_instruction_and_both_native_return_words_cannot_be_shortcut"
+        ],
+        "authoring_methods": 4,
+        "total_methods": 8,
+        "seconds": 95.715,
+        "passed": true,
+        "skips": 0
+      },
+      {
+        "methods": [
+          "test_selected_twelve_cells_two_bases_both_draw_modes"
+        ],
+        "authoring_methods": 4,
+        "total_methods": 5,
+        "seconds": 416.051,
+        "passed": true,
+        "skips": 0
+      },
+      {
+        "methods": [
+          "test_genuine_unit_count_return_smoke_two_bases_and_modes"
+        ],
+        "authoring_methods": 4,
+        "total_methods": 5,
+        "seconds": 25.648,
+        "passed": true,
+        "skips": 0
+      }
+    ],
+    "source_closure_files": 41,
+    "source_closure_sha256": "fbfa5a4c1a3db989090cca6462092225a083b095984341be7ffa558649f7d9a4",
+    "source_closure_unchanged": true
+  },
+  "cpu_scope": {
+    "profiles": [
+      "classic",
+      "framed",
+      "completehd",
+      "modalwidgets"
+    ],
+    "resolutions": [
+      "1920x1080",
+      "2560x1440",
+      "3840x2160"
+    ],
+    "selected_cells": 12,
+    "native_image_base_deltas": [
+      0,
+      196608
+    ],
+    "draw_modes": [
+      0,
+      1
+    ],
+    "matrix_baseline_joined_pairs": 48,
+    "matrix_genuine_unit_and_count_invocations": 96,
+    "additional_smoke_pairs": 4,
+    "additional_phase_edge_pairs": 7,
+    "total_healthy_baseline_joined_pairs": 59,
+    "total_genuine_unit_and_count_invocations": 118,
+    "negative_instances": 9,
+    "exact_route": "original final Adjacent42FF7A CALL42FF9F -> Unit42F820 valid record index/type=-1 -> JE42F854 -> native Count argument preparation -> Count prologue/8-neighbor loop/RET0 -> Unit epilogue/RET4 -> natural final return42FFA4",
+    "source_helpers": "actual emitted atomic successor instructions on synthetic owned allocation layout",
+    "replaced_ram_windows": [
+      "0x42F84A",
+      "0x42F956",
+      "0x426F44",
+      "0x426F54"
+    ],
+    "native_index_domain": [
+      0,
+      7,
+      21
+    ],
+    "motion_values": [
+      -63,
+      -64,
+      -65
+    ],
+    "owner_bytes": [
+      0,
+      1,
+      254,
+      255
+    ],
+    "maximum_world_columns": 20,
+    "nonzero_native_stack_argument_required": true,
+    "untouched_UnitS_minus_28_canary": true,
+    "full_register_flags_stack_and_semantic_read_comparison": true,
+    "original_count_stub_used": false,
+    "native_execution_time_eip_substitution": false
+  },
+  "canonical_original_ram_construction": {
+    "passed": true,
+    "selected_cells": 12,
+    "seconds": 406.8279999999795,
+    "minimum_rx_remaining_bytes": 26262,
+    "cells": [
+      {
+        "profile": "classic",
+        "resolution": "1920x1080",
+        "source_cells_only": true,
+        "model_sha256": "81c9a3fe62c5c25b1a311f7a64b1ac7b82c64fd5efb30f7d7c390be1f5bf1bf7",
+        "adapter_sha256": "b9ac049031fe75291e1e59f45c17ed8303148447c8e1df8c910bce5a836bc4dd",
+        "count_entry_sha256": "1f6e7024896cf81fc56f1d66781372328bceaeeca38291009028f2d5fc827776",
+        "remaining_rx_bytes": 55178,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "classic",
+        "resolution": "2560x1440",
+        "source_cells_only": true,
+        "model_sha256": "213d07cc6dbbe34bb7849cf6b49eea179897d29d6c04820ef88343d6e4fe2afb",
+        "adapter_sha256": "2b7ab2641d39f3c5ba6f1f31e46101f1e381a63a7f4ada33474a8651cd5a83c1",
+        "count_entry_sha256": "cc3721f19027e026c4c240e63e83b67d485a0b0260fe7fd4ef7e7ea0bb875e8d",
+        "remaining_rx_bytes": 54842,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "classic",
+        "resolution": "3840x2160",
+        "source_cells_only": true,
+        "model_sha256": "c5c186bf8983ffc84ee0d7df77314d3840f3802536fc4285c99deeef3005f39d",
+        "adapter_sha256": "3ec97100bc6251d5c1f98c4a977badd6f76f3cb636792a6287e26d7653d7b068",
+        "count_entry_sha256": "46d02b15553f2d10f7eba5a30a5ee1aac302a0cad549c9fbb9b04320de4bb444",
+        "remaining_rx_bytes": 54346,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "framed",
+        "resolution": "1920x1080",
+        "source_cells_only": true,
+        "model_sha256": "66594e8394a004be1c1b539225f1bd5244c59ee77b4dee01c96210d1eaccdc83",
+        "adapter_sha256": "6694e76a7afb30a4969104473c5ce2ed7adbad67d21e7c54eb59c97742790e88",
+        "count_entry_sha256": "3710b9a0748de7718cb224d3f50667ad39e4e812dc8e0d251e9a6a2f8b3582c0",
+        "remaining_rx_bytes": 55178,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "framed",
+        "resolution": "2560x1440",
+        "source_cells_only": true,
+        "model_sha256": "68fe7ef61a51868f8b3590ce09b643876c09110bf5cf0a4be9187191c197bcd8",
+        "adapter_sha256": "5b3472988300a4881e86cec3f749a79c9ecb4e419cf313da1b96c47fde515d32",
+        "count_entry_sha256": "0a870a4e098b2bdee54c8a349125cb925809658edde09a58d846b736dab7ac09",
+        "remaining_rx_bytes": 54842,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "framed",
+        "resolution": "3840x2160",
+        "source_cells_only": true,
+        "model_sha256": "67dc6de552c10fbb4e2c8ba7694f9e0f34dc07ef4489f42ee62deb1414dcc41f",
+        "adapter_sha256": "761675b5fddc3dcbb86e432bd636d817ab325b553e1c87f844740194e2457112",
+        "count_entry_sha256": "7b98bca4acf2d744f35e7b5a27f09f972766f0aba5e8b63cd2a0405499abc534",
+        "remaining_rx_bytes": 54346,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "completehd",
+        "resolution": "1920x1080",
+        "source_cells_only": true,
+        "model_sha256": "293d11b7dd54fb642aa35d78ed9840076e6b91f2c2b46b796b688701b9c213a4",
+        "adapter_sha256": "0856e3f67af16158e8564db41c8c4d5f7f6e23f56216fd7565099e06c17ba6f9",
+        "count_entry_sha256": "88ab2634544d9b5422fb728e8143b98cbdc39b88dc39c4cc555cb3ba7de368cc",
+        "remaining_rx_bytes": 27110,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "completehd",
+        "resolution": "2560x1440",
+        "source_cells_only": true,
+        "model_sha256": "48de2bb87ed583e077e2bacd4a10770cae8fe15f89c7ded9c390721c6a2cd9df",
+        "adapter_sha256": "266255b8b078c88ec041a5ef9b2ef2f013a3c04ef737ecff744ec2d88c6582de",
+        "count_entry_sha256": "cf266eba14ada8b1195a3ea4fa8ae833165e3acf1d29d766746e165a4ad0db3b",
+        "remaining_rx_bytes": 26774,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "completehd",
+        "resolution": "3840x2160",
+        "source_cells_only": true,
+        "model_sha256": "4759acc1d9eeab3b5450046f95dc31d1569274828f7b171bd083d7f19df63963",
+        "adapter_sha256": "4e77f0900bdef11a14d29d42dc47446425a920f9e737006868555bb9ea8d107c",
+        "count_entry_sha256": "7d51e8982b90ad1b22980aa35cccddc481b25f48ef6873793e0515b409585d3b",
+        "remaining_rx_bytes": 26262,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "modalwidgets",
+        "resolution": "1920x1080",
+        "source_cells_only": true,
+        "model_sha256": "05f8f0449f5082268be13ecedbb8907700bc03a1e8973caf70bdde1ed08cfdfc",
+        "adapter_sha256": "5d9d30e22d0e71d9644af0fd600306a4caa2807c790d1156b471dded3a3e1940",
+        "count_entry_sha256": "e830d65f50816d28141a7f8e6b0534bb703fcdeaa292c4cf6cc4955e70ad34a6",
+        "remaining_rx_bytes": 27110,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "modalwidgets",
+        "resolution": "2560x1440",
+        "source_cells_only": true,
+        "model_sha256": "d5cc5b41aec84994b286996ce7e4c6b1c9b23401ecfce32da791d57defc27c71",
+        "adapter_sha256": "7eb09d0945c668e1466ba548105438914355f17efb0cc464f02ecf3460b22610",
+        "count_entry_sha256": "5dd3b8a06d43c1e25f1af75435e54af69b58d8cac68021ab78cf88e433509672",
+        "remaining_rx_bytes": 26774,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      },
+      {
+        "profile": "modalwidgets",
+        "resolution": "3840x2160",
+        "source_cells_only": true,
+        "model_sha256": "b7d93638abb5bf32a9f49b21f209fe95a48ce2a508d713956dd77355d539058e",
+        "adapter_sha256": "4cc9d1ce0a954bf49222027c4c5858a188cd2c84d718dd1aef9104f4ddc01d0f",
+        "count_entry_sha256": "f7e806b293f7ae66258d9d41ec91a2229c6a26cb36bba69a3c3414ec42982fbc",
+        "remaining_rx_bytes": 26262,
+        "overrides": 8,
+        "native_executed": false,
+        "installed": false
+      }
+    ],
+    "candidate_written": false,
+    "native_executed": false
+  },
+  "public_ci": {
+    "adjacent_scalar_methods": 13,
+    "prefix_authoring_methods": 4,
+    "unit_return_authoring_methods": 4,
+    "original_backed_invoked": false,
+    "retail_runtime_downloaded": false
+  },
+  "tooling": {
+    "python": "bundled Python3.12.14",
+    "unicorn": "2.1.4",
+    "capstone": "5.0.6",
+    "rea_original_open_sha_verified": true,
+    "rea_deep_analysis_available": false,
+    "rea_deep_analysis_limitation": "selected IDA upstream metadata endpoint refused connection; installed Ghidra12.0.4 is outside REA supported12.1.x",
+    "static_decoder": "direct Capstone against exact original; no fresh REA deep-analysis claim"
+  },
+  "acceptance": {
+    "bounded_original_unit_count_return_cpu_verified": true,
+    "all_selected_12_bounded_cpu_cells_passed": true,
+    "full_Unit_or_Adjacent_route_parity": false,
+    "native_record_state_legality": false,
+    "historical_motion_authority": false,
+    "native_mapping_or_lifetime": false,
+    "native_Thread_callback_ABI": false,
+    "provider_RLE_ownership_or_cancellation": false,
+    "native_full_battle_return": false,
+    "installed": false,
+    "windows_runtime_verified": false,
+    "input_verified": false,
+    "release_accepted": false,
+    "promotion_ready": false
+  },
+  "remaining": [
+    "Prove normal nonnegative-type Unit/sprite/provider branches and the remaining four Unit body adapters with genuine native instructions.",
+    "Non-draw Count callers and native identity-minus-one WORLD+821 are unsupported; the negative fixture proves rejection only.",
+    "Re-emit fresh continuation/primitive/line families, provider/RLE schema/lifetime/cancellation and complete clipping/presentation/input/camera/results/quit integration.",
+    "Prove complete final RX/RW/native stack capacity and atomic installation;26,262B source RX headroom is not whole-chain capacity.",
+    "Acquire exact-candidate native game, genuine human input, continuity and endurance evidence; CPU pairs cannot qualify release cells."
+  ]
+}

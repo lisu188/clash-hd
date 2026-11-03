@@ -506,7 +506,13 @@ def profile_fixture(root: Path, *, complete: bool = True) -> argparse.Namespace:
     manifest["stable_stage"] = STABLE_STAGE
     if not complete:
         manifest["profiles"].pop("completehd", None)
-    for config in manifest["profiles"].values():
+    for renderer, config in manifest["profiles"].items():
+        # This fixture exercises the frozen profile/evidence contract with a
+        # synthetic stable stage, independently of the registered HD successor.
+        config.pop("multires_recipe", None)
+        if renderer in ("completehd", "modalwidgets"):
+            for key in ("2560x1440", "3840x2160"):
+                config["resolutions"].pop(key, None)
         config["stage"] = config["stage"].replace(original_stage, STABLE_STAGE)
         if "wide_menu_recipe" in config:
             config["wide_menu_recipe"]["stage"] = config["wide_menu_recipe"]["stage"].replace(original_stage, STABLE_STAGE)

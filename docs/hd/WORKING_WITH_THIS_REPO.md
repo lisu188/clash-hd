@@ -6,11 +6,12 @@ the two conflict, `AGENTS.md` wins.
 
 ## What this project is
 
-A reverse-engineering and binary-patching project that makes the 32-bit Windows
+A compatibility and binary-patching project that makes the 32-bit Windows
 game `clash95.exe` render at HD resolutions instead of native 640x480. The
-repository ships only source, documentation, tests, and small evidence
-manifests—never the game binary, patched executables, wrapper DLLs, saves, copied
-game assets, or large dumps.
+repository ships independently authored source, documentation, tests and minimal
+patch metadata. Original or patched executables, wrapper DLLs, saves, copied
+game assets, runtime captures and reverse-engineering exports stay outside
+public source control.
 
 ## The five rules you must not break
 
@@ -90,11 +91,12 @@ task scratch and retain honest failures.
 
 ## Current frontier
 
-[AGENT_HANDOFF.md](AGENT_HANDOFF.md#evidence-snapshot-and-active-work) owns the
+[AGENT_HANDOFF.md](AGENT_HANDOFF.md#engineering-state) owns the
 active integration state, remaining runtime/input requirements and dated
-historical observations. It also records local evidence availability after
-cleanup. Follow its topic links rather than repeating status from a prior
-component run. The [documentation index](README.md) provides the full map.
+source observations. Runtime artifacts remain local; historical descriptions
+do not establish their availability or a new acceptance result. Follow its
+topic links rather than repeating status from a prior component run. The
+[documentation index](README.md) provides the full map.
 
 The protected stable stage and Classic/800x600 default remain unchanged.
 Complete HD, modal-widget successors and expanded battle retain separate

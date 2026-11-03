@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Mocked collection and actual source-only matrix registration; no aggregate or runtime."""
+"""Mocked collection and actual source-only registration; no aggregate, runtime or canonical outputs."""
 from __future__ import annotations
 
 import ast
 from contextlib import ExitStack, contextmanager, redirect_stdout
 import hashlib
 import inspect
+import importlib
 from io import StringIO
 import json
 from pathlib import Path
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -78,7 +80,8 @@ class CollectionTests(unittest.TestCase):
 
     def test_all_original_dispatches_order_arguments_and_names_preserved(self):
         # Preserve the original 169-call/167-key oracle and admit only the
-        # explicitly registered matrix-context, field-loss, Tile, content and Count suites.
+        # explicitly registered matrix-context, field-loss, Tile, content, Count
+        # and hidden-soak suites.
         # It includes both repeated dependent calls and the zero-argument runner.
         tree = ast.parse(inspect.getsource(refresh.build_refresh))
         calls = sorted((n for n in ast.walk(tree) if isinstance(n, ast.Call)
@@ -87,7 +90,10 @@ class CollectionTests(unittest.TestCase):
         rows = [(n.args[0].value, n.args[1].id, [a.id for a in n.args[2:]]) for n in calls]
         added = {"matrix_cell_release_tests", "battle_field_loss_tests", "battle_tile_replay_tests",
                  "battle_content_replay_tests", "battle_count_entry_tests", "battle_count_body_v2_tests",
-                 "battle_native_count_authoring_tests"}
+                 "battle_native_count_authoring_tests",
+                 "hidden_soak_integration_tests", "hidden_soak_harness_preflight_tests", "hidden_soak_cleanup_tests",
+                 "hidden_soak_retained_files_tests", "hidden_soak_binary_artifacts_tests", "hidden_soak_log_observations_tests",
+                 "hidden_soak_report_binding_tests", "hidden_soak_probe_composition_tests"}
         original_rows = [row for row in rows if row[0] not in added]
         digest = hashlib.sha256(json.dumps(original_rows, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual(digest, "f17de72de1d1a03f102a095d454b1c71fd051ddffd60887e2aa0a0dba75dfc3e")
@@ -101,8 +107,16 @@ class CollectionTests(unittest.TestCase):
             ("battle_count_entry_tests", "build_battle_count_entry_tests", ["args"]),
             ("battle_count_body_v2_tests", "build_battle_count_body_v2_tests", ["args"]),
             ("battle_native_count_authoring_tests", "build_battle_native_count_authoring_tests", ["args"]),
+            ("hidden_soak_integration_tests", "build_hidden_soak_integration_tests", ["args"]),
+            ("hidden_soak_harness_preflight_tests", "build_hidden_soak_harness_preflight_tests", ["args"]),
+            ("hidden_soak_cleanup_tests", "build_hidden_soak_cleanup_tests", ["args"]),
+            ("hidden_soak_retained_files_tests", "build_hidden_soak_retained_files_tests", ["args"]),
+            ("hidden_soak_binary_artifacts_tests", "build_hidden_soak_binary_artifacts_tests", ["args"]),
+            ("hidden_soak_log_observations_tests", "build_hidden_soak_log_observations_tests", ["args"]),
+            ("hidden_soak_report_binding_tests", "build_hidden_soak_report_binding_tests", ["args"]),
+            ("hidden_soak_probe_composition_tests", "build_hidden_soak_probe_composition_tests", ["args"]),
         ])
-        self.assertEqual(len(rows), 176)
+        self.assertEqual(len(rows), 184)
         self.assertFalse(any(isinstance(n.func, ast.Name) and n.func.id.startswith("build_")
                              for n in ast.walk(tree) if isinstance(n, ast.Call)))
         report = self.build()
@@ -110,7 +124,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(self.calls[0], ("build_framed_offline_refresh", ()))
         for name, args in self.calls[1:]:
             self.assertIs(args[0], self.args, name)
-        self.assertEqual(len(report["checks"]), 174)
+        self.assertEqual(len(report["checks"]), 182)
         self.assertIs(report["passed"], True)
 
     def test_simple_test_policy_default_preserves_legacy_result(self):
@@ -285,6 +299,131 @@ class CollectionTests(unittest.TestCase):
         self.assertIn("no runtime or release acceptance", payload["guard_policy"])
         self.assertFalse(payload["failures"])
 
+    @unittest.skipUnless(
+        sys.platform == "win32" and refresh.test_hidden_soak_harness_preflight.POWERSHELL.exists(),
+        "real pure-PowerShell registration needs Windows",
+    )
+    def test_registered_hidden_preflight_entrypoint_and_runtime_policy(self):
+        # Exercise the actual registered runner, not a mocked callable. Output
+        # serializers alone are mocked so no canonical evidence is rewritten.
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ):
+            result = refresh.build_hidden_soak_harness_preflight_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        payload = write_json.call_args.args[1]
+        self.assertIn("isolated read-only PowerShell", payload["runtime_policy"])
+        self.assertIn("never executes the runtime harness", payload["runtime_policy"])
+        self.assertNotIn("does not launch Clash95, CDB, wrappers, PowerShell", payload["runtime_policy"])
+        self.assertIn("tiny private files", payload["runtime_policy"])
+
+    @unittest.skipUnless(
+        sys.platform == "win32" and refresh.test_hidden_soak_cleanup.POWERSHELL.exists(),
+        "real mocked-native orchestration registration needs Windows",
+    )
+    def test_registered_hidden_cleanup_entrypoint_and_runtime_policy(self):
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ):
+            result = refresh.build_hidden_soak_cleanup_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        payload = write_json.call_args.args[1]
+        self.assertIn("mocked native adapter", payload["runtime_policy"])
+        self.assertIn("no native ownership proof", payload["guard_policy"])
+
+    def test_registered_hidden_integration_entrypoint(self):
+        with patch.object(refresh, "write_json") as write_json, patch.object(
+            refresh, "write_simple_tests_markdown"
+        ):
+            result = refresh.build_hidden_soak_integration_tests(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        payload = write_json.call_args.args[1]
+        self.assertIn("synthetic source-only integration", payload["guard_policy"])
+        self.assertEqual(len(payload["tests"]), 5)
+
+    def assert_registered_retained_entrypoint(self, builder_name, runtime_fragment, guard_fragment):
+        reader_slots = (("hidden_soak_retained_files", "_read_retained_file"),
+                        ("hidden_soak_binary_artifacts", "_read_retained_file"),
+                        ("hidden_soak_log_observations", "_reader"),
+                        ("hidden_soak_report_binding", "_read_retained_file"))
+        originals = [(importlib.import_module(module), name) for module, name in reader_slots]
+        readers = [getattr(module, name) for module, name in originals]
+        # These are the actual registered suite entrypoints. Only output
+        # serializers are replaced; no runner, validator, hash or IO policy is
+        # mocked by the registration test.
+        with patch.object(refresh, "write_json") as write_json, patch.object(refresh, "write_simple_tests_markdown") as markdown:
+            result = getattr(refresh, builder_name)(self.args)
+        self.assertIs(result["passed"], True, result["failures"])
+        write_json.assert_called_once()
+        markdown.assert_called_once()
+        payload = write_json.call_args.args[1]
+        self.assertEqual(len(payload["tests"]), 2)
+        self.assertIn(runtime_fragment, payload["runtime_policy"])
+        self.assertIn(guard_fragment, payload["guard_policy"])
+        self.assertFalse(payload["failures"])
+        for (module, name), original in zip(originals, readers):
+            self.assertIs(getattr(module, name), original, f"leaked fixture reader: {module.__name__}.{name}")
+
+    def test_registered_retained_files_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_retained_files_tests", "tiny private files and RAM-only full frames", "no native producer",
+        )
+
+    def test_registered_binary_artifacts_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_binary_artifacts_tests", "fixed file-reader boundary", "no original, loaded-image",
+        )
+
+    @unittest.skipUnless(
+        sys.platform == "win32" and refresh.test_hidden_soak_log_observations.POWERSHELL.exists(),
+        "real PowerShell-parity registration needs Windows",
+    )
+    def test_registered_log_observations_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_log_observations_tests", "source-only synthetic log", "no native producer",
+        )
+
+    def test_registered_report_binding_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_report_binding_tests", "actual tiny private JSON files", "no native producer",
+        )
+
+    def test_registered_probe_composition_actual_entrypoint(self):
+        self.assert_registered_retained_entrypoint(
+            "build_hidden_soak_probe_composition_tests", "no PowerShell", "probe construction byte consistency",
+        )
+
+    def test_next_actual_production_builder_cannot_use_prior_fixture_readers(self):
+        from test_hd_soak_report import passing_hidden_report
+        from test_hidden_soak_artifact_fixtures import fixture_artifact_reads
+        with tempfile.TemporaryDirectory(prefix="hidden-collection-tiny-") as directory:
+            tmp = Path(directory)
+            with fixture_artifact_reads():
+                baseline = passing_hidden_report(tmp)
+            source = tmp / "source.json"
+            baseline["report_json"] = str(source)
+            source.write_text(json.dumps(baseline), encoding="ascii")
+            self.args.hd_soak_first_step_report = source
+            self.args.hd_soak_report = tmp / "absent.json"
+            # Execute the new registrations first, then the actual next
+            # production collector in the declared aggregate order. Its only
+            # mock is publication; default retained-file reads must fail.
+            builders = ["build_hidden_soak_retained_files_tests", "build_hidden_soak_binary_artifacts_tests"]
+            # The log-observation suite's strict runner counts its Windows-only
+            # PowerShell parity skip as an incomplete pass elsewhere.
+            if sys.platform == "win32" and refresh.test_hidden_soak_log_observations.POWERSHELL.exists():
+                builders.append("build_hidden_soak_log_observations_tests")
+            for builder in builders:
+                with patch.object(refresh, "write_json"), patch.object(refresh, "write_simple_tests_markdown"):
+                    result = getattr(refresh, builder)(self.args)
+                self.assertIs(result["passed"], True, result["failures"])
+            with patch.object(refresh.hd_soak_failure_triage, "write_outputs") as output:
+                production = refresh.build_hd_soak_failure_triage(self.args)
+            self.assertIs(production["passed"], False)
+            self.assertEqual(production["summary"]["classification"], "guard_validation_failure")
+            triage = output.call_args.args[0]
+            self.assertTrue(any("retained" in failure.lower() for failure in triage["guard_validation"]["failures"]))
+
     def test_early_missing_input_keeps_completed_and_later_results(self):
         message = "captures/current/patch-stage-current-hd-map.json is missing"
         def missing(args):
@@ -294,7 +433,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(error["builder"], "build_hd_map_smoke")
         self.assertIs(report["checks"]["framed_offline_fixtures"], self.records["build_framed_offline_refresh"])
         self.assertIs(report["checks"]["evidence_index_check"], self.records["build_evidence_index_check"])
-        self.assertEqual(len(self.calls), 176)
+        self.assertEqual(len(self.calls), 184)
         self.assertIs(report["passed"], False)
 
     def test_actual_hd_map_builder_exception_is_collected_before_writes(self):
@@ -340,7 +479,7 @@ class CollectionTests(unittest.TestCase):
                     raise FileNotFoundError("missing " + key)
                 report = self.build({builder: missing})
                 self.assert_diagnostic(report, key, "FileNotFoundError", "missing " + key)
-                self.assertEqual(len(self.calls), 176)
+                self.assertEqual(len(self.calls), 184)
                 self.assertEqual(self.calls[-1][0], "build_current_completion_summary")
 
     def test_downstream_checks_receive_same_partial_dictionary_and_namespace(self):

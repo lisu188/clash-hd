@@ -19,7 +19,7 @@ class ResolutionMatrixTests(unittest.TestCase):
     def test_inventory_covers_every_profile_preset_once(self):
         expected=tool.presets.load_manifest()['profiles']
         rows=tool.inventory()
-        self.assertEqual(len(rows),30)
+        self.assertEqual(len(rows),34)
         self.assertEqual({(r['profile'],r['resolution']) for r in rows},
                          {(p,r) for p,d in expected.items() for r in d['resolutions']})
         self.assertEqual(len({(r['profile'],r['resolution']) for r in rows}),len(rows))

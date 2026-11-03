@@ -20,7 +20,7 @@ class ResolutionSweepTests(unittest.TestCase):
                     for resolution in config['resolutions']}
         self.assertEqual({(r['profile'], r['resolution']) for r in plan['cases']}, expected)
         self.assertEqual(plan['count'], len(expected))
-        self.assertEqual(plan['count'], 30)
+        self.assertEqual(plan['count'], 34)
         self.assertIn(('classic', '3840x2160'), expected)
         self.assertIn(('framed', '3440x1440'), expected)
         self.assertIn(('modalwidgets', '802x602'), expected)
@@ -33,7 +33,7 @@ class ResolutionSweepTests(unittest.TestCase):
         rows = [dict(tool.base_record(case), startup_passed=True) for case in plan['cases']]
         report = tool.aggregate(plan, rows)
         self.assertTrue(report['startup_matrix_passed'])
-        self.assertEqual(report['observed'], 30)
+        self.assertEqual(report['observed'], 34)
         self.assertFalse(report['all_resolutions_working'])
         self.assertFalse(report['promotion_ready'])
         self.assertTrue(all(report['gameplay_missing'].values()))
@@ -74,10 +74,24 @@ class ResolutionSweepTests(unittest.TestCase):
                 self.assertTrue(all(r['profile'] == profile for r in plan['cases']))
                 self.assertFalse(plan['game_runtime_executed'])
                 self.assertFalse(out.exists())
-            result = subprocess.run([sys.executable, tool.__file__, '--profile', 'modalwidgets', '--resolution', '3840x2160'],
+            result = subprocess.run([sys.executable, tool.__file__, '--profile', 'modalwidgets', '--resolution', '1366x768'],
                                     capture_output=True, text=True)
             self.assertEqual(result.returncode, 2)
             self.assertFalse(out.exists())
+
+    def test_selected_twelve_use_shared_successor_and_classic_backend(self):
+        manifest = tool.presets.load_manifest()
+        selected = {(profile, resolution) for profile in tool.BACKENDS
+                    for resolution in ('1920x1080', '2560x1440', '3840x2160')}
+        rows = [row for row in tool.inventory()['cases']
+                if (row['profile'], row['resolution']) in selected]
+        self.assertEqual(len(rows), 12)
+        self.assertEqual(tool.BACKENDS['classic'].__name__, 'classic')
+        for row in rows:
+            display = tool.presets.resolve_plan(renderer=row['profile'], resolution=row['resolution'], manifest=manifest)
+            self.assertEqual(row['stage'], display.stage)
+            self.assertEqual(row['recipe_revision'], 'hd_multires_v1')
+            self.assertTrue(row['display_plan']['bounded_world_renderer'])
 
     def test_startup_requires_real_completion_dimensions_nonblank_stable_and_palette(self):
         case = tool.inventory()['cases'][0]

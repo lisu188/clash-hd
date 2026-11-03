@@ -69,6 +69,11 @@ OFFLINE_REPORT_IMPORTS = {
     "tools/hidden_soak_report_assembler.py": {
         "__future__", "argparse", "json", "sys", "datetime", "pathlib", "typing",
         "hd_soak_report",
+        # Reviewed read-only validators: lexical layout checks, bounded
+        # retained-file reads, retained-log parsing and in-memory patch-report
+        # recomputation. None launches a process or touches a live target.
+        "hidden_soak_artifact_layout", "hidden_soak_binary_artifacts",
+        "hidden_soak_log_observations", "hidden_soak_retained_files",
     },
 }
 DYNAMIC_CODE_NAMES = {"__import__", "eval", "exec", "compile", "getattr", "setattr"}
@@ -115,6 +120,7 @@ EXEMPT_HELPERS = {
     "hd_layout_promotion_decision.py": "repo-only evidence decision; Win32 text describes the archived automated-hover proof class and no runtime/input APIs are called",
     "hd_layout_visible_summary.py": "repo-only PNG/JSON evidence parser; Win32 cursor and desktop text describes archived evidence and no runtime/input APIs are called",
     "hd_soak_harness_guard.py": "repo-only PowerShell source scanner; postmessage text appears only in required source-token checks",
+    "hidden_soak_probe_composition_parity.py": "repo-only parity proof; subprocess is limited to read-only git show of the legacy runner and Windows PowerShell running only its extracted string-composition block; launches no Clash95, CDB, wrapper or visible window",
     "hd_soak_intro_skip_rerun_readiness.py": "repo-only readiness gate; visible-runtime and postmessage text appears only in approval-boundary validation",
     "hd_soak_short_artifact_manifest.py": "repo-only command manifest; postmessage text appears only in approval-gated command templates",
     "hd_soak_short_tier_ladder.py": "repo-only ladder planner; postmessage text appears only in approval-gated command templates",

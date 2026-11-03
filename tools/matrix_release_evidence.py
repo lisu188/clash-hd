@@ -212,7 +212,8 @@ def evaluate_release_manifest(path: Path) -> dict:
             _reference_bytes(ref, base, "retained source-artifact recheck")
         if context:
             for name, ref in context["artifact_refs"].items():
-                maximum = MAX_CANDIDATE_BYTES if name in ("base_executable", "executable") else MAX_JSON_BYTES
+                maximum = matrix.candidate_artifact_limit(context["identity"], name,
+                    json_default=MAX_JSON_BYTES, binary_default=MAX_CANDIDATE_BYTES)
                 _reference_bytes(ref, Path("."), "candidate artifact recheck", maximum=maximum)
             for name, digest in context["source_hashes"].items():
                 source = matrix._plain_path(matrix.ROOT / name)

@@ -397,7 +397,9 @@ def _hidden_soak_log(log: str, failures: list[str]) -> dict[str, list[dict[str, 
     )
     rows: dict[str, list[dict[str, Any]]] = {kind: [] for kind, _, _ in patterns}
     marker_names = r"(?:SOAK_SURFDUMP_READY|SURFDUMP_READY|SOAK_ROUTE_START|SOAK_ROUTE_END|SOAK_HEARTBEAT|SOAK_PAN_PLAN|SOAK_PAN_UNSAFE|SOAK_PAN_SET)\b"
-    for number, text in enumerate(log.splitlines(), 1):
+    # Number lines as the producer does (split on LF), so its line_number
+    # receipts can be bound to these anchored records.
+    for number, text in enumerate(log.split("\n"), 1):
         line = text.strip()
         for kind, pattern, fields in patterns:
             match = re.fullmatch(pattern, line)
@@ -511,14 +513,18 @@ def audit_hidden_soak_raw(samples: Any, log: Any, raw_frames: Any, identity: Any
     ready = ready_rows[0] if len(ready_rows) == 1 else {}
     start = rows["start"][0] if len(rows["start"]) == 1 else {}
     end = rows["end"][0] if len(rows["end"]) == 1 else {}
+    def receipt(row: dict[str, Any]) -> dict[str, Any]:
+        # The producer retains each anchored row with its actual log line.
+        return {**{key: value for key, value in row.items() if key != "_line"}, "line_number": row["_line"]}
+
     for field, actual in (("ready_marker", ready), ("route_start_marker", start), ("route_end_marker", end)):
-        _check(bool(actual) and _same_raw_json(samples.get(field), {key: value for key, value in actual.items() if key != "_line"}),
+        _check(bool(actual) and _same_raw_json(samples.get(field), receipt(actual)),
                failures, f"{field} differs from raw anchored CDB records")
     _check(type(samples.get("heartbeat_count")) is int and samples["heartbeat_count"] == len(rows["heartbeat"])
            and bool(rows["heartbeat"]), failures, "raw heartbeat inventory is absent or differs from the samples")
     _check(type(samples.get("pan_event_count")) is int and samples["pan_event_count"] == len(rows["pan"]), failures,
            "raw pan event count differs from the samples")
-    _check(_same_raw_json(samples.get("pan_events"), [{key: value for key, value in row.items() if key != "_line"} for row in rows["pan"]]),
+    _check(_same_raw_json(samples.get("pan_events"), [receipt(row) for row in rows["pan"]]),
            failures, "pan_events differ from raw anchored CDB records")
     if ready:
         _check(ready["width"] == width and ready["height"] == height and ready["bytes"] == width * height, failures,

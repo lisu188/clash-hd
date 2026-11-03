@@ -187,7 +187,7 @@ class LauncherDisplayIntegrationTests(unittest.TestCase):
                     self.assertIn("candidates_root", data["requested_paths"])
 
     def test_describe_small_world_fails_honestly_without_permission_to_run_it(self):
-        code, out, _ = self.command("--profile", "framed", "--describe-plan", "--resolution", "3840x2160", "--map-size", "40", "30")
+        code, out, _ = self.command("--profile", "framed", "--describe-plan", "--resolution", "3840x2160", "--stage", self.core.patch_clash95_hd.DEFAULT_STAGE+"-combinedui-partialtiles-initialpaint-framed-validation", "--map-size", "40", "30")
         self.assertEqual(code, 1)
         data = json.loads(out)
         self.assertFalse(data["world_plan"]["native_full_loop_safe"])

@@ -9,7 +9,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from src.display_plan import DEFAULT_BOUNDS, RECIPE_REVISION, DisplayPlan, DisplayPlanError, parse_dimensions, resolve_display_plan
+from src.display_plan import (DEFAULT_BOUNDS, RECIPE_REVISION, HD_MULTIRES_REVISION,
+    HD_MULTIRES_RESOLUTIONS, DisplayPlan, DisplayPlanError, multires_stage,
+    parse_dimensions, resolve_display_plan)
 
 
 MANIFEST_PATH = Path(__file__).resolve().parent / "resolutions.json"
@@ -120,6 +122,11 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             raise ManifestError("Legacy fields must exactly project the Classic profile, not another renderer.")
     for renderer in (manifest["profiles"] if manifest["schema"] == 2 else ("classic", "framed")):
         config = _profile(manifest, renderer)
+        successor = config.get("multires_recipe")
+        if successor is not None and successor != {
+                "stage": multires_stage(renderer), "recipe_revision": HD_MULTIRES_REVISION,
+                "resolutions": list(HD_MULTIRES_RESOLUTIONS)}:
+            raise ManifestError(f"Unrecognized {renderer} multiresolution recipe.")
         if (config.get("recipe_revision") != RECIPE_REVISION[renderer] or type(config.get("stage")) is not str
                 or not config["stage"] or config.get("features") != {"minimap_viewport": renderer != "classic"}
                 or type(config.get("features", {}).get("minimap_viewport")) is not bool):
@@ -128,8 +135,9 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             # Validate the advertised frozen profile without importing source-
             # only builders in packaged launchers. Selection checks the builder.
             if (config["stage"] != manifest["stable_stage"] + ("-completehd-validation" if renderer == "completehd" else "-completehd-modalwidgets-validation") or config.get("default") != "800x600"
-                    or set(config.get("resolutions", {})) != {"800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602"}):
-                raise ManifestError("Complete-HD must use its exact experimental recipe, default and six fixture resolutions.")
+                    or set(config.get("resolutions", {})) != ({"800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602"}
+                        | (set(HD_MULTIRES_RESOLUTIONS) if successor else set()))):
+                raise ManifestError("Complete-HD must use its exact experimental legacy and successor resolution sets.")
         wide = config.get("wide_menu_recipe")
         if wide is not None:
             if renderer != "classic" or wide != {"minimum_width": 1144,
@@ -139,6 +147,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
         entries = config.get("resolutions")
         if not isinstance(entries, dict) or not entries or type(config.get("default")) is not str or config["default"] not in entries:
             raise ManifestError(f"{renderer} must have an available default resolution.")
+        if successor and not set(successor["resolutions"]) <= entries.keys():
+            raise ManifestError("Every multiresolution preset must be advertised explicitly.")
         for key, entry in entries.items():
             parse_resolution_key(key)
             try:
@@ -149,6 +159,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
                 raise ManifestError(f"Resolution {renderer}/{key} has invalid status metadata.")
             if renderer in ("completehd", "modalwidgets") and entry["status"] != "experimental":
                 raise ManifestError("Complete-HD requires separate evidence-backed promotion before changing experimental status.")
+            if successor and key in successor["resolutions"] and entry["status"] != "experimental":
+                raise ManifestError("HD multiresolution candidates require separate evidence-backed promotion.")
             tiles, evidence = entry.get("tiles"), entry.get("evidence")
             if tiles is not None and (not isinstance(tiles, list) or len(tiles) != 2 or any(type(n) is not int or n <= 0 for n in tiles)):
                 raise ManifestError(f"Resolution {renderer}/{key} has invalid tile metadata.")
@@ -218,7 +230,10 @@ def resolve_plan(*, renderer: str = "classic", resolution: str = "800x600", stag
     if resolution not in config["resolutions"] and not manifest["custom_allowed"]:
         raise DisplayPlanError("custom_disabled", "Custom resolutions are disabled for this renderer.")
     selected_stage = stage if stage is not None else config["stage"]
-    if stage is None and renderer == "classic" and config.get("wide_menu_recipe"):
+    successor = config.get("multires_recipe")
+    if stage is None and successor and resolution in successor["resolutions"]:
+        selected_stage = successor["stage"]
+    elif stage is None and renderer == "classic" and config.get("wide_menu_recipe"):
         if parse_dimensions(resolution, _bounds(manifest))[0] >= config["wide_menu_recipe"]["minimum_width"]:
             selected_stage = config["wide_menu_recipe"]["stage"]
     return resolve_display_plan(renderer=renderer, resolution=resolution, stage=selected_stage,

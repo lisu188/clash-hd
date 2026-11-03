@@ -2,6 +2,142 @@
 
 This file intentionally contains only source-level project state.
 
+## Hidden-soak integrity checkpoint - 2026-10-08
+
+The historical short ladder's saved 5/5 flags are not current acceptance. A
+read-only environment-dispatch regrade fails all five canonical reports because
+their exact external patch-stage manifests are absent. Their candidate, proxy
+and raw-frame references also lack retained backing. Keep the original receipts
+and failed/interrupted two-hour attempts unchanged; do not substitute unrelated
+older manifests or automatically repeat the visible menu run.
+See the [compact revalidation conclusion](../../reports/hidden-soak-revalidation-20261008.json).
+
+Source checks now require complete periodic sampling and forced-pan coverage,
+valid hidden-frame metrics and per-row process telemetry, ordered and matching
+terminal markers, strict disk and physical-root preflight, fresh short-ladder
+grading, and exact retained hidden-long source/patch byte bindings. The synthetic
+integration, isolated harness preflight/storage and mocked-native cleanup suites
+are registered in the aggregate. These are source and fixture results, not newly
+executed endurance evidence. The shared elapsed
+endpoint bound remains `duration - interval - 2`; individual sample/pan gaps
+allow at most two seconds of scheduling jitter.
+
+No game/debugger session was launched at this checkpoint. Local C: usage is
+approximately 94.6%, above the 90% guard; large fixtures, builds, captures and
+both full aggregate refreshes remain deferred. Restore authenticated external
+soak artifacts or obtain a new evidence-strategy decision, and recover capacity
+before runtime.
+
+The follow-up source batch retains every periodic and terminal raw frame with an
+exclusive create, flush and SHA reread. Admission includes the complete raw
+schedule and RGB edge-PNG costs; unreadable inventories, reparse points, invalid
+sizes and artifact overflow fail closed. Retained live-bound pan plans and actual
+marker line positions are independently checked through assembly and grading.
+Hidden artifact layout requires matching immediate run directories under the
+exact hidden roots and candidate-local proxy files; this is lexical containment,
+not physical file authentication.
+
+Assembly and the public hidden grader now independently reopen every retained
+raw frame, candidate, patch manifest, proxy, build/runtime/CDB log and probe
+through a bounded read-only reader. Root-first link/reparse checks and held-file
+and endpoint identity checks reject observed drift. The real protected-stage
+patch reporter recomputes all selected candidate observations; frame SHA and
+indexed8 metrics are recomputed from full retained bytes. CDB log replay compares
+actual anchored rows, inventories, line positions and failure flags. Collection
+hash/size receipts are required, and pre-launch input receipts are not resealed
+after runtime. The proxy manifest also pins its DEF and build script.
+
+The three retained-byte suites are registered in the aggregate. Positive source
+fixtures use fixed RAM artifacts and only scoped private file-reader mocks;
+hashing, patch selection and all graders remain real. Following production
+builders and fresh CLI processes reject missing external backing after those
+scopes exit. Malformed hidden arrays, counts, failure flags, overflowing UTC
+timestamps, out-of-native-range process counters and nonfinite values fail
+without being coerced into plausible observations. Failed inventories remain
+in JSON and no longer abort diagnostic Markdown rendering. Visible/guest graders
+retain their existing behavior. This is observed retained-byte consistency, not file
+immutability, original-derived whole-candidate or native-producer authentication.
+The generated probe now comes only from the canonical composer
+`tools/hidden_soak_probe_composition.py`. The runner records its exact
+`probe_composition` parameters, and the binary grader rebuilds the probe from
+the retained templates and fails on any byte difference. Parity with the former
+inline PowerShell composition is pinned in
+[the parity receipt](../../reports/hidden-soak-probe-composition-parity-20261102.json)
+for all seven hidden rung parameter sets and both range boundaries; the real
+D0 composition also equals the retained probe of the 2026-11-02 diagnostic
+run. Reports without the composition record now fail. This is construction
+evidence, not proof that CDB executed the probe. The original samples JSON
+still needs an independent byte binding.
+
+The native host source now creates CDB suspended, assigns and verifies a
+kill-on-close/no-breakaway job before resume, and uses retained handles for
+termination, generation checks, drain and closes. Failed CreateProcess outputs
+remain diagnostics rather than kill/close authority. The cleanup envelope keeps
+operation receipts and errors. Source-derived layout and mocked orchestration
+fixtures do not compile C# or execute this native adapter, and successful poll
+waits are not a complete retained transcript. Native verification and independent
+cleanup-receipt regrading remain required.
+
+The sampler still discovers its candidate by PID/path and reopens it for live
+ReadProcessMemory. Loaded-image/target and native-producer authentication, held
+coherent frame reads, independently verified cleanup receipts, an independent
+samples-JSON byte binding and running-time rather than wall-clock coverage
+remain production gaps. Retained-file checks and physical-path preflight do not authenticate
+immutable file or process identity. No fresh runtime evidence was produced by
+the retained-byte source batch.
+Manual DirectInput, final visible composition, release and promotion remain
+unresolved; the protected stable stage and launcher defaults are unchanged.
+
+The 2026-10-13 source follow-up again regraded all five canonical short reports
+without writing them: fresh acceptance remains 0/5. At the cleanup observation
+C: exceeded 95% used; remeasure capacity before admission. The hidden external
+roots are absent. The original executable and all 3,382
+preservation-baseline files still match their recorded hashes. Focused source
+checks and fixture results do not satisfy either runtime prerequisite.
+The bounded cleanup removed only 31 reproducible Python caches (742,531 logical
+bytes) and an empty test scratch directory. Two unreproduced stale caches and all
+evidence were retained. Measured C: free space changed from 48,440,086,528 to
+48,440,958,976 bytes; the reserve still fails and large writes remain deferred.
+The user requested a replacement-evidence plan on 2026-10-13. See the
+[prepared strategy](HD_SOAK_TEST_ROADMAP.md#replacement-evidence-plan-requested-2026-10-13).
+It grants no replacement execution or visible-session approval. The missing
+visible menu prerequisite remains separate from the four proposed hidden map
+replacements, and the complete old canonical namespace must be archived before
+any canonical refresh or replacement write.
+The source follow-up makes `source_report_binding` mandatory in the public
+hidden dispatcher and folds its failures into `overall`. It reopens the
+unchanged embedded external `report_json`; an explicitly selected canonical
+copy must have exactly the same bytes. Strict typed JSON comparison rejects
+duplicate/nonfinite data and boolean/numeric substitutions. Short status,
+intro completion and hidden long admission compare saved binding records and
+source SHA against a fresh grade, so even matching changes to both copies
+invalidate a stale guard. The CLI, refresh and triage forward their actual
+selected path. The registered bounded source/alias fixtures are not runtime,
+native-producer or immutable-file proof and restore no missing evidence.
+
+This source batch reaches the public history through a content-only integration
+on the sanitized remote; it changes no evidence state. During that integration
+on 2026-11-01, C: measured 89.68% and then 67.04% used within minutes while
+unrelated workstation jobs ran. The earlier >95% observation no longer holds,
+but transient readings are not admission: remeasure every relevant volume with
+all pending allowances immediately before any runtime or large write.
+
+User-approved hidden map-pan diagnostics on 2026-11-01/02 (stable candidate
+`5E162FA8...`, 800x600) exposed and verified repairs for four defects. The
+retained reader compared path and handle stats that Windows reports differently:
+Python 3.12+ ctime meaning and extension-derived `.exe` execute bits. It rejected
+every real file until it compared only API-stable identity. The forced pan wrote
+scroll fields without the native full repaint, so frames after the first pan
+mixed stale and redrawn cells. Each pan step is now taken by the native
+arrow-key handler `00407D20` at its own main-loop call from CDB-written key
+state (`pan_mechanism=cdb_forced_native_arrow_key`), so clamping, repaint and
+render-device state follow native code. Edge PNGs use the retained DirectDraw
+palette only when the dump is complete. Two fixture suites now build sealed
+ladders inside the private reader scope. The final runs passed their report and
+shared guard. They are not ladder rungs or replacement evidence, and earlier
+hidden map-pan frame metrics cannot show coherent panning. See the
+[diagnostic record](../../reports/hidden-soak-diagnostic-runs-20261101.json).
+
 ## Public repository state
 
 - The repository contains independently authored patcher/launcher source,
@@ -24,6 +160,55 @@ This file intentionally contains only source-level project state.
 - [Contributor rules](../../AGENTS.md)
 
 ## Engineering state
+
+### Selected multi-resolution launcher batch
+
+The versioned `hd_multires_v1` launcher route now covers Classic, Framed,
+Complete HD and Modal Widgets at 1920x1080, 2560x1440 and 3840x2160.
+Source and standalone Windows launchers share exact recipe/provenance checks.
+Separate bounded map/input integration preserves Classic style and the three
+framed profile identities. All twelve cells remain experimental; this does
+not install expanded battle or accept native gameplay, input or endurance.
+See [the multi-resolution launcher](MULTIRES_LAUNCHER.md) for usage, packaging,
+current verification boundaries and the selected-cell qualification tool.
+The standalone build's restart determinism for all twelve cells is recorded in
+`reports/hd-multires-standalone-restart-20261102.json`. It is construction
+evidence only.
+
+The separately versioned Adjacent/Unit caller successor has source/scalar
+coverage and a local original-backed CPU fixture through real Unit RET4 on a
+valid-index/type-minus-one provider-free route. It does not establish normal
+sprite-bearing Unit routes or a full installed battle. The compact retained
+report is `reports/battle-adjacent-unit-bounded-return-cpu-20261025.json`.
+
+The fresh continuation successor now checks 43 post-return windows and two
+field-loss joins at the current allocation addresses, without installing hooks.
+The retained `reports/battle-continuation-v2-source-cpu-20261025.json` separates
+modeled callback/CPU checks from the provider-free real Count RET0 and Unit RET4
+path. Sprite/resource ownership, RLE interruption and the complete atomic battle
+installer remain unfinished. The installed-map CPU receipt for the portable
+launcher metadata is `reports/hd-multires-installed-cpu-20261027-portable.json`.
+Hidden Classic 1080p initial-image and Acquire diagnostics remain local; they
+do not establish visible input, map endurance or release acceptance.
+
+`battle_profile_primitive_request_v2.py` recomposes one fresh shared guard for
+the 43 normal-return windows and 13 query frames (eleven sprite requests and
+two line requests). Saved Effect identity and native argument shadows are
+checked before and after modeled Thread callbacks. The selected twelve-cell
+source/CPU suite and original-authenticated RAM construction passed; the compact
+receipt is `reports/battle-primitive-request-v2-source-cpu-20261027.json`.
+Its minimum unallocated RX remainder is 2,990 bytes. These queries call no native
+sprite/line primitive and install no hooks or provider records. Fresh line
+replay, resource/RLE lifetime and complete atomic installation remain open.
+
+The separately versioned `battle_profile_line_replay_v2.py` now has an
+authoring-only successor for the two whole Line windows, with exact overlap
+removal, literal vtable admission and pre/post native helper phase checks.
+Four tiny source/assembly checks and read-only original span authentication
+passed. Full canonical emission, the twelve-cell RAM/CPU matrix, native Line
+ABI/pixels and installation remain unverified under the current capacity hold.
+See `reports/battle-line-replay-v2-authoring-20261027.json`; its 390-byte RX
+upper bound is a source capacity plan, not a full-emission receipt.
 
 The source tree remains the authority for implemented patch stages and
 resolution behavior. `src/launcher/resolutions.json` is the user-facing

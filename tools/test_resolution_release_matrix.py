@@ -25,13 +25,14 @@ def write(path: Path, value) -> dict:
 
 
 class SyntheticBundle:
-    def __init__(self, root: Path, manifest: dict, profile="completehd", resolution="1920x1080", *, successor=None):
+    def __init__(self, root: Path, manifest: dict, profile="completehd", resolution="1920x1080", *, successor=None, legacy=False):
         self.root, self.manifest = root, manifest
         self.repo, self.external = root / "repo", root / "external"
         self.id = f"{profile}/{resolution}"
         from src.launcher import presets
         if successor is None:
-            self.display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+            self.display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest,
+                stage=manifest["profiles"][profile]["stage"] if legacy else None)
         else:
             selected = matrix.VALIDATION_RECIPES[successor]
             self.display = SimpleNamespace(stage=selected["stage"], recipe_revision=successor)
@@ -40,7 +41,7 @@ class SyntheticBundle:
         self.probe = None if successor is None and profile == "classic" and resolution == "800x600" else "fixture-only canonical probe\n"
         self.source = write(self.repo / "tools/fixture_producer.py", b"# synthetic producer source\n")
         self.source_hashes = {"tools/fixture_producer.py": self.source["sha256"]}
-        self.metadata = {"schema": "synthetic-authentication-fixture-only", "stage": self.display.stage,
+        self.metadata = {"schema": "synthetic-authentication-fixture-only", "stage": self.display.stage, "profile": profile,
                          "resolution": resolution, "recipe_revision": self.display.recipe_revision,
                          "candidate_sha256": matrix.sha(self.image), "base_sha256": matrix.sha(self.original),
                          "source_hashes": self.source_hashes, "probe_sha256": matrix.sha(self.probe.encode()) if self.probe else None}
@@ -85,7 +86,7 @@ class MatrixTests(unittest.TestCase):
         self.root = Path(self.temp.name)
 
     def fixture(self, profile="completehd", resolution="1920x1080"):
-        return SyntheticBundle(self.root, self.manifest, profile, resolution)
+        return SyntheticBundle(self.root, self.manifest, profile, resolution, legacy=True)
 
     def evaluate_rows(self, rows):
         path = self.root / "matrix.json"
@@ -106,13 +107,14 @@ class MatrixTests(unittest.TestCase):
         self.assertEqual(len(matrix.REQUIRED_ACCEPTANCE), 17)
 
     def test_inventory_absent_presets_and_wide_classic(self):
-        self.assertEqual(sum(row["preset_advertised"] for row in self.inventory.values()), 28)
+        self.assertEqual(sum(row["preset_advertised"] for row in self.inventory.values()), 32)
         missing = {key for key, row in self.inventory.items() if not row["preset_advertised"]}
         self.assertEqual(missing, {f"{p}/{r}" for p in ("completehd", "modalwidgets")
-                                  for r in ("1366x768", "2560x1440", "3440x1440", "3840x2160")})
+                                  for r in ("1366x768", "3440x1440")})
         self.assertEqual(self.inventory["classic/800x600"]["source_recipe"]["recipe_revision"], "classic-frozen-800-v1")
         self.assertEqual(self.inventory["classic/1280x720"]["source_recipe"]["recipe_revision"], "classic_menu_widgets_v1")
-        self.assertIs(self.inventory["completehd/3840x2160"]["recipe_eligible"], False)
+        self.assertIs(self.inventory["completehd/3840x2160"]["recipe_eligible"], True)
+        self.assertEqual(self.inventory["completehd/3840x2160"]["source_recipe"]["recipe_revision"], "hd_multires_v1")
 
     def test_missing_manifest_fails(self):
         report = matrix.evaluate_matrix()
@@ -284,13 +286,13 @@ class MatrixTests(unittest.TestCase):
             fixture.spec["metadata"] = write(Path(fixture.spec["metadata"]["path"]), changed)
             with self.subTest(revision=revision), self.assertRaisesRegex(ValueError, "metadata differs"):
                 fixture.authenticate()
-        legacy = SyntheticBundle(self.root, self.manifest, "framed")
+        legacy = SyntheticBundle(self.root, self.manifest, "framed", legacy=True)
         legacy.spec["metadata"] = write(Path(legacy.spec["metadata"]["path"]),
                                         dict(legacy.metadata, generated_at="2026-10-05T00:00:00Z"))
         self.assertIs(legacy.authenticate()["byte_rebuild_passed"], True)
 
     def test_successor_source_authentication_does_not_fill_missing_runtime_or_advertisement(self):
-        fixture = SyntheticBundle(self.root, self.manifest, "modalwidgets", "3840x2160",
+        fixture = SyntheticBundle(self.root, self.manifest, "modalwidgets", "3440x1440",
                                   successor="modal_widgets_all_presets_v1")
         with fixture.authentication(), \
              patch.object(matrix, "_inventory", return_value=(self.manifest, copy.deepcopy(self.inventory))):
@@ -397,7 +399,7 @@ class MatrixTests(unittest.TestCase):
         fixture = self.fixture()
         with fixture.authentication():
             with self.assertRaisesRegex(ValueError, "not advertised"):
-                matrix.authenticate_candidate("completehd/3840x2160", fixture.spec, fixture.external,
+                matrix.authenticate_candidate("completehd/1366x768", fixture.spec, fixture.external,
                                               self.manifest, repo_root=fixture.repo)
 
     def test_frozen_classic_has_no_manufactured_probe(self):

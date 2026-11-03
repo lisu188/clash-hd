@@ -10,6 +10,7 @@ import sys
 from typing import Any, Callable
 
 import core
+import multires
 
 PROFILE = "completehd"
 DIRECTORY = "completehd-validation"
@@ -74,6 +75,8 @@ def _builder(profile: str = PROFILE):
 
 def source_status(profile: str = PROFILE) -> dict[str, Any]:
     """Check the same inherited source pins without reading or running a game."""
+    if getattr(sys, "frozen", False) and profile in core.presets.RECIPE_REVISION:
+        return multires.source_status(profile)
     try:
         adapter = _builder(profile)
         pins = dict(adapter.PINNED) if profile == "classic" else {}
@@ -99,14 +102,18 @@ def source_status(profile: str = PROFILE) -> dict[str, Any]:
                   for path, expected in pins.items()}
         for row in checks.values():
             row["passed"] = row["expected_sha256"] == row["actual_sha256"]
-        return {"passed": all(row["passed"] for row in checks.values()), "checks": checks,
+        successor = multires.source_status(profile)
+        return {"passed": all(row["passed"] for row in checks.values()) and successor["passed"], "checks": checks,
                 "builder_sha256": core.sha256_bytes(Path(adapter.__file__).read_bytes()),
+                "multires_source_preflight": successor,
                 "runtime_executed": False}
     except (OSError, ValueError, ImportError, core.LauncherError) as exc:
         return {"passed": False, "error": str(exc), "runtime_executed": False}
 
 
 def plan_candidate(*, stage: str | None = None, profile: str = PROFILE, **kwargs: Any) -> core.CandidatePlan:
+    if multires.selected(profile, kwargs.get("resolution", "800x600"), stage, kwargs.get("manifest")):
+        return multires.plan_candidate(profile=profile, stage=stage, **kwargs)
     directory_name, selected_stage, _ = _profile(profile)
     _builder(profile)
     if stage not in (None, selected_stage):
@@ -125,10 +132,18 @@ def _paths(plan: core.CandidatePlan) -> tuple[Path, ...]:
             plan.candidate_exe.with_suffix(".cdb"), plan.wrapper_target, plan.dxcfg_target, plan.manifest_path)
 
 
+def _profile_for_plan(plan):
+    return multires.profile_layout(plan.renderer) if multires.is_plan(plan) else _profile(plan.renderer)
+
+
+def _builder_for_plan(plan):
+    return multires._builder(plan.renderer) if multires.is_plan(plan) else _builder(plan.renderer)
+
+
 def _assert_plan(plan: core.CandidatePlan) -> None:
     core.assert_plan_paths(plan)
-    directory_name, selected_stage, _ = _profile(plan.renderer)
-    adapter = _builder(plan.renderer)
+    directory_name, selected_stage, _ = _profile_for_plan(plan)
+    adapter = _builder_for_plan(plan)
     directory = plan.candidates_root / directory_name / plan.resolution
     expected = (directory / f"clash95_hd_{plan.resolution}.exe",
                 directory / f"clash95_hd_{plan.resolution}.candidate.json", directory / f"clash95_hd_{plan.resolution}.cdb",
@@ -149,7 +164,7 @@ def _assert_plan(plan: core.CandidatePlan) -> None:
 
 def _original(plan: core.CandidatePlan) -> bytes:
     original = plan.base_exe.read_bytes()
-    adapter = _builder(plan.renderer)
+    adapter = _builder_for_plan(plan)
     if plan.expected_base_sha != adapter.BASE_SHA256 or core.sha256_bytes(original) != adapter.BASE_SHA256:
         raise core.LauncherError("Unknown base executable; complete-HD has no SHA override.")
     return original
@@ -163,7 +178,8 @@ def _json_bytes(value: dict[str, Any]) -> bytes:
 def _expected(plan: core.CandidatePlan) -> tuple[dict[Path, bytes], dict[str, Any]]:
     _assert_plan(plan)
     original = _original(plan)
-    image, metadata, probe = _builder(plan.renderer).build_candidate(original, plan.resolution)
+    adapter = _builder_for_plan(plan)
+    image, metadata, probe = adapter.build_candidate(original, plan.resolution)
     display = core.display_for_plan(plan)
     if (not isinstance(metadata, dict) or metadata.get("stage") != plan.stage
             or metadata.get("recipe_revision") != display.recipe_revision
@@ -171,6 +187,11 @@ def _expected(plan: core.CandidatePlan) -> tuple[dict[Path, bytes], dict[str, An
             or metadata.get("candidate_sha256") != core.sha256_bytes(image)
             or metadata.get("probe_sha256") != core.sha256_bytes(probe.encode("utf-8"))):
         raise core.LauncherError("HD builder returned a different recipe or bundle identity.")
+    if multires.is_plan(plan) and (
+            metadata.get("profile") != plan.renderer or metadata.get("source_hashes") != adapter.source_hashes()
+            or metadata.get("bounded_small_world_integrated") is not display.bounded_world_renderer
+            or any(metadata.get(key) is not False for key in ("runtime_verified", "manual_input_proof", "promotion_ready"))):
+        raise core.LauncherError("HD multiresolution source, capability or acceptance identity differs.")
     paths = _paths(plan)
     artifacts = dict(zip(paths[:3], (image, _json_bytes(metadata), probe.encode("utf-8"))))
     record = {"base_sha256": core.sha256_bytes(original), "output_sha256": core.sha256_bytes(image),
@@ -194,11 +215,11 @@ def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] |
             else:
                 missing[path] = content
         plan.candidate_dir.mkdir(parents=True, exist_ok=True)
-        _builder(plan.renderer)._write_bundle(tuple(missing), tuple(missing.values()))
+        _builder_for_plan(plan)._write_bundle(tuple(missing), tuple(missing.values()))
         if any(path.read_bytes() != content for path, content in artifacts.items()):
             raise core.LauncherError("Complete-HD artifact changed during preparation.")
         if progress:
-            progress(_profile(plan.renderer)[2])
+            progress(_profile_for_plan(plan)[2])
             progress(f"{'Prepared' if missing else 'Reused'} complete-HD candidate: {plan.candidate_exe}")
         return {"reused": not missing, **record}
     except (OSError, ValueError, ImportError) as exc:
@@ -234,7 +255,7 @@ def deploy_runtime_files(plan: core.CandidatePlan, candidate_result: dict[str, A
         manifest.update({key: value for key, value in candidate_result.items() if key != "reused"})
         manifest["artifact_sha256"] = {**candidate_result["artifact_sha256"],
                                        **{path.name: core.sha256_bytes(path.read_bytes()) for path in _paths(plan)[3:5]}}
-        manifest["warning"] = _profile(plan.renderer)[2]
+        manifest["warning"] = _profile_for_plan(plan)[2]
         plan.manifest_path.write_bytes(_json_bytes(manifest))
         return result
     except (OSError, ValueError) as exc:

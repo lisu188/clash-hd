@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -32,6 +33,12 @@ import settings as settings_mod  # noqa: E402
 from src.display_plan import PresentationTransform
 
 
+class _ProfileSelection(argparse.Action):
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest, value)
+        namespace.profile_explicit = True
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true")
@@ -39,7 +46,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--list-resolutions", action="store_true", help="list recipe eligibility and profile-scoped status")
     parser.add_argument("--map-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="world tile dimensions for inspection only")
     parser.add_argument("--client-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="hypothetical client pixels for inspection only")
-    parser.add_argument("--profile", choices=("classic", "framed", "completehd", "modalwidgets"), default="classic")
+    parser.set_defaults(profile_explicit=False)
+    parser.add_argument("--profile", choices=("classic", "framed", "completehd", "modalwidgets"),
+                        default="classic", action=_ProfileSelection)
     parser.add_argument("--prepare", action="store_true", help="build and deploy without starting the game")
     parser.add_argument("--resolution", default=None)
     parser.add_argument("--scaling", default=None)
@@ -57,7 +66,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="second explicit confirmation required by --launch",
     )
     parser.add_argument("--gui-selftest", action="store_true")
+    parser.add_argument("--package-selftest", type=Path, metavar="REPORT_JSON",
+                        help="write source preflight and all twelve HD plans without opening the GUI or game")
     args = parser.parse_args(argv)
+    if args.package_selftest and any((args.launch, args.yes_launch, args.prepare, args.dry_run,
+                                     args.gui_selftest, args.describe_plan, args.list_resolutions,
+                                     args.map_size, args.client_size)):
+        parser.error("--package-selftest cannot be combined with runtime or inspection modes.")
     if args.prepare and (args.launch or args.dry_run or args.gui_selftest):
         parser.error("--prepare cannot be combined with --launch, --dry-run, or --gui-selftest")
     if (args.describe_plan or args.list_resolutions) and sum(bool(value) for value in
@@ -73,7 +88,7 @@ def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     backend = {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
     return backend.plan_candidate(
         stage=args.stage,
-        resolution=args.resolution or ("800x600" if args.profile in ("completehd", "modalwidgets") else saved["last_resolution"]),
+        resolution=args.resolution or settings_mod.resolution_for_profile(saved, args.profile),
         scaling_mode=args.scaling or saved["scaling_mode"],
         clash_dir=args.clash_dir or Path(saved["clash_dir"]),
         candidates_root=args.candidates_root or Path(saved["candidates_root"]),
@@ -93,7 +108,7 @@ def inspect_display(args: argparse.Namespace) -> int:
         print(json.dumps(payload, indent=2))
         return 0 if payload.get("source_preflight", {"passed": True})["passed"] else 1
     saved = settings_mod.load_settings()
-    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or ("800x600" if args.profile in ("completehd", "modalwidgets") else saved["last_resolution"]),
+    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or settings_mod.resolution_for_profile(saved, args.profile),
                                    stage=args.stage, scaling_mode=args.scaling or saved["scaling_mode"], manifest=manifest)
     payload = {"schema": 1, "inspection_only": True,
                "plan": {"renderer": display.renderer, "resolution": display.resolution, "stage": display.stage,
@@ -112,8 +127,9 @@ def inspect_display(args: argparse.Namespace) -> int:
     if args.map_size:
         world = display.world_view(*args.map_size)
         payload["world_plan"] = world.to_dict()
-        compatible = compatible and world.native_full_loop_safe
-        if not world.native_full_loop_safe:
+        admitted = world.native_full_loop_safe or getattr(display, "bounded_world_renderer", False)
+        compatible = compatible and admitted
+        if not admitted:
             payload["blocked_reason"] = "The current native full renderer cannot admit this world/viewport combination."
     if args.client_size:
         transform = PresentationTransform.integer_fit(display.width, display.height, *args.client_size)
@@ -124,8 +140,60 @@ def inspect_display(args: argparse.Namespace) -> int:
     return 0 if compatible else 1
 
 
+def package_selftest(report_path: Path) -> int:
+    """Exercise the real bundled source/plan path with no installation dependency."""
+    import multires
+    report_path = report_path.resolve()
+    if report_path.is_relative_to(core.REPO_ROOT.resolve()):
+        raise core.LauncherError("Package selftest reports must be outside the source/resource tree.")
+    manifest = presets.load_manifest()
+    profiles = ("classic", "framed", "completehd", "modalwidgets")
+    resolutions = ("1920x1080", "2560x1440", "3840x2160")
+    sources = {profile: multires.source_status(profile) for profile in profiles}
+    cells = []
+    for profile in profiles:
+        for resolution in resolutions:
+            display = presets.resolve_plan(renderer=profile, resolution=resolution, manifest=manifest)
+            info = presets.resolution_info(resolution, renderer=profile, stage=display.stage, manifest=manifest)
+            cells.append({"cell_id": profile + "/" + resolution, "display_plan": display.to_dict(),
+                          "compatibility": info, "passed": sources[profile]["passed"] and info["recipe_eligible"]})
+    frozen = bool(getattr(sys, "frozen", False))
+    bundle_verified = bootstrap.bundled_sources_verified() if frozen else False
+    settings_checks = []
+    with tempfile.TemporaryDirectory(prefix="clash-hd-settings-", dir=report_path.parent) as directory:
+        path = Path(directory) / "settings.json"
+        data = settings_mod.defaults()
+        for profile in profiles:
+            for resolution in resolutions:
+                previous_classic = data["last_resolution"]
+                settings_mod.remember_selection(data, profile, resolution)
+                settings_mod.save_settings(data, path)
+                data = settings_mod.load_settings(path)
+                settings_checks.append({"cell_id": profile + "/" + resolution,
+                    "passed": data["last_profile"] == profile
+                        and settings_mod.resolution_for_profile(data, profile) == resolution
+                        and (profile == "classic" or data["last_resolution"] == previous_classic)})
+    passed = (all(item["passed"] for item in cells) and len(cells) == 12
+              and (not frozen or bundle_verified)
+              and manifest.get("default_renderer") == "classic" and manifest.get("default") == "800x600"
+              and all(row["passed"] for row in settings_checks))
+    report = {"schema": "clash_hd_launcher_package_selftest_v1", "passed": passed,
+              "standalone_executable": frozen, "bundled_sources_verified": bundle_verified,
+              "default_profile": manifest.get("default_renderer"), "default_resolution": manifest.get("default"),
+              "source_preflight": sources, "cells": cells,
+              "settings_roundtrips": settings_checks, "settings_scope": "temporary_files_only",
+              "game_runtime_executed": False, "input_executed": False, "runtime_acceptance": False}
+    with report_path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(report, stream, indent=2)
+        stream.write("\n")
+    return 0 if passed else 1
+
+
 def _main(args: argparse.Namespace) -> int:
     backend = {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
+
+    if args.package_selftest:
+        return package_selftest(args.package_selftest)
 
     if args.describe_plan or args.list_resolutions:
         return inspect_display(args)
@@ -193,7 +261,7 @@ def _main(args: argparse.Namespace) -> int:
         print(f"Tk is not available in this Python: {exc}")
         print("Install a python.org Python 3.10+ build with Tk support.")
         return 1
-    return gui.start_gui(initial_profile=args.profile)
+    return gui.start_gui(initial_profile=args.profile if args.profile_explicit else None)
 
 
 def main(argv: list[str] | None = None) -> int:

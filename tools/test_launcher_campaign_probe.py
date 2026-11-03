@@ -18,7 +18,7 @@ class CampaignProbeTests(unittest.TestCase):
         self.assertEqual(result['actions'],['campaign button','first campaign choice'])
 
     def test_unknown_profile_or_resolution_is_not_silently_substituted(self):
-        for profile,resolution in [('wrong','1024x768'),('modalwidgets','3840x2160')]:
+        for profile,resolution in [('wrong','1024x768'),('modalwidgets','1366x768')]:
             with self.assertRaises(ValueError):
                 tool.run(SimpleNamespace(profile=profile,resolution=resolution,execute=False))
 

@@ -134,7 +134,7 @@ evidence capture. Automated runtime and manual/visible validation follow
 
 Keep each lane bound to the selected stage, recipe, resolution, exact candidate
 and source revision. Follow [the current handoff](AGENT_HANDOFF.md) and the
-[owning protocol guide](README.md#evidence-and-release-work) before executing a
+[owning protocol guide](README.md#engineering-guides) before executing a
 lane. Historical Classic 800x600 observations cannot validate Framed, Complete
 HD, Modal widgets or expanded battle by implication.
 
@@ -166,6 +166,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\build
 After installing PyInstaller in the selected Python environment, add `-Execute`
 to build locally. Outputs default to `C:\ClashTests\launcher\build`; the helper
 refuses a repository output directory. Do not commit the generated executable.
-The packaged launcher exposes Classic only; experimental source recipes and
-wide-menu source composition require their complete checkout. Building a
-launcher package does not certify gameplay or release acceptance.
+The standalone package includes verified source resources for all four profiles.
+The selected 1920x1080, 2560x1440 and 3840x2160 modes use a separate experimental
+recipe; see [the multi-resolution launcher](MULTIRES_LAUNCHER.md). The package
+runs without Python or a checkout. Building it does not certify gameplay or
+release acceptance.
