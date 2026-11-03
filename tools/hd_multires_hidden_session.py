@@ -217,9 +217,12 @@ def stage_assets(destination, rows, *, create=True):
     return recorded
 
 
-def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acquire_only=False):
+def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acquire_only=False,
+         fast_forward_intro=False):
     if smoke_only and acquire_only:
         raise ValueError("Select either initial smoke or acquisition observation, not both.")
+    if fast_forward_intro and (route != "menu-idle" or smoke_only or acquire_only):
+        raise ValueError("Intro fast-forward applies only to the menu idle observation.")
     if route not in ROUTES or type(duration) is not int or duration not in ROUTES[route]:
         raise ValueError("Route/duration must preserve the fixed short-ladder or two-hour policy.")
     map_route = route != "menu-idle"
@@ -244,9 +247,11 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
         acquire_only=acquire_only, diagnostic_scope=("initial_image_only" if smoke_only else
             "initial_image_and_native_acquisition_returns" if acquire_only else
             "forced_map_entry_and_native_arrow_pan" if route == "map-pan" else
-            "forced_map_entry_and_steady_state" if map_route else "natural_menu_idle_no_input"),
+            "forced_map_entry_and_steady_state" if map_route else
+            "fast_forwarded_intro_natural_menu_idle" if fast_forward_intro else "natural_menu_idle_no_input"),
         forced_mechanisms=(MAP_MECHANISMS | ({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})
-                           if map_route else {}),
+                           if map_route else {"start_animations": "cdb_fast_forward_sleeps"} if fast_forward_intro else {}),
+        fast_forward_intro=fast_forward_intro,
         input_or_callback_forced=map_route, load_slot=MAP_LOAD_SLOT if map_route else None,
         pan_interval_sec=MAP_PAN_INTERVAL_SEC if route == "map-pan" else None,
         acquisition_return_rvas={kind: rva for kind, (rva, _) in ACQUIRE_RETURNS.items()},
@@ -260,20 +265,30 @@ def plan(bundle: Path, route="menu-idle", duration=120, *, smoke_only=False, acq
     return report, context, loaded, metadata, rows
 
 
-def command_script(probe: bytes, identity, metadata, *, smoke_only=False, acquire_only=False):
+def command_script(probe: bytes, identity, metadata, *, smoke_only=False, acquire_only=False,
+                   fast_forward_intro=False):
     chunks = metadata["probe_contract"]["required_chunks"]
     if type(chunks) is not int or chunks <= 0:
         raise ValueError("Canonical initial-image chunk inventory is invalid.")
+    if fast_forward_intro and (smoke_only or acquire_only):
+        raise ValueError("Intro fast-forward applies only to the menu idle observation.")
     suffix = [f'.if ((@$t19 == 0) | (@$t18 != 0n{chunks})) {{ .echo HDSESSION_INITIAL_REJECT; q }}',
         '.printf "HDSESSION_TARGET pid=%x base=%p\\n", @$tpid, @$t19']
+    if fast_forward_intro:
+        # The proven fast-forward block uses absolute legacy addresses.
+        suffix[1:1] = [f".if (@$t19 != 0x{MAP_IMAGE_BASE:x}) {{ .echo HDSESSION_BASE_REJECT; q }}"]
     if smoke_only:
         suffix += ['.echo HDSESSION_INITIAL_SMOKE_COMPLETE', '.sleep 0n300000', 'q']
     else:
-        # These are observers only; no input bytes, instruction pointer,
-        # acquisition return values or game state are forced.
+        # These are observers only; no input bytes, acquisition return values
+        # or game state are forced. The opt-in intro fast-forward alone skips
+        # the disclosed intro sleeps, which never return on a hidden desktop.
         suffix += ['sxe -c ".echo HDSESSION_AV; .exr -1; r; kb; q" av',
-            'bp /1 @$t19+0x1dda ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"',
-            'bp /1 @$t19+0x47d61 ".printf \\"HDSESSION_MENU_READY pid=%x surface=%p width=%d height=%d pixels=%p\\\\n\\", @$tpid, @$t19+0x11d4c0, wo(@$t19+0x11d4c0), wo(@$t19+0x11d4c2), dwo(@$t19+0x11d4c4); gc"', 'g']
+            'bp /1 @$t19+0x1dda ".echo HDSESSION_APP_REQUEST_QUIT; kb; q"']
+        if fast_forward_intro:
+            suffix += [".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps",
+                       "r @$t12 = 0", "r @$t14 = 0", soak_composition.START_ANIMS_BREAKPOINTS]
+        suffix += ['bp /1 @$t19+0x47d61 ".printf \\"HDSESSION_MENU_READY pid=%x surface=%p width=%d height=%d pixels=%p\\\\n\\", @$tpid, @$t19+0x11d4c0, wo(@$t19+0x11d4c0), wo(@$t19+0x11d4c2), dwo(@$t19+0x11d4c4); gc"', 'g']
         acquisition = []
         # The legacy 0x47BD66/0x47BDAE sites precede the native Acquire
         # calls. Observe EAX at the actual return PCs, nine bytes later.
@@ -375,7 +390,8 @@ def parse_observations(log: str, identity, metadata):
     failures = []
     if len(targets) > 1 or len(menus) > 1:
         failures.append("duplicate target/menu observation")
-    if any(token in lines for token in ("HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSION_APP_REQUEST_QUIT")):
+    if any(token in lines for token in ("HDSESSION_AV", "HDSESSION_INITIAL_REJECT", "HDSESSION_BASE_REJECT",
+                                         "HDSESSION_APP_REQUEST_QUIT")):
         failures.append("native exception, initial rejection or application quit observed")
     target = None
     if len(targets) == 1:
@@ -571,7 +587,8 @@ def execute(preflight, context, loaded, metadata, rows, *, output_root, asset_ro
             route=preflight["route"], duration=preflight["duration_sec"], soak_template=soak_template))
     else:
         _new(commands, command_script(loaded["probe"][1], context["identity"], metadata,
-            smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False)))
+            smoke_only=preflight["smoke_only"], acquire_only=preflight.get("acquire_only", False),
+            fast_forward_intro=preflight.get("fast_forward_intro", False)))
     _new(run / "candidate.cdb", loaded["probe"][1])
     launch_artifacts = {"candidate": dict(path=str(local_candidate), sha256=_sha(loaded["executable"][1])),
         "canonical_probe": dict(path=str(run / "candidate.cdb"), sha256=_sha(loaded["probe"][1])),
@@ -781,6 +798,8 @@ def main(argv=None):
     parser.add_argument("--duration", type=int, default=120)
     parser.add_argument("--smoke-only", action="store_true", help="stop after canonical initial bytes; supplies no menu/endurance pass")
     parser.add_argument("--acquire-only", action="store_true", help="observe genuine mouse/keyboard HRESULT returns; never force acquisition or input")
+    parser.add_argument("--fast-forward-intro", action="store_true",
+                        help="menu-idle only: skip the disclosed intro sleeps; never force input or menu state")
     parser.add_argument("--output-root", type=Path, default=Path("C:/ClashTests/hd-multires-hidden"))
     parser.add_argument("--asset-root", type=Path, default=Path("C:/ClashTests/hd-multires-runtime-assets-20261025"))
     parser.add_argument("--ready-timeout", type=int, default=300)
@@ -790,7 +809,7 @@ def main(argv=None):
         parser.error("--ready-timeout must be between 30 and 600 seconds")
     try:
         preflight, context, loaded, metadata, rows = plan(args.bundle, args.route, args.duration,
-            smoke_only=args.smoke_only, acquire_only=args.acquire_only)
+            smoke_only=args.smoke_only, acquire_only=args.acquire_only, fast_forward_intro=args.fast_forward_intro)
         if args.execute:
             report = execute(preflight, context, loaded, metadata, rows, output_root=args.output_root,
                              asset_root=args.asset_root, ready_timeout=args.ready_timeout)

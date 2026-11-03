@@ -97,6 +97,34 @@ class PolicyTests(unittest.TestCase):
         menu = session.command_script(prefix, {}, metadata).decode("ascii")
         self.assertNotIn("HDSESSION_FORCE", menu)
 
+    def test_menu_intro_fast_forward_is_opt_in_disclosed_and_forces_no_input_or_menu_state(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        plain = session.command_script(prefix, {}, metadata).decode("ascii")
+        fast = session.command_script(prefix, {}, metadata, fast_forward_intro=True).decode("ascii")
+        self.assertNotIn("HDSESSION_FORCED_ROUTE", plain)
+        self.assertNotIn("0044789a", plain)
+        lines = fast[len(prefix):].split("\r\n")
+        self.assertEqual(lines[2], ".if (@$t19 != 0x400000) { .echo HDSESSION_BASE_REJECT; q }")
+        self.assertIn(".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps", lines)
+        self.assertIn(session.soak_composition.START_ANIMS_BREAKPOINTS, fast)
+        # Only the disclosed intro sleeps are skipped: menu observation and
+        # acquisition-return observers are unchanged, and nothing writes input.
+        self.assertLess(fast.index("bp 0044789a"), fast.index("bp /1 @$t19+0x47d61"))
+        for observer in ("bp /1 @$t19+0x47d61", "bp /1 @$t19+0x7bd6f", "bp /1 @$t19+0x7bdb7"):
+            self.assertIn(observer, fast)
+        for forbidden in ("ed ", "eb ", "0047BD66", "0047BDAE", "00419B80", "00447780", "00448A68", "SendInput"):
+            self.assertNotIn(forbidden, fast)
+        for option in ({"smoke_only": True}, {"acquire_only": True}):
+            with self.assertRaisesRegex(ValueError, "menu idle observation"):
+                session.command_script(prefix, {}, metadata, fast_forward_intro=True, **option)
+            with self.assertRaisesRegex(ValueError, "menu idle observation"):
+                session.plan(Path("missing.json"), fast_forward_intro=True, **option)
+        with self.assertRaisesRegex(ValueError, "menu idle observation"):
+            session.plan(Path("missing.json"), route="map-idle", fast_forward_intro=True)
+        identity, marker = {"resolution": "1024x768"}, {"probe_contract": {"acceptance_marker": "EXACT_CANONICAL_PASS"}}
+        self.assertTrue(session.parse_observations("EXACT_CANONICAL_PASS\nHDSESSION_BASE_REJECT\n", identity, marker)["failures"])
+
     def test_map_ready_binds_one_entry_and_the_selected_canvas_to_the_adopted_process(self):
         identity, target = {"resolution": "1920x1080"}, {"pid": 0xabc, "base": 0x400000}
         game = ("HDSESSION_PLAYGAME pid=abc gd=0a000000 map=(72,72) scroll=(10,17) "
