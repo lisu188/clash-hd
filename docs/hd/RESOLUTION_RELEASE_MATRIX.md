@@ -108,6 +108,10 @@ retained saves:
 Map entry, saves, turn calls and any result overrides are forced and
 disclosed, so this is not a played turn decision or input.
 
+Both the turn lane and the campaign lane below request `neutral_mouse`, so a
+hidden desktop's failed mouse reads report no input rather than stale stack
+bytes. The replay requires the logged neutralized reads.
+
 `campaign_routes` replays two runs in one isolated root. A three-day
 `forced-campaign` from slot 0 saves slots 3 and 4, then a `forced-save`
 reloads slot 4 into slot 2:

@@ -43,6 +43,7 @@ class Run:
                             "gd=0a000000"] * 2,
                           f"HDCONT_SAVE_CALL slot={save} load_slot={load} gd=0a000000 player=0 scroll=(10,17) tick=100",
                           f"HDCONT_SAVE_RETURNED slot={save} eax=1 tick=101",
+                          *(["HDNEUTRAL_MOUSE_READ hresult=8007000c"] if self.spec.get("neutral_mouse") else []),
                           "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=102 gd=0a000000 scroll=(10,17)"]
         source, target = self.spec["pre_files"][0], self.spec["post_files"][0]
         state = lambda data, mtime: {"sha256": sha(data), "bytes": len(data), "mtime_ns": mtime}
@@ -53,7 +54,7 @@ class Run:
             "input_injected": False, "manual_input_proof": False, "initial_image_bytes_verified": True,
             "diagnostic_passed": True, "failures": [], "smoke_only": False, "acquire_only": False,
             "map_route_completed": True, "input_or_callback_forced": True,
-            "forced_mechanisms": dict(continuity.soak.MAP_MECHANISMS, **extras.MECHANISMS),
+            "forced_mechanisms": dict(continuity.soak.MAP_MECHANISMS, **self.spec["mechanisms"]),
             "load_slot": load, "route_extra": copy.deepcopy(self.spec), "asset_root": ASSETS,
             "producer_source_hashes": {continuity.PRODUCER: sha(PRODUCER)},
             "run_directory": str(self.directory),
@@ -234,7 +235,8 @@ class TurnRun:
                           "HDSESSION_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=0a000000",
                           "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=1000 gd=0a000000 scroll=(10,17)",
                           "HDTURN_START player=0 day=1 gd=0a000000 tick=1001 active=(1,1,1,1,0)",
-                          "HDTURN_SAVE_CALL slot=5 player=0 day=1", "HDTURN_SAVE_RETURNED slot=5 eax=1"]
+                          "HDTURN_SAVE_CALL slot=5 player=0 day=1", "HDTURN_SAVE_RETURNED slot=5 eax=1",
+                          "HDNEUTRAL_MOUSE_READ hresult=8007000c"]
         for advance, player in enumerate(players, 1):
             self.log_lines.append(f"HDTURN_NEXT_CALL advance={advance} player={players[advance - 2] if advance > 1 else 0} "
                                   f"day=1 tick={1000 + 128 * advance}")
@@ -260,7 +262,7 @@ class TurnRun:
             "input_injected": False, "manual_input_proof": False, "initial_image_bytes_verified": True,
             "diagnostic_passed": True, "failures": [], "smoke_only": False, "acquire_only": False,
             "map_route_completed": True, "input_or_callback_forced": True,
-            "forced_mechanisms": dict(continuity.soak.MAP_MECHANISMS, **extras.TURN_MECHANISMS),
+            "forced_mechanisms": dict(continuity.soak.MAP_MECHANISMS, **self.spec["mechanisms"]),
             "load_slot": 0, "route_extra": copy.deepcopy(self.spec), "asset_root": ASSETS,
             "producer_source_hashes": {continuity.PRODUCER: sha(PRODUCER)}, "run_directory": str(self.directory),
             "route_extra_files": {
@@ -372,7 +374,8 @@ class CampaignRun(TurnRun):
                           "HDSESSION_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=0a000000",
                           "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=1000 gd=0a000000 scroll=(10,17)",
                           "HDCAMP_START days=3 player=0 day=1 gd=0a000000 tick=1001 active=(1,1,1,1,0)",
-                          "HDCAMP_SAVE_CALL slot=3 player=0 day=1", "HDCAMP_SAVE_RETURNED slot=3 eax=1"]
+                          "HDCAMP_SAVE_CALL slot=3 player=0 day=1", "HDCAMP_SAVE_RETURNED slot=3 eax=1",
+                          "HDNEUTRAL_MOUSE_READ hresult=8007000c"]
         advance = 0
         for day in (1, 2, 3):
             for player in (1, 2, 3, 0):
@@ -395,6 +398,7 @@ class CampaignRun(TurnRun):
         state = lambda data, mtime: {"sha256": sha(data), "bytes": len(data), "mtime_ns": mtime}
         self.session.update(
             run_directory=str(self.directory), route_extra=copy.deepcopy(self.spec),
+            forced_mechanisms=dict(continuity.soak.MAP_MECHANISMS, **self.spec["mechanisms"]),
             route_extra_files={
                 "before": {"save/0.dat": state(SOURCE, 5), "save/3.dat": None, "save/4.dat": state(b"old4", 6)},
                 "after": {"save/0.dat": state(SOURCE, 5), "save/3.dat": state(STATE, 9), "save/4.dat": state(after, 9)},

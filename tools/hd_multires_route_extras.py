@@ -27,6 +27,13 @@ override per banner or button.
 forced-campaign: the same forced calls continue through ``days`` consecutive day
 transitions, each with its own banner and release wait, before ``after_slot`` is
 saved.
+
+neutral_mouse: on a hidden desktop every mouse GetDeviceState fails (not
+acquired), yet the game copies its 16-byte stack buffer into the mouse state
+regardless (0x47C03C-0x47C062), so stale stack bytes become motion and held
+buttons. With ``neutral_mouse: true`` a failed read's buffer is zeroed at the
+call's return (0x47C02C): no motion and no buttons, as for an idle player.
+Successful reads are untouched. The first four neutralized reads are logged.
 """
 from __future__ import annotations
 
@@ -56,6 +63,16 @@ TURN_MECHANISMS = {"turn": "cdb_forced_next_player", "save": "cdb_forced_save_ga
 # Loop iteration, day increment, banner test and exit, release wait entry, its
 # left and right tests and its return; all byte-identical in every candidate.
 TURN_SITES = ("0040B0C8", "0040AB44", "0040A943", "0040A9FA", "004609D0", "004609E0", "004609FC", "0040AA06")
+NEUTRAL_MOUSE_SITE = "0047C02C"
+NEUTRAL_MOUSE_MECHANISM = {"mouse_state": "cdb_neutral_failed_mouse_reads"}
+# Header-padding scratch 004003F8 counts logged neutral reads; free in every extra.
+NEUTRAL_MOUSE_LINES = (
+    "ed 004003f8 0",
+    r'bp 0047C02C ".if ((@eax & 0x80000000) != 0) { ed @esp+0x50 0; ed @esp+0x54 0; ed @esp+0x58 0; '
+    r'ed @esp+0x5c 0; .if (poi(004003f8) < 0n4) { ed 004003f8 (poi(004003f8)+1); '
+    r'.printf \"HDNEUTRAL_MOUSE_READ hresult=%08x\\n\", @eax } }; gc"',
+)
+NEUTRAL_MOUSE_READ = re.compile(r"HDNEUTRAL_MOUSE_READ hresult=([0-9a-fA-F]{8})")
 _PLACEHOLDER = re.compile(r"__[A-Z0-9_]+__")
 _BREAKPOINT = re.compile(r"^bp\s+(?:/\d+\s+)?([0-9A-Fa-f]{8})\s", re.M)
 SAVE_CALL = re.compile(r"HDCONT_SAVE_CALL slot=(\d+) load_slot=(\d+) gd=([0-9a-fA-F`]+) player=(\d+) "
@@ -128,6 +145,17 @@ def _prepare_campaign(request: dict, *, route: str, duration: int) -> dict:
 
 def prepare(request: Any, *, route: str, duration: int) -> dict:
     """Validate one extra request and return the spec the session records."""
+    if type(request) is dict and "neutral_mouse" in request:
+        if request["neutral_mouse"] is not True:
+            raise ValueError("neutral_mouse is either absent or exactly true.")
+        spec = _prepare({key: value for key, value in request.items() if key != "neutral_mouse"},
+                        route=route, duration=duration)
+        return dict(spec, request=dict(request), neutral_mouse=True, sites=spec["sites"] + [NEUTRAL_MOUSE_SITE],
+                    mechanisms=dict(spec["mechanisms"], **NEUTRAL_MOUSE_MECHANISM))
+    return _prepare(request, route=route, duration=duration)
+
+
+def _prepare(request: Any, *, route: str, duration: int) -> dict:
     if type(request) is dict and request.get("name") == FORCED_TURN:
         return _prepare_turn(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_CAMPAIGN:
@@ -162,7 +190,8 @@ def compose(spec: dict, template: bytes) -> str:
         if key not in text:
             raise ValueError(f"Route extra template lacks {key}.")
         text = text.replace(key, str(value))
-    lines = text.rstrip("\n").split("\n")
+    lines = text.rstrip("\n").split("\n") + (list(NEUTRAL_MOUSE_LINES) if spec.get("neutral_mouse") else [])
+    text = "\n".join(lines)
     if _PLACEHOLDER.search(text) or any(not line.strip() for line in lines):
         raise ValueError("Route extra template has an unsubstituted placeholder or a blank line.")
     if any(line.strip() in ("g", "gc", "q") for line in lines) or any("\t" in line for line in lines):
@@ -174,6 +203,17 @@ def compose(spec: dict, template: bytes) -> str:
 
 def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
     """Replay the extra's printed markers; echoed commands cannot match them."""
+    fields, failures = _observe(spec, log)
+    if spec.get("neutral_mouse"):
+        lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+        reads = [match for line in lines if (match := NEUTRAL_MOUSE_READ.fullmatch(line))]
+        fields = dict(fields, neutral_mouse_reads=len(reads))
+        if not reads or any(int(match[1], 16) < 0x80000000 for match in reads):
+            failures = failures + ["neutral_mouse requires logged neutralized failed mouse reads"]
+    return fields, failures
+
+
+def _observe(spec: dict, log: str) -> tuple[dict, list[str]]:
     if spec["name"] == FORCED_TURN:
         return _observe_turn(spec, log)
     if spec["name"] == FORCED_CAMPAIGN:

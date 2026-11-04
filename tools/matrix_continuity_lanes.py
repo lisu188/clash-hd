@@ -50,11 +50,14 @@ SCHEDULE = {
         ("save", {"name": route_extras.FORCED_SAVE, "load_slot": 0, "save_slot": 7}),
         ("reload_save", {"name": route_extras.FORCED_SAVE, "load_slot": 7, "save_slot": 8})),
     "turn_advancement": (
-        ("turn", {"name": route_extras.FORCED_TURN, "load_slot": 0, "before_slot": 5, "after_slot": 6}),),
+        # A hidden desktop's failed mouse reads would otherwise feed stale stack bytes to
+        # the banner, release wait and cursor; they report no input instead.
+        ("turn", {"name": route_extras.FORCED_TURN, "load_slot": 0, "before_slot": 5, "after_slot": 6,
+                  "neutral_mouse": True}),),
     "campaign_routes": (
         ("campaign", {"name": route_extras.FORCED_CAMPAIGN, "load_slot": 0, "before_slot": 3, "after_slot": 4,
-                      "days": 3}),
-        ("reload_end", {"name": route_extras.FORCED_SAVE, "load_slot": 4, "save_slot": 2})),
+                      "days": 3, "neutral_mouse": True}),
+        ("reload_end", {"name": route_extras.FORCED_SAVE, "load_slot": 4, "save_slot": 2, "neutral_mouse": True})),
 }
 LANE_KEYS = soak.LANE_KEYS
 # Each written slot is pinned under its own step key, in the extra's post_files order, per schedule row.

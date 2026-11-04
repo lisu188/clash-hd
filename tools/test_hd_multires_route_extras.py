@@ -300,5 +300,40 @@ class ForcedCampaignTests(unittest.TestCase):
         self.assertTrue(extras.observe(campaign_spec(), turn_log())[1])
 
 
+class NeutralMouseTests(unittest.TestCase):
+    def test_requests_without_the_key_keep_their_exact_spec(self):
+        neutral = extras.prepare(dict(TURN_REQUEST, neutral_mouse=True), route="map-idle", duration=120)
+        base = turn_spec()
+        self.assertEqual({key: value for key, value in neutral.items()
+                          if key not in ("request", "neutral_mouse", "sites", "mechanisms")},
+                         {key: value for key, value in base.items() if key not in ("request", "sites", "mechanisms")})
+        self.assertEqual(neutral["sites"], base["sites"] + ["0047C02C"])
+        self.assertEqual(neutral["mechanisms"], dict(base["mechanisms"], mouse_state="cdb_neutral_failed_mouse_reads"))
+        self.assertNotIn("neutral_mouse", base)
+        for value in (False, 1, "true"):
+            with self.assertRaisesRegex(ValueError, "exactly true"):
+                extras.prepare(dict(TURN_REQUEST, neutral_mouse=value), route="map-idle", duration=120)
+
+    def test_failed_reads_alone_are_zeroed_and_must_be_observed(self):
+        spec = extras.prepare({"name": "forced-save", "load_slot": 4, "save_slot": 2, "neutral_mouse": True},
+                              route="map-idle", duration=120)
+        text = extras.compose(spec, TEMPLATE)
+        self.assertEqual(sorted(extras.breakpoint_sites(text)), ["0040B0C1", "0047C02C"])
+        neutral = [line for line in text.split("\r\n") if line.startswith("bp 0047C02C ")][0]
+        self.assertIn(".if ((@eax & 0x80000000) != 0) { ed @esp+0x50 0; ed @esp+0x54 0; ed @esp+0x58 0; "
+                      "ed @esp+0x5c 0;", neutral)
+        self.assertNotIn("0047C02C", extras.compose(spec_without := extras.prepare(
+            {"name": "forced-save", "load_slot": 4, "save_slot": 2}, route="map-idle", duration=120), TEMPLATE))
+        log = ("HDSESSION_LOADSAVE selected_arg=4 selected_global=4 accept=1 choice=5 gd=03f30030\r\n"
+               "HDCONT_SAVE_CALL slot=2 load_slot=4 gd=03f30030 player=0 scroll=(10,17) tick=5\r\n"
+               "HDCONT_SAVE_RETURNED slot=2 eax=1 tick=6\r\n")
+        self.assertEqual(extras.observe(spec_without, log)[1], [])
+        self.assertTrue(any("neutralized" in item for item in extras.observe(spec, log)[1]))
+        fields, failures = extras.observe(spec, log + "HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n")
+        self.assertEqual((fields["neutral_mouse_reads"], failures), (1, []))
+        self.assertNotIn("neutral_mouse_reads", extras.observe(spec_without, log)[0])
+        self.assertTrue(extras.observe(spec, log + "HDNEUTRAL_MOUSE_READ hresult=00000000\r\n")[1])
+
+
 if __name__ == "__main__":
     unittest.main()

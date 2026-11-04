@@ -253,6 +253,35 @@ the day word 1 to 4 in 12 calls, each day back at player 0. Days 3 and 4 each
 needed one disclosed right-release override in the eighth iteration, and both
 saves returned 1. A forced save then reloaded the campaign's end slot. Its
 resave had the same normalized state.
+
+### Neutralized failed mouse reads
+
+On a hidden desktop every mouse `GetDeviceState` fails (`8007000C`, not
+acquired). The game still copies its 16-byte stack buffer into the mouse state
+(`0x47C03C`-`0x47C062`), so stale stack bytes become motion and held buttons:
+- phantom drag starts, which the drag-scroll skip handles;
+- banner acknowledgments and endless release waits;
+- a cursor that drifts anywhere on the HD canvas.
+
+In a farm of continuity runs this hung two reloads and ended two campaigns
+(Complete HD 2560x1440, Modal Widgets 3440x1440) with an access violation in
+the unchecked native `GetPixel` (`0x403F50`). That read used native
+coordinates (-956, -240) on a 640-wide surface.
+
+A continuity extra can request `neutral_mouse: true`. A failed read's buffer
+is then zeroed at the call's return (`0x47C02C`, byte-identical in all 36
+candidates), reporting no motion and no buttons, as for an idle player.
+Successful reads are untouched. The run discloses
+`mouse_state=cdb_neutral_failed_mouse_reads` and logs its first four
+neutralized reads; the replay requires them. The turn and campaign lanes use
+it, so each day's banner now always needs its one disclosed acknowledgment
+and the release wait returns on its first test. Requests without the key keep
+their exact spec, so the save/load round trip is unchanged.
+
+With it, a three-day Complete HD 2560x1440 campaign and its end-state reload
+both passed, with no access violation. Whether a real cursor far outside a
+centered native screen can reach the same unchecked read remains an open
+question for a targeted diagnostic.
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.
