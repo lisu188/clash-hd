@@ -71,10 +71,11 @@ Claimed checks must equal the replay. Only `hd_multires_v1` cells have this
 producer, and its disclosed forced map entry keeps these hidden evidence, not
 input or visible proof.
 
-A map-pan row, in the ladder or `long_map_pan`, may carry the disclosed
-`pan-retry` extra with `neutral_mouse`: a pan step the native arrow handler
-declines is pressed again at its next call. Such a row must record exactly
-that spec and its mechanisms. The replay checks the extra's re-arm markers
+A map-pan row, in the ladder or `long_map_pan`, may carry one disclosed pan
+extra with `neutral_mouse`: `pan-press`, which takes each press over from
+the soak so that a twice-reported or missed debugger breakpoint cannot lose
+a step, or the earlier `pan-retry`. Such a row must record exactly that
+spec and its mechanisms. The replay checks the extra's re-arm markers
 against the recorded observations and requires the loaded slot unchanged.
 A pan row without an extra is graded as before. Map-idle and menu rows must
 carry no extra.

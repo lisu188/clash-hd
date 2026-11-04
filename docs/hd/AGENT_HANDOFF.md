@@ -257,10 +257,12 @@ producer. Its forced-save round trip, forced day of turns and three-day
 campaign on Framed 1920x1080 replay as passing `save_load_roundtrip`,
 `turn_advancement` and `campaign_routes`; see
 [the launcher notes](MULTIRES_LAUNCHER.md).
-A map-pan row may carry the disclosed `pan-retry` extra with
-`neutral_mouse`: a held arrow key the native handler declines is pressed
-again at its next call, so long pans no longer lose a step. The farm runs
-`long_map_pan` and re-run pan rungs with it.
+Lost pan steps came from CDB reporting some breakpoint hits twice and
+others not at all. A map-pan row may carry the disclosed `pan-press` extra
+with `neutral_mouse`, which takes each press over from the soak, or the
+earlier `pan-retry`. The farm runs `long_map_pan` and re-run pan rungs with
+pan-press. Probe counters can repeat or skip; keep every extra idempotent
+per state.
 
 The `geometry` lane (`hidden_cdb_geometry`) is the last runtime lane that a
 hidden desktop can produce, and neither context has a verifier for it yet

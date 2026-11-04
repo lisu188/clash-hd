@@ -37,6 +37,17 @@ soak presses the same key again at the next call. The soak's rows and grading
 are unchanged; only its own step state is written. A one-call press occasionally
 lost a step and failed long pans.
 
+pan-press: on the same route, each step is taken over from the soak. CDB can
+report one breakpoint hit twice; at the soak's handler-entry breakpoint on the
+call that pressed a key, that printed the unmoved scroll and ended the step
+before the handler read the key. Right after the soak's redraw breakpoint marks
+a step due (0x406FA1), the step moves to a private state at 0x406FA2 that the
+soak ignores. Inside the handler, after the soak's entry breakpoint (0x407D26),
+the probe presses the soak's own key toward the step's target and hands the
+step back, so the soak prints the result at the next call. Declined or untaken
+steps are pressed again, as with pan-retry. Each part acts only on the one state
+it expects, so a twice-reported breakpoint repeats nothing.
+
 neutral_mouse: on a hidden desktop every mouse GetDeviceState fails (not
 acquired), yet the game copies its 16-byte stack buffer into the mouse state
 regardless (0x47C03C-0x47C062), so stale stack bytes become motion and held
@@ -58,13 +69,19 @@ FORCED_CAMPAIGN = "forced-campaign"
 FORCED_CAMPAIGN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_campaign_extra.cdb"
 PAN_RETRY = "pan-retry"
 PAN_RETRY_TEMPLATE = "probes/cdb/soak/hd_multires_pan_retry_extra.cdb"
-SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE, PAN_RETRY_TEMPLATE)
+PAN_PRESS = "pan-press"
+PAN_PRESS_TEMPLATE = "probes/cdb/soak/hd_multires_pan_press_extra.cdb"
+SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE, PAN_RETRY_TEMPLATE,
+           PAN_PRESS_TEMPLATE)
 # A pan retry rides the soak's own map-pan routes: the ladder rungs or the two-hour lane.
 PAN_RETRY_ROUTE, PAN_RETRY_DURATIONS = "map-pan", (600, 1800, 7200)
 PAN_RETRY_MECHANISMS = {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"}
 # The native arrow handler's rate-limit, input-flag and Alt branches to its common exit 0x407F3C,
 # and the join after its four arrow blocks; all byte-identical in every map candidate.
 PAN_RETRY_SITES = ("00407D4A", "00407D57", "00407D69", "00407E95")
+PAN_PRESS_MECHANISMS = {"pan_press": "cdb_extra_pressed_soak_pan_key_until_taken"}
+# The redraw just past the soak's own site, the handler just past its entry, then the retry sites.
+PAN_PRESS_SITES = ("00406FA2", "00407D26", *PAN_RETRY_SITES)
 PAN_RETRY_LIMIT, PAN_RETRY_LOGGED = 64, 32
 # Repeated day transitions, bounded to what fits the 120 s route.
 CAMPAIGN_DAYS = (2, 3)
@@ -162,13 +179,16 @@ def _prepare_campaign(request: dict, *, route: str, duration: int) -> dict:
 
 
 def _prepare_pan_retry(request: dict, *, route: str, duration: int) -> dict:
+    name = request.get("name")
     if set(request) != {"name"}:
-        raise ValueError("A pan-retry extra must be exactly {name: pan-retry}.")
+        raise ValueError(f"A {name} extra must be exactly {{name: {name}}}.")
     if route != PAN_RETRY_ROUTE or duration not in PAN_RETRY_DURATIONS:
         raise ValueError("A pan retry runs only on a 600, 1800 or 7200 s map-pan route.")
+    template, mechanisms, sites = ((PAN_PRESS_TEMPLATE, PAN_PRESS_MECHANISMS, PAN_PRESS_SITES) if name == PAN_PRESS
+                                   else (PAN_RETRY_TEMPLATE, PAN_RETRY_MECHANISMS, PAN_RETRY_SITES))
     # No saves: the route's own load slot is the one isolated file it must leave unchanged.
-    return dict(request=dict(request), name=PAN_RETRY, load_slot=SLOT_RANGE[0], template=PAN_RETRY_TEMPLATE,
-                mechanisms=dict(PAN_RETRY_MECHANISMS), sites=list(PAN_RETRY_SITES),
+    return dict(request=dict(request), name=name, load_slot=SLOT_RANGE[0], template=template,
+                mechanisms=dict(mechanisms), sites=list(sites),
                 pre_files=[f"save/{SLOT_RANGE[0]}.dat"], post_files=[])
 
 
@@ -185,7 +205,7 @@ def prepare(request: Any, *, route: str, duration: int) -> dict:
 
 
 def _prepare(request: Any, *, route: str, duration: int) -> dict:
-    if type(request) is dict and request.get("name") == PAN_RETRY:
+    if type(request) is dict and request.get("name") in (PAN_RETRY, PAN_PRESS):
         return _prepare_pan_retry(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_TURN:
         return _prepare_turn(request, route=route, duration=duration)
@@ -214,7 +234,7 @@ def compose(spec: dict, template: bytes) -> str:
         text = template.decode("ascii").replace("\r\n", "\n")
     except UnicodeDecodeError as error:
         raise ValueError("Route extra template must be ASCII.") from error
-    slots = () if spec["name"] == PAN_RETRY else (("__SAVE_SLOT__", spec["save_slot"]),) \
+    slots = () if spec["name"] in (PAN_RETRY, PAN_PRESS) else (("__SAVE_SLOT__", spec["save_slot"]),) \
         if spec["name"] == FORCED_SAVE else (
         ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]),
         *((("__DAYS__", spec["days"]),) if spec["name"] == FORCED_CAMPAIGN else ()))
@@ -246,7 +266,7 @@ def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
 
 
 def _observe(spec: dict, log: str) -> tuple[dict, list[str]]:
-    if spec["name"] == PAN_RETRY:
+    if spec["name"] in (PAN_RETRY, PAN_PRESS):
         return _observe_pan_retry(log)
     if spec["name"] == FORCED_TURN:
         return _observe_turn(spec, log)

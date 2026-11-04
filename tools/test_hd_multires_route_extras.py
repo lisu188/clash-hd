@@ -420,5 +420,66 @@ class PanRetryTests(unittest.TestCase):
         self.assertEqual(extras.observe(spec, reads + echoed)[0]["rearms"], [])
 
 
+
+PAN_PRESS_TEMPLATE = (ROOT / extras.PAN_PRESS_TEMPLATE).read_bytes()
+
+
+class PanPressTests(unittest.TestCase):
+    def test_prepare_shares_the_retry_routes_and_slot_with_its_own_sites(self):
+        for duration in (600, 1800, 7200):
+            spec = extras.prepare({"name": "pan-press"}, route="map-pan", duration=duration)
+            self.assertEqual((spec["name"], spec["load_slot"], spec["pre_files"], spec["post_files"], spec["template"]),
+                             ("pan-press", 0, ["save/0.dat"], [], extras.PAN_PRESS_TEMPLATE))
+            self.assertEqual(spec["sites"], ["00406FA2", "00407D26", "00407D4A", "00407D57", "00407D69", "00407E95"])
+            self.assertEqual(spec["mechanisms"], {"pan_press": "cdb_extra_pressed_soak_pan_key_until_taken"})
+        for route, duration in (("map-idle", 7200), ("map-pan", 120)):
+            with self.assertRaisesRegex(ValueError, "map-pan route"):
+                extras.prepare({"name": "pan-press"}, route=route, duration=duration)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            extras.prepare({"name": "pan-press", "load_slot": 0}, route="map-pan", duration=600)
+        # pan-retry keeps its exact spec.
+        self.assertEqual(extras.prepare({"name": "pan-retry"}, route="map-pan", duration=600)["sites"],
+                         ["00407D4A", "00407D57", "00407D69", "00407E95"])
+
+    def test_each_breakpoint_acts_on_only_the_one_state_it_expects(self):
+        spec = extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan", duration=7200)
+        text = extras.compose(spec, PAN_PRESS_TEMPLATE)
+        self.assertEqual(extras.breakpoint_sites(text), spec["sites"])
+        lines = {line.split()[1]: line for line in text.split("\r\n") if line.startswith("bp ")}
+        held = "(((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0)"
+        # The redraw takeover: a due soak step (5) becomes the private state 8, nothing else.
+        self.assertEqual(lines["00406FA2"],
+                         'bp 00406FA2 ".if (poi(00400040) == 5) { ed 00400040 8; ed 004003d0 (poi(004003d0)+1) }; gc"')
+        # The press: only state 8; clears the four arrows, presses toward the target, hands back state 6.
+        press = lines["00407D26"]
+        self.assertTrue(press.startswith('bp 00407D26 ".if (poi(00400040) == 8) { eb 00545294 00; eb 00545297 00; '
+                                         'eb 00545299 00; eb 0054529c 00; '), press)
+        self.assertTrue(press.endswith('; ed 00400040 6 }; gc"'), press)
+        self.assertEqual(sorted(set(__import__("re").findall(r"eb (005452\w\w) 80", press))),
+                         ["00545294", "00545297", "00545299", "0054529c"])
+        # Re-arms: only state 6 with a held key, back to the private state.
+        for site in ("00407D4A", "00407D57", "00407D69"):
+            self.assertTrue(lines[site].startswith(f'bp {site} ".if ((poi(00400040) == 6) & {held} & '), site)
+        # The join re-arms an unmoved held key and otherwise releases it after the move.
+        join = lines["00407E95"]
+        self.assertTrue(join.startswith(f'bp 00407E95 ".if ((poi(00400040) == 6) & {held}) {{ .if (('), join)
+        self.assertTrue(join.endswith('.else { eb 00545294 00; eb 00545297 00; eb 00545299 00; eb 0054529c 00 } }; gc"'),
+                        join)
+        for site in ("00407D4A", "00407D57", "00407D69", "00407E95"):
+            self.assertIn("ed 00400040 8;", lines[site])
+            self.assertNotIn("ed 00400040 5", lines[site])
+        # No breakpoint ever hands the soak its own due state, and nothing writes scroll fields.
+        self.assertNotIn("ed 00400040 5", text)
+        self.assertNotRegex(text, r"\b(?:ed|eb|ew) (?:0052|poi)|\br e[a-z]x=")
+
+    def test_markers_share_the_retry_grammar(self):
+        spec = extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan", duration=600)
+        log = ("HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n"
+               "\r\nHDPAN_REARM reason=not_taken step=91 count=1 total=1 value=8000\r\n")
+        fields, failures = extras.observe(spec, log)
+        self.assertEqual((failures, [row["reason"] for row in fields["rearms"]]), ([], ["not_taken"]))
+        self.assertTrue(extras.observe(spec, log + "HDPAN_REARM_LIMIT step=91\r\n")[1])
+
+
 if __name__ == "__main__":
     unittest.main()

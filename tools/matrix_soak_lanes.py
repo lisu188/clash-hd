@@ -13,12 +13,13 @@ debugger-forced and disclosed. It is not manual input, visible composition,
 other lanes or promotion. Evidence is bound to the exact candidate and to the
 pinned session producer; a change to either invalidates it.
 
-A map-pan row may run with the disclosed pan-retry and neutral-mouse extra
-(tools/hd_multires_route_extras.py): a step the native arrow handler
-declines is pressed again at its next call, and failed hidden mouse reads
-carry no stale motion or buttons. A map-pan row carries exactly that extra
-or none; every other row carries none. The soak rows and every rule here
-are the same either way.
+A map-pan row may run with a disclosed pan extra and neutral mouse
+(tools/hd_multires_route_extras.py): pan-retry presses a step the native
+arrow handler declines again at its next call; pan-press also takes each
+press over from the soak, so a twice-reported breakpoint cannot end a step
+unmoved. Failed hidden mouse reads carry no stale motion or buttons. A
+map-pan row carries exactly one of those requests or none; every other row
+carries none. The soak rows and every rule here are the same either way.
 """
 from __future__ import annotations
 
@@ -38,9 +39,11 @@ LANES = ("short_soak_ladder", "long_map_idle", "long_map_pan")
 SCHEDULE = {"short_soak_ladder": evidence.SHORT_STEPS,
             "long_map_idle": (("long2h", "map-idle", 7200),),
             "long_map_pan": (("long2h", "map-pan", 7200),)}
-# A one-call key press occasionally lost a step; a map-pan row may re-arm declined
-# steps and neutralize failed hidden mouse reads, both disclosed, or run without.
-PAN_EXTRA = {"name": route_extras.PAN_RETRY, "neutral_mouse": True}
+# A one-call key press occasionally lost a step; a map-pan row may carry one disclosed
+# pan extra with neutral mouse, or none. New runs use pan-press (PAN_EXTRA).
+PAN_EXTRAS = ({"name": route_extras.PAN_RETRY, "neutral_mouse": True},
+              {"name": route_extras.PAN_PRESS, "neutral_mouse": True})
+PAN_EXTRA = PAN_EXTRAS[1]
 EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 PRODUCER = "tools/hd_multires_hidden_session.py"
 SESSION_SCHEMA = "hd_multires_hidden_session_v1"
@@ -216,10 +219,13 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
                    for key in SESSION_IDENTITY_KEYS)):
         notes.append(f"{label}: session belongs to another candidate, cell, stage or catalog")
         return result
-    # A map-pan row carries exactly the disclosed pan extra or none; any other spec,
-    # or any extra on another route, then differs from the recorded one.
-    spec = (route_extras.prepare(PAN_EXTRA, route=route, duration=seconds)
-            if route == "map-pan" and session.get("route_extra") is not None else None)
+    # A map-pan row carries exactly one disclosed pan extra request or none; any other
+    # spec, or any extra on another route, then differs from the recorded one.
+    recorded = session.get("route_extra")
+    named = recorded.get("name") if type(recorded) is dict else None
+    request = next((item for item in PAN_EXTRAS if item["name"] == named), PAN_EXTRA)
+    spec = (route_extras.prepare(request, route=route, duration=seconds)
+            if route == "map-pan" and recorded is not None else None)
     retained = session.get("retained_log")
     hashes = session.get("producer_source_hashes")
     completed = (

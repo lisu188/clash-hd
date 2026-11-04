@@ -332,16 +332,6 @@ extra with `neutral_mouse`, or no extra. Map-idle and menu rows carry none.
 The soak rows and every grading rule are the same either way. The farm runs
 the two-hour pan lane and new pan rungs with it.
 
-Which path declined the farm's keys is still open:
-- `[0x545140]` is not the copied mouse state, which is based at
-  `0x545198`.
-- A 120 s hidden map-idle diagnostic with stale mouse reads never saw
-  that flag set.
-- Only the arrow handler reads or writes the last-scroll time
-  `0x5202A0`.
-
-The logged re-arm reasons will show which path it is.
-
 A forced pan on the map-idle route was rejected. The session's own map
 grading, which is pinned, refuses any scroll change without a
 `SOAK_PAN_SET` row, and a validation run failed exactly so.
@@ -364,6 +354,63 @@ Validation on 2026-11-04 (hidden desktop, 600 s map-pan):
   That diagnostic is not evidence. The template's echo text was reflowed
   afterwards so that no echoed line begins with a marker name; its
   commands are unchanged.
+
+### Lost steps come from the debugger (`pan-press`)
+
+The handler was not what lost the steps; the debugger's breakpoint reports
+were. In about 2,500 natural pan-retry steps no re-arm ever fired, yet a
+pan-retry ladder rung (Modal Widgets 3840x2160, 1800 s) lost an Up step
+with no re-arm logged:
+- `[0x545140]` is not the copied mouse state, which is based at
+  `0x545198`, and a 120 s hidden map-idle diagnostic never saw it set.
+- Only the arrow handler reads or writes the last-scroll time
+  `0x5202A0`.
+- CDB reports some breakpoint hits twice and others not at all. A
+  campaign run logged two non-adjacent breakpoints twice in a row. Hit
+  counters on two consecutive handler instructions (`0x407D21`,
+  `0x407D22`) diverged in both directions, hitting a 24-row log cap
+  within minutes in each of three runs. Consecutive breakpoints stress
+  the debugger's step-over, so that rate overstates isolated ones.
+
+When the soak's own entry breakpoint (`0x407D20`) is reported twice on the
+call that presses a key, its second run sees the key held. It prints the
+unmoved scroll and ends the step before the handler reads the key, so no
+branch ever declines. When its print call is not reported, the key stays
+held for one more call.
+
+The `pan-press` extra takes each press over from the soak:
+- Right after the soak's redraw breakpoint marks a step due (`0x406FA1`),
+  `0x406FA2` moves the step to a private state that the soak ignores.
+- At `0x407D26`, inside the handler and after the soak's entry
+  breakpoint, it clears the four arrows and presses the soak's own key
+  toward the step's target. It then hands the step back, so the soak
+  prints the result at the next call.
+- It re-arms declined or untaken steps exactly as pan-retry does, and
+  only while a key is held.
+- At the join after the arrow blocks (`0x407E95`) it releases the key once
+  the scroll has moved, so a missed print call cannot move a second cell.
+- Each breakpoint acts only on the one state it expects. A twice-reported
+  breakpoint repeats nothing, and a missed one waits for the next call.
+  Losing a step now takes two bad reports within one step.
+- It writes only the soak's step state and the arrow keys the soak itself
+  drives, and discloses `pan_press=cdb_extra_pressed_soak_pan_key_until_taken`.
+- `0x406FA2` and `0x407D26` are byte-identical in all 32 map candidates.
+
+A map-pan row may carry `{pan-press, neutral_mouse}`, `{pan-retry,
+neutral_mouse}` or no extra. Earlier pan-retry runs stay valid, and new
+farm runs use pan-press.
+
+Validation on 2026-11-04 (hidden desktop, 1800 s map-pan, `pan-press` with
+`neutral_mouse`):
+- Framed 1024x768 passed the session and the replay's step rules: 179 pan
+  events on the exact cycle, no re-arm and four neutralized mouse reads.
+- A Modal Widgets 3840x2160 diagnostic added the consecutive-instruction
+  counters. They hit their 24-row cap within the first minute, yet all 179
+  pan events stayed on the exact cycle with no re-arm and no limit. That
+  diagnostic is not evidence.
+- The same counters on two pan-retry runs (Modal Widgets 3840x2160 and
+  Framed 1024x768) also hit their caps. Both runs stayed on the cycle, as
+  expected at about one lost step in 1,700.
 
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to

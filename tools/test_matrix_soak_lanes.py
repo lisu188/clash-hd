@@ -261,15 +261,22 @@ class SoakReplayTests(unittest.TestCase):
         self.assertIn("route_completed", failed)
 
     def test_pan_rows_carry_exactly_the_disclosed_retry_extra_or_none(self):
-        self.assertEqual(soak.PAN_EXTRA, {"name": "pan-retry", "neutral_mouse": True})
-        # The one-call press alone remains a valid pan row, and so is a ladder rung with the extra.
+        self.assertEqual(soak.PAN_EXTRAS, ({"name": "pan-retry", "neutral_mouse": True},
+                                           {"name": "pan-press", "neutral_mouse": True}))
+        self.assertEqual(soak.PAN_EXTRA, soak.PAN_EXTRAS[1])
+        # The one-call press alone and the earlier pan-retry remain valid pan rows, and so is a
+        # ladder rung with the extra.
         self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=None))
+        self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=soak.PAN_EXTRAS[0]))
         self.assert_passes("short_soak_ladder", *self.lane("short_soak_ladder", pan_extra=soak.PAN_EXTRA))
         turn = {"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6}
         cases = {
-            "undisclosed retry": lambda run: run.session["forced_mechanisms"].pop("pan_retry"),
-            "retry without neutral mouse": lambda run: run.session["route_extra"].__setitem__(
-                "request", {"name": "pan-retry"}),
+            "undisclosed press": lambda run: run.session["forced_mechanisms"].pop("pan_press"),
+            "request without neutral mouse": lambda run: run.session["route_extra"].__setitem__(
+                "request", {"name": "pan-press"}),
+            "unknown pan extra": lambda run: run.session["route_extra"].__setitem__("name", "pan-hold"),
+            "other extra's mechanisms": lambda run: run.session["forced_mechanisms"].update(
+                pan_retry="cdb_soak_pan_step_rearmed_when_handler_declines"),
             "continuity extra": lambda run: run.session.__setitem__("route_extra", turn),
             "observations differ": lambda run: run.session.__setitem__(
                 "route_extra_observations", {"rearms": [], "limits": [], "neutral_mouse_reads": 1}),
