@@ -335,5 +335,90 @@ class NeutralMouseTests(unittest.TestCase):
         self.assertTrue(extras.observe(spec, log + "HDNEUTRAL_MOUSE_READ hresult=00000000\r\n")[1])
 
 
+
+PAN_RETRY_TEMPLATE = (ROOT / extras.PAN_RETRY_TEMPLATE).read_bytes()
+
+
+def pan_retry_spec(duration=7200, **request):
+    return extras.prepare({"name": "pan-retry", **request}, route="map-pan", duration=duration)
+
+
+class PanRetryTests(unittest.TestCase):
+    def test_prepare_fixes_the_soak_pan_routes_mechanism_sites_and_untouched_slot(self):
+        for duration in (600, 1800, 7200):
+            spec = pan_retry_spec(duration)
+            self.assertEqual((spec["name"], spec["load_slot"], spec["pre_files"], spec["post_files"]),
+                             ("pan-retry", 0, ["save/0.dat"], []))
+            self.assertEqual(spec["sites"], ["00407D4A", "00407D57", "00407D69", "00407E95"])
+            self.assertEqual(spec["mechanisms"], {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"})
+        for route, duration in (("map-idle", 7200), ("map-idle", 120), ("map-pan", 120), ("menu-idle", 600)):
+            with self.subTest(route=route, duration=duration), self.assertRaisesRegex(ValueError, "map-pan route"):
+                extras.prepare({"name": "pan-retry"}, route=route, duration=duration)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            pan_retry_spec(load_slot=0)
+        self.assertEqual(pan_retry_spec(neutral_mouse=True)["sites"],
+                         ["00407D4A", "00407D57", "00407D69", "00407E95", "0047C02C"])
+
+    def test_compose_rearms_only_the_soak_held_step_at_each_declining_branch(self):
+        text = extras.compose(pan_retry_spec(neutral_mouse=True), PAN_RETRY_TEMPLATE)
+        self.assertEqual(extras.breakpoint_sites(text), ["00407D4A", "00407D57", "00407D69", "00407E95", "0047C02C"])
+        branches = {line.split()[1]: line for line in text.split("\r\n") if line.startswith("bp 00407")}
+        # At the join the soak's key is still held and the scroll is exactly the previous step's position.
+        unmoved = ("(poi(poi(005202e4)+0n140008) == ((poi(00400058) + (((((poi(00400050)+3) & 3) == 1) | "
+                   "(((poi(00400050)+3) & 3) == 2)) * poi(00400068))) & 0xffffffff)) & "
+                   "(poi(poi(005202e4)+0n140012) == ((poi(0040005c) + (((((poi(00400050)+3) & 3) == 2) | "
+                   "(((poi(00400050)+3) & 3) == 3)) * poi(0040006c))) & 0xffffffff))")
+        for site, condition in (("00407D4A", "(@eax <= @edx)"), ("00407D57", "(@eax != 0)"),
+                                ("00407D69", "(@eax != 0)"), ("00407E95", unmoved)):
+            line = branches[site]
+            # Only while the soak holds its key, and only when the native branch is about to decline it.
+            self.assertTrue(line.startswith(f'bp {site} ".if ((poi(00400040) == 6) & {condition}) {{'), site)
+            # The soak's own step state and this extra's header-padding scratch are the only writes.
+            self.assertEqual(set(re.findall(r"\b(?:ed|eb|ew) (\S+)", line)),
+                             {"004003c0", "004003c4", "004003c8", "004003cc", "00400040"}, site)
+            self.assertIn("ed 00400040 5;", line)
+            self.assertIn("(poi(004003c8) < 0n64)", line)
+            self.assertIn("(poi(004003cc) < 0n32)", line)
+            self.assertTrue(line.endswith('}; gc"'), site)
+        # No scroll field, keyboard state, register or native variable is written by the extra.
+        self.assertNotRegex(text, r"\b(?:ed|eb|ew) (?:0054|0052|poi)|\br e[a-z]x=|005451cc")
+
+    def test_no_template_echoes_a_line_that_begins_with_a_marker_name(self):
+        # CDB prints each .echo text as its own log line; one that began with a soak or extra
+        # marker name could read as a malformed row or a marker.
+        token = re.compile(r"[A-Z][A-Z0-9]*_[A-Z0-9_]+(?:\s|$)")
+        for template in extras.SOURCES:
+            with self.subTest(template=template):
+                lines = (ROOT / template).read_text(encoding="ascii").replace("\r\n", "\n").split("\n")
+                echoed = [line[len(".echo "):] for line in lines if line.startswith(".echo ")]
+                self.assertTrue(echoed)
+                self.assertEqual([line for line in echoed if token.match(line)], [])
+
+    def test_markers_bind_bounded_rearms_and_fail_at_the_limit(self):
+        spec = pan_retry_spec(neutral_mouse=True)
+        reads = "HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n"
+        self.assertEqual(extras.observe(spec, reads), ({"rearms": [], "limits": [], "neutral_mouse_reads": 1}, []))
+        rows = ("\r\nHDPAN_REARM reason=rate_limit step=41 count=1 total=1 value=3\r\n"
+                "\r\nHDPAN_REARM reason=input_flag step=41 count=2 total=2 value=1\r\n"
+                "\r\nHDPAN_REARM reason=alt_held step=90 count=1 total=3 value=80\r\n"
+                "\r\nHDPAN_REARM reason=not_taken step=91 count=1 total=4 value=8000\r\n")
+        fields, failures = extras.observe(spec, reads + rows)
+        self.assertEqual(failures, [])
+        self.assertEqual([(row["reason"], row["step"], row["count"], row["total"], row["value"])
+                          for row in fields["rearms"]],
+                         [("rate_limit", 41, 1, 1, 3), ("input_flag", 41, 2, 2, 1), ("alt_held", 90, 1, 3, 0x80),
+                          ("not_taken", 91, 1, 4, 0x8000)])
+        many = "".join(f"HDPAN_REARM reason=rate_limit step={n} count=1 total={n + 1} value=1\r\n" for n in range(33))
+        for text, message in ((rows + "HDPAN_REARM_LIMIT step=41\r\n", "exhausted"),
+                              (rows.replace("total=2", "total=5"), "running log"),
+                              (rows.replace("count=1 total=1", "count=65 total=1"), "running log"),
+                              (many, "running log")):
+            with self.subTest(message=message):
+                self.assertTrue(any(message in item for item in extras.observe(spec, reads + text)[1]))
+        # Echoed commands are not markers.
+        echoed = '0:000> .printf "HDPAN_REARM reason=rate_limit step=1 count=1 total=1 value=1"\r\n'
+        self.assertEqual(extras.observe(spec, reads + echoed)[0]["rearms"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -28,6 +28,15 @@ forced-campaign: the same forced calls continue through ``days`` consecutive day
 transitions, each with its own banner and release wait, before ``after_slot`` is
 saved.
 
+pan-retry: on the soak's own map-pan route, whose extra holds one arrow key for
+exactly one native handler call per step, a step the handler declines at one of
+its three skip branches (rate limit 0x407D4A, input flag 0x407D57, held Alt
+0x407D69), or does not take by the join after its four arrow blocks (0x407E95,
+scroll still at the previous step), is returned to the soak's due state, so the
+soak presses the same key again at the next call. The soak's rows and grading
+are unchanged; only its own step state is written. A one-call press occasionally
+lost a step and failed long pans.
+
 neutral_mouse: on a hidden desktop every mouse GetDeviceState fails (not
 acquired), yet the game copies its 16-byte stack buffer into the mouse state
 regardless (0x47C03C-0x47C062), so stale stack bytes become motion and held
@@ -47,7 +56,16 @@ FORCED_TURN = "forced-turn"
 FORCED_TURN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_turn_extra.cdb"
 FORCED_CAMPAIGN = "forced-campaign"
 FORCED_CAMPAIGN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_campaign_extra.cdb"
-SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE)
+PAN_RETRY = "pan-retry"
+PAN_RETRY_TEMPLATE = "probes/cdb/soak/hd_multires_pan_retry_extra.cdb"
+SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE, PAN_RETRY_TEMPLATE)
+# A pan retry rides the soak's own map-pan routes: the ladder rungs or the two-hour lane.
+PAN_RETRY_ROUTE, PAN_RETRY_DURATIONS = "map-pan", (600, 1800, 7200)
+PAN_RETRY_MECHANISMS = {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"}
+# The native arrow handler's rate-limit, input-flag and Alt branches to its common exit 0x407F3C,
+# and the join after its four arrow blocks; all byte-identical in every map candidate.
+PAN_RETRY_SITES = ("00407D4A", "00407D57", "00407D69", "00407E95")
+PAN_RETRY_LIMIT, PAN_RETRY_LOGGED = 64, 32
 # Repeated day transitions, bounded to what fits the 120 s route.
 CAMPAIGN_DAYS = (2, 3)
 MAX_TEMPLATE_BYTES = 64 * 1024
@@ -143,6 +161,17 @@ def _prepare_campaign(request: dict, *, route: str, duration: int) -> dict:
                 template=FORCED_CAMPAIGN_TEMPLATE)
 
 
+def _prepare_pan_retry(request: dict, *, route: str, duration: int) -> dict:
+    if set(request) != {"name"}:
+        raise ValueError("A pan-retry extra must be exactly {name: pan-retry}.")
+    if route != PAN_RETRY_ROUTE or duration not in PAN_RETRY_DURATIONS:
+        raise ValueError("A pan retry runs only on a 600, 1800 or 7200 s map-pan route.")
+    # No saves: the route's own load slot is the one isolated file it must leave unchanged.
+    return dict(request=dict(request), name=PAN_RETRY, load_slot=SLOT_RANGE[0], template=PAN_RETRY_TEMPLATE,
+                mechanisms=dict(PAN_RETRY_MECHANISMS), sites=list(PAN_RETRY_SITES),
+                pre_files=[f"save/{SLOT_RANGE[0]}.dat"], post_files=[])
+
+
 def prepare(request: Any, *, route: str, duration: int) -> dict:
     """Validate one extra request and return the spec the session records."""
     if type(request) is dict and "neutral_mouse" in request:
@@ -156,6 +185,8 @@ def prepare(request: Any, *, route: str, duration: int) -> dict:
 
 
 def _prepare(request: Any, *, route: str, duration: int) -> dict:
+    if type(request) is dict and request.get("name") == PAN_RETRY:
+        return _prepare_pan_retry(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_TURN:
         return _prepare_turn(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_CAMPAIGN:
@@ -183,7 +214,8 @@ def compose(spec: dict, template: bytes) -> str:
         text = template.decode("ascii").replace("\r\n", "\n")
     except UnicodeDecodeError as error:
         raise ValueError("Route extra template must be ASCII.") from error
-    slots = (("__SAVE_SLOT__", spec["save_slot"]),) if spec["name"] == FORCED_SAVE else (
+    slots = () if spec["name"] == PAN_RETRY else (("__SAVE_SLOT__", spec["save_slot"]),) \
+        if spec["name"] == FORCED_SAVE else (
         ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]),
         *((("__DAYS__", spec["days"]),) if spec["name"] == FORCED_CAMPAIGN else ()))
     for key, value in (("__LOAD_SLOT__", spec["load_slot"]), *slots):
@@ -214,6 +246,8 @@ def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
 
 
 def _observe(spec: dict, log: str) -> tuple[dict, list[str]]:
+    if spec["name"] == PAN_RETRY:
+        return _observe_pan_retry(log)
     if spec["name"] == FORCED_TURN:
         return _observe_turn(spec, log)
     if spec["name"] == FORCED_CAMPAIGN:
@@ -379,3 +413,23 @@ def _observe_campaign(spec: dict, log: str) -> tuple[dict, list[str]]:
     if fields["release_returns"] != fields["release_waits"]:
         failures.append("every release wait must return to the day banner caller")
     return fields, failures
+
+
+REARM = re.compile(r"HDPAN_REARM reason=(rate_limit|input_flag|alt_held|not_taken) step=(\d+) count=(\d+) "
+                   r"total=(\d+) "
+                   r"value=([0-9a-fA-F]+)")
+REARM_LIMIT = re.compile(r"HDPAN_REARM_LIMIT step=(\d+)")
+
+
+def _observe_pan_retry(log: str) -> tuple[dict, list[str]]:
+    """Every logged re-arm and exhausted step; the soak's own rows are graded by the soak replay."""
+    lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+    rearms = [dict(reason=match[1], step=int(match[2]), count=int(match[3]), total=int(match[4]),
+                   value=int(match[5], 16), line_number=index + 1)
+              for index, line in enumerate(lines) if (match := REARM.fullmatch(line))]
+    limits = [int(match[1]) for line in lines if (match := REARM_LIMIT.fullmatch(line))]
+    failures = ["a forced pan step exhausted its re-arm bound"] if limits else []
+    if (len(rearms) > PAN_RETRY_LOGGED or [row["total"] for row in rearms] != list(range(1, len(rearms) + 1))
+            or any(not 1 <= row["count"] <= PAN_RETRY_LIMIT for row in rearms)):
+        failures.append("re-arm rows are not the probe's bounded running log")
+    return dict(rearms=rearms, limits=limits), failures

@@ -12,6 +12,13 @@ A pass is hidden_cdb_host evidence: map entry, pans and intro sleeps are
 debugger-forced and disclosed. It is not manual input, visible composition,
 other lanes or promotion. Evidence is bound to the exact candidate and to the
 pinned session producer; a change to either invalidates it.
+
+A map-pan row may run with the disclosed pan-retry and neutral-mouse extra
+(tools/hd_multires_route_extras.py): a step the native arrow handler
+declines is pressed again at its next call, and failed hidden mouse reads
+carry no stale motion or buttons. A map-pan row carries exactly that extra
+or none; every other row carries none. The soak rows and every rule here
+are the same either way.
 """
 from __future__ import annotations
 
@@ -22,6 +29,7 @@ import re
 from typing import Any, Callable
 
 import complete_hd_evidence as evidence
+import hd_multires_route_extras as route_extras
 import hd_soak_report as soak_report
 import hidden_soak_log_observations as soak_log
 
@@ -30,6 +38,9 @@ LANES = ("short_soak_ladder", "long_map_idle", "long_map_pan")
 SCHEDULE = {"short_soak_ladder": evidence.SHORT_STEPS,
             "long_map_idle": (("long2h", "map-idle", 7200),),
             "long_map_pan": (("long2h", "map-pan", 7200),)}
+# A one-call key press occasionally lost a step; a map-pan row may re-arm declined
+# steps and neutralize failed hidden mouse reads, both disclosed, or run without.
+PAN_EXTRA = {"name": route_extras.PAN_RETRY, "neutral_mouse": True}
 EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 PRODUCER = "tools/hd_multires_hidden_session.py"
 SESSION_SCHEMA = "hd_multires_hidden_session_v1"
@@ -158,6 +169,19 @@ def pan_cycle_failures(rows: dict, route: str) -> list[str]:
     return failures
 
 
+def _extra_files(files: Any, spec: dict) -> bool:
+    """The extra wrote nothing and its one named load slot is unchanged across the run."""
+    names = {*spec["pre_files"], *spec["post_files"]}
+    if type(files) is not dict or set(files) != {"before", "after", "retained"} or spec["post_files"]:
+        return False
+    before, after = files["before"], files["after"]
+    return (type(before) is dict and type(after) is dict and set(before) == set(after) == names
+            and files["retained"] == {} and all(type(before[name]) is dict and _int(before[name].get("bytes"))
+                                                 and type(before[name].get("sha256")) is str
+                                                 and evidence._same_raw_json(before[name], after[name])
+                                                 for name in names))
+
+
 def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, producer_sha: str,
           marker: str, repo_root: Path) -> dict:
     tier, route, seconds = expected
@@ -192,6 +216,10 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
                    for key in SESSION_IDENTITY_KEYS)):
         notes.append(f"{label}: session belongs to another candidate, cell, stage or catalog")
         return result
+    # A map-pan row carries exactly the disclosed pan extra or none; any other spec,
+    # or any extra on another route, then differs from the recorded one.
+    spec = (route_extras.prepare(PAN_EXTRA, route=route, duration=seconds)
+            if route == "map-pan" and session.get("route_extra") is not None else None)
     retained = session.get("retained_log")
     hashes = session.get("producer_source_hashes")
     completed = (
@@ -203,8 +231,8 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
         and session.get("initial_image_bytes_verified") is True
         and session.get("diagnostic_passed") is True and session.get("failures") == []
         and session.get("smoke_only") is False and session.get("acquire_only") is False
-        # A continuity extra forces a native call, so its runs are never soak rows.
-        and session.get("route_extra") is None
+        # A continuity extra's forced calls are never soak rows.
+        and evidence._same_raw_json(session.get("route_extra"), spec)
         and evidence._same_raw_json(retained, {"path": "cdb.log", "sha256": _sha(log_raw), "bytes": len(log_raw)})
         and type(hashes) is dict and hashes.get(PRODUCER) == producer_sha)
     if not completed:
@@ -213,6 +241,13 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
     if FAILURE_TOKENS.intersection(lines) or lines.count(marker) != 1:
         notes.append(f"{label}: log records a runtime failure or lacks the single canonical image marker")
         completed = False
+    if spec is not None:
+        observed, extra_failures = route_extras.observe(spec, log_raw.decode("latin-1"))
+        if extra_failures or not evidence._same_raw_json(session.get("route_extra_observations"), observed) \
+                or not _extra_files(session.get("route_extra_files"), spec):
+            notes.append(f"{label}: replayed {spec['name']} markers fail, differ from the recorded observations "
+                         "or leave the loaded slot changed")
+            completed = False
     width, height = (int(value) for value in identity["resolution"].split("x"))
     if route == "menu-idle":
         completed = completed and (
@@ -223,7 +258,8 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
             and sum(bool(MENU_READY.fullmatch(line)) for line in lines) == 1)
         sizes, pan_events, pan_ok = {(640, 480), (width, height)}, 0, False
     else:
-        mechanisms = dict(MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {}))
+        mechanisms = dict(MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {}),
+                          **(spec["mechanisms"] if spec else {}))
         rows = soak_log.parse_soak_log(log_raw)
         # The parser's failures, its explicit failure flags and the route's global order.
         order = runtime_flag_failures(rows) + soak_log._global_order_failures(rows)

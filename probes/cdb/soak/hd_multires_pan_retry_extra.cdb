@@ -1,0 +1,30 @@
+.echo === HD successor soak extra: re-arm a forced pan step the native arrow handler declined ===
+.echo Harness-only hidden-desktop probe for the approved_hidden_cdb_host_soak class on the map-pan
+.echo route, which loads slot __LOAD_SLOT__. The soak extra holds one arrow key for exactly one call of
+.echo the native handler 00407D20 - its state 6 - and prints its pan row with the resulting scroll at
+.echo the next call. The handler declines any held key at three native checks that branch to its common
+.echo exit 00407F3C: the scroll rate limit at 00407D4A (jbe while now is not after the last scroll time
+.echo plus 16 less the speed), the input flag 00545140 at 00407D57 (jne) and a held Alt key at 00407D69
+.echo (jne). Every handler call that is not skipped reaches 00407E95 after its four arrow blocks. When one
+.echo of the three branches is about to decline the soak's held key, or the soak still holds its key at
+.echo 00407E95 while the scroll is exactly the previous step's position, this probe returns the soak step
+.echo to its due state 5, so the soak extra presses the same key again at the next handler call. Native
+.echo code still applies every check, clamp, repaint and post-scroll flag. The probe writes only the soak
+.echo extra's step state 00400040 - never the scroll fields, the keyboard state or native variables. While
+.echo a step is due or held the soak counts no redraws, so no heartbeat can separate a scroll move from its
+.echo pan row. A step is re-armed at most 64 times, then the probe prints its limit row and the soak prints
+.echo its unmoved scroll, so grading fails closed. The first 32 re-arms each print one re-arm row with the
+.echo soak step, the count for that step, the running total and a value - the declining value at a branch,
+.echo or at 00407E95 the held up, left, right and down key bytes, so a key cleared before the handler read
+.echo it shows as 0. Disclosed as pan_retry=cdb_soak_pan_step_rearmed_when_handler_declines - never user
+.echo input. No echoed line begins with a marker name.
+.echo Scratch in PE header padding free in every candidate: 004003C0 total re-arms, 004003C4 soak step
+.echo of the last re-arm, 004003C8 re-arms of that step, 004003CC logged rows.
+ed 004003c0 0
+ed 004003c4 0xffffffff
+ed 004003c8 0
+ed 004003cc 0
+bp 00407D4A ".if ((poi(00400040) == 6) & (@eax <= @edx)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 5; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=rate_limit step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), (@edx-@eax) } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407D57 ".if ((poi(00400040) == 6) & (@eax != 0)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 5; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=input_flag step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), @eax } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407D69 ".if ((poi(00400040) == 6) & (@eax != 0)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 5; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=alt_held step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), @eax } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407E95 ".if ((poi(00400040) == 6) & (poi(poi(005202e4)+0n140008) == ((poi(00400058) + (((((poi(00400050)+3) & 3) == 1) | (((poi(00400050)+3) & 3) == 2)) * poi(00400068))) & 0xffffffff)) & (poi(poi(005202e4)+0n140012) == ((poi(0040005c) + (((((poi(00400050)+3) & 3) == 2) | (((poi(00400050)+3) & 3) == 3)) * poi(0040006c))) & 0xffffffff))) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 5; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=not_taken step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), (by(00545294) | (by(00545297) << 8) | (by(00545299) << 0n16) | (by(0054529c) << 0n24)) } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"

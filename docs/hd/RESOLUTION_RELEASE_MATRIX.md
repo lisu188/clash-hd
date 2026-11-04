@@ -71,6 +71,14 @@ Claimed checks must equal the replay. Only `hd_multires_v1` cells have this
 producer, and its disclosed forced map entry keeps these hidden evidence, not
 input or visible proof.
 
+A map-pan row, in the ladder or `long_map_pan`, may carry the disclosed
+`pan-retry` extra with `neutral_mouse`: a pan step the native arrow handler
+declines is pressed again at its next call. Such a row must record exactly
+that spec and its mechanisms. The replay checks the extra's re-arm markers
+against the recorded observations and requires the loaded slot unchanged.
+A pan row without an extra is graded as before. Map-idle and menu rows must
+carry no extra.
+
 Framed 1920x1080 is the first cell with a passing soak lane in this context.
 Its replayed `short_soak_ladder` and `resolution_coverage` pass; the other
 fourteen lanes fail for lack of evidence, so the cell fails. See

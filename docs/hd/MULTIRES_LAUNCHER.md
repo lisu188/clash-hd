@@ -282,6 +282,89 @@ With it, a three-day Complete HD 2560x1440 campaign and its end-state reload
 both passed, with no access violation. Whether a real cursor far outside a
 centered native screen can reach the same unchecked read remains an open
 question for a targeted diagnostic.
+
+### Re-armed pan steps (`pan-retry`)
+
+The soak extra holds one arrow key for exactly one call of the native
+handler (`0x407D20`) and logs the resulting scroll at the next call. By
+2026-11-04, six of the 19 completed 1800 s pan rungs in the hidden farm
+had failed the strict cycle regrade, with no global order failure:
+- In five, the handler declined a held key, so one step never moved
+  and the following steps drifted off the cycle.
+- In one, an audio-stack debug string without a newline (`AUDIOSES`
+  `ReturnHr`, `88890004`) shared the log line of one `SOAK_PAN_SET` row,
+  so the row was lost. This occurred in 1 of 140 retained logs.
+
+A static CDB disassembly of a candidate shows three branches to the
+handler's common exit (`0x407F3C`) that decline a held key:
+- the scroll rate limit (`jbe` at `0x407D4A`, while now is not after the
+  last scroll time plus 16 less the speed);
+- the input flag `0x545140` (`jne` at `0x407D57`);
+- a held Alt key (`jne` at `0x407D69`).
+
+Every call that is not skipped then reaches `0x407E95`, after the four
+arrow blocks. The key test itself (`0x461570`) only reads bit 7 of the
+keyboard byte. These four sites are byte-identical in all 32 map
+candidates; only the clamp constants differ by resolution.
+
+The `pan-retry` extra runs on the soak's own map-pan route (600, 1800 or
+7200 s). It returns the soak step to its due state, and the soak presses
+the same key again at the next call, in either case:
+- one of the three branches is about to decline the soak's held key;
+- the key is still held at `0x407E95` and the scroll is exactly the
+  previous step's position.
+
+The extra's own rules:
+- It writes only the soak extra's step state, never the scroll fields, the
+  keyboard state or a native variable.
+- Native code still applies every check, clamp and repaint.
+- The soak counts no redraws while a step is due or held, so no heartbeat
+  can separate a scroll move from its row.
+- A step is re-armed at most 64 times, then the probe prints
+  `HDPAN_REARM_LIMIT` and fails closed. The first 32 re-arms are logged.
+- At `0x407E95` a row's value packs the four held arrow bytes, so a key
+  cleared before the handler read it shows as 0.
+- The extra's own rows begin on a fresh line.
+
+The run discloses `pan_retry=cdb_soak_pan_step_rearmed_when_handler_declines`.
+Any map-pan row, a ladder rung or the two-hour lane, may carry exactly this
+extra with `neutral_mouse`, or no extra. Map-idle and menu rows carry none.
+The soak rows and every grading rule are the same either way. The farm runs
+the two-hour pan lane and new pan rungs with it.
+
+Which path declined the farm's keys is still open:
+- `[0x545140]` is not the copied mouse state, which is based at
+  `0x545198`.
+- A 120 s hidden map-idle diagnostic with stale mouse reads never saw
+  that flag set.
+- Only the arrow handler reads or writes the last-scroll time
+  `0x5202A0`.
+
+The logged re-arm reasons will show which path it is.
+
+A forced pan on the map-idle route was rejected. The session's own map
+grading, which is pinned, refuses any scroll change without a
+`SOAK_PAN_SET` row, and a validation run failed exactly so.
+
+Validation on 2026-11-04 (hidden desktop, 600 s map-pan):
+- Modal Widgets 3840x2160 (branch sites only) and Framed 1024x768 (all four
+  sites) passed the session and the replay's step rules. Each logged 59 pan
+  events on the exact cycle with neutralized mouse reads, and neither
+  needed a re-arm.
+- A Complete HD 1366x768 diagnostic forced every path; the native flag
+  and the scroll fields were never written:
+  - At step 5, `eax` was set to 1 at the input-flag test (`0x407D55`), so
+    the branch declined the key three times.
+  - At steps 10 and 15, the held arrow bytes were cleared at the handler
+    entry three times, and the join logged `not_taken` with value 0.
+  - Each of those steps was then taken on the cycle with its original
+    due tick.
+  - Step 50 was cleared 70 times, logged `HDPAN_REARM_LIMIT`, and failed
+    the session, the extra's markers and the cycle regrade.
+  That diagnostic is not evidence. The template's echo text was reflowed
+  afterwards so that no echoed line begins with a marker name; its
+  commands are unchanged.
+
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.
