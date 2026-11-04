@@ -51,6 +51,7 @@ jobs:
           python -B tools/test_hd_multires_qualification.py -v
           python -B tools/test_hd_multires_matrix.py -v
           python -B tools/test_hd_multires_hidden_session.py
+          python -B tools/test_hd_multires_route_extras.py
           python -B tools/test_hd_multires_visible_session.py
       - name: State the evidence boundary
         shell: bash

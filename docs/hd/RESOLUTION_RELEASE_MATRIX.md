@@ -39,18 +39,96 @@ identity additionally binds the profile, launcher features and catalog hash,
 and canonical reconstructed source-closure hash. The original legacy index,
 identity and 1920x1080 replay contract remain unchanged.
 
-Only `resolution_coverage` currently has source-artifact replay for this new
-context. It checks the actual selected profile/recipe, typed feature values,
-advertisement and protected Classic/800x600 policy; source-authenticated but
-unregistered successors cannot satisfy launcher coverage. A candidate's preset
-appearing in the catalog does not register its different recipe. Classic wide
-menus use their actual resolved recipe and retain minimap disabled.
+`resolution_coverage` has source-artifact replay for this new context. It checks
+the actual selected profile/recipe, typed feature values, advertisement and
+protected Classic/800x600 policy; source-authenticated but unregistered
+successors cannot satisfy launcher coverage. A candidate's preset appearing in
+the catalog does not register its different recipe. Classic wide menus use
+their actual resolved recipe and retain minimap disabled.
 
-All fifteen runtime lanes in the new context remain unsupported, including
+The three hidden-host soak lanes also have replay
+(`tools/matrix_soak_lanes.py`): `short_soak_ladder`, `long_map_idle` and
+`long_map_pan`. Their lane report pins the repository's hidden session producer
+and, for each fixed schedule row, one retained `hd_multires_hidden_session`
+report and its CDB log, all outside the repository. The replay:
+- rereads them and binds each run to the freshly authenticated cell;
+- requires the producer-recorded log hash;
+- reparses the soak rows through the shared grammar and rejects its explicit
+  failure observations (`AV_SURFDUMP`, `SURFDUMP_INVALID`, a structured
+  application quit, `SOAK_PAN_UNSAFE`);
+- regrades the pan plan and every pan event against its exact four-phase
+  cycle with the legacy grader's rules (`tools/hd_soak_report.py`), so a map
+  that stopped moving fails both completion and frame progression;
+- rehashes every frame and requires a rendered screen. Every one of 331
+  real frames used at least 188 palette indices and had at least 3.57% of
+  pixels off its dominant index. The coarse floors of 32 indices and 1%
+  reject blank surfaces; they are not visual correctness.
+- recomputes liveness, render, growth (legacy limits of 64 MiB working
+  set, 64 MiB private bytes and 128 handles), clean-stop, ladder-order and
+  pan-progression checks.
+
+Claimed checks must equal the replay. Only `hd_multires_v1` cells have this
+producer, and its disclosed forced map entry keeps these hidden evidence, not
+input or visible proof.
+
+Framed 1920x1080 is the first cell with a passing soak lane in this context.
+Its replayed `short_soak_ladder` and `resolution_coverage` pass; the other
+fourteen lanes fail for lack of evidence, so the cell fails. See
+[the ladder receipt](../../reports/hd-multires-soak-ladder-framed-1920x1080-20261103.json).
+That run used the session producer before its continuity extension, and
+the replay pins the producer's bytes, so every soak lane needs collecting
+again with the current producer.
+
+`save_load_roundtrip` has replay too (`tools/matrix_continuity_lanes.py`).
+Its lane report pins two retained `forced-save` runs in one isolated asset
+root: slot 0 saved into slot 7, then slot 7 reloaded and saved into slot 8.
+Each run's session report, CDB log and retained save are pinned. The replay:
+- binds both runs to the fresh cell and the pinned producer;
+- replays each run's load, call and return markers;
+- requires the loaded slot unchanged and the saved slot rewritten;
+- requires the reload to read exactly the first save's bytes;
+- requires the resave's state, with only the code-derived process-pointer
+  fields zeroed, to equal the first save's.
+
+The isolated root must lie under `C:/ClashTests`, and live saves must stay
+unchanged. Its evidence class is `approved_hidden_cdb_continuity`: map entry
+and both saves are debugger-forced and disclosed, so it is not a played
+turn, manual input or a cell pass.
+
+`turn_advancement` replays one `forced-turn` run, pinning its log and both
+retained saves:
+- `player_cycle_completed`: the numbered returns visit every active player
+  after 0 in order, then player 0.
+- `day_advanced`: exactly one native day increment, on the last call; the day
+  word is one higher, and the two saves' normalized states differ.
+- `call_return_observed`: every forced call and every release wait returns.
+- `post_day_map_health`: the route end follows the completed turn and the
+  final non-flat frame is later than the day's return.
+
+Map entry, saves, turn calls and any result overrides are forced and
+disclosed, so this is not a played turn decision or input.
+
+Both the turn lane and the campaign lane below request `neutral_mouse`, so a
+hidden desktop's failed mouse reads report no input rather than stale stack
+bytes. The replay requires the logged neutralized reads.
+
+`campaign_routes` replays two runs in one isolated root. A three-day
+`forced-campaign` from slot 0 saves slots 3 and 4, then a `forced-save`
+reloads slot 4 into slot 2:
+- `repeated_screen_transitions`: each of the three days returns to player 0
+  through its own banner and release wait.
+- `route_completed`: both runs complete, in order.
+- `state_consistent`: the day word advances by three, the before and end
+  states differ, and the reload reads exactly the end save and resaves its
+  normalized state.
+- `post_return_map_health`: the route end and a non-flat frame follow the
+  last day's return.
+
+The other nine runtime lanes in the new context remain unsupported, including
 `panel_command`: its legacy adapter is not authority for a different matrix
 identity. This count is separate from the legacy evaluator's fourteen missing
 verifiers. Expanded-battle and promotion acceptance also remain false. Neither
-metadata replay nor the registered synthetic context suite establishes a cell
+metadata replay nor the registered synthetic context suites establish a cell
 pass, native execution, input, endurance or a full release.
 
 Matrix JSON envelopes and object references are limited to 2 MiB and 64
@@ -112,6 +190,20 @@ Completing the missing lanes alone cannot make the matrix pass. Versioned
 profile/recipe replay and an explicit promotion decision bound to each accepted
 candidate are also required, while preserving the frozen Classic fallback and
 its default selection.
+
+### Local 36-cell index checkpoint (2026-11-03)
+
+A local index under `C:\ClashTests` references all 36 launcher-selected
+candidates. Each cell has a `matrix_cell_release_manifest_v1` that lists the
+sixteen fixed lanes. Evaluated at commit `df479c12`:
+- every candidate rebuilt byte for byte and authenticated;
+- every cell's `resolution_coverage` lane passed its source-artifact replay.
+
+The other fifteen lanes per cell are explicit failing no-evidence reports, so
+the matrix still fails; installed expanded battle and promotion also remain
+open. No game, debugger, input or capture ran. The compact receipt is
+[`reports/resolution-release-matrix-index-20261103.json`](../../reports/resolution-release-matrix-index-20261103.json);
+the candidates and lane files stay local.
 
 ## Subsequent source preparation
 

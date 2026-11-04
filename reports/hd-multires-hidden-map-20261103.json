@@ -1,0 +1,2238 @@
+{
+  "schema": "hd_multires_hidden_map_routes_v1",
+  "generated_at": "2026-11-03T14:23:57.248514+00:00",
+  "source_commit": "cdc101fca6cdf24b502ca99a0caa8ac9a4ce4fa5",
+  "producer": "tools/hd_multires_hidden_session.py",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_unchanged": true,
+  "environment": "hidden_cdb_host",
+  "input_responsiveness": "not_applicable_hidden",
+  "capture_path": "memory-only DirectDraw proxy software surface (indexed8); HUD layers may be omitted",
+  "coverage_method": "final frame through the session's own proxy palette; fraction of pixels with luminance above 24 in 8-pixel edge strips and the 200x70 corner just inside the bottom-right frame",
+  "producer_matches_source_commit": true,
+  "runs": [
+    {
+      "session": "session-20261103-105633-6afcaa07",
+      "cell_id": "classic/1024x768",
+      "candidate_sha256": "a3615a011c994dd0a4c8faa04ee3c522ec8ab7039feb46222be666b51c3cc101",
+      "probe_sha256": "83ae6ae629a1f96d34da97409b35c1165daced5a48efe4f9e2b41b34f8797b93",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1024,
+        "height": 768,
+        "bytes": 786432
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3118,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.766,
+      "telemetry_samples": 119,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "787d3b68ff87b650e8f73bdbc6fcdd576237f8ad5c2058b17a464f57180ce5a1",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 60.2,
+          "sha256": "066298f86e7c1703e20e1f4b121091672d0bb9e31c4c63962c6ef799b35cb80f",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "98ec16cf644065a3ce1109091a90374440645427cfa089db237f7be86f6d6b18",
+          "bytes": 786432
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.573,
+        "bottom": 0.0,
+        "left": 0.571,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "38f5f976add92dd8a430c91935f2f2f5dd682aebdc2c104e20415e1678091ec3",
+      "session_commands_sha256": "c04bc32c9d92ac0f5b6cfaf25cadee999ec0f187d01b76feded8517e006e3c09",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-110012-bfa8a6e3",
+      "cell_id": "framed/1920x1080",
+      "candidate_sha256": "3510e0a23fd41f95283806cee9cb761a31e4ea7b3ab4eb4f4c1fe52e6fd27e02",
+      "probe_sha256": "d9ba7b33223f52c56deca6bfaf9d1c3a094038b34d0077dd6474c209a49ca4bc",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1920,
+        "height": 1080,
+        "bytes": 2073600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3194,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.828,
+      "telemetry_samples": 119,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "217f511ae0e90473e0c3d0e97ac0280e7d763a80c98750b8408c5d9ca4abe38b",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 60.2,
+          "sha256": "20781cec87fcc10c030b8f54116c4f0fe159554d320757cdfc6d5b3b016e3aff",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "cd5c9a81d2f5d1b991c37dcf6d076f57aa8a1dd6b7fc990a075174ebdde47170",
+          "bytes": 2073600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.916,
+        "bottom": 0.948,
+        "left": 0.925,
+        "right": 0.955,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "e4bcf0e80f1d3824dfe88f4d2c826f7031b3ba07891e346e86af08251c2fdff7",
+      "session_commands_sha256": "4650ae4defcdb873379189236043c5cd54cfe6dcdfb38a058d85570c852ca1a3",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-110332-c07e2097",
+      "cell_id": "completehd/2560x1440",
+      "candidate_sha256": "a35cec7063d5c8f9735735b030d5cf499322e17bb91aac64223a309ffb5c9fe0",
+      "probe_sha256": "34911186926fbd36516132fa8d07d0bc45696df3674068c0bd8e43ce3054c20d",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 2560,
+        "height": 1440,
+        "bytes": 3686400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3155,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.781,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "d001e3834b197fff8fef0e50146459af747854dda08832d81854e910cbf8acd4",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "d6e063ba4f87b7046149cc5648590f8ffbffc9ab3017145372986132496b68aa",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "b13f518a634e1b4e72314e7627adf704fd53e98cafca089953ec43c6cc94ec93",
+          "bytes": 3686400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.92,
+        "bottom": 0.958,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "6462bb0348ea4ca58b7556ee8a41d0502bf30f35ed8ec6f2507ed64527105b30",
+      "session_commands_sha256": "267696b46a91d0d64d290693858ee2bd97464d6df16dda6a09ea092187149e84",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-110725-c731e792",
+      "cell_id": "modalwidgets/3840x2160",
+      "candidate_sha256": "e6d5c5e8f9f30c40677fbdc94f9a36868afc488dde3abf9ee888fcc4e2f32f43",
+      "probe_sha256": "53da1a6fc2cdb955db4f01530f34fe4256a12fe57a9d41de2357d762a74d813f",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3840,
+        "height": 2160,
+        "bytes": 8294400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 2935,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.047,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "e947f47017b6b8424d32b2c6add4ef98f56c57a215099826ee416323d6b7a950",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "fcd9abf39edc702e25bbe50b38d78d077938dee386248328bfa4555e6c19a5bc",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "202b11feabb7d2e1eeb58ecab9d121744864ca92f07ae538cb948deae12625ee",
+          "bytes": 8294400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.924,
+        "bottom": 0.957,
+        "left": 0.928,
+        "right": 0.958,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "19a1495f8dd545a73c724430aea1a4d4973d8b3c9bfbad6cd78e36086681ab7b",
+      "session_commands_sha256": "09a169074a8c90c2292d723aa91cac17430388b829ce70d08b14468b002e5963",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-111101-49f468ad",
+      "cell_id": "classic/3440x1440",
+      "candidate_sha256": "2e1bb49eb77591037362600d2fb24d58446d0480ead0520e63be1ac7fda9f75f",
+      "probe_sha256": "fed35ecb0368eb5469a87a2916f6a58269ae301c5bdc52a4d28ba55e2bf5444e",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3440,
+        "height": 1440,
+        "bytes": 4953600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3190,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.25,
+      "telemetry_samples": 119,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "49ee026d97e914000ff579ad7ec73d004ee6cb5fb1699d8543d5d1ef380dbdaf",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "24ed6040d039662d4f85c5b9be46212efb2ce02fdb5eb190e7db12c21493cde8",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 119.2,
+          "sha256": "a11ff1b5076bd5d3236e7c6637966520899cadda700edc2cdc608812cf6feb88",
+          "bytes": 4953600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.171,
+        "bottom": 0.0,
+        "left": 0.305,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "90afab998b032280fdf94657ddc5ec38340b3b1f6f8ab57f759428078bf3914b",
+      "session_commands_sha256": "5f0b05cddc2c51849b80872aafbcdcab107c12f6bd45a81782037bacf5b82537",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-111423-a889949b",
+      "cell_id": "classic/1280x720",
+      "candidate_sha256": "a654db0f586d2eea05a9aef1117b60399be150251ae5e3725c2145785533fde1",
+      "probe_sha256": "d4e634ec3967e1eaebb21afc39c1d65eda010a2cd18b1beae576f6d87b247ecf",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 720,
+        "bytes": 921600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3168,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.704,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "95227a2139ac75cccf98541284a0f2891507036be86b08a615200caa8405ca5d",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "a4d6afe0d552b53e9080b5c91e9cebe2057548a4008267743014c8379ee6a5e8",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "a4d6afe0d552b53e9080b5c91e9cebe2057548a4008267743014c8379ee6a5e8",
+          "bytes": 921600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.459,
+        "bottom": 0.0,
+        "left": 0.609,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "b331a8b2bf8aedb2bf9137ff5ddc7ae30081be42ab1c2aff7c22f4de64779b18",
+      "session_commands_sha256": "231fe38e3e0cb41e490c194c3f02f6abc012dda199bbb157ae8a3dc0f79b68e2",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-111717-2831d77b",
+      "cell_id": "classic/1280x960",
+      "candidate_sha256": "a32deb3347ebb4c386466380437c0f934ccc086e758ca425dc501516a95842a5",
+      "probe_sha256": "a1f26f583e73c4cd0cfc8eaef4b6a03d26da59fc08be9bb47a6e8873a9a9cfd6",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 960,
+        "bytes": 1228800
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3210,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.891,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "92feb26b247f6cb804d133bbf76e03cf6a396846fea27d5c30966a6ac9f55ff4",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "fc8afb62bb1442dc65705a21a7a2e253881b18adab5165ce134a858c9ef895df",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "92feb26b247f6cb804d133bbf76e03cf6a396846fea27d5c30966a6ac9f55ff4",
+          "bytes": 1228800
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.459,
+        "bottom": 0.0,
+        "left": 0.457,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "946576af1322d9302ddc2d11551a53c8deb8ef4a5e79a492cf271159340cdee8",
+      "session_commands_sha256": "8b6421f7e4783813eb8ae4f1132ba677cf6d90e91307ca80d9aa5c08e33f0ee5",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-112009-e47d9a17",
+      "cell_id": "classic/1366x768",
+      "candidate_sha256": "639cdc82dc42a224c5c22de586bf6f6ad0e978c36d4cce732ca3315934691062",
+      "probe_sha256": "e734b89316daed6c572443409adf361382972144aafcca8793535a59f12fb768",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1366,
+        "height": 768,
+        "bytes": 1049088
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7682,
+      "redraw_hits": 3143,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.844,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "b6a3cb1b162d39c4899e9c1113835e11cbe124e0487d2caf6d53840e9a9c66b2",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 60.2,
+          "sha256": "a05391955f69f4858422f364f81f3ab476e34bb83744c207c9885cfb92ecd9a4",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "eb43952720a21d63f2e7babf73808521eeeec27349d742227bafa9b0d86f3c5c",
+          "bytes": 1049088
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.43,
+        "bottom": 0.0,
+        "left": 0.571,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "7eddefa357131cee8b3b46e7bffbf98f51d55ff5af8b24075cff31b0109b9f43",
+      "session_commands_sha256": "0ec5c5041c75d0ec5ac678bf65781d4e70e8eba509fd553aac45c22e069250df",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-112306-af06610f",
+      "cell_id": "classic/1920x1080",
+      "candidate_sha256": "130b3101e583b988ef39e6c5b6e7eca809b0c13aaf3701047a0f57e6e332515e",
+      "probe_sha256": "d605079cd609a5c3fb947c829fb74c4ffe0d9922570c2a836f72917c939db895",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1920,
+        "height": 1080,
+        "bytes": 2073600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3146,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.719,
+      "telemetry_samples": 119,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "b8dc5461a0bc72afa52d10da94fcd9932f73ab32c6b5d9636f40b367ca028238",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "4363b612824906ea900142e6cf39d6408c145d34066ea6fb9b31116ab976cd4c",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "6166e1412d11304b3a0e2f71a6065afbea371e59c20b56eb672fe9081f056dc5",
+          "bytes": 2073600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.306,
+        "bottom": 0.0,
+        "left": 0.406,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "c74644843e81403d58dd8bae32362b995175a6d3f1be208d334a55fbb2c60b03",
+      "session_commands_sha256": "235fa9c7ffc9764bed0e552a43a9bdf8c48b4fb04beaec712b451a57144121d6",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-112604-98eed5b7",
+      "cell_id": "classic/2560x1440",
+      "candidate_sha256": "ae8986279bd081a38919b1dd12b46b3029d5c367ea23c51a84e349c8460a9412",
+      "probe_sha256": "f051d83448c87e89ad3bd846cca5c946f685de9838d976d187fedb6ce862bf0c",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 2560,
+        "height": 1440,
+        "bytes": 3686400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3135,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.687,
+      "telemetry_samples": 119,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "7a7b8f8ead9d10934296e1c55fb2c2fe8503a1ec70f53afcc83036d43aa75bbb",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "683b305e894440ca406766f708f0548153f768fb24e48791faf4ee74a51e41bc",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "683b305e894440ca406766f708f0548153f768fb24e48791faf4ee74a51e41bc",
+          "bytes": 3686400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.229,
+        "bottom": 0.0,
+        "left": 0.305,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "d5b668d25bb00a1f0451ad01ecde4cc799c4dd469ab78f2190fafc3f905b1453",
+      "session_commands_sha256": "81fb9f29af8ba4308b9d0598fc86e4a43dcb6be5abc8bb990a62bbf6152255cb",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-112902-bac10488",
+      "cell_id": "classic/3840x2160",
+      "candidate_sha256": "a71969b3c4384964d54534f0c2d369d239b50348390a06bde1fda1b77738df89",
+      "probe_sha256": "b6cb068da268792099d5b0bc2d8c86061e4493358bfa851a73b1b9f8ad4c7720",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3840,
+        "height": 2160,
+        "bytes": 8294400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3165,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.813,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "95dc4cf2b3a95512b5a1da2d97aaa8cb7d2ebd94b1f4bca5054321541d2f6b05",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "b1b843ff72290c4e676ab7d938c0466191c75d47128f940f7fbcc754009351c3",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "dec3e2aa4887bdaff1387718bbffbd566ba580c7f3293be5be5d435e65a92be3",
+          "bytes": 8294400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.153,
+        "bottom": 0.0,
+        "left": 0.203,
+        "right": 0.0,
+        "action_bar_corner": 0.0
+      },
+      "proxy_sha256": "e797be72c5b140875cd0e3dcc644e04708c766e272d63ee12107bb9405ad85b7",
+      "session_commands_sha256": "a2995f87fe838a7cbcebe320fda89edbab6c059f8ba2bc75cd26fcf3bafd5a62",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-113209-f6ea33de",
+      "cell_id": "framed/1024x768",
+      "candidate_sha256": "62c078fd39fc56591999e358127971edd8d187ce2694a2cd7b98423a87b36d7f",
+      "probe_sha256": "43e259a287dae313336fe9a7b37e3637833a786f256b2f2f0daf953254db93dd",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1024,
+        "height": 768,
+        "bytes": 786432
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3206,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.969,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "9bbde23309ec1c1877352f88cb61b2b00f62960f99c6f78f3acbe3ab277bf14d",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "99bfbc72952dfa7d394df7a2992f923fa281f5ff7a7d6c8f678cf9e3dde8d27b",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "7d2b8fef9a311af5967de0ab3b2b942cd1022f3180f808fc6d77fe12919fb6de",
+          "bytes": 786432
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.968,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "9ba2b00df8d026988391c3d1c676b1fe71d20dc6e7b8a932d0259e3600bf2a3a",
+      "session_commands_sha256": "f75819301ff17af425e09fb7caf100bebd5f38a9f70acdc7bb21d5a1b4b936ae",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-113510-0507b6da",
+      "cell_id": "framed/1280x720",
+      "candidate_sha256": "9ef6ad1c79d5f1c172814589c71fe8c20cb57fe6b76f2368bfdf9b7a46e548ff",
+      "probe_sha256": "da54e75fb2c582f135acd6311abaeeee762c4c6626a0e97caf7843e7f478e3b7",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 720,
+        "bytes": 921600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3213,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.0,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "25ead596a7a3dedf8ec49cffe7b4b751c3ad74daaccba273306df29570dffa54",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "486a338b03a8e8809f211ae3b9c978dfe0effa55729fa95e0d419fc19ae01915",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "c81ccc1fabbdfce67102392969644acc868e0ce7efffd0e1bcb291319287d261",
+          "bytes": 921600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.934,
+        "right": 0.962,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "50c3c2a3429d05c1f1c9010129a6b1fd1ba000c4ec833da03b783bc972f99a45",
+      "session_commands_sha256": "8d53c70964e35fd9fa37b6488e43b5bc8d4ade6d855366efa31ca335e1f106db",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-113807-784211e2",
+      "cell_id": "framed/1280x960",
+      "candidate_sha256": "9dfd1a9f8a8d5e0a18fa6b9360d2f03d74043b4297d6de2a0305396b602c0a68",
+      "probe_sha256": "0ebac82875ad85e7a93d27d475c33e322786f21480f60a2e1869d57857175502",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 960,
+        "bytes": 1228800
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3182,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.75,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "69d1de3decaad6554c385e0ce15a4d45f196b5d7981a5a18b4300b0a9a604e11",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "b0ba1ff78a53eee237734d359d61c741621277a5470daa1f659af086c239f839",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "cb96c5b80d9f4e438078afa3c9f2f67c8bdeed1a1fbab6fe9c31c453fa245de3",
+          "bytes": 1228800
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.917,
+        "right": 0.952,
+        "action_bar_corner": 0.743
+      },
+      "proxy_sha256": "8185985c42fcf344069fb150cf43f49a9b92aaaaae81dbe4594a5da825cd2fc6",
+      "session_commands_sha256": "13da32b9e180fb63b4d719567c043f57c936d18e3ee8e2b620ffd198436e6d2f",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-114102-9aee0f69",
+      "cell_id": "framed/1366x768",
+      "candidate_sha256": "d1dd19548a0f3dcf78230b0f441d14ef57084d2dddc440f8c3e0d81ed4f7b542",
+      "probe_sha256": "88ae103b56858a0a12c6f7beb73f047fd8d5f9b1963af0e6d9630cabd6dbaa2b",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1366,
+        "height": 768,
+        "bytes": 1049088
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7682,
+      "redraw_hits": 3173,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.968,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "0c329c3cbb7528e1d6b75eecfa146869efe289ef071e619d2a1c3d800f1aa3b9",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "d534fbd5d75a5f34986e92db7b709d1f0304f793f23c10a2d2e28cde510aafa9",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "3d051fadc73f26b9f9b0a7b29772db4e904613bcc5a9d86bccfd283f55f4d094",
+          "bytes": 1049088
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.914,
+        "bottom": 0.959,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "71ca685ed0fd9372de2bba27a6bbc4e9f91613845f829ea6e5a9100425461a3f",
+      "session_commands_sha256": "e9c10a7e699cefb1e1b69d5b882ae047b890147d29bcd9f7c3a1a7a3dfe6b936",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-114353-69ce8eab",
+      "cell_id": "framed/2560x1440",
+      "candidate_sha256": "0a1b3c3edc95791f26338ef4ec6531b7bb081f548ef6cdd868a6823525e12b8d",
+      "probe_sha256": "3c3d9cac16d94cdabca1060ee63c56b242e6377d749d3473c9ff6e6c0f2f748a",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 2560,
+        "height": 1440,
+        "bytes": 3686400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3083,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.922,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "d001e3834b197fff8fef0e50146459af747854dda08832d81854e910cbf8acd4",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "297778a6b80ce3fffdffdaa40410dcdf3b9b1c8eaa8d741e5efeb4bae1e9af44",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "6f2ed0cee33f1e93ed8964a63c34811da8a752be418184ce01a65c4811d7e9e9",
+          "bytes": 3686400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.92,
+        "bottom": 0.958,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "db15ae61fd32226ffb07795160e8ea72f89ec9df3bba90ebbe4c3034162ace4b",
+      "session_commands_sha256": "ad3c5062e20d18a6b73dddb1d8cc67b4872a89ac0a981053486b4438e0135548",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-114653-990f0c19",
+      "cell_id": "framed/3440x1440",
+      "candidate_sha256": "fb35e60aea1c65665e4918eb4f45384b538b34a811a5f217253e9b465527b82c",
+      "probe_sha256": "7a433dd59c19459d6c2e48081790236589cb674dc4ee57e9bf1ee43fbff7cff6",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3440,
+        "height": 1440,
+        "bytes": 4953600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3078,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.781,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "03451c5ba5a29844c7c8f5539593e2c622258efa5b83d5f5616c8dce062deeae",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "275327a5ac53a2f2ae31766c9d4262a1617404aef195121a2bc74c986e12db6b",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 119.8,
+          "sha256": "3eb02d55947bbeb8602ed0fe0a2c7e459cfcebcdf5b871bc3c02d4b1cc483ac7",
+          "bytes": 4953600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.962,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "352ef222b27001a39c64a01f069e6a128b94226ba0ad86149b4ba4927095f908",
+      "session_commands_sha256": "02e84b752be65a113a169a31b19d67216d038d937763d010fa386c1710632dbe",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-114951-d83a39dc",
+      "cell_id": "framed/3840x2160",
+      "candidate_sha256": "565cdcd6e2851bbfbc2bbbced3e1cecb767138a4fc914c977bcb78fd26b666cc",
+      "probe_sha256": "74ff15716d1cfa233440a36992eec6b41c13ca06084d4888794a571cd347a162",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3840,
+        "height": 2160,
+        "bytes": 8294400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3041,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.015,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "e1ac64a1ec21c3baaf8716c479fe736235b9549c64488b3602889b325eeed723",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "2cb4d5b62111bb450284078a10ec3761aff27401207017cebfb7e2f35a8842e5",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "2019b6e261fbd9bec893e67561bc970e472367f9b3430ac4f4ce20b24f5d7f5a",
+          "bytes": 8294400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.924,
+        "bottom": 0.957,
+        "left": 0.928,
+        "right": 0.958,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "62afc6868ef04d7a44482dfb99183690a2df2814b5f69ac8460a34470251ffa5",
+      "session_commands_sha256": "fb421c94ee3284db5bca8f592bd40112dc398f614b7da9fea930de763f51a1c9",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-115314-e9f359bf",
+      "cell_id": "completehd/1024x768",
+      "candidate_sha256": "8a0dc89bae84b6818d19337f298ac8c5f075780ee75d9d7a0e7a652c0c668412",
+      "probe_sha256": "b562e220f664041c315b87d129d28ed4cc721b33fa9b8a36ca7f7fb2c9b032cd",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1024,
+        "height": 768,
+        "bytes": 786432
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3143,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.985,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "9bbde23309ec1c1877352f88cb61b2b00f62960f99c6f78f3acbe3ab277bf14d",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "d6219e7742d103c745ae3eca546226d006176e3bea8baa915ca30d1a746573fa",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "500b7d97ad432e9a97af4075c270bc43d3f9952bf8975641b81fff87fc6b1cb0",
+          "bytes": 786432
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.968,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "c27aea8f9845ecafec9effc2e801cacd6e5f2c3ca2d7e4e9eba810f3fff2414d",
+      "session_commands_sha256": "49ef6813d5bb81f07bbbf4db4d21193fc0985201f2fcf6263a6b74a962e44897",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-115704-25184c27",
+      "cell_id": "completehd/1280x720",
+      "candidate_sha256": "582307253c706ef0cb80fb314e77fd66cd28c8c712110bd86741a4e313faac00",
+      "probe_sha256": "fbcd0fa1285fd7901083edd9697375e1862dffa10dcac9a8cb3de722b0a75c6f",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 720,
+        "bytes": 921600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7682,
+      "redraw_hits": 3210,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.937,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "4f28cc4f3d42d1db41d88794b05b5bb3524a054cfcc8e1fc06736086a82f7f84",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "2701f0d5295524c9c70d776fde3e560db62ad7cf28123d4a6bd71fdd3cd5680b",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "e340524f6a901e093e8969d186914913a840b99521bb40d23481074eadcb1729",
+          "bytes": 921600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.934,
+        "right": 0.962,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "5fc287d356b7d57140277d04b4096d0580f953bad0ef6caebe7f92756a83ec51",
+      "session_commands_sha256": "2b92d0528f5c46bc6153a48443b34faf986dc0663883b2eea048ee9c4bb9268d",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-120044-4937e60e",
+      "cell_id": "completehd/1280x960",
+      "candidate_sha256": "0822053052bfd837bdc9e122beebff85eecb2c69011c5693c10efe44c638edf7",
+      "probe_sha256": "79733a5547e1d939da7f3c9727610b9da375bc5e11bb7ac2e092e8bd320117d1",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 960,
+        "bytes": 1228800
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3198,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.922,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "69d1de3decaad6554c385e0ce15a4d45f196b5d7981a5a18b4300b0a9a604e11",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "cb96c5b80d9f4e438078afa3c9f2f67c8bdeed1a1fbab6fe9c31c453fa245de3",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "69d1de3decaad6554c385e0ce15a4d45f196b5d7981a5a18b4300b0a9a604e11",
+          "bytes": 1228800
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.917,
+        "right": 0.952,
+        "action_bar_corner": 0.743
+      },
+      "proxy_sha256": "8cb98e42698a72986be0429cf85d38d0368daf65f3dcf302874e6355d05c11e2",
+      "session_commands_sha256": "6c82ed1cc96a8109f7e09e59b0a053da958a826a88f55a84249a15a9988f0233",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-120439-a837caa3",
+      "cell_id": "completehd/1366x768",
+      "candidate_sha256": "78fd72cff0e4da4ae951bb49682fd0659053a4457e841b4d5045466c01ab5c83",
+      "probe_sha256": "e992a68547baa759208bb75a860e4241a373e650a3d928d4298fa8a15a9c7b30",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1366,
+        "height": 768,
+        "bytes": 1049088
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3206,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.031,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "64f1fda21ddb2b743034a7ba646e6c47eed59bcb5f471ae1fa65eb9c1ead17ad",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "01cffab5f12418efee421c78896d44583dff22cd278936036e10c1b36a9df9f6",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "6a032a9da6558635762fb52e1f0de10d4b42162d02391093c0b08f14851b3004",
+          "bytes": 1049088
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.914,
+        "bottom": 0.959,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "793c95688e0ed4a4afe36828462b40cf83e312d21edc669bc46269aaf3611686",
+      "session_commands_sha256": "30ee26a4ab36d26915ee2878d9eab4b93fa78630a34857700e9dfb964976bcd5",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-120822-491c8699",
+      "cell_id": "completehd/1920x1080",
+      "candidate_sha256": "9af7c78a1bf6f033ed3e1bf3ce783cba40601ad1bed78ce0647832bc4dd24fa0",
+      "probe_sha256": "6315a76bd1cd561f55eba2009bf0446dd971c281c6780f170242c7f02a14e995",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1920,
+        "height": 1080,
+        "bytes": 2073600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3187,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.031,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "3590e36f6431f38a82587bbf4fb5c6c5aeb8fe6c5993e30f53e74a2cb39503ff",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "0b0cc4509ede76f043474c531bc633c456aa360a8deebb09db75efad82d2a7de",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "51583ef2b0864ae13ac113d8062be1c51b654fd9dbffd6277f2bff37159c8f67",
+          "bytes": 2073600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.916,
+        "bottom": 0.948,
+        "left": 0.925,
+        "right": 0.955,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "1dae8d8be0f155d730fef1c669d194bbc1c3a5b9f2e7ad64c18a2dcb3e82fee4",
+      "session_commands_sha256": "91a4a8801617ae8ba3ecc78ddb6445ee9aac672f8e41c88dae2152386fc50688",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-121206-e6a7ebc4",
+      "cell_id": "completehd/3440x1440",
+      "candidate_sha256": "522e2f3fe2fa57697ef1faeb2f7e616254bb25177d8aa1c216a00d00a1f9b57c",
+      "probe_sha256": "77ef0e0ff2c6693c6df9ebb0798d9ce9f0369d00631ba31ba0355100ba8d10bf",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3440,
+        "height": 1440,
+        "bytes": 4953600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3085,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.968,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "05ea5fa3e62a9bab4db20649eb2d4d39a16aa21a0e963ac8ab88fb6b437c151d",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "275327a5ac53a2f2ae31766c9d4262a1617404aef195121a2bc74c986e12db6b",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "b30ab8dc3c131dc07b1aef8438eff7901368db0173745aa1b1089e995c7e81c9",
+          "bytes": 4953600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.962,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "7d58a589aae994c4e4ee4d1ba81947bf0ee1be2e21ca945da6b6e9decd0fe96e",
+      "session_commands_sha256": "ca23f42f442e1381875e68efda990d4e2bb9a98fa39ad097936b71cd07f55fd8",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-121603-54612b48",
+      "cell_id": "completehd/3840x2160",
+      "candidate_sha256": "17e31c0eb09b44cbbbe3cd0388610bb3ce581f35264c3284f45f1722b1b4015f",
+      "probe_sha256": "7d4b1b4d9e28fcd3a7ea90420cf077ae56f1b5362f22fdea18e08947a408e347",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3840,
+        "height": 2160,
+        "bytes": 8294400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3053,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.734,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "e1ac64a1ec21c3baaf8716c479fe736235b9549c64488b3602889b325eeed723",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "e16c2aa76d617d3af81fb56ace9d40c2cecc2d2037d2f2c081723a7fe64e878a",
+          "bytes": 8294400
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "202b11feabb7d2e1eeb58ecab9d121744864ca92f07ae538cb948deae12625ee",
+          "bytes": 8294400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.924,
+        "bottom": 0.957,
+        "left": 0.928,
+        "right": 0.958,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "b3ad7a3eb8bb9577781bae12215dd5073b7b8c4e2d45dc16711e796b06daa2c2",
+      "session_commands_sha256": "47125b7d049d16aa9aaede944b1099c12edf9d39516821f67a6972b4d7a87e65",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-122000-04559056",
+      "cell_id": "modalwidgets/1024x768",
+      "candidate_sha256": "ad8a47bcb39e7be51e3333d1ce51617821cd843791f7a27826b2c3fb3b195818",
+      "probe_sha256": "c2526db5697d0006014937ca9ac3492160f2581902b448aea8d1a5b7e7e4ccd7",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1024,
+        "height": 768,
+        "bytes": 786432
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7681,
+      "redraw_hits": 3216,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.953,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "1bac53c1d3f7f6fb5f2334d2a71b0071e9dcf0d836e72b0cb244a47d4cf71110",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "2c84225c858d68a76a8348cd09176bee9e95012e934ea2401f75af6969ec9ca8",
+          "bytes": 786432
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "dd58b2afa7d8f7c0b4480040839f8b943e6240d99f55dd99fc51eb5affaa8679",
+          "bytes": 786432
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.968,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "ad09b5e566cf2de4fea0a9216dd812dd52cf260e0b6c7576620589a58247bddf",
+      "session_commands_sha256": "f82f92e25092b53f8adcd9e4f1567f9db9dc713032f630e1dbcb4a0151ec33f7",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-122407-a9b3804e",
+      "cell_id": "modalwidgets/1280x720",
+      "candidate_sha256": "f4f1e67686db77ccb78d921d8856118c5d7d438ba03182f5f8dacb6ae6743b2c",
+      "probe_sha256": "a71b053ea85c0a94851efb7f4dccb51f1efe70fa0007e32e402bf6d1e2a22bf1",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 720,
+        "bytes": 921600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3194,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.672,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "e340524f6a901e093e8969d186914913a840b99521bb40d23481074eadcb1729",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "486a338b03a8e8809f211ae3b9c978dfe0effa55729fa95e0d419fc19ae01915",
+          "bytes": 921600
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "2701f0d5295524c9c70d776fde3e560db62ad7cf28123d4a6bd71fdd3cd5680b",
+          "bytes": 921600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.934,
+        "right": 0.962,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "311d4c01ba387964a11665d38ec69debf48304bcaffc242d20bab514d54d1809",
+      "session_commands_sha256": "d9d350ce2a496cbcc7f81e7fc109d274824c1f8a176291dcf0eb71974cf03e6a",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-122812-0e89b2d8",
+      "cell_id": "modalwidgets/1280x960",
+      "candidate_sha256": "4b123445ad5a979adeb22374bc06b8a3042dcb0a148cfca2bc996cbccee682c2",
+      "probe_sha256": "c95c578eadc4c6782bb7e8eef0370076bb413e69d8e38bdde155941a67a564bb",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1280,
+        "height": 960,
+        "bytes": 1228800
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3188,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.0,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "4f0246462e48a1c9c6db4f6ce5fc7741cc0f2251794d0845a0bb8c6b3862cf71",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "cb96c5b80d9f4e438078afa3c9f2f67c8bdeed1a1fbab6fe9c31c453fa245de3",
+          "bytes": 1228800
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "396ed8facc5b762f20dbe5fdcc816519cae0fa1041dc50af650fa860a97769a6",
+          "bytes": 1228800
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.913,
+        "bottom": 0.961,
+        "left": 0.917,
+        "right": 0.952,
+        "action_bar_corner": 0.743
+      },
+      "proxy_sha256": "0566a05fde83e1a708b903d0fbc0641a5ce690db24a8593959ab9b23d774988e",
+      "session_commands_sha256": "34d80ac45cd56bbc6c602be1e9f5b6157f493cdd8fcfda881afb170e9d39aac2",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-123214-5f557564",
+      "cell_id": "modalwidgets/1366x768",
+      "candidate_sha256": "3f630d94f39f58ee0a2453c471e9e4412ffa08f4556c79929403bad05ee3df16",
+      "probe_sha256": "ce01a4c82c8b3c1ea99a306d5494f43540206a9e018607271721d6b11ebe83bc",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1366,
+        "height": 768,
+        "bytes": 1049088
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7682,
+      "redraw_hits": 3142,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.938,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "0c329c3cbb7528e1d6b75eecfa146869efe289ef071e619d2a1c3d800f1aa3b9",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "2f336e4c4b455f4b9bb6999367bf469ecdaa4bc8754b9898533d559d583a407b",
+          "bytes": 1049088
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "9e296661c994a506788b32c96e5f8cd8ed78b62d73e5122c9101a58dba7ed329",
+          "bytes": 1049088
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.914,
+        "bottom": 0.959,
+        "left": 0.934,
+        "right": 0.964,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "da192ef106816e710f8dfc8dd1f37b3f2f9e16ae05717779b42da89b5b94dc7e",
+      "session_commands_sha256": "aab02a322d9ed34e03e098a15ea6490c31d69c21855586b7de6d619401063805",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-123620-0f5fc83f",
+      "cell_id": "modalwidgets/1920x1080",
+      "candidate_sha256": "10e68bce1b07c4d8eaa2ae20b92c77f57239c2f19a5de7ba6f32be014360483f",
+      "probe_sha256": "e163aad9eb8757d4b2036a0c01d45a80bc39648b0d708f684572faf0840affe6",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 1920,
+        "height": 1080,
+        "bytes": 2073600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3127,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.657,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "44a4a4ab1407afc22f0fa64b8de77305703e8d685824c5ee59f12e43b9aabd88",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "51583ef2b0864ae13ac113d8062be1c51b654fd9dbffd6277f2bff37159c8f67",
+          "bytes": 2073600
+        },
+        {
+          "elapsed_sec": 119.7,
+          "sha256": "9d7f7042a07515772569f5e68f4d59728c399c3cb77ad5b3c939427c3b17f674",
+          "bytes": 2073600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.916,
+        "bottom": 0.948,
+        "left": 0.925,
+        "right": 0.955,
+        "action_bar_corner": 0.752
+      },
+      "proxy_sha256": "604cb4950c0c195823d6154232983d413b0731d246733b8b235d862ff2377ef1",
+      "session_commands_sha256": "075bf0531268bdda1793781eae4823b92541a9031bd269afdcf8c97d2dc7a305",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-124028-7d4176b0",
+      "cell_id": "modalwidgets/2560x1440",
+      "candidate_sha256": "b9f59802c27f3d40eb4ebfe3fc7433ed892221e0a41ae80365d09774f1258df8",
+      "probe_sha256": "144ecaaca97490f7c544ebdf6faf78525460113c41904b7735b3fff90aad0ebf",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 2560,
+        "height": 1440,
+        "bytes": 3686400
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7680,
+      "redraw_hits": 3130,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 119.922,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "6f2ed0cee33f1e93ed8964a63c34811da8a752be418184ce01a65c4811d7e9e9",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 60.0,
+          "sha256": "6a1e5ea06dff26013969d6a7c40676dd5c0cd36a0852e7690735297704aa87c8",
+          "bytes": 3686400
+        },
+        {
+          "elapsed_sec": 119.9,
+          "sha256": "9deddba4f3f19d294d4a8db4bf7f4a12ade0ff4e3baa8d217a182427788a397a",
+          "bytes": 3686400
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.92,
+        "bottom": 0.958,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "b9e2ce2548c6058e80c0dae56ef9e7b4bd5371f3ba7d7bbe21e1c552235c0c21",
+      "session_commands_sha256": "4ba798374f6b15555550b30d9b7c48b8bd74decd17384fea0e4936bae0d727ca",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    },
+    {
+      "session": "session-20261103-124442-59428bed",
+      "cell_id": "modalwidgets/3440x1440",
+      "candidate_sha256": "5702113d84b9b749f7376457911fb5d7dd1dfb45863af99a996609ae0aee7630",
+      "probe_sha256": "179f22b1a19a40966eac95009726e7c8896da12585b9d405bb5228a90db1e2ad",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "diagnostic_passed": true,
+      "map_route_completed": true,
+      "initial_image_bytes_verified": true,
+      "forced_mechanisms": {
+        "map_entry": "cdb_forced_menu_load_route",
+        "start_animations": "cdb_fast_forward_sleeps",
+        "acquisition": "cdb_forced_bypass"
+      },
+      "input_or_callback_forced": true,
+      "map_entry": {
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "map_surface": {
+        "width": 3440,
+        "height": 1440,
+        "bytes": 4953600
+      },
+      "route_ticks": 7680,
+      "tick_delta": 7682,
+      "redraw_hits": 3037,
+      "heartbeats": 1,
+      "pan_events": 0,
+      "measured_map_host_seconds": 120.0,
+      "telemetry_samples": 120,
+      "frames": [
+        {
+          "elapsed_sec": 0.0,
+          "sha256": "05ea5fa3e62a9bab4db20649eb2d4d39a16aa21a0e963ac8ab88fb6b437c151d",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 60.1,
+          "sha256": "b30ab8dc3c131dc07b1aef8438eff7901368db0173745aa1b1089e995c7e81c9",
+          "bytes": 4953600
+        },
+        {
+          "elapsed_sec": 120.0,
+          "sha256": "05ea5fa3e62a9bab4db20649eb2d4d39a16aa21a0e963ac8ab88fb6b437c151d",
+          "bytes": 4953600
+        }
+      ],
+      "final_frame_visible_coverage": {
+        "top": 0.927,
+        "bottom": 0.962,
+        "left": 0.919,
+        "right": 0.953,
+        "action_bar_corner": 0.749
+      },
+      "proxy_sha256": "2f1e6950e95e43ad682914fdec6f1decea508e33b0de49492866e56bff138a39",
+      "session_commands_sha256": "97dc05d2b9cd8538edaba6f3c143cf8a8b87abfe40e264a3aad40ff42c8c07e8",
+      "cleanup_verified": true,
+      "live_saves_unchanged": true,
+      "launch_artifacts_unchanged": true,
+      "failures": []
+    }
+  ],
+  "passed_runs": 32,
+  "local_outputs": "C:/ClashTests/hd-multires-hidden/<session> and C:/ClashCaptures/hd-multires-map-20261103 (local only; never committed)",
+  "claims": [
+    "each passing run reached the adventure map of the authenticated successor candidate through the disclosed forced route and held it for the fixed route duration with clean owned-process shutdown"
+  ],
+  "excluded_attempts": [
+    "session-20261103-105135-641fc68c (classic/1024x768): a pre-release producer that re-parsed the whole log until readiness; its host clock measured 116.8 s of a 7,681-tick route and failed corroboration. Retained locally as a failing-run diagnostic."
+  ],
+  "not_claimed": [
+    "manual or natural input",
+    "visible composition or HUD/action-bar rendering",
+    "soak-lane acceptance (no matrix-context verifier yet)",
+    "endurance beyond the recorded routes",
+    "promotion or a stable-stage change"
+  ]
+}

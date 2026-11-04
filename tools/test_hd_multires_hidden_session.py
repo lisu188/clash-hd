@@ -2,9 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import ctypes
+import io
 import os
 from pathlib import Path
+import struct
 import sys
 import tempfile
 import unittest
@@ -18,19 +21,378 @@ NATIVE = False
 
 
 class PolicyTests(unittest.TestCase):
-    def test_fixed_ladder_durations_and_map_pending_are_not_a_free_duration_override(self):
+    def test_fixed_ladder_durations_and_pending_plans_are_not_a_free_duration_override(self):
         self.assertEqual(session.ROUTES["menu-idle"], (120,))
         self.assertEqual(session.ROUTES["map-idle"], (120, 600, 7200))
         self.assertEqual(session.ROUTES["map-pan"], (600, 1800, 7200))
         with self.assertRaisesRegex(ValueError, "fixed short-ladder"):
             session.plan(Path("missing.json"), duration=1)
+        with self.assertRaisesRegex(ValueError, "fixed short-ladder"):
+            session.plan(Path("missing.json"), route="map-pan", duration=120)
         with self.assertRaisesRegex(ValueError, "either initial smoke"):
             session.plan(Path("missing.json"), smoke_only=True, acquire_only=True)
+        for option in ("smoke_only", "acquire_only"):
+            with self.assertRaisesRegex(ValueError, "observation-only menu route"):
+                session.plan(Path("missing.json"), route="map-idle", **{option: True})
         with patch.object(session, "stage_assets", side_effect=AssertionError("must not copy")), \
                 patch.object(session, "HiddenJob", side_effect=AssertionError("must not create process")):
             with self.assertRaisesRegex(ValueError, "not implemented"):
-                session.execute({"pending": ["map collector is not implemented"]}, {}, {}, {}, [],
+                session.execute({"pending": ["collector is not implemented"]}, {}, {}, {}, [],
                     output_root=Path("unused"), asset_root=Path("unused"))
+
+    def test_map_commands_disclose_every_forced_step_after_the_exact_canonical_probe(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        template = (session.ROOT / session.SOAK_TEMPLATE).read_bytes()
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        idle = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle",
+                                          duration=120, soak_template=template)
+        self.assertTrue(idle.startswith(prefix))
+        text = idle[len(prefix):].decode("ascii")
+        lines = text.split("\r\n")
+        # Image and base gates run before any breakpoint or forced write.
+        self.assertEqual(lines[1], ".if ((@$t19 == 0) | (@$t18 != 0n47)) { .echo HDSESSION_INITIAL_REJECT; q }")
+        self.assertEqual(lines[2], ".if (@$t19 != 0x400000) { .echo HDSESSION_BASE_REJECT; q }")
+        first_write = min(index for index, line in enumerate(lines) if line.startswith(("bp ", "ed ", "eb ")))
+        self.assertGreater(first_write, 3)
+        self.assertIn("HDSESSION_FORCED_ROUTE map_entry=cdb_forced_menu_load_route start_animations="
+                      "cdb_fast_forward_sleeps acquisition=cdb_forced_bypass drag_scroll=cdb_forced_skip "
+                      "pan=none load_slot=0", text)
+        # Spurious drag starts after map entry take the handler's own not-held exit.
+        drag = [line for line in lines if line.startswith("bp 00407BD7 ")]
+        self.assertEqual(len(drag), 1)
+        self.assertIn(".if (@$t14 != 0)", drag[0])
+        self.assertIn("r eip = 00407bc6", drag[0])
+        self.assertIn("HDSESSION_FORCE_SKIP_DRAG_SCROLL", drag[0])
+        self.assertNotIn("r @$t18 = 0", text)
+        self.assertNotIn("r @$t19 = 0", text)
+        # Centered 640x480 menu point at 1920x1080 and the native load-list point, in <<6 units.
+        self.assertIn("ed 00544cfc 0000d700; ed 00544d00 00007280;", text)
+        self.assertEqual(text.count("ed 00544cfc 00005000; ed 00544d00 00002980;"), 2)
+        for site in ("00401DDA", "0047BD66", "0047BDAE", "0044789a", "00419B80", "00419C51", "00447780",
+                     "00448A68", "00448AE3", "00444490", "0040B660", "0040B0C3", "00406FA1", "00407D20", "00407BD7"):
+            self.assertEqual(text.count(f"bp {site} "), 1, site)
+        self.assertIn("route_ticks=%d pan=%d", text)
+        self.assertIn("ed 00400040 0", text)
+        self.assertEqual(lines[-2:], ["g", ""])
+        # The legacy base template's 800x600 dump gate (bp 00406FA0) is not composed.
+        self.assertFalse([line for line in lines if line.startswith("bp 00406FA0")])
+        self.assertNotIn("SURFDUMP_INVALID", text)
+        self.assertNotIn("2048", text)
+        self.assertNotRegex(text, r"__[A-Z0-9_]+__")
+        for forbidden in ("SendInput", "PostMessage", ".writemem"):
+            self.assertNotIn(forbidden, text)
+        pan = session.map_command_script(prefix, {"resolution": "3840x2160"}, metadata, route="map-pan",
+                                         duration=600, soak_template=template).decode("ascii")
+        self.assertIn("pan=cdb_forced_native_arrow_key", pan)
+        self.assertIn("ed 00544cfc 0001c700; ed 00544d00 0000f980;", pan)  # (220+1600, 158+840) << 6
+        self.assertIn("0n38400", pan)  # 600 s at 64 ticks per second
+        self.assertIn("0n640", pan)    # 10 s pan interval
+        for kwargs, message in ((dict(route="menu-idle", duration=120), "fixed short-ladder"),
+                                (dict(route="map-idle", duration=60), "fixed short-ladder")):
+            with self.assertRaisesRegex(ValueError, message):
+                session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, soak_template=template, **kwargs)
+        with self.assertRaisesRegex(ValueError, "640x480"):
+            session.map_command_script(prefix, {"resolution": "320x200"}, metadata, route="map-idle", duration=120,
+                                       soak_template=template)
+        with self.assertRaisesRegex(ValueError, "standalone g"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+                                       soak_template=template + b"\r\ng\r\n")
+        with self.assertRaisesRegex(ValueError, "chunk inventory"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, {"probe_contract": {"required_chunks": 0}},
+                                       route="map-idle", duration=120, soak_template=template)
+        # The observation-only menu route is unchanged by the map collector.
+        menu = session.command_script(prefix, {}, metadata).decode("ascii")
+        self.assertNotIn("HDSESSION_FORCE", menu)
+
+    def test_hidden_menu_entry_is_opt_in_disclosed_and_writes_no_input_clicks_or_menu_state(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        plain = session.command_script(prefix, {}, metadata).decode("ascii")
+        entry = session.command_script(prefix, {}, metadata, hidden_menu_entry=True).decode("ascii")
+        self.assertNotIn("HDSESSION_FORCED_ROUTE", plain)
+        self.assertNotIn("0044789a", plain)
+        self.assertNotIn("0047BD66", plain)
+        lines = entry[len(prefix):].split("\r\n")
+        self.assertEqual(lines[2], ".if (@$t19 != 0x400000) { .echo HDSESSION_BASE_REJECT; q }")
+        self.assertIn(".echo HDSESSION_FORCED_ROUTE start_animations=cdb_fast_forward_sleeps "
+                      "acquisition=cdb_forced_bypass", lines)
+        self.assertIn(session.soak_composition.START_ANIMS_BREAKPOINTS, entry)
+        # The same disclosed acquisition bypass as the map route, and nothing more.
+        for bypass in session.ACQUISITION_BYPASS:
+            self.assertEqual(lines.count(bypass), 1)
+        self.assertEqual(session.HIDDEN_MENU_MECHANISMS,
+                         {"start_animations": "cdb_fast_forward_sleeps", "acquisition": "cdb_forced_bypass"})
+        self.assertLess(entry.index("bp 0044789a"), entry.index("bp /1 @$t19+0x19b80"))
+        self.assertIn("bp /1 @$t19+0x19b80", entry)
+        for forbidden in ("ed ", "eb ", "00419B80", "00419C51", "00447780", "00448A68", "00448AE3", "SendInput"):
+            self.assertNotIn(forbidden, entry)
+        for option in ({"smoke_only": True}, {"acquire_only": True}):
+            with self.assertRaisesRegex(ValueError, "menu idle observation"):
+                session.command_script(prefix, {}, metadata, hidden_menu_entry=True, **option)
+            with self.assertRaisesRegex(ValueError, "menu idle observation"):
+                session.plan(Path("missing.json"), hidden_menu_entry=True, **option)
+        with self.assertRaisesRegex(ValueError, "menu idle observation"):
+            session.plan(Path("missing.json"), route="map-idle", hidden_menu_entry=True)
+        identity, marker = {"resolution": "1024x768"}, {"probe_contract": {"acceptance_marker": "EXACT_CANONICAL_PASS"}}
+        self.assertTrue(session.parse_observations("EXACT_CANONICAL_PASS\nHDSESSION_BASE_REJECT\n", identity, marker)["failures"])
+
+    def test_idle_menu_frames_come_from_the_one_live_proxy_buffer_of_the_canvas(self):
+        identity, marker = {"resolution": "1024x768"}, {"probe_contract": {"acceptance_marker": "EXACT_CANONICAL_PASS"}}
+        log = "EXACT_CANONICAL_PASS\nHDSESSION_TARGET pid=abc base=00400000\n"
+        # An unlocked descriptor has no pixel pointer; the observation still binds.
+        unlocked = "HDSESSION_MENU_READY pid=abc surface=0051d4c0 width=1024 height=768 pixels=00000000\n"
+        self.assertFalse(session.parse_observations(log + unlocked, identity, marker)["failures"])
+        self.assertTrue(session.parse_observations(log + unlocked.replace("00000000", "00000100"), identity, marker)["failures"])
+        proxy = ("FakeSurface created this=062109D8 size=1024x768 pitch=1024 caps=0x00000200\n"
+                 "FakeSurface destroyed this=062109D8\n"
+                 "FakeSurface created this=006DB068 size=1024x768 pitch=1024 caps=0x00000200\n"
+                 "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=09EAC040\n"
+                 "FakeSurface Unlock this=006DB068\n"
+                 "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=09EAC040\n")
+        self.assertEqual(session.proxy_surface_buffer(proxy, 1024, 768), 0x09EAC040)
+        self.assertIsNone(session.proxy_surface_buffer(proxy, 1920, 1080))
+        self.assertIsNone(session.proxy_surface_buffer(proxy.split("FakeSurface Lock")[0], 1024, 768))
+        moved = proxy + "FakeSurface Lock this=006DB068 rect=-1,-1,-1,-1 surface=0A000040\n"
+        self.assertIsNone(session.proxy_surface_buffer(moved, 1024, 768))
+        twin = proxy + "FakeSurface created this=00700000 size=1024x768 pitch=1024 caps=0x00000200\n"
+        self.assertIsNone(session.proxy_surface_buffer(twin, 1024, 768))
+        # The heap can recreate a destroyed surface at the same address: only
+        # its latest creation and the Locks after it count.
+        reused = ("FakeSurface created this=04038908 size=1024x768 pitch=1024 caps=0x00000200\n"
+                  "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=07000040\n"
+                  "FakeSurface destroyed this=04038908\n"
+                  "FakeSurface created this=04038908 size=1024x768 pitch=1024 caps=0x00000200\n"
+                  "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=08CBA040\n")
+        self.assertEqual(session.proxy_surface_buffer(reused, 1024, 768), 0x08CBA040)
+        self.assertIsNone(session.proxy_surface_buffer(reused + "FakeSurface destroyed this=04038908\n", 1024, 768))
+        early = "FakeSurface Lock this=04038908 rect=-1,-1,-1,-1 surface=07000040\n" + reused.split("\n", 2)[2]
+        self.assertEqual(session.proxy_surface_buffer(early, 1024, 768), 0x08CBA040)
+
+    def test_forced_save_extra_follows_the_soak_extra_on_its_own_site_and_slot(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        template = (session.ROOT / session.SOAK_TEMPLATE).read_bytes()
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        request = {"name": "forced-save", "load_slot": 7, "save_slot": 8}
+        extra = session.route_extras.prepare(request, route="map-idle", duration=120)
+        extra_template = (session.ROOT / extra["template"]).read_bytes()
+        composed = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle",
+            duration=120, soak_template=template, extra=extra, extra_template=extra_template)
+        self.assertTrue(composed.startswith(prefix))
+        text = composed[len(prefix):].decode("ascii")
+        lines = text.split("\r\n")
+        self.assertIn("HDSESSION_FORCED_ROUTE map_entry=cdb_forced_menu_load_route start_animations="
+                      "cdb_fast_forward_sleeps acquisition=cdb_forced_bypass drag_scroll=cdb_forced_skip "
+                      "save=cdb_forced_save_game pan=none load_slot=7", text)
+        # Slot 7's native load-list row: (320, 166 + 22 * 7) << 6.
+        self.assertEqual(text.count("ed 00544cfc 00005000; ed 00544d00 00005000;"), 2)
+        self.assertNotIn("ed 00544d00 00002980;", text)
+        sites = session.route_extras.breakpoint_sites(text)
+        self.assertEqual(len(sites), len(set(sites)))
+        first = {site: next(index for index, line in enumerate(lines) if line.startswith(f"bp {site} "))
+                 for site in ("00407D20", "0040B0C1")}
+        self.assertLess(first["00407D20"], first["0040B0C1"])
+        self.assertEqual(lines[-2:], ["g", ""])
+        plain = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle",
+            duration=120, soak_template=template).decode("ascii")
+        self.assertNotIn("0040B0C1", plain)
+        self.assertNotIn("save=", plain)
+        # An extra declaring a site the soak extra owns would silently replace it.
+        colliding = dict(extra, sites=["0040B0C3"])
+        with self.assertRaisesRegex(ValueError, "unique"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+                soak_template=template, extra=colliding, extra_template=extra_template.replace(b"0040B0C1", b"0040B0C3"))
+        with self.assertRaisesRegex(ValueError, "exactly its own template"):
+            session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+                soak_template=template, extra=extra)
+        for route, duration in (("map-pan", 600), ("menu-idle", 120), ("map-idle", 600)):
+            with self.assertRaisesRegex(ValueError, "120 s map-idle"):
+                session.plan(Path("missing.json"), route=route, duration=duration, route_extra=request)
+        self.assertIn("tools/hd_multires_route_extras.py", session.PRODUCERS)
+        self.assertIn(session.route_extras.FORCED_SAVE_TEMPLATE, session.PRODUCER_SOURCES)
+
+    def test_forced_turn_extra_composes_on_unique_sites_and_discloses_every_mechanism(self):
+        prefix = b"CANONICAL_PROBE_BYTES\r\n"
+        template = (session.ROOT / session.SOAK_TEMPLATE).read_bytes()
+        metadata = {"probe_contract": {"required_chunks": 47}}
+        extra = session.route_extras.prepare({"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6},
+                                             route="map-idle", duration=120)
+        text = session.map_command_script(prefix, {"resolution": "1920x1080"}, metadata, route="map-idle", duration=120,
+            soak_template=template, extra=extra,
+            extra_template=(session.ROOT / extra["template"]).read_bytes())[len(prefix):].decode("ascii")
+        sites = session.route_extras.breakpoint_sites(text)
+        self.assertEqual(len(sites), len(set(sites)))
+        self.assertTrue(set(session.route_extras.TURN_SITES) <= set(sites))
+        self.assertIn("drag_scroll=cdb_forced_skip turn=cdb_forced_next_player save=cdb_forced_save_game "
+                      "turn_input=cdb_bounded_stale_button_result_overrides pan=none load_slot=0", text)
+        self.assertIn(session.route_extras.FORCED_TURN_TEMPLATE, session.PRODUCER_SOURCES)
+
+    def test_route_extra_retains_its_rewritten_save_and_keeps_the_load_slot_unchanged(self):
+        extra = session.route_extras.prepare({"name": "forced-save", "load_slot": 7, "save_slot": 8},
+                                             route="map-idle", duration=120)
+        log = ("HDSESSION_LOADSAVE selected_arg=7 selected_global=7 accept=1 choice=5 gd=03f30030\n"
+               "HDCONT_SAVE_CALL slot=8 load_slot=7 gd=03f30030 player=0 scroll=(10,17) tick=5\n"
+               "HDCONT_SAVE_RETURNED slot=8 eax=1 tick=6\n").encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+
+            def attempt(name, *, rewrite=True, change_load=False, remove=False, log_bytes=log):
+                assets, run = base / name / "assets", base / name / "run"
+                (assets / "save").mkdir(parents=True)
+                run.mkdir()
+                (assets / "save/7.dat").write_bytes(b"state")
+                (assets / "save/8.dat").write_bytes(b"old")
+                os.utime(assets / "save/8.dat", ns=(10 ** 18, 10 ** 18))
+                report = {"route_extra_files": dict(before={path: session._save_state(assets, path)
+                          for path in extra["pre_files"] + extra["post_files"]}, after=None, retained=None)}
+                if rewrite:
+                    (assets / "save/8.dat").write_bytes(b"state")
+                    os.utime(assets / "save/8.dat", ns=(2 * 10 ** 18, 2 * 10 ** 18))
+                if change_load:
+                    (assets / "save/7.dat").write_bytes(b"other")
+                if remove:
+                    (assets / "save/8.dat").unlink()
+                return session._collect_route_extra(extra, assets, run, log_bytes, report), report, run
+
+            failures, report, run = attempt("pass")
+            self.assertEqual(failures, [])
+            files = report["route_extra_files"]
+            self.assertEqual(files["retained"], {"save/8.dat": dict(path="route-extra/8.dat",
+                sha256=files["after"]["save/7.dat"]["sha256"], bytes=5)})
+            self.assertEqual((run / "route-extra/8.dat").read_bytes(), b"state")
+            self.assertEqual(report["route_extra_observations"]["save_returned"]["eax"], 1)
+            for name, options, message in (("stale", dict(rewrite=False), "did not rewrite"),
+                                           ("moved", dict(change_load=True), "load slot changed"),
+                                           ("missing", dict(remove=True), "wrote no save")):
+                with self.assertRaisesRegex(ValueError, message):
+                    attempt(name, **options)
+            # A rewritten save without the native call and return markers still fails.
+            self.assertTrue(attempt("unlogged", log_bytes=b"")[0])
+
+    def test_map_ready_binds_one_entry_and_the_selected_canvas_to_the_adopted_process(self):
+        identity, target = {"resolution": "1920x1080"}, {"pid": 0xabc, "base": 0x400000}
+        game = ("HDSESSION_PLAYGAME pid=abc gd=0a000000 map=(72,72) scroll=(10,17) "
+                "surface=00520000 size=(1920,1080)\n")
+        start = "SOAK_ROUTE_START route_ticks=7680 pan=0 player=0 tick=100 gd=0a000000 scroll=(10,17)\n"
+        ready = "SOAK_SURFDUMP_READY redraw_seq=0 surface=00520000 size=(1920,1080) base=20000000 bytes=2073600\n"
+        actual = session.map_ready(game + start + ready, identity, target)
+        self.assertFalse(actual["failures"])
+        self.assertEqual(actual["surface"]["pixels"], 0x20000000)
+        self.assertEqual(actual["playgame"]["map"], (72, 72))
+        self.assertIsNone(session.map_ready(game, identity, target)["surface"])
+        for bad in (game.replace("pid=abc", "pid=ddd") + start + ready,
+                    game + start + ready.replace("size=(1920,1080)", "size=(1920,1088)"),
+                    game + start + ready.replace("bytes=2073600", "bytes=2073599"),
+                    game + start + ready.replace("base=20000000", "base=00000000"),
+                    game + game + start + ready, start + ready,
+                    game + start + ready + "HDSESSION_AV\n", game + "HDSESSION_PLAYGAME_NO_GAME_DATA\n",
+                    game + start + ready + "SOAK_PAN_UNSAFE base=(1,1) max=(0,0) reason=no_inward_direction\n",
+                    game + start + ready + "SOAK_ROUTE_END route_ticks=7680 pan=0 hits=x\n"):
+            with self.subTest(bad=bad[-60:]):
+                self.assertTrue(session.map_ready(bad, identity, target)["failures"])
+        self.assertTrue(session.map_ready(game + start + ready, identity, None)["failures"])
+
+    def test_log_tail_returns_only_complete_new_lines(self):
+        with tempfile.TemporaryDirectory(prefix="clash-log-tail-") as directory:
+            path = Path(directory) / "cdb.log"
+            path.write_bytes(b"old line\r\nSOAK_HEART")
+            tail = session._LogTail(path, len(b"old line\r\n"))
+            self.assertEqual(tail.lines(), [])
+            with path.open("ab") as stream:
+                stream.write(b"BEAT hits=1\r\n  SOAK_ROUTE_END x \r\npartial")
+            self.assertEqual(tail.lines(), ["SOAK_HEARTBEAT hits=1", "SOAK_ROUTE_END x"])
+            self.assertEqual(tail.lines(), [])
+            with patch.object(session, "MAX_LOG", 4):
+                with self.assertRaisesRegex(ValueError, "retained output budget"):
+                    tail.lines()
+            path.write_bytes(b"short\n")
+            with self.assertRaisesRegex(ValueError, "shrank"):
+                tail.lines()
+
+    def run_steady_state(self, route, duration, rows, *, end_at, extra=(), alive=True):
+        """Drive the sampler with a fake clock; rows after the start arrive once the clock passes end_at."""
+        clock = [1000.0]
+        start = ["SOAK_ROUTE_START route_ticks=%d pan=%d player=0 tick=100 gd=0a000000 scroll=(10,17)"
+                 % (duration * 64, route == "map-pan"),
+                 "SOAK_SURFDUMP_READY redraw_seq=0 surface=00520000 size=(4,2) base=20000000 bytes=8"]
+
+        class Tail:
+            def __init__(self):
+                self.sent = False
+
+            def lines(self):
+                if self.sent or clock[0] - 1000.0 < end_at:
+                    return list(extra) if not self.sent and extra else []
+                self.sent = True
+                return list(rows)
+
+        class Native:
+            def alive(self, _handle):
+                return alive
+
+            def read(self, _handle, address, count):
+                return struct.pack("<HHI", 4, 2, 0x20000000) if address == 0x520000 else bytes(range(count))
+
+            def telemetry(self, _handle):
+                return {"private_bytes": 1}
+
+        report = {"frames": [], "samples": []}
+        ready = {"playgame": {"pid": 1}, "surface": dict(descriptor=0x520000, width=4, height=2, pixels=0x20000000,
+                                                           bytes=8)}
+        with tempfile.TemporaryDirectory(prefix="clash-map-steady-") as directory:
+            run = Path(directory)
+            (run / "cdb.log").write_text("\n".join(start + list(rows)) + "\n", encoding="ascii")
+            with contextlib.redirect_stdout(io.StringIO()), patch.object(session.time, "monotonic", lambda: clock[0]), \
+                    patch.object(session.time, "sleep", lambda seconds: clock.__setitem__(0, clock[0] + seconds)), \
+                    patch.object(session.qualification, "_reserve"):
+                try:
+                    session._map_steady_state(Native(), 1, 2, run / "cdb.log", Tail(), [], run, report,
+                                              {"route": route, "duration_sec": duration}, ready)
+                except (ValueError, TimeoutError) as error:
+                    return report, str(error)
+        return report, None
+
+    def test_map_sampler_requires_its_end_marker_ticks_host_clock_and_route_shape(self):
+        end = "SOAK_ROUTE_END route_ticks=7680 pan=0 hits=3137 tickdelta=7681 player=0 scroll=(10,17)"
+        beat = "SOAK_HEARTBEAT hits=2048 tickdelta=5030 player=0 scroll=(10,17)"
+        report, error = self.run_steady_state("map-idle", 120, [beat, end], end_at=119.5)
+        self.assertIsNone(error)
+        self.assertTrue(report["map_route_completed"])
+        self.assertEqual(report["soak_route"]["heartbeats"], 1)
+        self.assertGreaterEqual(len(report["frames"]), 3)  # start, 60 s, final
+        self.assertTrue(all(frame["coherent_snapshot_verified"] is False for frame in report["frames"]))
+        self.assertGreater(len(report["samples"]), 100)
+        cases = (
+            ([beat, end.replace("tickdelta=7681", "tickdelta=7000")], 119.5, "does not cover the fixed route"),
+            ([beat, end], 110.0, "host clock does not corroborate"),
+            ([end], 119.5, "no structured SOAK_HEARTBEAT"),
+            ([beat, "SOAK_PAN_SET phase=0 x=11 y=17 hits=2100 tickdelta=5100 delta=(1,0)", end.replace("(10,17)", "(11,17)")],
+             119.5, "idle map route recorded forced pan rows"),
+            ([beat], 0.0, "end was not observed"),
+        )
+        for rows, end_at, message in cases:
+            with self.subTest(message=message):
+                report, error = self.run_steady_state("map-idle", 120, rows, end_at=end_at)
+                self.assertIn(message, error or "")
+                self.assertNotIn("map_route_completed", report)
+        _, error = self.run_steady_state("map-idle", 120, [beat, end], end_at=119.5, extra=["HDSESSION_AV"])
+        self.assertIn("runtime failure: HDSESSION_AV", error)
+        _, error = self.run_steady_state("map-idle", 120, [beat, end], end_at=119.5, alive=False)
+        self.assertIn("exited before the soak route end", error)
+        plan = "SOAK_PAN_PLAN base=(10,17) delta=(1,1) max=(88,91) safe=1"
+        steps, x, y, hits = [], 10, 17, 2000
+        for index in range(58):
+            phase = index % 4
+            x, y = (11, 17) if phase == 0 else (11, 18) if phase == 1 else (10, 18) if phase == 2 else (10, 17)
+            hits += 50
+            steps.append(f"SOAK_PAN_SET phase={phase} x={x} y={y} hits={hits} tickdelta={640 * (index + 1)} delta=(1,1)")
+        pan_end = f"SOAK_ROUTE_END route_ticks=38400 pan=1 hits={hits + 100} tickdelta=38401 player=0 scroll=({x},{y})"
+        pan_beat = "SOAK_HEARTBEAT hits=2048 tickdelta=600 player=0 scroll=(10,17)"
+        report, error = self.run_steady_state("map-pan", 600, [plan, pan_beat, *steps, pan_end], end_at=599.5)
+        self.assertIsNone(error, report.get("soak_route"))
+        self.assertEqual(report["soak_route"]["pan_events"], 58)
+        _, error = self.run_steady_state("map-pan", 600, [plan, pan_beat, *steps[:30], pan_end.replace(f"scroll=({x},{y})", "scroll=(11,18)")],
+                                         end_at=599.5)
+        self.assertIn("scheduled native arrow-key steps", error)
 
     def test_commands_use_exact_canonical_probe_then_observation_only_rebased_one_shots(self):
         prefix = b"CANONICAL_PROBE_BYTES\r\n"
@@ -38,7 +400,7 @@ class PolicyTests(unittest.TestCase):
         self.assertTrue(script.startswith(prefix))
         suffix = script[len(prefix):].decode()
         self.assertIn("@$t18 != 0n47", suffix)
-        self.assertIn("bp /1 @$t19+0x47d61", suffix)
+        self.assertIn("bp /1 @$t19+0x19b80", suffix)
         self.assertIn("bp /1 @$t19+0x7bd6f", suffix)
         self.assertIn("bp /1 @$t19+0x7bdb7", suffix)
         self.assertNotIn("bp /1 @$t19+0x7bd66", suffix)
