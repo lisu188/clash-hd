@@ -1,0 +1,14 @@
+.echo === HD successor continuity extra: one forced saveGame at world-map loop entry ===
+.echo Harness-only hidden-desktop probe for the approved_hidden_cdb_continuity class.
+.echo The forced map route loads slot __LOAD_SLOT__. At the first world-map loop
+.echo entry 0040B0C1, before its first poll, the probe keeps EAX and EDX in t16
+.echo and t17, calls the native saveGame 004443E0 for slot __SAVE_SLOT__ with the
+.echo loaded game name buffer 00543d28 and returns to 0040B0C1, where it restores
+.echo both registers. saveGame preserves every other register. One save per run,
+.echo state in t15. The forced route and soak extra never use 0040B0C1, t15, t16
+.echo or t17. This is a disclosed forced call and never user input - reports
+.echo must record save=cdb_forced_save_game.
+r @$t15 = 0
+r @$t16 = 0
+r @$t17 = 0
+bp 0040B0C1 ".if (@$t15 == 0) { r @$t15 = 1; r @$t16 = @eax; r @$t17 = @edx; .printf \"HDCONT_SAVE_CALL slot=__SAVE_SLOT__ load_slot=__LOAD_SLOT__ gd=%p player=%d scroll=(%d,%d) tick=%d\\n\", poi(005202e4), poi(005202ec), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(7ffe0320); r esp=@esp-4; ed @esp 0040B0C1; r eax=0n__SAVE_SLOT__; r edx=00543d28; r eip=004443E0 } .else { .if (@$t15 == 1) { r @$t15 = 2; .printf \"HDCONT_SAVE_RETURNED slot=__SAVE_SLOT__ eax=%x tick=%d\\n\", @eax, poi(7ffe0320); r eax=@$t16; r edx=@$t17 } }; gc"
