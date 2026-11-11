@@ -1161,3 +1161,4 @@
 /probes/cdb/continuity/hd_multires_forced_campaign_extra.cdb text eol=lf
 /probes/cdb/soak/hd_multires_pan_retry_extra.cdb text eol=lf
 /probes/cdb/soak/hd_multires_pan_press_extra.cdb text eol=lf
+/probes/cdb/soak/hd_multires_pan_steady_extra.cdb text eol=lf

@@ -17,9 +17,14 @@ A map-pan row may run with a disclosed pan extra and neutral mouse
 (tools/hd_multires_route_extras.py): pan-retry presses a step the native
 arrow handler declines again at its next call; pan-press also takes each
 press over from the soak, so a twice-reported breakpoint cannot end a step
-unmoved. Failed hidden mouse reads carry no stale motion or buttons. A
-map-pan row carries exactly one of those requests or none; every other row
-carries none. The soak rows and every rule here are the same either way.
+unmoved; pan-steady also logs each step at its ten-second slot, so the soak's
+per-step drift cannot add up below the step floor, and ends the line of every
+debug string, so none can swallow a soak row. Failed hidden mouse reads carry
+no stale motion or buttons. A map-pan row carries exactly one of those requests
+or none; every other row carries none. The soak rows and every rule here are
+the same either way, and a pan-steady row must also keep every logged step
+interval within the legacy grader's periodic coverage, because its logged tick
+is the slot and only a widened interval shows a late step.
 """
 from __future__ import annotations
 
@@ -40,10 +45,11 @@ SCHEDULE = {"short_soak_ladder": evidence.SHORT_STEPS,
             "long_map_idle": (("long2h", "map-idle", 7200),),
             "long_map_pan": (("long2h", "map-pan", 7200),)}
 # A one-call key press occasionally lost a step; a map-pan row may carry one disclosed
-# pan extra with neutral mouse, or none. New runs use pan-press (PAN_EXTRA).
+# pan extra with neutral mouse, or none. New runs use pan-steady (PAN_EXTRA).
 PAN_EXTRAS = ({"name": route_extras.PAN_RETRY, "neutral_mouse": True},
-              {"name": route_extras.PAN_PRESS, "neutral_mouse": True})
-PAN_EXTRA = PAN_EXTRAS[1]
+              {"name": route_extras.PAN_PRESS, "neutral_mouse": True},
+              {"name": route_extras.PAN_STEADY, "neutral_mouse": True})
+PAN_EXTRA = PAN_EXTRAS[2]
 EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
 PRODUCER = "tools/hd_multires_hidden_session.py"
 SESSION_SCHEMA = "hd_multires_hidden_session_v1"
@@ -172,6 +178,22 @@ def pan_cycle_failures(rows: dict, route: str) -> list[str]:
     return failures
 
 
+def pan_coverage_failures(rows: dict, seconds: int) -> list[str]:
+    """The legacy grader's periodic coverage of the logged pan ticks (tools/hd_soak_report.py).
+
+    Every logged interval, from the route start to the first step and between steps, lies
+    within the pan interval and that interval plus two seconds; hits rise; the last step is
+    no further than that from the route end. A slot-anchored step logs its slot, so this is
+    what fails a route whose step came late.
+    """
+    if len(rows["RouteEnds"]) != 1:
+        return ["pan coverage requires one route end"]
+    events = [{name: row[source] for name, source in soak_log._PAN_FIELDS.items()} for row in rows["PanEvents"]]
+    return soak_report.hidden_pan_coverage_failures(
+        events, duration_ticks=seconds * TICKS_PER_SECOND, interval_sec=PAN_INTERVAL_SEC,
+        end_tick_delta=rows["RouteEnds"][0]["TickDelta"])
+
+
 def _extra_files(files: Any, spec: dict) -> bool:
     """The extra wrote nothing and its one named load slot is unchanged across the run."""
     names = {*spec["pre_files"], *spec["post_files"]}
@@ -277,6 +299,9 @@ def _step(row: Any, expected: tuple, base: Path, identity: dict, read: Reader, p
         pan_ok = not pan_cycle_failures(rows, route) and (
             len(rows["PanPlans"]) == 1 and pan_events >= seconds // PAN_INTERVAL_SEC - 2
             if route == "map-pan" else not rows["PanPlans"] and not pan_events)
+        # A slot-anchored step logs its slot; only its interval can show that it came late.
+        if spec is not None and spec["name"] == route_extras.PAN_STEADY:
+            pan_ok = pan_ok and not pan_coverage_failures(rows, seconds)
         completed = completed and not order and pan_ok and (
             session.get("map_route_completed") is True and session.get("input_or_callback_forced") is True
             and session.get("forced_mechanisms") == mechanisms and session.get("load_slot") == 0

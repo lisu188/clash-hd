@@ -396,9 +396,9 @@ The `pan-press` extra takes each press over from the soak:
   drives, and discloses `pan_press=cdb_extra_pressed_soak_pan_key_until_taken`.
 - `0x406FA2` and `0x407D26` are byte-identical in all 32 map candidates.
 
-A map-pan row may carry `{pan-press, neutral_mouse}`, `{pan-retry,
-neutral_mouse}` or no extra. Earlier pan-retry runs stay valid, and new
-farm runs use pan-press.
+A map-pan row may carry `{pan-steady, neutral_mouse}`, `{pan-press,
+neutral_mouse}`, `{pan-retry, neutral_mouse}` or no extra. Earlier runs
+stay valid, and new farm runs use pan-steady (next section).
 
 Validation on 2026-11-04 (hidden desktop, 1800 s map-pan, `pan-press` with
 `neutral_mouse`):
@@ -411,6 +411,77 @@ Validation on 2026-11-04 (hidden desktop, 1800 s map-pan, `pan-press` with
 - The same counters on two pan-retry runs (Modal Widgets 3840x2160 and
   Framed 1024x768) also hit their caps. Both runs stayed on the cycle, as
   expected at about one lost step in 1,700.
+
+### Slotted steps and ended debug-string lines (`pan-steady`)
+
+The first pan-press farm (2026-11-04, six to seven parallel hidden slots)
+completed fifteen two-hour pan runs, and every one failed the step floor of
+718 with 706 to 716 logged steps. No run lost a step to the handler or to a
+misreported breakpoint; a regrade of all 451 retained farm sessions found
+two other causes:
+
+- Drift. The soak restarts each ten-second interval at the redraw that
+  found a step due, so every step waits for one redraw and the waits add up
+  over 720 intervals. Two-hour runs at 23 to 46 redraws a second logged 718
+  or 719 steps. With the pan-press breakpoints on a loaded host the rate
+  fell to 7 to 10 a second, and seven runs logged exactly 716.
+- Lost rows. The Windows audio stack reports failures to an attached
+  debugger (`AUDIOSES.DLL`, `ReturnHr`, `88890004`). Such a string ends
+  without a newline when its result code has no message text, so the next
+  row CDB printed shared its line, and the anchored parser did not read it.
+  This lost 85 rows in 17 sessions, 78 of them in that farm: up to ten pan
+  rows in one run, 22 heartbeats and one route end.
+
+The same farm's start-up and proxy-build timeouts came with seven sessions
+running at once; the earlier farms at four parallel slots had passed all 74
+of their completed jobs.
+
+The `pan-steady` extra repeats the pan-press breakpoints unchanged and adds
+one rule to the takeover at `0x406FA2` and one debugger event handler:
+
+- A step's slot is the logged tick of the step before plus 640 ticks, and
+  the first slot counts from the route start. At the takeover the extra
+  moves the soak's own last-pan tick back to the slot, so the next interval
+  starts there and no drift adds up.
+- It does so only when the redraw came no more than 128 ticks after the
+  slot (the legacy grader's two-second allowance), that redraw printed no
+  heartbeat, and the extra also took over the step before. A heartbeat row
+  carries the redraw tick, and a later row must not carry an earlier one.
+- Otherwise the redraw tick stays and the next slot counts from it. One of
+  at most 32 logged `HDPAN_TICK_KEPT` rows records the step, the step the
+  extra expected, the heartbeat flag, the lateness and a running count.
+- The logged tick of a slotted step is therefore its slot, at most two
+  seconds before its redraw. A step that came later keeps its redraw tick
+  and widens its logged interval.
+- `sxe -c ".echo; gc" out` stops at every debug string the game process
+  prints and ends its line. Nothing is filtered: the strings stay in the
+  log, each on its own line. A synthetic debuggee showed the same strings
+  sharing a row's line without the handler and standing alone with it.
+- It writes the soak's step state and last-pan tick, the arrow keys the soak
+  itself drives and its own header-padding scratch, never a scroll field or
+  a native variable. It discloses
+  `pan_schedule=cdb_extra_logged_pan_step_at_its_slot_within_128_ticks` and
+  `debug_output=cdb_newline_after_each_debuggee_debug_string` beside the
+  pan-press mechanism.
+
+The replay grades a pan-steady row as any other pan row and adds the legacy
+grader's periodic coverage (`hidden_pan_coverage_failures`): every logged
+interval, from the route start to the first step and between steps, lies
+between 640 and 768 ticks, and the last step is no further than that from
+the route end. A late step therefore fails the row. Rows of the earlier
+extras keep their earlier grading.
+
+Validation on 2026-11-11 (hidden desktop, two parallel 600 s map-pan
+sessions, `pan-steady` with `neutral_mouse`):
+- Framed 1024x768 and Modal Widgets 3840x2160 both passed the session and
+  every replay rule, including the periodic coverage. Each logged all 59
+  steps of the route on the exact cycle, and every logged interval was
+  exactly 640 ticks, at 14.5 and 13.7 redraws a second.
+- Neither run needed a re-arm or kept a redraw tick, and each logged four
+  neutralized mouse reads.
+- No audio-stack string occurred in either run. The handler ended the lines
+  of the input-switch start-up strings that every session prints, and both
+  runs continued. The two-hour lane itself is validated by its farm runs.
 
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to

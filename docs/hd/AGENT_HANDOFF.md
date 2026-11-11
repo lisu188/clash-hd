@@ -258,11 +258,18 @@ campaign on Framed 1920x1080 replay as passing `save_load_roundtrip`,
 `turn_advancement` and `campaign_routes`; see
 [the launcher notes](MULTIRES_LAUNCHER.md).
 Lost pan steps came from CDB reporting some breakpoint hits twice and
-others not at all. A map-pan row may carry the disclosed `pan-press` extra
-with `neutral_mouse`, which takes each press over from the soak, or the
-earlier `pan-retry`. The farm runs `long_map_pan` and re-run pan rungs with
-pan-press. Probe counters can repeat or skip; keep every extra idempotent
-per state.
+others not at all; the `pan-press` extra takes each press over from the
+soak. The first two-hour pan-press farm (2026-11-04) then failed all fifteen
+completed pan runs on the step floor for two other reasons: the soak's
+per-step drift, and audio-stack debugger strings without a newline that
+shared the next log row's line. New pan rows carry the disclosed
+`pan-steady` extra with `neutral_mouse`, which logs each step at its
+ten-second slot and ends every debug string's line; its rows must also pass
+the legacy periodic coverage. Earlier `pan-press` and `pan-retry` rows stay
+valid. Run at most four hidden slots at once: seven overloaded the host into
+start-up and proxy-build timeouts. Probe counters can repeat or skip; keep
+every extra idempotent per state. See
+[the launcher notes](MULTIRES_LAUNCHER.md#slotted-steps-and-ended-debug-string-lines-pan-steady).
 
 The `geometry` lane (`hidden_cdb_geometry`) is the last runtime lane that a
 hidden desktop can produce, and neither context has a verifier for it yet

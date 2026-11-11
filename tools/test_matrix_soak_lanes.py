@@ -262,12 +262,14 @@ class SoakReplayTests(unittest.TestCase):
 
     def test_pan_rows_carry_exactly_the_disclosed_retry_extra_or_none(self):
         self.assertEqual(soak.PAN_EXTRAS, ({"name": "pan-retry", "neutral_mouse": True},
-                                           {"name": "pan-press", "neutral_mouse": True}))
-        self.assertEqual(soak.PAN_EXTRA, soak.PAN_EXTRAS[1])
-        # The one-call press alone and the earlier pan-retry remain valid pan rows, and so is a
-        # ladder rung with the extra.
+                                           {"name": "pan-press", "neutral_mouse": True},
+                                           {"name": "pan-steady", "neutral_mouse": True}))
+        self.assertEqual(soak.PAN_EXTRA, soak.PAN_EXTRAS[2])
+        # The one-call press alone, the earlier pan-retry and pan-press remain valid pan rows,
+        # and so is a ladder rung with the extra.
         self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=None))
         self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=soak.PAN_EXTRAS[0]))
+        self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=soak.PAN_EXTRAS[1]))
         self.assert_passes("short_soak_ladder", *self.lane("short_soak_ladder", pan_extra=soak.PAN_EXTRA))
         turn = {"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6}
         cases = {
@@ -297,6 +299,37 @@ class SoakReplayTests(unittest.TestCase):
         runs[0].session["route_extra"] = route_extras.prepare(soak.PAN_EXTRA, route="map-pan", duration=7200)
         failed, failures = self.failed("long_map_idle", root, runs)
         self.assertIn("route_completed", failed, failures)
+
+    def test_a_slot_anchored_pan_row_keeps_every_logged_interval_periodic(self):
+        press, steady = soak.PAN_EXTRAS[1], soak.PAN_EXTRAS[2]
+        row = re.compile(r"(SOAK_PAN_SET phase=\d x=\d+ y=\d+ hits=\d+ tickdelta=)(\d+)( delta=\(1,1\))")
+
+        def shifted(extra, ticks):
+            """A two-hour pan lane whose hundredth and later steps are logged ``ticks`` later."""
+            root, runs = self.lane("long_map_pan", pan_extra=extra)
+            lines = runs[0].log_lines
+            for index, line in enumerate(lines):
+                match = row.fullmatch(line)
+                if match and int(match[2]) >= 640 * 100:
+                    lines[index] = f"{match[1]}{int(match[2]) + ticks}{match[3]}"
+            return root, runs
+
+        # A slot logs exactly its interval; a kept tick may widen one by the two-second allowance.
+        self.assert_passes("long_map_pan", *shifted(steady, 0))
+        self.assert_passes("long_map_pan", *shifted(steady, 128))
+        for ticks in (129, 640, -1):
+            with self.subTest(ticks=ticks):
+                failed, failures = self.failed("long_map_pan", *shifted(steady, ticks))
+                self.assertEqual(failed, {"route_completed", "frame_progression"}, failures)
+                self.assertTrue(any("pan schedule" in item for item in failures), failures)
+        # Rows of the earlier extras keep their earlier grading.
+        self.assert_passes("long_map_pan", *shifted(press, 129))
+        self.assert_passes("long_map_pan", *shifted(None, 129))
+        # The coverage is the legacy grader's own, over the same parsed rows.
+        rows = soak.soak_log.parse_soak_log(("\r\n".join(shifted(steady, 129)[1][0].log_lines) + "\r\n").encode("ascii"))
+        self.assertTrue(any("periodic interval" in item for item in soak.pan_coverage_failures(rows, 7200)))
+        rows["RouteEnds"] = []
+        self.assertEqual(soak.pan_coverage_failures(rows, 7200), ["pan coverage requires one route end"])
 
     def release_lane(self, name, **changes):
         """A complete lane report pinned to the repository's actual hidden session producer."""

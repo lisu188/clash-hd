@@ -72,13 +72,23 @@ producer, and its disclosed forced map entry keeps these hidden evidence, not
 input or visible proof.
 
 A map-pan row, in the ladder or `long_map_pan`, may carry one disclosed pan
-extra with `neutral_mouse`: `pan-press`, which takes each press over from
-the soak so that a twice-reported or missed debugger breakpoint cannot lose
-a step, or the earlier `pan-retry`. Such a row must record exactly that
-spec and its mechanisms. The replay checks the extra's re-arm markers
-against the recorded observations and requires the loaded slot unchanged.
-A pan row without an extra is graded as before. Map-idle and menu rows must
-carry no extra.
+extra with `neutral_mouse`:
+- `pan-steady`, which new runs use. It presses as `pan-press` does, logs
+  each step at its ten-second slot so that the soak's per-step drift cannot
+  add up below the step floor, and ends the line of every debug string of
+  the game process so that none can swallow a soak row.
+- `pan-press`, which takes each press over from the soak so that a
+  twice-reported or missed debugger breakpoint cannot lose a step.
+- the earlier `pan-retry`.
+
+Such a row must record exactly that spec and its mechanisms. The replay
+checks the extra's markers against the recorded observations and requires
+the loaded slot unchanged. A `pan-steady` row must also keep every logged
+step interval within the legacy grader's periodic coverage, the pan interval
+up to that interval plus two seconds: its logged tick is the slot, so only a
+widened interval shows a step that came late. A pan row with an earlier
+extra or none is graded as before. Map-idle and menu rows must carry no
+extra.
 
 Framed 1920x1080 is the first cell with a passing soak lane in this context.
 Its replayed `short_soak_ladder` and `resolution_coverage` pass; the other
