@@ -282,6 +282,207 @@ With it, a three-day Complete HD 2560x1440 campaign and its end-state reload
 both passed, with no access violation. Whether a real cursor far outside a
 centered native screen can reach the same unchecked read remains an open
 question for a targeted diagnostic.
+
+### Re-armed pan steps (`pan-retry`)
+
+The soak extra holds one arrow key for exactly one call of the native
+handler (`0x407D20`) and logs the resulting scroll at the next call. By
+2026-11-04, six of the 19 completed 1800 s pan rungs in the hidden farm
+had failed the strict cycle regrade, with no global order failure:
+- In five, the handler declined a held key, so one step never moved
+  and the following steps drifted off the cycle.
+- In one, an audio-stack debug string without a newline (`AUDIOSES`
+  `ReturnHr`, `88890004`) shared the log line of one `SOAK_PAN_SET` row,
+  so the row was lost. This occurred in 1 of 140 retained logs.
+
+A static CDB disassembly of a candidate shows three branches to the
+handler's common exit (`0x407F3C`) that decline a held key:
+- the scroll rate limit (`jbe` at `0x407D4A`, while now is not after the
+  last scroll time plus 16 less the speed);
+- the input flag `0x545140` (`jne` at `0x407D57`);
+- a held Alt key (`jne` at `0x407D69`).
+
+Every call that is not skipped then reaches `0x407E95`, after the four
+arrow blocks. The key test itself (`0x461570`) only reads bit 7 of the
+keyboard byte. These four sites are byte-identical in all 32 map
+candidates; only the clamp constants differ by resolution.
+
+The `pan-retry` extra runs on the soak's own map-pan route (600, 1800 or
+7200 s). It returns the soak step to its due state, and the soak presses
+the same key again at the next call, in either case:
+- one of the three branches is about to decline the soak's held key;
+- the key is still held at `0x407E95` and the scroll is exactly the
+  previous step's position.
+
+The extra's own rules:
+- It writes only the soak extra's step state, never the scroll fields, the
+  keyboard state or a native variable.
+- Native code still applies every check, clamp and repaint.
+- The soak counts no redraws while a step is due or held, so no heartbeat
+  can separate a scroll move from its row.
+- A step is re-armed at most 64 times, then the probe prints
+  `HDPAN_REARM_LIMIT` and fails closed. The first 32 re-arms are logged.
+- At `0x407E95` a row's value packs the four held arrow bytes, so a key
+  cleared before the handler read it shows as 0.
+- The extra's own rows begin on a fresh line.
+
+The run discloses `pan_retry=cdb_soak_pan_step_rearmed_when_handler_declines`.
+Any map-pan row, a ladder rung or the two-hour lane, may carry exactly this
+extra with `neutral_mouse`, or no extra. Map-idle and menu rows carry none.
+The soak rows and every grading rule are the same either way. The farm runs
+the two-hour pan lane and new pan rungs with it.
+
+A forced pan on the map-idle route was rejected. The session's own map
+grading, which is pinned, refuses any scroll change without a
+`SOAK_PAN_SET` row, and a validation run failed exactly so.
+
+Validation on 2026-11-04 (hidden desktop, 600 s map-pan):
+- Modal Widgets 3840x2160 (branch sites only) and Framed 1024x768 (all four
+  sites) passed the session and the replay's step rules. Each logged 59 pan
+  events on the exact cycle with neutralized mouse reads, and neither
+  needed a re-arm.
+- A Complete HD 1366x768 diagnostic forced every path; the native flag
+  and the scroll fields were never written:
+  - At step 5, `eax` was set to 1 at the input-flag test (`0x407D55`), so
+    the branch declined the key three times.
+  - At steps 10 and 15, the held arrow bytes were cleared at the handler
+    entry three times, and the join logged `not_taken` with value 0.
+  - Each of those steps was then taken on the cycle with its original
+    due tick.
+  - Step 50 was cleared 70 times, logged `HDPAN_REARM_LIMIT`, and failed
+    the session, the extra's markers and the cycle regrade.
+  That diagnostic is not evidence. The template's echo text was reflowed
+  afterwards so that no echoed line begins with a marker name; its
+  commands are unchanged.
+
+### Lost steps come from the debugger (`pan-press`)
+
+The handler was not what lost the steps; the debugger's breakpoint reports
+were. In about 2,500 natural pan-retry steps no re-arm ever fired, yet a
+pan-retry ladder rung (Modal Widgets 3840x2160, 1800 s) lost an Up step
+with no re-arm logged:
+- `[0x545140]` is not the copied mouse state, which is based at
+  `0x545198`, and a 120 s hidden map-idle diagnostic never saw it set.
+- Only the arrow handler reads or writes the last-scroll time
+  `0x5202A0`.
+- CDB reports some breakpoint hits twice and others not at all. A
+  campaign run logged two non-adjacent breakpoints twice in a row. Hit
+  counters on two consecutive handler instructions (`0x407D21`,
+  `0x407D22`) diverged in both directions, hitting a 24-row log cap
+  within minutes in each of three runs. Consecutive breakpoints stress
+  the debugger's step-over, so that rate overstates isolated ones.
+
+When the soak's own entry breakpoint (`0x407D20`) is reported twice on the
+call that presses a key, its second run sees the key held. It prints the
+unmoved scroll and ends the step before the handler reads the key, so no
+branch ever declines. When its print call is not reported, the key stays
+held for one more call.
+
+The `pan-press` extra takes each press over from the soak:
+- Right after the soak's redraw breakpoint marks a step due (`0x406FA1`),
+  `0x406FA2` moves the step to a private state that the soak ignores.
+- At `0x407D26`, inside the handler and after the soak's entry
+  breakpoint, it clears the four arrows and presses the soak's own key
+  toward the step's target. It then hands the step back, so the soak
+  prints the result at the next call.
+- It re-arms declined or untaken steps exactly as pan-retry does, and
+  only while a key is held.
+- At the join after the arrow blocks (`0x407E95`) it releases the key once
+  the scroll has moved, so a missed print call cannot move a second cell.
+- Each breakpoint acts only on the one state it expects. A twice-reported
+  breakpoint repeats nothing, and a missed one waits for the next call.
+  Losing a step now takes two bad reports within one step.
+- It writes only the soak's step state and the arrow keys the soak itself
+  drives, and discloses `pan_press=cdb_extra_pressed_soak_pan_key_until_taken`.
+- `0x406FA2` and `0x407D26` are byte-identical in all 32 map candidates.
+
+A map-pan row may carry `{pan-steady, neutral_mouse}`, `{pan-press,
+neutral_mouse}`, `{pan-retry, neutral_mouse}` or no extra. Earlier runs
+stay valid, and new farm runs use pan-steady (next section).
+
+Validation on 2026-11-04 (hidden desktop, 1800 s map-pan, `pan-press` with
+`neutral_mouse`):
+- Framed 1024x768 passed the session and the replay's step rules: 179 pan
+  events on the exact cycle, no re-arm and four neutralized mouse reads.
+- A Modal Widgets 3840x2160 diagnostic added the consecutive-instruction
+  counters. They hit their 24-row cap within the first minute, yet all 179
+  pan events stayed on the exact cycle with no re-arm and no limit. That
+  diagnostic is not evidence.
+- The same counters on two pan-retry runs (Modal Widgets 3840x2160 and
+  Framed 1024x768) also hit their caps. Both runs stayed on the cycle, as
+  expected at about one lost step in 1,700.
+
+### Slotted steps and ended debug-string lines (`pan-steady`)
+
+The first pan-press farm (2026-11-04, six to seven parallel hidden slots)
+completed fifteen two-hour pan runs, and every one failed the step floor of
+718 with 706 to 716 logged steps. No run lost a step to the handler or to a
+misreported breakpoint; a regrade of all 451 retained farm sessions found
+two other causes:
+
+- Drift. The soak restarts each ten-second interval at the redraw that
+  found a step due, so every step waits for one redraw and the waits add up
+  over 720 intervals. Two-hour runs at 23 to 46 redraws a second logged 718
+  or 719 steps. With the pan-press breakpoints on a loaded host the rate
+  fell to 7 to 10 a second, and seven runs logged exactly 716.
+- Lost rows. The Windows audio stack reports failures to an attached
+  debugger (`AUDIOSES.DLL`, `ReturnHr`, `88890004`). Such a string ends
+  without a newline when its result code has no message text, so the next
+  row CDB printed shared its line, and the anchored parser did not read it.
+  This lost 85 rows in 17 sessions, 78 of them in that farm: up to ten pan
+  rows in one run, 22 heartbeats and one route end.
+
+The same farm's start-up and proxy-build timeouts came with seven sessions
+running at once; the earlier farms at four parallel slots had passed all 74
+of their completed jobs.
+
+The `pan-steady` extra repeats the pan-press breakpoints unchanged and adds
+one rule to the takeover at `0x406FA2` and one debugger event handler:
+
+- A step's slot is the logged tick of the step before plus 640 ticks, and
+  the first slot counts from the route start. At the takeover the extra
+  moves the soak's own last-pan tick back to the slot, so the next interval
+  starts there and no drift adds up.
+- It does so only when the redraw came no more than 128 ticks after the
+  slot (the legacy grader's two-second allowance), that redraw printed no
+  heartbeat, and the extra also took over the step before. A heartbeat row
+  carries the redraw tick, and a later row must not carry an earlier one.
+- Otherwise the redraw tick stays and the next slot counts from it. One of
+  at most 32 logged `HDPAN_TICK_KEPT` rows records the step, the step the
+  extra expected, the heartbeat flag, the lateness and a running count.
+- The logged tick of a slotted step is therefore its slot, at most two
+  seconds before its redraw. A step that came later keeps its redraw tick
+  and widens its logged interval.
+- `sxe -c ".echo; gc" out` stops at every debug string the game process
+  prints and ends its line. Nothing is filtered: the strings stay in the
+  log, each on its own line. A synthetic debuggee showed the same strings
+  sharing a row's line without the handler and standing alone with it.
+- It writes the soak's step state and last-pan tick, the arrow keys the soak
+  itself drives and its own header-padding scratch, never a scroll field or
+  a native variable. It discloses
+  `pan_schedule=cdb_extra_logged_pan_step_at_its_slot_within_128_ticks` and
+  `debug_output=cdb_newline_after_each_debuggee_debug_string` beside the
+  pan-press mechanism.
+
+The replay grades a pan-steady row as any other pan row and adds the legacy
+grader's periodic coverage (`hidden_pan_coverage_failures`): every logged
+interval, from the route start to the first step and between steps, lies
+between 640 and 768 ticks, and the last step is no further than that from
+the route end. A late step therefore fails the row. Rows of the earlier
+extras keep their earlier grading.
+
+Validation on 2026-11-11 (hidden desktop, two parallel 600 s map-pan
+sessions, `pan-steady` with `neutral_mouse`):
+- Framed 1024x768 and Modal Widgets 3840x2160 both passed the session and
+  every replay rule, including the periodic coverage. Each logged all 59
+  steps of the route on the exact cycle, and every logged interval was
+  exactly 640 ticks, at 14.5 and 13.7 redraws a second.
+- Neither run needed a re-arm or kept a redraw tick, and each logged four
+  neutralized mouse reads.
+- No audio-stack string occurred in either run. The handler ended the lines
+  of the input-switch start-up strings that every session prints, and both
+  runs continued. The two-hour lane itself is validated by its farm runs.
+
 `tools/hd_multires_visible_session.py` can prepare a specific Classic 1080p
 five-minute acquisition/menu plan. Execution requires a fresh approval bound to
 the exact plan, sources, candidate, assets and scope. It injects no input.

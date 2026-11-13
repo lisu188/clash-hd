@@ -335,5 +335,277 @@ class NeutralMouseTests(unittest.TestCase):
         self.assertTrue(extras.observe(spec, log + "HDNEUTRAL_MOUSE_READ hresult=00000000\r\n")[1])
 
 
+
+PAN_RETRY_TEMPLATE = (ROOT / extras.PAN_RETRY_TEMPLATE).read_bytes()
+
+
+def pan_retry_spec(duration=7200, **request):
+    return extras.prepare({"name": "pan-retry", **request}, route="map-pan", duration=duration)
+
+
+class PanRetryTests(unittest.TestCase):
+    def test_prepare_fixes_the_soak_pan_routes_mechanism_sites_and_untouched_slot(self):
+        for duration in (600, 1800, 7200):
+            spec = pan_retry_spec(duration)
+            self.assertEqual((spec["name"], spec["load_slot"], spec["pre_files"], spec["post_files"]),
+                             ("pan-retry", 0, ["save/0.dat"], []))
+            self.assertEqual(spec["sites"], ["00407D4A", "00407D57", "00407D69", "00407E95"])
+            self.assertEqual(spec["mechanisms"], {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"})
+        for route, duration in (("map-idle", 7200), ("map-idle", 120), ("map-pan", 120), ("menu-idle", 600)):
+            with self.subTest(route=route, duration=duration), self.assertRaisesRegex(ValueError, "map-pan route"):
+                extras.prepare({"name": "pan-retry"}, route=route, duration=duration)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            pan_retry_spec(load_slot=0)
+        self.assertEqual(pan_retry_spec(neutral_mouse=True)["sites"],
+                         ["00407D4A", "00407D57", "00407D69", "00407E95", "0047C02C"])
+
+    def test_compose_rearms_only_the_soak_held_step_at_each_declining_branch(self):
+        text = extras.compose(pan_retry_spec(neutral_mouse=True), PAN_RETRY_TEMPLATE)
+        self.assertEqual(extras.breakpoint_sites(text), ["00407D4A", "00407D57", "00407D69", "00407E95", "0047C02C"])
+        branches = {line.split()[1]: line for line in text.split("\r\n") if line.startswith("bp 00407")}
+        # At the join the soak's key is still held and the scroll is exactly the previous step's position.
+        unmoved = ("(poi(poi(005202e4)+0n140008) == ((poi(00400058) + (((((poi(00400050)+3) & 3) == 1) | "
+                   "(((poi(00400050)+3) & 3) == 2)) * poi(00400068))) & 0xffffffff)) & "
+                   "(poi(poi(005202e4)+0n140012) == ((poi(0040005c) + (((((poi(00400050)+3) & 3) == 2) | "
+                   "(((poi(00400050)+3) & 3) == 3)) * poi(0040006c))) & 0xffffffff))")
+        for site, condition in (("00407D4A", "(@eax <= @edx)"), ("00407D57", "(@eax != 0)"),
+                                ("00407D69", "(@eax != 0)"), ("00407E95", unmoved)):
+            line = branches[site]
+            # Only while the soak holds its key, and only when the native branch is about to decline it.
+            self.assertTrue(line.startswith(f'bp {site} ".if ((poi(00400040) == 6) & {condition}) {{'), site)
+            # The soak's own step state and this extra's header-padding scratch are the only writes.
+            self.assertEqual(set(re.findall(r"\b(?:ed|eb|ew) (\S+)", line)),
+                             {"004003c0", "004003c4", "004003c8", "004003cc", "00400040"}, site)
+            self.assertIn("ed 00400040 5;", line)
+            self.assertIn("(poi(004003c8) < 0n64)", line)
+            self.assertIn("(poi(004003cc) < 0n32)", line)
+            self.assertTrue(line.endswith('}; gc"'), site)
+        # No scroll field, keyboard state, register or native variable is written by the extra.
+        self.assertNotRegex(text, r"\b(?:ed|eb|ew) (?:0054|0052|poi)|\br e[a-z]x=|005451cc")
+
+    def test_no_template_echoes_a_line_that_begins_with_a_marker_name(self):
+        # CDB prints each .echo text as its own log line; one that began with a soak or extra
+        # marker name could read as a malformed row or a marker.
+        token = re.compile(r"[A-Z][A-Z0-9]*_[A-Z0-9_]+(?:\s|$)")
+        for template in extras.SOURCES:
+            with self.subTest(template=template):
+                lines = (ROOT / template).read_text(encoding="ascii").replace("\r\n", "\n").split("\n")
+                echoed = [line[len(".echo "):] for line in lines if line.startswith(".echo ")]
+                self.assertTrue(echoed)
+                self.assertEqual([line for line in echoed if token.match(line)], [])
+
+    def test_markers_bind_bounded_rearms_and_fail_at_the_limit(self):
+        spec = pan_retry_spec(neutral_mouse=True)
+        reads = "HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n"
+        self.assertEqual(extras.observe(spec, reads), ({"rearms": [], "limits": [], "neutral_mouse_reads": 1}, []))
+        rows = ("\r\nHDPAN_REARM reason=rate_limit step=41 count=1 total=1 value=3\r\n"
+                "\r\nHDPAN_REARM reason=input_flag step=41 count=2 total=2 value=1\r\n"
+                "\r\nHDPAN_REARM reason=alt_held step=90 count=1 total=3 value=80\r\n"
+                "\r\nHDPAN_REARM reason=not_taken step=91 count=1 total=4 value=8000\r\n")
+        fields, failures = extras.observe(spec, reads + rows)
+        self.assertEqual(failures, [])
+        self.assertEqual([(row["reason"], row["step"], row["count"], row["total"], row["value"])
+                          for row in fields["rearms"]],
+                         [("rate_limit", 41, 1, 1, 3), ("input_flag", 41, 2, 2, 1), ("alt_held", 90, 1, 3, 0x80),
+                          ("not_taken", 91, 1, 4, 0x8000)])
+        many = "".join(f"HDPAN_REARM reason=rate_limit step={n} count=1 total={n + 1} value=1\r\n" for n in range(33))
+        for text, message in ((rows + "HDPAN_REARM_LIMIT step=41\r\n", "exhausted"),
+                              (rows.replace("total=2", "total=5"), "running log"),
+                              (rows.replace("count=1 total=1", "count=65 total=1"), "running log"),
+                              (many, "running log")):
+            with self.subTest(message=message):
+                self.assertTrue(any(message in item for item in extras.observe(spec, reads + text)[1]))
+        # Echoed commands are not markers.
+        echoed = '0:000> .printf "HDPAN_REARM reason=rate_limit step=1 count=1 total=1 value=1"\r\n'
+        self.assertEqual(extras.observe(spec, reads + echoed)[0]["rearms"], [])
+
+
+
+PAN_PRESS_TEMPLATE = (ROOT / extras.PAN_PRESS_TEMPLATE).read_bytes()
+
+
+class PanPressTests(unittest.TestCase):
+    def test_prepare_shares_the_retry_routes_and_slot_with_its_own_sites(self):
+        for duration in (600, 1800, 7200):
+            spec = extras.prepare({"name": "pan-press"}, route="map-pan", duration=duration)
+            self.assertEqual((spec["name"], spec["load_slot"], spec["pre_files"], spec["post_files"], spec["template"]),
+                             ("pan-press", 0, ["save/0.dat"], [], extras.PAN_PRESS_TEMPLATE))
+            self.assertEqual(spec["sites"], ["00406FA2", "00407D26", "00407D4A", "00407D57", "00407D69", "00407E95"])
+            self.assertEqual(spec["mechanisms"], {"pan_press": "cdb_extra_pressed_soak_pan_key_until_taken"})
+        for route, duration in (("map-idle", 7200), ("map-pan", 120)):
+            with self.assertRaisesRegex(ValueError, "map-pan route"):
+                extras.prepare({"name": "pan-press"}, route=route, duration=duration)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            extras.prepare({"name": "pan-press", "load_slot": 0}, route="map-pan", duration=600)
+        # pan-retry keeps its exact spec.
+        self.assertEqual(extras.prepare({"name": "pan-retry"}, route="map-pan", duration=600)["sites"],
+                         ["00407D4A", "00407D57", "00407D69", "00407E95"])
+
+    def test_each_breakpoint_acts_on_only_the_one_state_it_expects(self):
+        spec = extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan", duration=7200)
+        text = extras.compose(spec, PAN_PRESS_TEMPLATE)
+        self.assertEqual(extras.breakpoint_sites(text), spec["sites"])
+        lines = {line.split()[1]: line for line in text.split("\r\n") if line.startswith("bp ")}
+        held = "(((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0)"
+        # The redraw takeover: a due soak step (5) becomes the private state 8, nothing else.
+        self.assertEqual(lines["00406FA2"],
+                         'bp 00406FA2 ".if (poi(00400040) == 5) { ed 00400040 8; ed 004003d0 (poi(004003d0)+1) }; gc"')
+        # The press: only state 8; clears the four arrows, presses toward the target, hands back state 6.
+        press = lines["00407D26"]
+        self.assertTrue(press.startswith('bp 00407D26 ".if (poi(00400040) == 8) { eb 00545294 00; eb 00545297 00; '
+                                         'eb 00545299 00; eb 0054529c 00; '), press)
+        self.assertTrue(press.endswith('; ed 00400040 6 }; gc"'), press)
+        self.assertEqual(sorted(set(__import__("re").findall(r"eb (005452\w\w) 80", press))),
+                         ["00545294", "00545297", "00545299", "0054529c"])
+        # Re-arms: only state 6 with a held key, back to the private state.
+        for site in ("00407D4A", "00407D57", "00407D69"):
+            self.assertTrue(lines[site].startswith(f'bp {site} ".if ((poi(00400040) == 6) & {held} & '), site)
+        # The join re-arms an unmoved held key and otherwise releases it after the move.
+        join = lines["00407E95"]
+        self.assertTrue(join.startswith(f'bp 00407E95 ".if ((poi(00400040) == 6) & {held}) {{ .if (('), join)
+        self.assertTrue(join.endswith('.else { eb 00545294 00; eb 00545297 00; eb 00545299 00; eb 0054529c 00 } }; gc"'),
+                        join)
+        for site in ("00407D4A", "00407D57", "00407D69", "00407E95"):
+            self.assertIn("ed 00400040 8;", lines[site])
+            self.assertNotIn("ed 00400040 5", lines[site])
+        # No breakpoint ever hands the soak its own due state, and nothing writes scroll fields.
+        self.assertNotIn("ed 00400040 5", text)
+        self.assertNotRegex(text, r"\b(?:ed|eb|ew) (?:0052|poi)|\br e[a-z]x=")
+
+    def test_markers_share_the_retry_grammar(self):
+        spec = extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan", duration=600)
+        log = ("HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n"
+               "\r\nHDPAN_REARM reason=not_taken step=91 count=1 total=1 value=8000\r\n")
+        fields, failures = extras.observe(spec, log)
+        self.assertEqual((failures, [row["reason"] for row in fields["rearms"]]), ([], ["not_taken"]))
+        self.assertTrue(extras.observe(spec, log + "HDPAN_REARM_LIMIT step=91\r\n")[1])
+
+
+PAN_STEADY_TEMPLATE = (ROOT / extras.PAN_STEADY_TEMPLATE).read_bytes()
+
+
+def pan_steady_spec(duration=7200):
+    return extras.prepare({"name": "pan-steady", "neutral_mouse": True}, route="map-pan", duration=duration)
+
+
+class PanSteadyTests(unittest.TestCase):
+    def test_prepare_keeps_the_press_sites_and_discloses_both_additions(self):
+        for duration in (600, 1800, 7200):
+            spec = extras.prepare({"name": "pan-steady"}, route="map-pan", duration=duration)
+            self.assertEqual((spec["name"], spec["load_slot"], spec["pre_files"], spec["post_files"], spec["template"]),
+                             ("pan-steady", 0, ["save/0.dat"], [], extras.PAN_STEADY_TEMPLATE))
+            self.assertEqual(spec["sites"], ["00406FA2", "00407D26", "00407D4A", "00407D57", "00407D69", "00407E95"])
+            self.assertEqual(spec["mechanisms"], {
+                "pan_press": "cdb_extra_pressed_soak_pan_key_until_taken",
+                "pan_schedule": "cdb_extra_logged_pan_step_at_its_slot_within_128_ticks",
+                "debug_output": "cdb_newline_after_each_debuggee_debug_string"})
+        self.assertIn(extras.PAN_STEADY_TEMPLATE, extras.SOURCES)
+        for route, duration in (("map-idle", 7200), ("map-pan", 120), ("menu-idle", 120)):
+            with self.assertRaisesRegex(ValueError, "map-pan route"):
+                extras.prepare({"name": "pan-steady"}, route=route, duration=duration)
+        for request in ({"name": "pan-steady", "load_slot": 0}, {"name": ["pan-steady"]}, {"name": "pan-steadier"}):
+            with self.assertRaisesRegex(ValueError, "exactly"):
+                extras.prepare(request, route="map-pan", duration=600)
+        # The earlier pan extras keep their exact specs.
+        self.assertEqual(extras.prepare({"name": "pan-press"}, route="map-pan", duration=600)["mechanisms"],
+                         {"pan_press": "cdb_extra_pressed_soak_pan_key_until_taken"})
+        self.assertEqual(extras.prepare({"name": "pan-retry"}, route="map-pan", duration=600)["mechanisms"],
+                         {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"})
+
+    def test_takeover_slots_a_step_only_on_time_off_a_heartbeat_and_in_sequence(self):
+        spec = pan_steady_spec()
+        text = extras.compose(spec, PAN_STEADY_TEMPLATE)
+        self.assertEqual(extras.breakpoint_sites(text), spec["sites"])
+        lines = text.split("\r\n")
+        sites = {line.split()[1]: line for line in lines if line.startswith("bp ")}
+        # The press, the re-arms, the release and the neutral mouse are pan-press's own lines.
+        press = extras.compose(extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan",
+                                              duration=7200), PAN_PRESS_TEMPLATE)
+        press_sites = {line.split()[1]: line for line in press.split("\r\n") if line.startswith("bp ")}
+        for site in ("00407D26", "00407D4A", "00407D57", "00407D69", "00407E95", "0047C02C"):
+            self.assertEqual(sites[site], press_sites[site], site)
+        # The interval is the session's and the allowance the legacy grader's; the soak restarts
+        # each interval at its redraw tick, logs that tick and prints heartbeats on this mask.
+        interval, allowance = extras.PAN_INTERVAL_TICKS, extras.PAN_SLOT_ALLOWANCE_TICKS
+        self.assertEqual((interval, allowance, extras.SOAK_HEARTBEAT_MASK), (640, 128, 0x7FF))
+        self.assertIn("\nMAP_PAN_INTERVAL_SEC = 10\n",
+                      (ROOT / "tools/hd_multires_hidden_session.py").read_text(encoding="utf-8"))
+        self.assertIn("maximum_gap = interval_ticks + 2 * 64",
+                      (ROOT / "tools/hd_soak_report.py").read_text(encoding="utf-8"))
+        soak = (ROOT / "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb").read_text(encoding="ascii")
+        for assumed in ("(poi(00400048) & 0x7ff) == 0", "ed 00400054 poi(0040004c); ed 00400040 5;",
+                        "poi(00400054)-poi(00400044)", "ed 00400054 poi(00400044);"):
+            self.assertIn(assumed, soak)
+        takeover = sites["00406FA2"]
+        # Only a due soak step (5) is taken over; step 0 starts from the route's own start tick.
+        self.assertTrue(takeover.startswith('bp 00406FA2 ".if (poi(00400040) == 5) { ed 00400040 8; '
+                                            '.if (poi(00400050) == 0) { ed 004003d0 0; ed 004003d4 poi(00400044) }; '),
+                        takeover)
+        # The slot: in sequence, off a heartbeat redraw, and from the interval to the allowance late.
+        slotted = ("(poi(004003d0) == poi(00400050)) & ((poi(00400048) & 0x7ff) != 0) & "
+                   f"(poi(00400054) >= (poi(004003d4) + 0n{interval})) & "
+                   f"(poi(00400054) <= (poi(004003d4) + 0n{interval + allowance}))")
+        self.assertIn(f".if ({slotted}) {{ ed 00400054 (poi(004003d4) + 0n{interval}); "
+                      "ed 004003d8 (poi(004003d8)+1) } .else { ed 004003dc (poi(004003dc)+1); "
+                      ".if (poi(004003e0) < 0n32) {", takeover)
+        self.assertIn(r'.printf \"\\nHDPAN_TICK_KEPT step=%d expected=%d beat=%d late=%d count=%d\\n\", '
+                      "poi(00400050), poi(004003d0), ((poi(00400048) & 0x7ff) == 0), "
+                      f"(poi(00400054) - poi(004003d4) - 0n{interval}), poi(004003dc)", takeover)
+        # Either way the logged tick becomes the next slot's base and the next step is expected.
+        self.assertTrue(takeover.endswith('; ed 004003d4 poi(00400054); ed 004003d0 (poi(00400050)+1) }; gc"'), takeover)
+        # It writes the soak's step state and last-pan tick and its own header-padding scratch only.
+        self.assertEqual(set(re.findall(r"\b(?:ed|eb|ew) (\S+)", takeover)),
+                         {"00400040", "00400054", "004003d0", "004003d4", "004003d8", "004003dc", "004003e0"})
+        self.assertEqual(extras.PAN_KEPT_LOGGED, 32)
+        for address in {int(value, 16) for value in re.findall(r"\b(004003[0-9a-f]{2})\b", text)}:
+            self.assertTrue(0x4003C0 <= address <= 0x4003FC, hex(address))
+        # No breakpoint hands the soak its own due state; no scroll field or register is written.
+        self.assertNotIn("ed 00400040 5", text)
+        self.assertNotRegex(text, r"\b(?:ed|eb|ew) (?:0052|poi)|\br e[a-z]x=")
+
+    def test_every_debug_string_line_is_ended_and_nothing_is_filtered(self):
+        lines = extras.compose(pan_steady_spec(600), PAN_STEADY_TEMPLATE).split("\r\n")
+        # One event handler for every debuggee string, set before any breakpoint: an empty echo
+        # ends the string's line, then execution continues as it was.
+        self.assertEqual([line for line in lines if line.startswith(("sxe", "sxd", "sxn", "sxi", "sxr"))],
+                         ['sxe -c ".echo; gc" out'])
+        self.assertLess(lines.index('sxe -c ".echo; gc" out'),
+                        min(index for index, line in enumerate(lines) if line.startswith("bp ")))
+        self.assertFalse([line for line in lines if not line.startswith(".echo ") and ".ofilter" in line])
+        # The earlier pan extras do not handle debug strings at all.
+        for template in (PAN_RETRY_TEMPLATE, PAN_PRESS_TEMPLATE):
+            self.assertNotIn(b"\nsxe ", template)
+
+    def test_kept_tick_rows_are_a_bounded_running_log_with_a_reason_each(self):
+        spec = pan_steady_spec(600)
+        reads = "HDNEUTRAL_MOUSE_READ hresult=8007000c\r\n"
+        self.assertEqual(extras.observe(spec, reads),
+                         ({"rearms": [], "limits": [], "ticks_kept": [], "neutral_mouse_reads": 1}, []))
+        rows = ("\r\nHDPAN_TICK_KEPT step=12 expected=12 beat=1 late=3 count=1\r\n"
+                "\r\nHDPAN_TICK_KEPT step=40 expected=39 beat=0 late=-640 count=2\r\n"
+                "\r\nHDPAN_TICK_KEPT step=77 expected=77 beat=0 late=129 count=3\r\n"
+                "\r\nHDPAN_REARM reason=not_taken step=91 count=1 total=1 value=8000\r\n")
+        fields, failures = extras.observe(spec, reads + rows)
+        self.assertEqual(failures, [])
+        self.assertEqual([(row["step"], row["expected"], row["beat"], row["late"], row["count"])
+                          for row in fields["ticks_kept"]],
+                         [(12, 12, 1, 3, 1), (40, 39, 0, -640, 2), (77, 77, 0, 129, 3)])
+        self.assertEqual([row["reason"] for row in fields["rearms"]], ["not_taken"])
+        many = "".join(f"HDPAN_TICK_KEPT step={n} expected={n} beat=1 late=1 count={n + 1}\r\n" for n in range(33))
+        for text, message in ((rows.replace("count=2", "count=5"), "kept-tick"),
+                              # A repeated step, and a row that shows no reason to keep its tick.
+                              (rows.replace("step=40 expected=39", "step=12 expected=11"), "kept-tick"),
+                              (rows.replace("beat=0 late=129", "beat=0 late=128"), "kept-tick"),
+                              (many, "kept-tick"),
+                              (rows + "HDPAN_REARM_LIMIT step=91\r\n", "exhausted")):
+            with self.subTest(text=text[:60]):
+                self.assertTrue(any(message in item for item in extras.observe(spec, reads + text)[1]))
+        # pan-press observations keep their shape, and echoed commands are not markers.
+        press = extras.prepare({"name": "pan-press", "neutral_mouse": True}, route="map-pan", duration=600)
+        self.assertNotIn("ticks_kept", extras.observe(press, reads + rows)[0])
+        echoed = '0:000> .printf "HDPAN_TICK_KEPT step=1 expected=1 beat=1 late=0 count=1"\r\n'
+        self.assertEqual(extras.observe(spec, reads + echoed)[0]["ticks_kept"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

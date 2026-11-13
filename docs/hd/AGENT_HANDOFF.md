@@ -257,6 +257,38 @@ producer. Its forced-save round trip, forced day of turns and three-day
 campaign on Framed 1920x1080 replay as passing `save_load_roundtrip`,
 `turn_advancement` and `campaign_routes`; see
 [the launcher notes](MULTIRES_LAUNCHER.md).
+Lost pan steps came from CDB reporting some breakpoint hits twice and
+others not at all; the `pan-press` extra takes each press over from the
+soak. The first two-hour pan-press farm (2026-11-04) then failed all fifteen
+completed pan runs on the step floor for two other reasons: the soak's
+per-step drift, and audio-stack debugger strings without a newline that
+shared the next log row's line. New pan rows carry the disclosed
+`pan-steady` extra with `neutral_mouse`, which logs each step at its
+ten-second slot and ends every debug string's line; its rows must also pass
+the legacy periodic coverage. Earlier `pan-press` and `pan-retry` rows stay
+valid. Run at most four hidden slots at once: seven overloaded the host into
+start-up and proxy-build timeouts. Probe counters can repeat or skip; keep
+every extra idempotent per state. See
+[the launcher notes](MULTIRES_LAUNCHER.md#slotted-steps-and-ended-debug-string-lines-pan-steady).
+
+The `geometry` lane (`hidden_cdb_geometry`) is the last runtime lane that a
+hidden desktop can produce, and neither context has a verifier for it yet
+(`LANE_VERIFIERS` holds only `resolution_coverage` and `panel_command`).
+Scope, not started:
+- `loaded_candidate_contract`: the canonical loaded-image marker, which every
+  successor session already requires.
+- `frame_and_footer`, `partial_tiles` and `minimap_viewport`: measurements on
+  retained full-canvas map frames against the cell's recipe. The arrow
+  handler's clamps are resolution-patched; on Modal Widgets 3840x2160 they
+  are width less 59 and height less 33.
+- `army_panel`, `modal_canvas`, `centered_native_screens` and `map_return`:
+  disclosed forced entry into the army panel and the castle and barracks
+  screens through new route extras, frames of each, and the map after return.
+- The legacy stage tools (`minimap_viewport_audit.py`,
+  `framed_modal_canvas_probe.py`, `castle_ui_center_geometry.py`,
+  `partial_tile_trace_probe.py`) each encode one stage's fixed geometry. They
+  need per-cell generalization from the candidate recipe, plus a replay
+  module with negative fixtures. Expect several days of work.
 
 The four all-preset source constructors are
 [`classic_all_presets_candidate.py`](../../src/patcher/classic_all_presets_candidate.py),

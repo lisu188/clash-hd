@@ -31,7 +31,7 @@ jobs:
     env:
       CLASH_LAUNCHER_UI_TESTS: '1'
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -111,7 +111,7 @@ jobs:
           report = {'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(), 'gui_sha256': hashlib.sha256(Path('src/launcher/gui.py').read_bytes()).hexdigest(), 'capture_method': 'actual Tk widgets on isolated Linux Xvfb at 96 DPI', 'game_installed': False, 'candidate_built': False, 'game_runtime_executed': False, 'manual_input_proof': False, 'screenshots': records}
           (output / 'screenshot-manifest.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
           PY
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: runner.os == 'Linux'
         with:
           name: launcher-ui-screenshots

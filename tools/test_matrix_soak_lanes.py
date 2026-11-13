@@ -16,6 +16,7 @@ import tempfile
 import unittest
 
 sys.path[:0] = [str(Path(__file__).resolve().parent), str(Path(__file__).resolve().parents[1])]
+import hd_multires_route_extras as route_extras
 import matrix_release_evidence as release
 import matrix_soak_lanes as soak
 
@@ -61,17 +62,24 @@ def map_log(route: str, seconds: int) -> list[str]:
 class Run:
     """One retained hidden session run directory, editable before it is written."""
 
-    def __init__(self, root: Path, tier: str, route: str, seconds: int, started: datetime):
+    def __init__(self, root: Path, tier: str, route: str, seconds: int, started: datetime,
+                 extra: dict | None = None):
         self.root, self.tier, self.route, self.seconds = root, tier, route, seconds
+        self.spec = None if extra is None else route_extras.prepare(extra, route=route, duration=seconds)
         self.directory = root / f"session-{tier}-{route}"
         self.log_lines = (map_log(route, seconds) if route != "menu-idle" else
                           [MARKER, "HDSESSION_TARGET pid=abc base=00400000",
                            f"HDSESSION_MENU_READY pid=abc surface=0051d4c0 width={WIDTH} height={HEIGHT} pixels=20000000"])
+        if self.spec:
+            # A neutralized failed mouse read, then one re-armed step printed on a fresh line.
+            self.log_lines.insert(4, "HDNEUTRAL_MOUSE_READ hresult=8007000c")
+            self.log_lines[-1:-1] = ["", "HDPAN_REARM reason=rate_limit step=3 count=1 total=1 value=2"]
         frames = [bytes((index + shift) % 251 for index in range(WIDTH * HEIGHT)) for shift in (0, 7)]
         prefix = "menu" if route == "menu-idle" else "map"
         self.frame_bytes = {f"{prefix}-frame-{index:04d}.indexed8": data for index, data in enumerate(frames)}
         mechanisms = (dict(soak.MENU_MECHANISMS[1]) if route == "menu-idle" else
-                      dict(soak.MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {})))
+                      dict(soak.MAP_MECHANISMS, **({"pan": "cdb_forced_native_arrow_key"} if route == "map-pan" else {}),
+                           **(self.spec["mechanisms"] if self.spec else {})))
         self.session = {
             "schema": soak.SESSION_SCHEMA, "executed": True, "route": route, "duration_sec": seconds,
             "identity": {key: IDENTITY[key] for key in soak.SESSION_IDENTITY_KEYS},
@@ -94,11 +102,18 @@ class Run:
         else:
             self.session.update(map_route_completed=True, load_slot=0, measured_map_host_seconds=float(seconds),
                                 map_surface={"width": WIDTH, "height": HEIGHT})
+        if self.spec:
+            slot = {"sha256": "7" * 64, "bytes": 586414, "mtime_ns": 1}
+            self.session.update(route_extra=self.spec, route_extra_files={
+                "before": {"save/0.dat": dict(slot)}, "after": {"save/0.dat": dict(slot)}, "retained": {}})
 
     def save(self) -> dict:
         log = ("\r\n".join(self.log_lines) + "\r\n").encode("ascii")
         session = copy.deepcopy(self.session)
         session.setdefault("retained_log", {"path": "cdb.log", "sha256": sha(log), "bytes": len(log)})
+        if self.spec:
+            # The session records the extra's replay of its own final log.
+            session.setdefault("route_extra_observations", route_extras.observe(self.spec, log.decode("latin-1"))[0])
         for name, data in self.frame_bytes.items():
             write(self.directory / name, data)
         return {"tier": self.tier, "route": self.route, "duration_sec": self.seconds,
@@ -113,11 +128,14 @@ class SoakReplayTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.cases = 0
 
-    def lane(self, name):
+    def lane(self, name, pan_extra="default"):
+        """Map-pan rows carry pan_extra; by default the two-hour pan lane's carry the disclosed one."""
+        if pan_extra == "default":
+            pan_extra = soak.PAN_EXTRA if name == "long_map_pan" else None
         self.cases += 1
         root, started, runs = self.root / f"case-{self.cases}", START, []
         for tier, route, seconds in soak.SCHEDULE[name]:
-            runs.append(Run(root, tier, route, seconds, started))
+            runs.append(Run(root, tier, route, seconds, started, pan_extra if route == "map-pan" else None))
             started += timedelta(seconds=seconds + 60)
         return root, runs
 
@@ -241,6 +259,77 @@ class SoakReplayTests(unittest.TestCase):
         root, runs = self.lane("long_map_pan")
         failed, failures = self.failed("long_map_pan", root, runs, producer=b"another producer\n")
         self.assertIn("route_completed", failed)
+
+    def test_pan_rows_carry_exactly_the_disclosed_retry_extra_or_none(self):
+        self.assertEqual(soak.PAN_EXTRAS, ({"name": "pan-retry", "neutral_mouse": True},
+                                           {"name": "pan-press", "neutral_mouse": True},
+                                           {"name": "pan-steady", "neutral_mouse": True}))
+        self.assertEqual(soak.PAN_EXTRA, soak.PAN_EXTRAS[2])
+        # The one-call press alone, the earlier pan-retry and pan-press remain valid pan rows,
+        # and so is a ladder rung with the extra.
+        self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=None))
+        self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=soak.PAN_EXTRAS[0]))
+        self.assert_passes("long_map_pan", *self.lane("long_map_pan", pan_extra=soak.PAN_EXTRAS[1]))
+        self.assert_passes("short_soak_ladder", *self.lane("short_soak_ladder", pan_extra=soak.PAN_EXTRA))
+        turn = {"name": "forced-turn", "load_slot": 0, "before_slot": 5, "after_slot": 6}
+        cases = {
+            "undisclosed press": lambda run: run.session["forced_mechanisms"].pop("pan_press"),
+            "request without neutral mouse": lambda run: run.session["route_extra"].__setitem__(
+                "request", {"name": "pan-press"}),
+            "unknown pan extra": lambda run: run.session["route_extra"].__setitem__("name", "pan-hold"),
+            "other extra's mechanisms": lambda run: run.session["forced_mechanisms"].update(
+                pan_retry="cdb_soak_pan_step_rearmed_when_handler_declines"),
+            "continuity extra": lambda run: run.session.__setitem__("route_extra", turn),
+            "observations differ": lambda run: run.session.__setitem__(
+                "route_extra_observations", {"rearms": [], "limits": [], "neutral_mouse_reads": 1}),
+            "exhausted step": lambda run: run.log_lines.insert(-1, "HDPAN_REARM_LIMIT step=7"),
+            "no neutral read": lambda run: run.log_lines.remove("HDNEUTRAL_MOUSE_READ hresult=8007000c"),
+            "slot changed": lambda run: run.session["route_extra_files"]["after"]["save/0.dat"].__setitem__(
+                "sha256", "9" * 64),
+            "save retained": lambda run: run.session["route_extra_files"].__setitem__("retained", {"save/1.dat": {}}),
+        }
+        for label, mutate in cases.items():
+            with self.subTest(case=label):
+                root, runs = self.lane("long_map_pan")
+                mutate(runs[0])
+                failed, failures = self.failed("long_map_pan", root, runs)
+                self.assertIn("route_completed", failed, failures)
+        # Idle and menu rows carry no extra at all.
+        root, runs = self.lane("long_map_idle")
+        runs[0].session["route_extra"] = route_extras.prepare(soak.PAN_EXTRA, route="map-pan", duration=7200)
+        failed, failures = self.failed("long_map_idle", root, runs)
+        self.assertIn("route_completed", failed, failures)
+
+    def test_a_slot_anchored_pan_row_keeps_every_logged_interval_periodic(self):
+        press, steady = soak.PAN_EXTRAS[1], soak.PAN_EXTRAS[2]
+        row = re.compile(r"(SOAK_PAN_SET phase=\d x=\d+ y=\d+ hits=\d+ tickdelta=)(\d+)( delta=\(1,1\))")
+
+        def shifted(extra, ticks):
+            """A two-hour pan lane whose hundredth and later steps are logged ``ticks`` later."""
+            root, runs = self.lane("long_map_pan", pan_extra=extra)
+            lines = runs[0].log_lines
+            for index, line in enumerate(lines):
+                match = row.fullmatch(line)
+                if match and int(match[2]) >= 640 * 100:
+                    lines[index] = f"{match[1]}{int(match[2]) + ticks}{match[3]}"
+            return root, runs
+
+        # A slot logs exactly its interval; a kept tick may widen one by the two-second allowance.
+        self.assert_passes("long_map_pan", *shifted(steady, 0))
+        self.assert_passes("long_map_pan", *shifted(steady, 128))
+        for ticks in (129, 640, -1):
+            with self.subTest(ticks=ticks):
+                failed, failures = self.failed("long_map_pan", *shifted(steady, ticks))
+                self.assertEqual(failed, {"route_completed", "frame_progression"}, failures)
+                self.assertTrue(any("pan schedule" in item for item in failures), failures)
+        # Rows of the earlier extras keep their earlier grading.
+        self.assert_passes("long_map_pan", *shifted(press, 129))
+        self.assert_passes("long_map_pan", *shifted(None, 129))
+        # The coverage is the legacy grader's own, over the same parsed rows.
+        rows = soak.soak_log.parse_soak_log(("\r\n".join(shifted(steady, 129)[1][0].log_lines) + "\r\n").encode("ascii"))
+        self.assertTrue(any("periodic interval" in item for item in soak.pan_coverage_failures(rows, 7200)))
+        rows["RouteEnds"] = []
+        self.assertEqual(soak.pan_coverage_failures(rows, 7200), ["pan coverage requires one route end"])
 
     def release_lane(self, name, **changes):
         """A complete lane report pinned to the repository's actual hidden session producer."""
