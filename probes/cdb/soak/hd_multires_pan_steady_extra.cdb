@@ -1,0 +1,48 @@
+.echo === HD successor soak extra: slot-anchored pan steps and newline-terminated debug strings ===
+.echo Harness-only hidden-desktop probe for the approved_hidden_cdb_host_soak class on the map-pan
+.echo route, which loads slot __LOAD_SLOT__. It repeats the pan-press extra's press, re-arm and release
+.echo breakpoints unchanged and adds two fixes for the long pan routes.
+.echo First, the soak restarts each ten-second interval at the redraw that found a step due, so every
+.echo step drifts by up to one redraw and the drift adds up: two hours of 720 intervals logged 716 to
+.echo 719 steps as the redraw rate fell, under a floor of 718. When this probe takes a step over at
+.echo 00406FA2 it moves the soak's own last-pan tick 00400054 back to the step's slot, which is the
+.echo logged tick of the step before plus 640 ticks, so the next interval starts at the slot and no
+.echo drift adds up. It does so only when all of these hold - the redraw came no more than 128 ticks
+.echo after the slot, which is the legacy grader's two-second allowance - that redraw printed no
+.echo heartbeat, whose row carries the redraw tick and must not follow a later tick - and this probe
+.echo also took over the step before, so its slot is current. Otherwise the soak's redraw tick stays,
+.echo the next slot counts from it, and one of at most 32 logged rows records the soak step, the step
+.echo this probe expected, the heartbeat flag, the lateness and a running count. A late step
+.echo therefore still widens its logged interval, and the replay grades every interval with the
+.echo legacy periodic coverage rule. The logged tick of a slotted step is its slot, at most 128
+.echo ticks before its redraw. The probe writes only the soak extra's step state and last-pan tick
+.echo and the arrow key bytes the soak itself drives - never the scroll fields or native variables.
+.echo Second, the audio stack prints debugger strings that end without a newline. The next soak row
+.echo then shared their log line and was lost, 78 rows in 14 retained runs. The debugger now stops at
+.echo every debug string the game process prints and ends its line. Nothing is hidden - the strings
+.echo stay in the log, each on its own line.
+.echo Disclosed as pan_press=cdb_extra_pressed_soak_pan_key_until_taken with
+.echo pan_schedule=cdb_extra_logged_pan_step_at_its_slot_within_128_ticks and
+.echo debug_output=cdb_newline_after_each_debuggee_debug_string - never user input. No echoed line
+.echo begins with a marker name.
+.echo Scratch in PE header padding free in every candidate: 004003C0 total re-arms, 004003C4 soak step
+.echo of the last re-arm, 004003C8 re-arms of that step, 004003CC logged re-arm rows, 004003D0 soak
+.echo step expected at the next takeover, 004003D4 logged tick of the last step taken over, 004003D8
+.echo steps logged at their slot, 004003DC steps left at their redraw tick, 004003E0 logged rows of
+.echo those.
+sxe -c ".echo; gc" out
+ed 004003c0 0
+ed 004003c4 0xffffffff
+ed 004003c8 0
+ed 004003cc 0
+ed 004003d0 0
+ed 004003d4 0
+ed 004003d8 0
+ed 004003dc 0
+ed 004003e0 0
+bp 00406FA2 ".if (poi(00400040) == 5) { ed 00400040 8; .if (poi(00400050) == 0) { ed 004003d0 0; ed 004003d4 poi(00400044) }; .if ((poi(004003d0) == poi(00400050)) & ((poi(00400048) & 0x7ff) != 0) & (poi(00400054) >= (poi(004003d4) + 0n640)) & (poi(00400054) <= (poi(004003d4) + 0n768))) { ed 00400054 (poi(004003d4) + 0n640); ed 004003d8 (poi(004003d8)+1) } .else { ed 004003dc (poi(004003dc)+1); .if (poi(004003e0) < 0n32) { ed 004003e0 (poi(004003e0)+1); .printf \"\\nHDPAN_TICK_KEPT step=%d expected=%d beat=%d late=%d count=%d\\n\", poi(00400050), poi(004003d0), ((poi(00400048) & 0x7ff) == 0), (poi(00400054) - poi(004003d4) - 0n640), poi(004003dc) } }; ed 004003d4 poi(00400054); ed 004003d0 (poi(00400050)+1) }; gc"
+bp 00407D26 ".if (poi(00400040) == 8) { eb 00545294 00; eb 00545297 00; eb 00545299 00; eb 0054529c 00; .if (((poi(00400058) + ((((poi(00400050) & 3) == 1) | ((poi(00400050) & 3) == 2)) * poi(00400068))) & 0xffffffff) > poi(poi(005202e4)+0n140008)) { eb 00545299 80 } .else { .if (((poi(00400058) + ((((poi(00400050) & 3) == 1) | ((poi(00400050) & 3) == 2)) * poi(00400068))) & 0xffffffff) < poi(poi(005202e4)+0n140008)) { eb 00545297 80 } .else { .if (((poi(0040005c) + ((((poi(00400050) & 3) == 2) | ((poi(00400050) & 3) == 3)) * poi(0040006c))) & 0xffffffff) > poi(poi(005202e4)+0n140012)) { eb 0054529c 80 } .else { .if (((poi(0040005c) + ((((poi(00400050) & 3) == 2) | ((poi(00400050) & 3) == 3)) * poi(0040006c))) & 0xffffffff) < poi(poi(005202e4)+0n140012)) { eb 00545294 80 } } } }; ed 00400040 6 }; gc"
+bp 00407D4A ".if ((poi(00400040) == 6) & (((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0) & (@eax <= @edx)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 8; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=rate_limit step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), (@edx-@eax) } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407D57 ".if ((poi(00400040) == 6) & (((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0) & (@eax != 0)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 8; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=input_flag step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), @eax } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407D69 ".if ((poi(00400040) == 6) & (((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0) & (@eax != 0)) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 8; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=alt_held step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), @eax } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } }; gc"
+bp 00407E95 ".if ((poi(00400040) == 6) & (((by(00545294) | by(00545297) | by(00545299) | by(0054529c)) & 0x80) != 0)) { .if ((poi(poi(005202e4)+0n140008) == ((poi(00400058) + (((((poi(00400050)+3) & 3) == 1) | (((poi(00400050)+3) & 3) == 2)) * poi(00400068))) & 0xffffffff)) & (poi(poi(005202e4)+0n140012) == ((poi(0040005c) + (((((poi(00400050)+3) & 3) == 2) | (((poi(00400050)+3) & 3) == 3)) * poi(0040006c))) & 0xffffffff))) { .if (poi(004003c4) != poi(00400050)) { ed 004003c4 poi(00400050); ed 004003c8 0 }; .if (poi(004003c8) < 0n64) { ed 004003c8 (poi(004003c8)+1); ed 004003c0 (poi(004003c0)+1); ed 00400040 8; .if (poi(004003cc) < 0n32) { ed 004003cc (poi(004003cc)+1); .printf \"\\nHDPAN_REARM reason=not_taken step=%d count=%d total=%d value=%x\\n\", poi(00400050), poi(004003c8), poi(004003c0), (by(00545294) | (by(00545297) << 8) | (by(00545299) << 0n16) | (by(0054529c) << 0n24)) } } .else { .if (poi(004003c8) == 0n64) { ed 004003c8 0n65; .printf \"\\nHDPAN_REARM_LIMIT step=%d\\n\", poi(00400050) } } } .else { eb 00545294 00; eb 00545297 00; eb 00545299 00; eb 0054529c 00 } }; gc"

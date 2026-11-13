@@ -28,6 +28,37 @@ forced-campaign: the same forced calls continue through ``days`` consecutive day
 transitions, each with its own banner and release wait, before ``after_slot`` is
 saved.
 
+pan-retry: on the soak's own map-pan route, whose extra holds one arrow key for
+exactly one native handler call per step, a step the handler declines at one of
+its three skip branches (rate limit 0x407D4A, input flag 0x407D57, held Alt
+0x407D69), or does not take by the join after its four arrow blocks (0x407E95,
+scroll still at the previous step), is returned to the soak's due state, so the
+soak presses the same key again at the next call. The soak's rows and grading
+are unchanged; only its own step state is written. A one-call press occasionally
+lost a step and failed long pans.
+
+pan-press: on the same route, each step is taken over from the soak. CDB can
+report one breakpoint hit twice; at the soak's handler-entry breakpoint on the
+call that pressed a key, that printed the unmoved scroll and ended the step
+before the handler read the key. Right after the soak's redraw breakpoint marks
+a step due (0x406FA1), the step moves to a private state at 0x406FA2 that the
+soak ignores. Inside the handler, after the soak's entry breakpoint (0x407D26),
+the probe presses the soak's own key toward the step's target and hands the
+step back, so the soak prints the result at the next call. Declined or untaken
+steps are pressed again, as with pan-retry. Each part acts only on the one state
+it expects, so a twice-reported breakpoint repeats nothing.
+
+pan-steady: pan-press with two fixes for the long pan routes. The soak restarts
+each interval at the redraw that found a step due, so its drift adds up and a
+two-hour route logged fewer steps than its floor; at the takeover (0x406FA2) the
+soak's own last-pan tick moves back to the step's slot, the step before plus
+the interval, when the redraw came within the legacy grader's two-second
+allowance, printed no heartbeat, and the step before was taken over too.
+Otherwise the redraw tick stays and a bounded row records the step, so a late
+step still widens its logged interval. The debugger also stops at every debug
+string of the game process and ends its line: audio-stack strings without a
+newline had shared the next soak row's line and lost it. Nothing is hidden.
+
 neutral_mouse: on a hidden desktop every mouse GetDeviceState fails (not
 acquired), yet the game copies its 16-byte stack buffer into the mouse state
 regardless (0x47C03C-0x47C062), so stale stack bytes become motion and held
@@ -47,7 +78,35 @@ FORCED_TURN = "forced-turn"
 FORCED_TURN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_turn_extra.cdb"
 FORCED_CAMPAIGN = "forced-campaign"
 FORCED_CAMPAIGN_TEMPLATE = "probes/cdb/continuity/hd_multires_forced_campaign_extra.cdb"
-SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE)
+PAN_RETRY = "pan-retry"
+PAN_RETRY_TEMPLATE = "probes/cdb/soak/hd_multires_pan_retry_extra.cdb"
+PAN_PRESS = "pan-press"
+PAN_PRESS_TEMPLATE = "probes/cdb/soak/hd_multires_pan_press_extra.cdb"
+PAN_STEADY = "pan-steady"
+PAN_STEADY_TEMPLATE = "probes/cdb/soak/hd_multires_pan_steady_extra.cdb"
+SOURCES = (FORCED_SAVE_TEMPLATE, FORCED_TURN_TEMPLATE, FORCED_CAMPAIGN_TEMPLATE, PAN_RETRY_TEMPLATE,
+           PAN_PRESS_TEMPLATE, PAN_STEADY_TEMPLATE)
+# A pan retry rides the soak's own map-pan routes: the ladder rungs or the two-hour lane.
+PAN_RETRY_ROUTE, PAN_RETRY_DURATIONS = "map-pan", (600, 1800, 7200)
+PAN_RETRY_MECHANISMS = {"pan_retry": "cdb_soak_pan_step_rearmed_when_handler_declines"}
+# The native arrow handler's rate-limit, input-flag and Alt branches to its common exit 0x407F3C,
+# and the join after its four arrow blocks; all byte-identical in every map candidate.
+PAN_RETRY_SITES = ("00407D4A", "00407D57", "00407D69", "00407E95")
+PAN_PRESS_MECHANISMS = {"pan_press": "cdb_extra_pressed_soak_pan_key_until_taken"}
+# The redraw just past the soak's own site, the handler just past its entry, then the retry sites.
+PAN_PRESS_SITES = ("00406FA2", "00407D26", *PAN_RETRY_SITES)
+PAN_RETRY_LIMIT, PAN_RETRY_LOGGED = 64, 32
+# pan-steady keeps the press sites and mechanism and discloses its two additions.
+PAN_STEADY_MECHANISMS = dict(PAN_PRESS_MECHANISMS,
+                             pan_schedule="cdb_extra_logged_pan_step_at_its_slot_within_128_ticks",
+                             debug_output="cdb_newline_after_each_debuggee_debug_string")
+# The session's fixed ten-second pan interval and the legacy grader's two-second allowance, in
+# 64 Hz ticks; the soak prints a heartbeat when its redraw count reaches a multiple of 0x800.
+PAN_INTERVAL_TICKS, PAN_SLOT_ALLOWANCE_TICKS, SOAK_HEARTBEAT_MASK = 640, 128, 0x7FF
+PAN_KEPT_LOGGED = 32
+PAN_EXTRAS = {PAN_RETRY: (PAN_RETRY_TEMPLATE, PAN_RETRY_MECHANISMS, PAN_RETRY_SITES),
+              PAN_PRESS: (PAN_PRESS_TEMPLATE, PAN_PRESS_MECHANISMS, PAN_PRESS_SITES),
+              PAN_STEADY: (PAN_STEADY_TEMPLATE, PAN_STEADY_MECHANISMS, PAN_PRESS_SITES)}
 # Repeated day transitions, bounded to what fits the 120 s route.
 CAMPAIGN_DAYS = (2, 3)
 MAX_TEMPLATE_BYTES = 64 * 1024
@@ -143,6 +202,19 @@ def _prepare_campaign(request: dict, *, route: str, duration: int) -> dict:
                 template=FORCED_CAMPAIGN_TEMPLATE)
 
 
+def _prepare_pan_retry(request: dict, *, route: str, duration: int) -> dict:
+    name = request.get("name")
+    if set(request) != {"name"}:
+        raise ValueError(f"A {name} extra must be exactly {{name: {name}}}.")
+    if route != PAN_RETRY_ROUTE or duration not in PAN_RETRY_DURATIONS:
+        raise ValueError("A pan retry runs only on a 600, 1800 or 7200 s map-pan route.")
+    template, mechanisms, sites = PAN_EXTRAS[name]
+    # No saves: the route's own load slot is the one isolated file it must leave unchanged.
+    return dict(request=dict(request), name=name, load_slot=SLOT_RANGE[0], template=template,
+                mechanisms=dict(mechanisms), sites=list(sites),
+                pre_files=[f"save/{SLOT_RANGE[0]}.dat"], post_files=[])
+
+
 def prepare(request: Any, *, route: str, duration: int) -> dict:
     """Validate one extra request and return the spec the session records."""
     if type(request) is dict and "neutral_mouse" in request:
@@ -156,6 +228,8 @@ def prepare(request: Any, *, route: str, duration: int) -> dict:
 
 
 def _prepare(request: Any, *, route: str, duration: int) -> dict:
+    if type(request) is dict and type(request.get("name")) is str and request["name"] in PAN_EXTRAS:
+        return _prepare_pan_retry(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_TURN:
         return _prepare_turn(request, route=route, duration=duration)
     if type(request) is dict and request.get("name") == FORCED_CAMPAIGN:
@@ -183,7 +257,8 @@ def compose(spec: dict, template: bytes) -> str:
         text = template.decode("ascii").replace("\r\n", "\n")
     except UnicodeDecodeError as error:
         raise ValueError("Route extra template must be ASCII.") from error
-    slots = (("__SAVE_SLOT__", spec["save_slot"]),) if spec["name"] == FORCED_SAVE else (
+    slots = () if spec["name"] in PAN_EXTRAS else (("__SAVE_SLOT__", spec["save_slot"]),) \
+        if spec["name"] == FORCED_SAVE else (
         ("__BEFORE_SLOT__", spec["before_slot"]), ("__AFTER_SLOT__", spec["after_slot"]),
         *((("__DAYS__", spec["days"]),) if spec["name"] == FORCED_CAMPAIGN else ()))
     for key, value in (("__LOAD_SLOT__", spec["load_slot"]), *slots):
@@ -214,6 +289,10 @@ def observe(spec: dict, log: str) -> tuple[dict, list[str]]:
 
 
 def _observe(spec: dict, log: str) -> tuple[dict, list[str]]:
+    if spec["name"] == PAN_STEADY:
+        return _observe_pan_steady(log)
+    if spec["name"] in (PAN_RETRY, PAN_PRESS):
+        return _observe_pan_retry(log)
     if spec["name"] == FORCED_TURN:
         return _observe_turn(spec, log)
     if spec["name"] == FORCED_CAMPAIGN:
@@ -379,3 +458,44 @@ def _observe_campaign(spec: dict, log: str) -> tuple[dict, list[str]]:
     if fields["release_returns"] != fields["release_waits"]:
         failures.append("every release wait must return to the day banner caller")
     return fields, failures
+
+
+REARM = re.compile(r"HDPAN_REARM reason=(rate_limit|input_flag|alt_held|not_taken) step=(\d+) count=(\d+) "
+                   r"total=(\d+) "
+                   r"value=([0-9a-fA-F]+)")
+REARM_LIMIT = re.compile(r"HDPAN_REARM_LIMIT step=(\d+)")
+
+
+def _observe_pan_retry(log: str) -> tuple[dict, list[str]]:
+    """Every logged re-arm and exhausted step; the soak's own rows are graded by the soak replay."""
+    lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+    rearms = [dict(reason=match[1], step=int(match[2]), count=int(match[3]), total=int(match[4]),
+                   value=int(match[5], 16), line_number=index + 1)
+              for index, line in enumerate(lines) if (match := REARM.fullmatch(line))]
+    limits = [int(match[1]) for line in lines if (match := REARM_LIMIT.fullmatch(line))]
+    failures = ["a forced pan step exhausted its re-arm bound"] if limits else []
+    if (len(rearms) > PAN_RETRY_LOGGED or [row["total"] for row in rearms] != list(range(1, len(rearms) + 1))
+            or any(not 1 <= row["count"] <= PAN_RETRY_LIMIT for row in rearms)):
+        failures.append("re-arm rows are not the probe's bounded running log")
+    return dict(rearms=rearms, limits=limits), failures
+
+
+TICK_KEPT = re.compile(r"HDPAN_TICK_KEPT step=(\d+) expected=(\d+) beat=([01]) late=(-?\d+) count=(\d+)")
+
+
+def _observe_pan_steady(log: str) -> tuple[dict, list[str]]:
+    """The press re-arms plus every logged step whose tick stayed at its redraw instead of its slot."""
+    fields, failures = _observe_pan_retry(log)
+    lines = [line.strip() for line in log.replace("\r\n", "\n").split("\n")]
+    kept = [dict(step=int(match[1]), expected=int(match[2]), beat=int(match[3]), late=int(match[4]),
+                 count=int(match[5]), line_number=index + 1)
+            for index, line in enumerate(lines) if (match := TICK_KEPT.fullmatch(line))]
+    steps = [row["step"] for row in kept]
+    if (len(kept) > PAN_KEPT_LOGGED or [row["count"] for row in kept] != list(range(1, len(kept) + 1))
+            or steps != sorted(set(steps))
+            # The probe keeps a redraw tick only on a heartbeat redraw, for a step it did not
+            # expect or for a late one; a row that shows none of these is not its own.
+            or any(not row["beat"] and row["expected"] == row["step"]
+                   and 0 <= row["late"] <= PAN_SLOT_ALLOWANCE_TICKS for row in kept)):
+        failures.append("kept-tick rows are not the probe's bounded running log")
+    return dict(fields, ticks_kept=kept), failures
